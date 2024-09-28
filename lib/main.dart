@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:woohakdong/views/login/login_page.dart';
-import 'package:woohakdong/views/themes/dark_theme.dart';
-import 'package:woohakdong/views/themes/light_theme.dart';
+import 'package:woohakdong/view/login/login_page.dart';
+import 'package:woohakdong/view/themes/dark_theme.dart';
+import 'package:woohakdong/view/themes/light_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
