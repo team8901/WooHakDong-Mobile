@@ -1,11 +1,11 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:woohakdong/repository/auth/woohakdong_sign_in.dart';
+import 'package:woohakdong/repository/auth/token_manage.dart';
 
 import '../logger/logger.dart';
 
 class GoogleSignInService {
-  final WoohakdongSignIn _woohakdongSignIn = WoohakdongSignIn();
+  final TokenManage _tokenManage = TokenManage();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   Future<void> signInWithGoogle() async {
@@ -18,7 +18,7 @@ class GoogleSignInService {
         final String? googleAccessToken = googleAuth.accessToken;
 
         if (googleAccessToken != null) {
-          final Map<String, String>? tokens = await _woohakdongSignIn.woohakdongSignIn(googleAccessToken);
+          final Map<String, String>? tokens = await _tokenManage.getToken(googleAccessToken);
 
           if (tokens != null) {
             await _secureStorage.write(key: 'accessToken', value: tokens['accessToken']);
@@ -26,10 +26,10 @@ class GoogleSignInService {
 
             logger.i('우학동 로그인 성공');
           } else {
-            logger.e('토큰 받아 오기 실패');
+            logger.e('우학동 로그인 실패');
           }
         } else {
-          logger.e('우학동 로그인 실패');
+          logger.e('토큰 발급 실패');
         }
       } else {
         logger.e('구글 유저 정보 없음');

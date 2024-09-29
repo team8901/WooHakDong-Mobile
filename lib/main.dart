@@ -4,8 +4,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:woohakdong/view/login/login_page.dart';
+import 'package:woohakdong/view/member_register/member_register_page.dart';
 import 'package:woohakdong/view/themes/dark_theme.dart';
 import 'package:woohakdong/view/themes/light_theme.dart';
+import 'package:woohakdong/view_model/auth/auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,11 +17,13 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) {
@@ -29,7 +33,7 @@ class MyApp extends StatelessWidget {
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.system,
-          home: const LoginPage(),
+          home: authState.isAuthenticated ? const MemberRegisterPage() : const LoginPage(),
         );
       },
     );

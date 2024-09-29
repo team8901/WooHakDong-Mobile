@@ -1,0 +1,56 @@
+import 'package:dio/dio.dart';
+
+import '../../service/dio/dio_service.dart';
+import '../../service/logger/logger.dart';
+
+class TokenManage {
+  final Dio _dio = DioService().dio;
+
+  Future<Map<String, String>?> getToken(String googleAccessToken) async {
+    try {
+      final response = await _dio.post(
+        '/v1/auth/login/social',
+        data: {
+          'accessToken': googleAccessToken,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'accessToken': response.data['accessToken'],
+          'refreshToken': response.data['refreshToken'],
+        };
+      } else {
+        logger.e('서버 에러', error: response.data);
+        return null;
+      }
+    } catch (e) {
+      logger.e('우학동 로그인 실패', error: e);
+      return null;
+    }
+  }
+
+  Future<Map<String, String>?> getBackToken(String refreshToken) async {
+    try {
+      final response = await _dio.post(
+        '/v1/auth/refresh',
+        data: {
+          'refreshToken': refreshToken,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'accessToken': response.data['accessToken'],
+          'refreshToken': response.data['refreshToken'],
+        };
+      } else {
+        logger.e('서버 에러', error: response.data);
+        return null;
+      }
+    } catch (e) {
+      logger.e('토큰 재발급 실패', error: e);
+      return null;
+    }
+  }
+}

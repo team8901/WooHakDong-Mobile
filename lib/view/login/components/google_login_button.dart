@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 
-import '../../../service/google/google_sign_in_service.dart';
+import '../../../view_model/auth/auth_provider.dart';
 import '../../themes/spacing.dart';
 
-class GoogleLoginButton extends StatelessWidget {
+class GoogleLoginButton extends ConsumerWidget {
   const GoogleLoginButton({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final GoogleSignInService googleSignInService = GoogleSignInService();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authNotifier = ref.read(authProvider.notifier);
 
     return InkWell(
-      onTap: () => googleSignInService.signInWithGoogle(),
+      onTap: () async {
+        authNotifier.signIn();
+      },
       child: Container(
         width: double.infinity,
         height: 52,

@@ -16,12 +16,13 @@ class MemberRegisterButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           color: Theme.of(context).colorScheme.primary,
         ),
-        child: Text(
-          '우학동 가입하기',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(context).colorScheme.inversePrimary,
-              ),
-          textAlign: TextAlign.center,
+        child: Center(
+          child: Text(
+            '우학동 가입하기',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                ),
+          ),
         ),
       ),
     );
