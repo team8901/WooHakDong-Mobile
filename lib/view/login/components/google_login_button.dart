@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:woohakdong/service/auth/google_sign_in_service.dart';
 
+import '../../../service/google/google_sign_in_service.dart';
 import '../../themes/spacing.dart';
 
 class GoogleLoginButton extends StatelessWidget {
@@ -9,8 +9,10 @@ class GoogleLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GoogleSignInService googleSignInService = GoogleSignInService();
+
     return InkWell(
-      onTap: () => GoogleSignInService.signInWithGoogle(),
+      onTap: () => googleSignInService.signInWithGoogle(),
       child: Container(
         width: double.infinity,
         height: 52,
