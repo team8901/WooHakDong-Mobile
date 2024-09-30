@@ -8,6 +8,7 @@ import 'package:woohakdong/view/member_register/member_register_page.dart';
 import 'package:woohakdong/view/themes/dark_theme.dart';
 import 'package:woohakdong/view/themes/light_theme.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
+import 'package:woohakdong/view_model/auth/components/auth_status.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
+    final authStatus = ref.watch(authProvider);
 
     return ScreenUtilInit(
       designSize: const Size(375, 812),
@@ -33,7 +34,7 @@ class MyApp extends ConsumerWidget {
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.system,
-          home: authState.isAuthenticated ? const MemberRegisterPage() : const LoginPage(),
+          home: authStatus == AuthStatus.authenticated ? const MemberRegisterPage() : const LoginPage(),
         );
       },
     );

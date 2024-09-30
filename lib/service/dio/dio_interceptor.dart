@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:woohakdong/service/dio/dio_service.dart';
-import 'package:woohakdong/service/logger/logger.dart';
 
-import '../../repository/auth/token_manage.dart';
+import '../logger/logger.dart';
 
 class DioInterceptor extends Interceptor {
+  final Dio _dio;
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
-  final TokenManage _tokenManage = TokenManage();
+
+  DioInterceptor(this._dio);
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
@@ -15,6 +15,8 @@ class DioInterceptor extends Interceptor {
 
     if (accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';
+    } else {
+      options.headers.remove('Authorization');
     }
 
     return handler.next(options);
@@ -25,37 +27,37 @@ class DioInterceptor extends Interceptor {
     if (err.response?.statusCode == 401) {
       final refreshToken = await _secureStorage.read(key: 'refreshToken');
 
-      if (refreshToken != null) {
-        try {
-          final newTokens = await _tokenManage.getBackToken(refreshToken);
+      try {
+        final response = await _dio.post(
+          'v1/auth/refresh',
+          data: {'refreshToken': refreshToken},
+          options: Options(
+            headers: {'Authorization': 'Bearer $refreshToken'},
+          ),
+        );
 
-          if (newTokens != null) {
-            await _secureStorage.write(key: 'accessToken', value: newTokens['accessToken']);
-            await _secureStorage.write(key: 'refreshToken', value: newTokens['refreshToken']);
+        final newTokens = response.data;
 
-            final requestOptions = err.requestOptions;
-            final newAccessToken = newTokens['accessToken'];
-            requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
+        if (newTokens != null && newTokens['accessToken'] != null && newTokens['refreshToken'] != null) {
+          await _secureStorage.write(key: 'accessToken', value: newTokens['accessToken']);
+          await _secureStorage.write(key: 'refreshToken', value: newTokens['refreshToken']);
 
-            final dio = DioService().dio;
-            final response = await dio.fetch(requestOptions);
+          err.requestOptions.headers['Authorization'] = 'Bearer ${newTokens['accessToken']}';
 
-            return handler.resolve(response);
-          } else {
-            logger.e('재발급 토큰 없음');
-            await _secureStorage.deleteAll();
-          }
-        } catch (e) {
-          logger.e('토큰 재발급 실패', error: e);
-          await _secureStorage.deleteAll();
+          final retryResponse = await _dio.fetch(err.requestOptions);
+
+          return handler.resolve(retryResponse);
+        } else {
+          logger.e('새로운 토큰 없음');
+          return handler.next(err);
         }
-      } else {
-        logger.e('refreshToken 없음');
-        await _secureStorage.deleteAll();
+      } catch (e) {
+        logger.e('토큰 재발급 실패', error: e);
+        return handler.next(err);
       }
+    } else {
+      return handler.next(err);
     }
-
-    return handler.next(err);
   }
 
   @override

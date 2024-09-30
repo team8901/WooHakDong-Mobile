@@ -16,6 +16,7 @@ class TokenManage {
       );
 
       if (response.statusCode == 200) {
+        logger.i('토큰 발급 성공');
         return {
           'accessToken': response.data['accessToken'],
           'refreshToken': response.data['refreshToken'],
@@ -25,7 +26,7 @@ class TokenManage {
         return null;
       }
     } catch (e) {
-      logger.e('우학동 로그인 실패', error: e);
+      logger.e('토큰 발급 실패', error: e);
       return null;
     }
   }
@@ -37,9 +38,13 @@ class TokenManage {
         data: {
           'refreshToken': refreshToken,
         },
+        options: Options(
+          headers: {'Authorization': 'Bearer $refreshToken'},
+        ),
       );
 
       if (response.statusCode == 200) {
+        logger.i('토큰 재발급 성공');
         return {
           'accessToken': response.data['accessToken'],
           'refreshToken': response.data['refreshToken'],

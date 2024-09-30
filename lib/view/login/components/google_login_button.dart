@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/auth/auth_provider.dart';
 
-import '../../../view_model/auth/auth_provider.dart';
 import '../../themes/spacing.dart';
 
 class GoogleLoginButton extends ConsumerWidget {
@@ -13,15 +14,13 @@ class GoogleLoginButton extends ConsumerWidget {
     final authNotifier = ref.read(authProvider.notifier);
 
     return InkWell(
-      onTap: () async {
-        authNotifier.signIn();
-      },
+      onTap: () async => authNotifier.signIn(),
       child: Container(
         width: double.infinity,
         height: 52,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-          color: Theme.of(context).colorScheme.surfaceContainer,
+          color: context.colorScheme.surfaceContainer,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -35,7 +34,7 @@ class GoogleLoginButton extends ConsumerWidget {
             const Gap(defaultGapM),
             Text(
               'Goolge로 시작하기',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: context.textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
           ],

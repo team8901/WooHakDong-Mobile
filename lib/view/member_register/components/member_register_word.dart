@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:woohakdong/view/themes/theme_context.dart';
 
 class MemberRegisterWord extends StatelessWidget {
   const MemberRegisterWord({super.key});
@@ -10,17 +11,17 @@ class MemberRegisterWord extends StatelessWidget {
         children: [
           TextSpan(
             text: '동아리를 등록하기 전에\n',
-            style: Theme.of(context).textTheme.headlineLarge,
+            style: context.textTheme.headlineLarge,
           ),
           TextSpan(
             text: '우학동',
-            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+            style: context.textTheme.headlineLarge?.copyWith(
+              color: context.colorScheme.primary,
+            ),
           ),
           TextSpan(
             text: '에 가입해야 해요',
-            style: Theme.of(context).textTheme.headlineLarge,
+            style: context.textTheme.headlineLarge,
           ),
         ],
       ),

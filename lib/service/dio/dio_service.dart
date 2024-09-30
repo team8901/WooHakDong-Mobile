@@ -20,7 +20,7 @@ class DioService {
     );
 
     _dio = Dio(options);
-    _dio.interceptors.add(DioInterceptor());
+    _dio.interceptors.add(DioInterceptor(_dio));
   }
 
   Dio get dio => _dio;

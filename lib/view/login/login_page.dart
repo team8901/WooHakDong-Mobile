@@ -4,15 +4,16 @@ import 'package:woohakdong/view/login/components/google_login_button.dart';
 import 'package:woohakdong/view/login/components/introduce_word.dart';
 
 import '../themes/spacing.dart';
+import 'components/recommend_word.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(
+        padding: EdgeInsets.only(
           top: 140,
           left: defaultPaddingM,
           right: defaultPaddingM,
@@ -21,18 +22,11 @@ class LoginPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const IntroduceWord(),
-            const Spacer(),
-            Center(
-              child: Text(
-                '학교 계정으로 로그인해 주세요',
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
-            ),
-            const Gap(defaultGapS),
-            const GoogleLoginButton(),
+            IntroduceWord(),
+            Spacer(),
+            RecommendWord(),
+            Gap(defaultGapS),
+            GoogleLoginButton(),
           ],
         ),
       ),
