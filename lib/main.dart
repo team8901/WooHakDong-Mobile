@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:woohakdong/views/login/login_page.dart';
-import 'package:woohakdong/views/themes/dark_theme.dart';
-import 'package:woohakdong/views/themes/light_theme.dart';
+import 'package:woohakdong/view/login/login_page.dart';
+import 'package:woohakdong/view/member_register/member_register_page.dart';
+import 'package:woohakdong/view/themes/dark_theme.dart';
+import 'package:woohakdong/view/themes/light_theme.dart';
+import 'package:woohakdong/view_model/auth/auth_provider.dart';
+import 'package:woohakdong/view_model/auth/components/auth_status.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await dotenv.load(fileName: ".env");
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authStatus = ref.watch(authProvider);
+
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) {
@@ -23,7 +34,7 @@ class MyApp extends StatelessWidget {
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.system,
-          home: const LoginPage(),
+          home: authStatus == AuthStatus.authenticated ? const MemberRegisterPage() : const LoginPage(),
         );
       },
     );

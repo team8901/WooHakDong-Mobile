@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:woohakdong/views/themes/spacing.dart';
-import 'package:woohakdong/views/themes/text_style.dart';
+import 'package:woohakdong/view/themes/spacing.dart';
+import 'package:woohakdong/view/themes/text_style.dart';
 
 /// 주요 색상
 const Color primary = Color(0xFF3D63DD);
