@@ -1,19 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:woohakdong/view/member_register/member_register_input_page.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../view_model/auth/auth_provider.dart';
 import '../../themes/spacing.dart';
 
-class MemberRegisterButton extends ConsumerWidget {
+class MemberRegisterButton extends StatelessWidget {
   const MemberRegisterButton({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authNotifier = ref.read(authProvider.notifier);
-
+  Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => authNotifier.signOut(),
+      onTap: () => Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => const MemberRegisterInputPage(),
+        ),
+      ),
       child: Container(
         width: double.infinity,
         height: 52,
