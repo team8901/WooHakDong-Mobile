@@ -27,18 +27,21 @@ class AuthNotifier extends StateNotifier<AuthStatus> {
     }
   }
 
-  Future<void> signIn() async {
-    bool isSignedIn = await googleSignInService.signInWithGoogle();
+  Future<void> signIn(WidgetRef ref) async {
+    bool isSignedIn = await googleSignInService.signInWithGoogle(ref);
     if (isSignedIn) {
       state = AuthStatus.authenticated;
     } else {
       state = AuthStatus.unauthenticated;
-
     }
   }
 
-  Future<void> signOut() async {
-    await googleSignInService.signOutGoogle();
-    state = AuthStatus.unauthenticated;
+  Future<void> signOut(WidgetRef ref) async {
+    bool isSignedOut = await googleSignInService.signOutGoogle(ref);
+    if (isSignedOut) {
+      state = AuthStatus.unauthenticated;
+    } else {
+      state = AuthStatus.authenticated;
+    }
   }
 }

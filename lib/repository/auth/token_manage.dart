@@ -58,4 +58,25 @@ class TokenManage {
       return null;
     }
   }
+
+  Future<void> removeToken(String refreshToken) async {
+    try {
+      final response = await _dio.post(
+        'v1/auth/logout',
+        data: {
+          'refreshToken': refreshToken,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        logger.i('토큰 삭제 성공');
+      } else {
+        logger.e('서버 에러', error: response.data);
+        throw Exception('토큰 삭제 실패');
+      }
+    } catch (e) {
+      logger.e('토큰 삭제 실패', error: e);
+      rethrow;
+    }
+  }
 }

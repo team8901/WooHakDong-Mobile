@@ -1,14 +1,17 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:woohakdong/repository/auth/token_manage.dart';
 
+import '../../view_model/user/user_info_provider.dart';
 import '../logger/logger.dart';
 
 class GoogleSignInService {
   final TokenManage _tokenManage = TokenManage();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
-  Future<bool> signInWithGoogle() async {
+  Future<bool> signInWithGoogle(WidgetRef ref) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -23,6 +26,12 @@ class GoogleSignInService {
             await _secureStorage.write(key: 'accessToken', value: tokens['accessToken']);
             await _secureStorage.write(key: 'refreshToken', value: tokens['refreshToken']);
 
+            final SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.setString('userName', googleUser.displayName ?? '');
+            await prefs.setString('userEmail', googleUser.email);
+
+            ref.invalidate(userInfoProvider);
+
             logger.i('우학동 로그인 성공');
             return true;
           } else {
@@ -34,7 +43,7 @@ class GoogleSignInService {
           return false;
         }
       } else {
-        logger.e('구글 유저 정보 없음');
+        logger.w('구글 유저 정보 없음');
         return false;
       }
     } catch (e) {
@@ -43,9 +52,33 @@ class GoogleSignInService {
     }
   }
 
-  Future<void> signOutGoogle() async {
-    await GoogleSignIn().signOut();
-    await _secureStorage.delete(key: 'accessToken');
-    await _secureStorage.delete(key: 'refreshToken');
+  Future<bool> signOutGoogle(WidgetRef ref) async {
+    try {
+      String? refreshToken = await _secureStorage.read(key: 'refreshToken');
+
+      if (refreshToken != null) {
+        await GoogleSignIn().signOut();
+
+        // await _tokenManage.removeToken(refreshToken);
+
+        await _secureStorage.delete(key: 'accessToken');
+        await _secureStorage.delete(key: 'refreshToken');
+
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.remove('userName');
+        await prefs.remove('userEmail');
+
+        ref.invalidate(userInfoProvider);
+
+        logger.i('로그아웃 완료');
+        return true;
+      } else {
+        logger.w('저장된 리프레시 토큰이 없음');
+        return false;
+      }
+    } catch (e) {
+      logger.e('로그아웃 실패', error: e);
+      return false;
+    }
   }
 }
