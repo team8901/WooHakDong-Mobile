@@ -3,13 +3,13 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../themes/spacing.dart';
 
-class MemberRegisterButton extends StatelessWidget {
+class RegisterBottomButton extends StatelessWidget {
   final Function()? onTap;
   final String buttonText;
   final Color buttonColor;
   final Color buttonTextColor;
 
-  const MemberRegisterButton({
+  const RegisterBottomButton({
     super.key,
     required this.onTap,
     required this.buttonText,
@@ -22,6 +22,11 @@ class MemberRegisterButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
+        margin: const EdgeInsets.only(
+          left: defaultPaddingM,
+          right: defaultPaddingM,
+          bottom: defaultPaddingM,
+        ),
         width: double.infinity,
         height: 52,
         decoration: BoxDecoration(

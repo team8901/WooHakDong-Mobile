@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-class MemberRegisterCompleteWord extends StatelessWidget {
-  const MemberRegisterCompleteWord({super.key});
+class RegisterCompleteWord extends StatelessWidget {
+  const RegisterCompleteWord({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:woohakdong/repository/auth/token_manage.dart';
 
 import '../../view_model/user/user_info_provider.dart';
@@ -25,10 +24,8 @@ class GoogleSignInService {
           if (tokens != null) {
             await _secureStorage.write(key: 'accessToken', value: tokens['accessToken']);
             await _secureStorage.write(key: 'refreshToken', value: tokens['refreshToken']);
-
-            final SharedPreferences prefs = await SharedPreferences.getInstance();
-            await prefs.setString('userName', googleUser.displayName ?? '');
-            await prefs.setString('userEmail', googleUser.email);
+            await _secureStorage.write(key: 'userName', value: googleUser.displayName ?? '');
+            await _secureStorage.write(key: 'userEmail', value: googleUser.email);
 
             ref.invalidate(userInfoProvider);
 
@@ -63,10 +60,8 @@ class GoogleSignInService {
 
         await _secureStorage.delete(key: 'accessToken');
         await _secureStorage.delete(key: 'refreshToken');
-
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.remove('userName');
-        await prefs.remove('userEmail');
+        await _secureStorage.delete(key: 'userName');
+        await _secureStorage.delete(key: 'userEmail');
 
         ref.invalidate(userInfoProvider);
 
