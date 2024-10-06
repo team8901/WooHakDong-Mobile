@@ -12,10 +12,10 @@ class DioService {
 
   DioService._internal() {
     BaseOptions options = BaseOptions(
-      baseUrl: dotenv.env['SERVER_BASE_URL']!,
-      connectTimeout: const Duration(milliseconds: 10000),
-      receiveTimeout: const Duration(milliseconds: 10000),
-      sendTimeout: const Duration(milliseconds: 10000),
+      baseUrl: dotenv.env['V1_SERVER_BASE_URL']!,
+      connectTimeout: const Duration(milliseconds: 5000),
+      receiveTimeout: const Duration(milliseconds: 5000),
+      sendTimeout: const Duration(milliseconds: 5000),
       headers: {'Content-Type': 'application/json'},
     );
 

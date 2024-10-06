@@ -23,8 +23,8 @@ class MemberInfoInputForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    member.email = userModel.userEmail!;
-    member.name = userModel.userName!;
+    member.memberEmail = userModel.userEmail!;
+    member.memberName = userModel.userName!;
 
     return Form(
       key: formKey,
@@ -51,7 +51,7 @@ class MemberInfoInputForm extends StatelessWidget {
           CustomDropdownFormField(
             labelText: '성별',
             items: const ['남성', '여성'],
-            onChanged: (value) => member.gender = value!,
+            onChanged: (value) => member.memberGender = value!,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return '성별을 선택해 주세요';
@@ -62,7 +62,7 @@ class MemberInfoInputForm extends StatelessWidget {
           const Gap(defaultGapXL),
           CustomTextFormField(
             labelText: '학과',
-            onSaved: (value) => member.department = value!,
+            onSaved: (value) => member.memberMajor = value!,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return '학과를 입력해 주세요';
@@ -75,7 +75,7 @@ class MemberInfoInputForm extends StatelessWidget {
             labelText: '학번',
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            onSaved: (value) => member.studentId = value!,
+            onSaved: (value) => member.memberStudentNumber = value!,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return '학번을 입력해 주세요';
@@ -86,11 +86,11 @@ class MemberInfoInputForm extends StatelessWidget {
           const Gap(defaultGapXL),
           CustomTextFormField(
             labelText: '휴대폰 번호',
-            hintText: '- 없이 입력해 주세요',
+            hintText: '휴대폰 번호를 - 없이 입력해 주세요',
             keyboardType: TextInputType.phone,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             textInputAction: TextInputAction.done,
-            onSaved: (value) => member.phoneNumber = value!,
+            onSaved: (value) => member.memberPhoneNumber = value!,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return '휴대폰 번호를 입력해 주세요';

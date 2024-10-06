@@ -34,6 +34,7 @@ class MyApp extends ConsumerWidget {
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.system,
+          //home: const MemberRegisterPage(),
           home: authStatus == AuthStatus.authenticated ? const MemberRegisterPage() : const LoginPage(),
         );
       },

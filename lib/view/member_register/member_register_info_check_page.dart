@@ -33,17 +33,17 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
             children: [
               Text('회장님의 정보가 맞으신가요?', style: context.textTheme.titleLarge),
               const Gap(defaultGapXL * 2),
-              MemberInfoCheck(infoTitle: '이메일 주소', infoContent: member.email),
+              MemberInfoCheck(infoTitle: '이메일 주소', infoContent: member.memberEmail),
               const Gap(defaultGapXL),
-              MemberInfoCheck(infoTitle: '이름', infoContent: member.name),
+              MemberInfoCheck(infoTitle: '이름', infoContent: member.memberName),
               const Gap(defaultGapXL),
-              MemberInfoCheck(infoTitle: '성별', infoContent: member.gender),
+              MemberInfoCheck(infoTitle: '성별', infoContent: member.memberGender),
               const Gap(defaultGapXL),
-              MemberInfoCheck(infoTitle: '학과', infoContent: member.department),
+              MemberInfoCheck(infoTitle: '학과', infoContent: member.memberMajor),
               const Gap(defaultGapXL),
-              MemberInfoCheck(infoTitle: '학번', infoContent: member.studentId),
+              MemberInfoCheck(infoTitle: '학번', infoContent: member.memberStudentNumber),
               const Gap(defaultGapXL),
-              MemberInfoCheck(infoTitle: '휴대폰 번호', infoContent: member.phoneNumber),
+              MemberInfoCheck(infoTitle: '휴대폰 번호', infoContent: member.memberPhoneNumber),
             ],
           ),
         ),
@@ -51,17 +51,21 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
       bottomNavigationBar: SafeArea(
         child: RegisterBottomButton(
           onTap: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              CupertinoPageRoute(builder: (context) => const MemberRegisterCompletePage()),
-              (route) => false,
-            );
+            //memberNotifier.woohakdongRegister(member);
+            _pushCompletePage(context);
           },
           buttonText: '완료',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
         ),
       ),
+    );
+  }
+
+  void _pushCompletePage(BuildContext context) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(builder: (context) => const MemberRegisterCompletePage()),
     );
   }
 }

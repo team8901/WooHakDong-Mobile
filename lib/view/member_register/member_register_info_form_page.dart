@@ -58,9 +58,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
   void _pushCheckPage(BuildContext context) {
     Navigator.push(
       context,
-      CupertinoPageRoute(
-        builder: (context) => const MemberRegisterInfoCheckPage(),
-      ),
+      CupertinoPageRoute(builder: (context) => const MemberRegisterInfoCheckPage()),
     );
   }
 }

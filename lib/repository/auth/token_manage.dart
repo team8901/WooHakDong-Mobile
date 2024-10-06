@@ -9,7 +9,7 @@ class TokenManage {
   Future<Map<String, String>?> getToken(String googleAccessToken) async {
     try {
       final response = await _dio.post(
-        '/v1/auth/login/social',
+        '/auth/login/social',
         data: {
           'accessToken': googleAccessToken,
         },
@@ -34,13 +34,10 @@ class TokenManage {
   Future<Map<String, String>?> getBackToken(String refreshToken) async {
     try {
       final response = await _dio.post(
-        '/v1/auth/refresh',
+        '/auth/refresh',
         data: {
           'refreshToken': refreshToken,
         },
-        options: Options(
-          headers: {'Authorization': 'Bearer $refreshToken'},
-        ),
       );
 
       if (response.statusCode == 200) {
@@ -62,7 +59,7 @@ class TokenManage {
   Future<void> removeToken(String refreshToken) async {
     try {
       final response = await _dio.post(
-        'v1/auth/logout',
+        '/auth/logout',
         data: {
           'refreshToken': refreshToken,
         },

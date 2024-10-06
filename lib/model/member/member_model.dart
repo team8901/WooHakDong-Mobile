@@ -1,28 +1,28 @@
 class Member {
-  String email;
-  String name;
-  String gender;
-  String department;
-  String studentId;
-  String phoneNumber;
+  String memberName;
+  String memberPhoneNumber;
+  String memberEmail;
+  String memberMajor;
+  String memberStudentNumber;
+  String memberGender;
 
   Member({
-    required this.email,
-    required this.name,
-    required this.gender,
-    required this.department,
-    required this.studentId,
-    required this.phoneNumber,
+    required this.memberName,
+    required this.memberPhoneNumber,
+    required this.memberEmail,
+    required this.memberMajor,
+    required this.memberStudentNumber,
+    required this.memberGender,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'email': email,
-      'name': name,
-      'gender': gender,
-      'department': department,
-      'studentId': studentId,
-      'phoneNumber': phoneNumber,
+      'memberName': memberName,
+      'memberPhoneNumber': memberPhoneNumber,
+      'memberEmail': memberEmail,
+      'memberMajor': memberMajor,
+      'memberStudentNumber': memberStudentNumber,
+      'memberGender': memberGender,
     };
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:woohakdong/repository/auth/token_manage.dart';
 import 'package:woohakdong/view/member_register/components/register_complete_word.dart';
 
 import '../../view_model/auth/auth_provider.dart';
@@ -29,6 +31,7 @@ class MemberRegisterCompletePage extends ConsumerWidget {
         child: RegisterBottomButton(
           onTap: () {
             authNotifier.signOut(ref);
+            //getBackToken();
           },
           buttonText: '동아리 등록하기',
           buttonColor: Theme.of(context).colorScheme.primary,
@@ -36,5 +39,12 @@ class MemberRegisterCompletePage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> getBackToken() async {
+    const FlutterSecureStorage secureStorage = FlutterSecureStorage();
+    final String? refreshToken = await secureStorage.read(key: 'refreshToken');
+
+    await TokenManage().getBackToken(refreshToken!);
   }
 }

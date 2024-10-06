@@ -56,7 +56,7 @@ class GoogleSignInService {
       if (refreshToken != null) {
         await GoogleSignIn().signOut();
 
-        // await _tokenManage.removeToken(refreshToken);
+        await _tokenManage.removeToken(refreshToken);
 
         await _secureStorage.delete(key: 'accessToken');
         await _secureStorage.delete(key: 'refreshToken');

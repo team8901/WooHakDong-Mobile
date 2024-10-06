@@ -14,7 +14,7 @@ class GoogleLoginButton extends ConsumerWidget {
     final authNotifier = ref.read(authProvider.notifier);
 
     return InkWell(
-      onTap: () async => authNotifier.signIn(ref),
+      onTap: () async => await authNotifier.signIn(ref),
       child: Container(
         width: double.infinity,
         height: 52,
