@@ -6,7 +6,7 @@ import 'package:woohakdong/view/member_register/components/register_complete_wor
 
 import '../../view_model/auth/auth_provider.dart';
 import '../themes/spacing.dart';
-import 'components/register_bottom_button.dart';
+import 'components/member_register_bottom_button.dart';
 
 class MemberRegisterCompletePage extends ConsumerWidget {
   const MemberRegisterCompletePage({super.key});
@@ -28,9 +28,9 @@ class MemberRegisterCompletePage extends ConsumerWidget {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        child: RegisterBottomButton(
+        child: MemberRegisterBottomButton(
           onTap: () {
-            authNotifier.signOut(ref);
+            authNotifier.signOut();
             //getBackToken();
           },
           buttonText: '동아리 등록하기',

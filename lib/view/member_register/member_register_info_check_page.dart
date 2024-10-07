@@ -7,7 +7,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/member/member_provider.dart';
 import '../themes/spacing.dart';
-import 'components/register_bottom_button.dart';
+import 'components/member_register_bottom_button.dart';
 import 'member_register_complete_page.dart';
 
 class MemberRegisterInfoCheckPage extends ConsumerWidget {
@@ -49,7 +49,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        child: RegisterBottomButton(
+        child: MemberRegisterBottomButton(
           onTap: () {
             //memberNotifier.woohakdongRegister(member);
             _pushCompletePage(context);

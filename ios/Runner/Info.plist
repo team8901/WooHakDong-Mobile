@@ -28,10 +28,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>google login</string>
+			<string>Firebase</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.331800739346-e3l4fnsjtd8316oimcg2ofs69tc1o44g</string>
+				<string>com.googleusercontent.apps.896551790902-f93n4q3q2pupc5gmbvq6ccovlpltp25t</string>
 			</array>
 		</dict>
 	</array>

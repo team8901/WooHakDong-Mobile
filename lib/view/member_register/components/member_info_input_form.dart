@@ -4,27 +4,28 @@ import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/member/member_model.dart';
-import '../../../model/user/user_model.dart';
 import '../../themes/custom_widget/custom_dropdown_form_field.dart';
 import '../../themes/custom_widget/custom_text_form_field.dart';
 import '../../themes/spacing.dart';
 
 class MemberInfoInputForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
-  final UserModel userModel;
+  final String userEmail;
+  final String userName;
   final Member member;
 
   const MemberInfoInputForm({
     super.key,
     required this.formKey,
-    required this.userModel,
+    required this.userEmail,
+    required this.userName,
     required this.member,
   });
 
   @override
   Widget build(BuildContext context) {
-    member.memberEmail = userModel.userEmail!;
-    member.memberName = userModel.userName!;
+    member.memberEmail = userEmail;
+    member.memberName = userName;
 
     return Form(
       key: formKey,
@@ -38,13 +39,13 @@ class MemberInfoInputForm extends StatelessWidget {
           const Gap(defaultGapXL * 2),
           CustomTextFormField(
             labelText: '이메일 주소',
-            initialValue: userModel.userEmail,
+            initialValue: member.memberEmail,
             readOnly: true,
           ),
           const Gap(defaultGapXL),
           CustomTextFormField(
             labelText: '이름',
-            initialValue: userModel.userName,
+            initialValue: member.memberName,
             readOnly: true,
           ),
           const Gap(defaultGapXL),

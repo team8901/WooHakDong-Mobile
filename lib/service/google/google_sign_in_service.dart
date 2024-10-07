@@ -1,78 +1,84 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:woohakdong/repository/auth/token_manage.dart';
 
-import '../../view_model/user/user_info_provider.dart';
-import '../logger/logger.dart';
+import '../../repository/auth/token_manage.dart';
+import '../../service/logger/logger.dart'; // TokenManage 클래스 경로
 
 class GoogleSignInService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   final TokenManage _tokenManage = TokenManage();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
-  Future<bool> signInWithGoogle(WidgetRef ref) async {
+  Future<bool> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        logger.w("구글 로그인 취소");
+        return false;
+      }
 
-      if (googleUser != null) {
-        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-        final String? googleAccessToken = googleAuth.accessToken;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
-        if (googleAccessToken != null) {
-          final Map<String, String>? tokens = await _tokenManage.getToken(googleAccessToken);
+      final String? googleAccessToken = googleAuth.accessToken;
+      final String? googleIdToken = googleAuth.idToken;
 
-          if (tokens != null) {
-            await _secureStorage.write(key: 'accessToken', value: tokens['accessToken']);
-            await _secureStorage.write(key: 'refreshToken', value: tokens['refreshToken']);
-            await _secureStorage.write(key: 'userName', value: googleUser.displayName ?? '');
-            await _secureStorage.write(key: 'userEmail', value: googleUser.email);
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAccessToken,
+        idToken: googleIdToken,
+      );
 
-            ref.invalidate(userInfoProvider);
+      final UserCredential userCredential = await _auth.signInWithCredential(credential);
 
-            logger.i('우학동 로그인 성공');
-            return true;
-          } else {
-            logger.e('우학동 로그인 실패');
-            return false;
-          }
+      if (googleAccessToken != null) {
+        final tokens = await _tokenManage.getToken(googleAccessToken);
+
+        if (tokens != null) {
+          final String accessToken = tokens['accessToken']!;
+          final String refreshToken = tokens['refreshToken']!;
+
+          await _secureStorage.write(key: 'accessToken', value: accessToken);
+          await _secureStorage.write(key: 'refreshToken', value: refreshToken);
+
+          logger.i("Access Token과 Refresh Token이 안전하게 저장되었습니다.");
+          return true;
         } else {
-          logger.e('토큰 발급 실패');
+          await _auth.signOut();
+          logger.e("서버로부터 토큰 발급에 실패하여 Firebase 로그아웃 처리됨");
           return false;
         }
       } else {
-        logger.w('구글 유저 정보 없음');
+        logger.e("Google Access Token을 가져오지 못했습니다.");
         return false;
       }
     } catch (e) {
-      logger.e('구글 로그인 실패', error: e);
+      logger.e("구글 로그인 실패: $e");
       return false;
     }
   }
 
-  Future<bool> signOutGoogle(WidgetRef ref) async {
+  Future<bool> signOut() async {
     try {
-      String? refreshToken = await _secureStorage.read(key: 'refreshToken');
+      final String? refreshToken = await _secureStorage.read(key: 'refreshToken');
 
       if (refreshToken != null) {
-        await GoogleSignIn().signOut();
-
         await _tokenManage.removeToken(refreshToken);
-
-        await _secureStorage.delete(key: 'accessToken');
-        await _secureStorage.delete(key: 'refreshToken');
-        await _secureStorage.delete(key: 'userName');
-        await _secureStorage.delete(key: 'userEmail');
-
-        ref.invalidate(userInfoProvider);
-
-        logger.i('로그아웃 완료');
-        return true;
       } else {
-        logger.w('저장된 리프레시 토큰이 없음');
+        logger.e("저장된 Refresh Token이 없습니다.");
         return false;
       }
+
+      await _secureStorage.delete(key: 'accessToken');
+      await _secureStorage.delete(key: 'refreshToken');
+
+      await _auth.signOut();
+      await _googleSignIn.signOut();
+
+      logger.i("로그아웃이 성공적으로 처리되었습니다.");
+      return true;
     } catch (e) {
-      logger.e('로그아웃 실패', error: e);
+      logger.e("로그아웃 실패: $e");
       return false;
     }
   }

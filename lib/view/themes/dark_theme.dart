@@ -21,8 +21,8 @@ final ThemeData darkTheme = ThemeData(
   primaryColor: primary,
   scaffoldBackgroundColor: black,
   applyElevationOverlayColor: false,
-  splashColor: Colors.transparent,
-  highlightColor: Colors.transparent,
+  splashColor: darkGray.withOpacity(0.1),
+  highlightColor: darkGray.withOpacity(0.1),
 
   /// 컬러 스키마
   colorScheme: const ColorScheme.dark(

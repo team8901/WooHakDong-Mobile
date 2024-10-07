@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../themes/spacing.dart';
-import 'components/register_bottom_button.dart';
+import 'components/member_register_bottom_button.dart';
 import 'components/register_introduce_word.dart';
 import 'member_register_info_form_page.dart';
 
@@ -24,8 +24,10 @@ class MemberRegisterPage extends ConsumerWidget {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        child: RegisterBottomButton(
-          onTap: () => _pushInputPage(context),
+        child: MemberRegisterBottomButton(
+          onTap: () {
+            _pushInputPage(context);
+          },
           buttonText: '우학동 가입하기',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,

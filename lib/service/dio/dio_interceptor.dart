@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -7,6 +8,8 @@ import '../logger/logger.dart';
 class DioInterceptor extends Interceptor {
   final Dio _dio;
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   bool _isRefreshing = false;
   final List<Function> _requestQueue = [];
 
@@ -88,11 +91,10 @@ class DioInterceptor extends Interceptor {
   Future<void> signOutAtInterceptor() async {
     logger.w('토큰 재발급 실패로 인한 로그아웃');
 
-    await GoogleSignIn().signOut();
-
     await _secureStorage.delete(key: 'accessToken');
     await _secureStorage.delete(key: 'refreshToken');
-    await _secureStorage.delete(key: 'userName');
-    await _secureStorage.delete(key: 'userEmail');
+
+    await _auth.signOut();
+    await _googleSignIn.signOut();
   }
 }
