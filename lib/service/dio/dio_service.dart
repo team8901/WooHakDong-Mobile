@@ -4,24 +4,27 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dio_interceptor.dart';
 
 class DioService {
-  static final DioService _dioServices = DioService._internal();
+  final Dio dio;
 
-  factory DioService() => _dioServices;
+  DioService._internal(this.dio);
 
-  static late Dio _dio;
+  static final DioService _instance = DioService._internal(
+    Dio(
+      BaseOptions(
+        baseUrl: dotenv.env['V1_SERVER_BASE_URL']!,
+      ),
+    ),
+  );
 
-  DioService._internal() {
-    BaseOptions options = BaseOptions(
-      baseUrl: dotenv.env['V1_SERVER_BASE_URL']!,
-      connectTimeout: const Duration(milliseconds: 5000),
-      receiveTimeout: const Duration(milliseconds: 5000),
-      sendTimeout: const Duration(milliseconds: 5000),
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    _dio = Dio(options);
-    _dio.interceptors.add(DioInterceptor(_dio));
+  factory DioService() {
+    _instance._addInterceptors();
+    return _instance;
   }
 
-  Dio get dio => _dio;
+  void _addInterceptors() {
+    dio.interceptors.clear();
+    dio.interceptors.add(DioInterceptor());
+  }
+
+  Dio getDio() => dio;
 }

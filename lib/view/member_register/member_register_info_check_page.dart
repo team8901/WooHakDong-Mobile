@@ -15,7 +15,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final member = ref.watch(memberProvider);
+    final memberInfo = ref.read(memberProvider).value!;
     final memberNotifier = ref.read(memberProvider.notifier);
 
     return Scaffold(
@@ -33,17 +33,19 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
             children: [
               Text('회장님의 정보가 맞으신가요?', style: context.textTheme.titleLarge),
               const Gap(defaultGapXL * 2),
-              MemberInfoCheck(infoTitle: '이메일 주소', infoContent: member.memberEmail),
+              MemberInfoCheck(infoTitle: '학교', infoContent: memberInfo.memberSchool),
               const Gap(defaultGapXL),
-              MemberInfoCheck(infoTitle: '이름', infoContent: member.memberName),
+              MemberInfoCheck(infoTitle: '이메일 주소', infoContent: memberInfo.memberEmail),
               const Gap(defaultGapXL),
-              MemberInfoCheck(infoTitle: '성별', infoContent: member.memberGender),
+              MemberInfoCheck(infoTitle: '이름', infoContent: memberInfo.memberName),
               const Gap(defaultGapXL),
-              MemberInfoCheck(infoTitle: '학과', infoContent: member.memberMajor),
+              MemberInfoCheck(infoTitle: '성별', infoContent: memberInfo.memberGender!),
               const Gap(defaultGapXL),
-              MemberInfoCheck(infoTitle: '학번', infoContent: member.memberStudentNumber),
+              MemberInfoCheck(infoTitle: '학과', infoContent: memberInfo.memberMajor!),
               const Gap(defaultGapXL),
-              MemberInfoCheck(infoTitle: '휴대폰 번호', infoContent: member.memberPhoneNumber),
+              MemberInfoCheck(infoTitle: '학번', infoContent: memberInfo.memberStudentNumber!),
+              const Gap(defaultGapXL),
+              MemberInfoCheck(infoTitle: '휴대폰 번호', infoContent: memberInfo.memberPhoneNumber!),
             ],
           ),
         ),
@@ -51,7 +53,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
       bottomNavigationBar: SafeArea(
         child: MemberRegisterBottomButton(
           onTap: () {
-            //memberNotifier.woohakdongRegister(member);
+            memberNotifier.registerMemberInfo(memberInfo);
             _pushCompletePage(context);
           },
           buttonText: '완료',
@@ -63,9 +65,10 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
   }
 
   void _pushCompletePage(BuildContext context) {
-    Navigator.push(
+    Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute(builder: (context) => const MemberRegisterCompletePage()),
+      (route) => false,
     );
   }
 }
