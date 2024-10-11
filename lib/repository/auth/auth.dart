@@ -3,13 +3,13 @@ import 'package:dio/dio.dart';
 import '../../service/dio/dio_service.dart';
 import '../../service/logger/logger.dart';
 
-class TokenManage {
+class Auth {
   final Dio _dio = DioService().dio;
 
-  Future<Map<String, String>?> getToken(String googleAccessToken) async {
+  Future<Map<String, String>?> logIn(String googleAccessToken) async {
     try {
       final response = await _dio.post(
-        '/v1/auth/login/social',
+        '/auth/login/social',
         data: {
           'accessToken': googleAccessToken,
         },
@@ -31,31 +31,24 @@ class TokenManage {
     }
   }
 
-  Future<Map<String, String>?> getBackToken(String refreshToken) async {
+  Future<void> logOut(String refreshToken) async {
     try {
       final response = await _dio.post(
-        '/v1/auth/refresh',
+        '/auth/logout',
         data: {
           'refreshToken': refreshToken,
         },
-        options: Options(
-          headers: {'Authorization': 'Bearer $refreshToken'},
-        ),
       );
 
       if (response.statusCode == 200) {
-        logger.i('토큰 재발급 성공');
-        return {
-          'accessToken': response.data['accessToken'],
-          'refreshToken': response.data['refreshToken'],
-        };
+        logger.i('토큰 삭제 성공');
       } else {
         logger.e('서버 에러', error: response.data);
-        return null;
+        throw Exception('토큰 삭제 실패');
       }
     } catch (e) {
-      logger.e('토큰 재발급 실패', error: e);
-      return null;
+      logger.e('토큰 삭제 실패', error: e);
+      throw Exception('토큰 삭제 실패');
     }
   }
 }

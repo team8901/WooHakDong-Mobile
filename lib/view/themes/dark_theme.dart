@@ -12,7 +12,7 @@ const Color green = Color(0xFF43A047);
 /// 그레이 스케일
 const Color black = Color(0xFF111111);
 const Color darkGray = Color(0xFF292A2E);
-const Color gray = Color(0xFF46484F);
+const Color gray = Color(0xFF575960);
 const Color lightGray = Color(0xFF797B86);
 const Color white = Color(0xFFEEEEF0);
 
@@ -21,8 +21,8 @@ final ThemeData darkTheme = ThemeData(
   primaryColor: primary,
   scaffoldBackgroundColor: black,
   applyElevationOverlayColor: false,
-  splashColor: Colors.transparent,
-  highlightColor: Colors.transparent,
+  splashColor: darkGray.withOpacity(0.1),
+  highlightColor: darkGray.withOpacity(0.1),
 
   /// 컬러 스키마
   colorScheme: const ColorScheme.dark(

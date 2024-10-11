@@ -22,8 +22,8 @@ final ThemeData lightTheme = ThemeData(
   primaryColor: primary,
   scaffoldBackgroundColor: white,
   applyElevationOverlayColor: false,
-  splashColor: Colors.transparent,
-  highlightColor: Colors.transparent,
+  splashColor: lightGray.withOpacity(0.1),
+  highlightColor: lightGray.withOpacity(0.1),
 
   /// 컬러 스키마
   colorScheme: const ColorScheme.light(

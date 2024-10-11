@@ -12,22 +12,24 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(
-          top: 140,
-          left: defaultPaddingM,
-          right: defaultPaddingM,
-          bottom: 70,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            IntroduceWord(),
-            Spacer(),
-            RecommendWord(),
-            Gap(defaultGapS),
-            GoogleLoginButton(),
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: 100,
+            left: defaultPaddingM,
+            right: defaultPaddingM,
+            bottom: defaultPaddingM,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IntroduceWord(),
+              Spacer(),
+              RecommendWord(),
+              Gap(defaultGapS),
+              GoogleLoginButton(),
+            ],
+          ),
         ),
       ),
     );

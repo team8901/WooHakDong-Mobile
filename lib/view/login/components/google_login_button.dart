@@ -13,31 +13,34 @@ class GoogleLoginButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authNotifier = ref.read(authProvider.notifier);
 
-    return InkWell(
-      onTap: () async => authNotifier.signIn(),
-      child: Container(
-        width: double.infinity,
-        height: 52,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-          color: context.colorScheme.surfaceContainer,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/logos/google.png',
-              width: 20,
-              height: 20,
-            ),
-            const Gap(defaultGapM),
-            Text(
-              'Goolge로 시작하기',
-              style: context.textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-          ],
+    return SizedBox(
+      width: double.infinity,
+      height: 52,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+        onTap: () => authNotifier.signIn(),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+            color: context.colorScheme.surfaceContainer,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/logos/google.png',
+                width: 20,
+                height: 20,
+              ),
+              const Gap(defaultGapM),
+              Text(
+                'Goolge로 시작하기',
+                style: context.textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

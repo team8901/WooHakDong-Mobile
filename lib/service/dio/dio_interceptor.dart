@@ -1,67 +1,101 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 
 import '../logger/logger.dart';
 
-class DioInterceptor extends Interceptor {
-  final Dio _dio;
+class DioInterceptor extends InterceptorsWrapper {
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final Dio _dio;
 
   DioInterceptor(this._dio);
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    final accessToken = await _secureStorage.read(key: 'accessToken');
+  Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+    logger.t("[${options.method}] [${options.uri}]");
 
-    if (accessToken != null) {
-      options.headers['Authorization'] = 'Bearer $accessToken';
-    } else {
-      options.headers.remove('Authorization');
+    if (options.path != '/auth/refresh') {
+      String? accessToken = await _secureStorage.read(key: 'accessToken');
+
+      if (accessToken != null) {
+        options.headers['Authorization'] = 'Bearer $accessToken';
+      }
     }
 
     return handler.next(options);
   }
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
-      final refreshToken = await _secureStorage.read(key: 'refreshToken');
+      final String? refreshToken = await _secureStorage.read(key: 'refreshToken');
 
-      try {
-        final response = await _dio.post(
-          'v1/auth/refresh',
-          data: {'refreshToken': refreshToken},
-          options: Options(
-            headers: {'Authorization': 'Bearer $refreshToken'},
-          ),
-        );
+      if (refreshToken != null) {
+        try {
+          logger.w("토큰 만료로 인한 토큰 재발급 시도");
 
-        final newTokens = response.data;
+          // Dio로 시도했을 떄, 오류가 계속 발생하여 http로 시도
+          final tokenResponse = await http.post(
+            Uri.parse('${dotenv.env['V1_SERVER_BASE_URL']}/auth/refresh'),
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({'refreshToken': refreshToken}),
+          );
 
-        if (newTokens != null && newTokens['accessToken'] != null && newTokens['refreshToken'] != null) {
-          await _secureStorage.write(key: 'accessToken', value: newTokens['accessToken']);
-          await _secureStorage.write(key: 'refreshToken', value: newTokens['refreshToken']);
+          if (tokenResponse.statusCode == 200) {
+            logger.i("토큰 재발급 성공, 요청 재시도");
 
-          err.requestOptions.headers['Authorization'] = 'Bearer ${newTokens['accessToken']}';
+            final newTokenData = jsonDecode(tokenResponse.body);
 
-          final retryResponse = await _dio.fetch(err.requestOptions);
+            final String newAccessToken = newTokenData['accessToken'];
+            final String newRefreshToken = newTokenData['refreshToken'];
 
-          return handler.resolve(retryResponse);
-        } else {
-          logger.e('새로운 토큰 없음');
-          return handler.next(err);
+            await _secureStorage.write(key: 'accessToken', value: newAccessToken);
+            await _secureStorage.write(key: 'refreshToken', value: newRefreshToken);
+
+            err.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
+
+            final retryRequest = await _dio.request(
+              options: Options(
+                method: err.requestOptions.method,
+                headers: err.requestOptions.headers,
+              ),
+              err.requestOptions.path,
+              data: err.requestOptions.data,
+              queryParameters: err.requestOptions.queryParameters,
+            );
+
+            return handler.resolve(retryRequest);
+          }
+        } catch (e) {
+          logger.e("토큰 재발급 실패", error: e);
+          _signOutAtInterceptor();
+          return handler.reject(err);
         }
-      } catch (e) {
-        logger.e('토큰 재발급 실패', error: e);
-        return handler.next(err);
+      } else {
+        logger.e('리프레시 토큰이 없음');
+        _signOutAtInterceptor();
+        return handler.reject(err);
       }
-    } else {
-      return handler.next(err);
     }
   }
 
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    return handler.next(response);
+  Future<void> _signOutAtInterceptor() async {
+    logger.w('엑세스 토큰 만료에 토큰 재발급 실패로 인한 로그아웃');
+
+    await _secureStorage.delete(key: 'accessToken');
+    await _secureStorage.delete(key: 'refreshToken');
+
+    await _firebaseAuth.signOut();
+
+    if (await _googleSignIn.isSignedIn()) {
+      await _googleSignIn.signOut();
+    }
   }
 }
