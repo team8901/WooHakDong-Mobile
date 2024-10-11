@@ -16,11 +16,11 @@ class MemberInfo {
         return Member.fromJson(response.data);
       } else {
         logger.e('서버 에러', error: response.data);
-        throw Exception('회원 정보 조회 실패');
+        throw Exception();
       }
     } catch (e) {
       logger.e('회원 정보 조회 실패', error: e);
-      throw Exception('회원 정보 조회 실패');
+      throw Exception();
     }
   }
 
@@ -35,11 +35,11 @@ class MemberInfo {
         logger.i('회원 정보 등록 성공');
       } else {
         logger.e('서버 에러', error: response.data);
-        throw Exception('회원 정보 등록 실패');
+        throw Exception();
       }
     } catch (e) {
       logger.e('회원 정보 등록 실패', error: e);
-      throw Exception('회원 정보 등록 실패');
+      throw Exception();
     }
   }
 
@@ -54,11 +54,11 @@ class MemberInfo {
         logger.i('회원 정보 수정 성공');
       } else {
         logger.e('서버 에러', error: response.data);
-        throw Exception('회원 정보 수정 실패');
+        throw Exception();
       }
     } catch (e) {
       logger.e('회원 정보 수정 실패', error: e);
-      throw Exception('회원 정보 수정 실패');
+      throw Exception();
     }
   }
 }

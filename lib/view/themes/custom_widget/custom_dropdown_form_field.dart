@@ -3,7 +3,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 class CustomDropdownFormField extends StatelessWidget {
   final String labelText;
-  final List<String> items;
+  final List<Map<String, String>> items;
   final ValueChanged<String?>? onChanged;
   final FormFieldValidator<String>? validator;
 
@@ -39,14 +39,12 @@ class CustomDropdownFormField extends StatelessWidget {
           borderSide: BorderSide(color: context.colorScheme.primary),
         ),
       ),
-      items: items
-          .map(
-            (value) => DropdownMenuItem(
-              value: value,
-              child: Text(value, style: context.textTheme.titleSmall),
-            ),
-          )
-          .toList(),
+      items: items.map((item) {
+        return DropdownMenuItem<String>(
+          value: item['value'],
+          child: Text(item['displayText']!, style: context.textTheme.titleSmall),
+        );
+      }).toList(),
       onChanged: onChanged,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,

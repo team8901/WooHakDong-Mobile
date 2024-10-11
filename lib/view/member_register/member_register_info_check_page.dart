@@ -5,29 +5,29 @@ import 'package:gap/gap.dart';
 import 'package:woohakdong/view/member_register/components/member_info_check.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../model/member/member_model.dart';
 import '../../view_model/member/member_provider.dart';
 import '../themes/spacing.dart';
 import 'components/member_register_bottom_button.dart';
 import 'member_register_complete_page.dart';
 
 class MemberRegisterInfoCheckPage extends ConsumerWidget {
-  const MemberRegisterInfoCheckPage({super.key});
+  final Member memberInfo;
+
+  const MemberRegisterInfoCheckPage({
+    super.key,
+    required this.memberInfo,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final memberInfo = ref.read(memberProvider).value!;
     final memberNotifier = ref.read(memberProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            top: defaultPaddingM,
-            left: defaultPaddingM,
-            right: defaultPaddingM,
-            bottom: defaultPaddingM,
-          ),
+          padding: const EdgeInsets.all(defaultPaddingM),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -39,7 +39,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
               const Gap(defaultGapXL),
               MemberInfoCheck(infoTitle: '이름', infoContent: memberInfo.memberName),
               const Gap(defaultGapXL),
-              MemberInfoCheck(infoTitle: '성별', infoContent: memberInfo.memberGender!),
+              MemberInfoCheck(infoTitle: '성별', infoContent: _getGenderDisplay(memberInfo.memberGender!)),
               const Gap(defaultGapXL),
               MemberInfoCheck(infoTitle: '학과', infoContent: memberInfo.memberMajor!),
               const Gap(defaultGapXL),
@@ -52,9 +52,12 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: MemberRegisterBottomButton(
-          onTap: () {
-            memberNotifier.registerMemberInfo(memberInfo);
-            _pushCompletePage(context);
+          onTap: () async {
+            await memberNotifier.registerMemberInfo(memberInfo);
+
+            if (context.mounted) {
+              _pushCompletePage(context);
+            }
           },
           buttonText: '완료',
           buttonColor: Theme.of(context).colorScheme.primary,
@@ -62,6 +65,14 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  String _getGenderDisplay(String? gender) {
+    if (gender == 'MAN') {
+      return '남성';
+    } else {
+      return '여성';
+    }
   }
 
   void _pushCompletePage(BuildContext context) {

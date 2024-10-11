@@ -25,9 +25,7 @@ class MemberRegisterPage extends ConsumerWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: MemberRegisterBottomButton(
-          onTap: () {
-            _pushInputPage(context);
-          },
+          onTap: () => _pushInputPage(context),
           buttonText: '우학동 가입하기',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,

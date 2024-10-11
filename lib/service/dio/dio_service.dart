@@ -12,6 +12,7 @@ class DioService {
     Dio(
       BaseOptions(
         baseUrl: dotenv.env['V1_SERVER_BASE_URL']!,
+        contentType: 'application/json',
       ),
     ),
   );
@@ -23,7 +24,7 @@ class DioService {
 
   void _addInterceptors() {
     dio.interceptors.clear();
-    dio.interceptors.add(DioInterceptor());
+    dio.interceptors.add(DioInterceptor(dio));
   }
 
   Dio getDio() => dio;
