@@ -1,18 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:woohakdong/view/member_register/components/member_register_complete_introduce.dart';
+import 'package:woohakdong/view/club_register/club_register_caution_page_.dart';
 
-import '../../view_model/auth/auth_provider.dart';
 import '../themes/custom_widget/custom_bottom_button.dart';
 import '../themes/spacing.dart';
+import 'components/club_register_introduce.dart';
 
-class MemberRegisterCompletePage extends ConsumerWidget {
-  const MemberRegisterCompletePage({super.key});
+class ClubRegisterPage extends StatelessWidget {
+  const ClubRegisterPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authNotifier = ref.read(authProvider.notifier);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       body: const SafeArea(
         child: Padding(
@@ -20,20 +18,26 @@ class MemberRegisterCompletePage extends ConsumerWidget {
             top: 100,
             left: defaultPaddingM,
             right: defaultPaddingM,
-            bottom: defaultPaddingM,
           ),
-          child: MemberRegisterCompleteIntroduce(),
+          child: ClubRegisterIntroduce(),
         ),
       ),
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
-          onTap: () {
-            authNotifier.signOut();
-          },
+          onTap: () => _pushCautionPage(context),
           buttonText: '동아리 등록하기',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
         ),
+      ),
+    );
+  }
+
+  void _pushCautionPage(BuildContext context) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => const ClubRegisterCautionPage(),
       ),
     );
   }

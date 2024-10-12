@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/login/login_page.dart';
-import 'package:woohakdong/view/member_register/member_register_page.dart';
 import 'package:woohakdong/view/themes/dark_theme.dart';
 import 'package:woohakdong/view/themes/light_theme.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
@@ -51,7 +51,7 @@ class MyApp extends ConsumerWidget {
                   body: Center(child: CircularProgressIndicator()),
                 );
               } else if (snapshot.hasData && authStatus == AuthStatus.authenticated) {
-                return const MemberRegisterPage();
+                return const ClubRegisterPage();
               } else {
                 return const LoginPage();
               }

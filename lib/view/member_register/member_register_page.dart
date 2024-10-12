@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:woohakdong/view/member_register/components/member_register_introduce.dart';
 
+import '../themes/custom_widget/custom_bottom_button.dart';
 import '../themes/spacing.dart';
-import 'components/member_register_bottom_button.dart';
-import 'components/register_introduce_word.dart';
 import 'member_register_info_form_page.dart';
 
 class MemberRegisterPage extends StatelessWidget {
@@ -21,11 +19,11 @@ class MemberRegisterPage extends StatelessWidget {
             left: defaultPaddingM,
             right: defaultPaddingM,
           ),
-          child: RegisterIntroduceWord(),
+          child: MemberRegisterIntroduce(),
         ),
       ),
       bottomNavigationBar: SafeArea(
-        child: MemberRegisterBottomButton(
+        child: CustomBottomButton(
           onTap: () => _pushInputPage(context),
           buttonText: '우학동 가입하기',
           buttonColor: Theme.of(context).colorScheme.primary,

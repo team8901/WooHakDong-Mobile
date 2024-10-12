@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../themes/spacing.dart';
+import '../spacing.dart';
 
-class MemberRegisterBottomButton extends StatelessWidget {
+class CustomBottomButton extends StatelessWidget {
   final Function()? onTap;
   final String buttonText;
   final Color buttonColor;
   final Color buttonTextColor;
 
-  const MemberRegisterBottomButton({
+  const CustomBottomButton({
     super.key,
     required this.onTap,
     required this.buttonText,

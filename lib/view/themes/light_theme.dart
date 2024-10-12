@@ -36,6 +36,8 @@ final ThemeData lightTheme = ThemeData(
     outline: gray,
     error: red,
     onError: white,
+    tertiary: green,
+    onTertiary: white,
   ),
 
   /// 텍스트 테마

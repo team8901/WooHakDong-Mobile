@@ -1,0 +1,152 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
+import 'package:woohakdong/view/club_register/club_register_other_info_form_page.dart';
+import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/club/components/club_name_validation_state.dart';
+
+import '../../view_model/club/club_name_validation_provider.dart';
+import '../../view_model/club/club_provider.dart';
+import '../themes/custom_widget/custom_bottom_button.dart';
+import '../themes/custom_widget/custom_text_form_field.dart';
+import '../themes/spacing.dart';
+
+class ClubRegisterNameInfoFormPage extends ConsumerStatefulWidget {
+  const ClubRegisterNameInfoFormPage({super.key});
+
+  @override
+  ConsumerState<ClubRegisterNameInfoFormPage> createState() => _ClubRegisterNameInfoFormPageState();
+}
+
+class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameInfoFormPage> {
+  final formKey = GlobalKey<FormState>();
+  late TextEditingController clubNameController;
+  late TextEditingController clubEnglishNameController;
+
+  @override
+  void initState() {
+    super.initState();
+    clubNameController = TextEditingController();
+    clubEnglishNameController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    clubNameController.dispose();
+    clubEnglishNameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final clubNotifier = ref.read(clubProvider.notifier);
+    final validationState = ref.watch(clubNameValidationProvider);
+
+    return Scaffold(
+      appBar: AppBar(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+            horizontal: defaultPaddingM,
+            vertical: defaultPaddingM,
+          ),
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '동아리 이름을 알고 싶어요',
+                  style: context.textTheme.titleLarge,
+                ),
+                const Gap(defaultGapS / 2),
+                Text(
+                  '동아리 영문 이름은 동아리 페이지를 만드는 데 사용돼요',
+                  style: context.textTheme.labelLarge?.copyWith(
+                    color: context.colorScheme.onSurface,
+                  ),
+                ),
+                const Gap(defaultGapXL * 2),
+                CustomTextFormField(
+                  controller: clubNameController,
+                  labelText: '동아리 이름',
+                  keyboardType: TextInputType.name,
+                  onChanged: (value) {
+                    ref.read(clubNameValidationProvider.notifier).state = ClubNameValidationState.notChecked;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '동아리 이름을 입력해 주세요';
+                    }
+                    return null;
+                  },
+                ),
+                const Gap(defaultGapXL),
+                CustomTextFormField(
+                  controller: clubEnglishNameController,
+                  labelText: '동아리 영문 이름',
+                  keyboardType: TextInputType.name,
+                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]'))],
+                  textInputAction: TextInputAction.done,
+                  onChanged: (value) {
+                    ref.read(clubNameValidationProvider.notifier).state = ClubNameValidationState.notChecked;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '동아리 영문 이름을 입력해 주세요';
+                    }
+                    return null;
+                  },
+                ),
+                const Gap(defaultGapXL),
+                if (validationState == ClubNameValidationState.valid)
+                  Text(
+                    '사용 가능한 동아리 이름이에요',
+                    style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.tertiary),
+                  )
+                else if (validationState == ClubNameValidationState.invalid)
+                  Text(
+                    '이미 사용 중인 동아리 이름이에요',
+                    style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.error),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: CustomBottomButton(
+          onTap: () async {
+            if (formKey.currentState?.validate() == true) {
+              if (validationState == ClubNameValidationState.valid) {
+                if (context.mounted) {
+                  _pushCheckPage(context);
+                }
+              } else if (validationState == ClubNameValidationState.notChecked ||
+                  validationState == ClubNameValidationState.invalid) {
+                await clubNotifier.clubNameValidation(
+                  clubNameController.text,
+                  clubEnglishNameController.text,
+                );
+              }
+            }
+          },
+          buttonText: (validationState == ClubNameValidationState.valid) ? '다음' : '중복 확인',
+          buttonColor: Theme.of(context).colorScheme.primary,
+          buttonTextColor: Theme.of(context).colorScheme.onPrimary,
+        ),
+      ),
+    );
+  }
+
+  void _pushCheckPage(BuildContext context) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => const ClubRegisterOtherInfoFormPage(),
+      ),
+    );
+  }
+}

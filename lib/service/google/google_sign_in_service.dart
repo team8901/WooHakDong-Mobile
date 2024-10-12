@@ -30,6 +30,7 @@ class GoogleSignInService {
         idToken: googleIdToken,
       );
 
+      // ignore: unused_local_variable
       final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
 
       if (googleAccessToken != null) {
@@ -74,7 +75,7 @@ class GoogleSignInService {
       await _firebaseAuth.signOut();
       await _googleSignIn.signOut();
 
-      logger.i("로그아웃이 성공");
+      logger.i("로그아웃 성공");
       return true;
     } catch (e) {
       logger.e("로그아웃 실패", error: e);

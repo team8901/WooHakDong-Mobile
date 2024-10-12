@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/login/components/google_login_button.dart';
-import 'package:woohakdong/view/login/components/introduce_word.dart';
+import 'package:woohakdong/view/login/components/login_introduce.dart';
 
 import '../themes/spacing.dart';
-import 'components/recommend_word.dart';
+import 'components/login_recommend.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -23,9 +23,9 @@ class LoginPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IntroduceWord(),
+              LoginIntroduce(),
               Spacer(),
-              RecommendWord(),
+              LoginRecommned(),
               Gap(defaultGapS),
               GoogleLoginButton(),
             ],

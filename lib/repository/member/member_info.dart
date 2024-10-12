@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:woohakdong/service/logger/logger.dart';
 
-import '../../model/member/member_model.dart';
+import '../../model/member/member.dart';
 import '../../service/dio/dio_service.dart';
 
 class MemberInfo {

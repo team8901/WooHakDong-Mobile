@@ -4,11 +4,11 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../themes/spacing.dart';
 
-class MemberInfoCheck extends StatelessWidget {
+class MemberInfoCheckTile extends StatelessWidget {
   final String infoTitle;
   final String infoContent;
 
-  const MemberInfoCheck({
+  const MemberInfoCheckTile({
     super.key,
     required this.infoTitle,
     required this.infoContent,

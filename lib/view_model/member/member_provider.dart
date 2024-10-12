@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../model/member/member_model.dart';
+import '../../model/member/member.dart';
 import '../../repository/member/member_info.dart';
 
 final memberProvider = StateNotifierProvider<MemberNotifier, Member?>((ref) {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:woohakdong/view/member_register/components/member_register_bottom_button.dart';
+import 'package:woohakdong/view/themes/custom_widget/custom_bottom_button.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/member/member_provider.dart';
@@ -121,7 +121,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
         ),
       ),
       bottomNavigationBar: SafeArea(
-        child: MemberRegisterBottomButton(
+        child: CustomBottomButton(
           onTap: () async {
             if (formKey.currentState?.validate() == true) {
               formKey.currentState?.save();

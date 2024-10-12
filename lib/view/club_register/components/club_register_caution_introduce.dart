@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-class RegisterIntroduceWord extends StatelessWidget {
-  const RegisterIntroduceWord({super.key});
+class ClubRegisterCautionIntroduce extends StatelessWidget {
+  const ClubRegisterCautionIntroduce({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -10,17 +12,17 @@ class RegisterIntroduceWord extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(
-            text: '동아리를 등록하기 전에\n',
+            text: '우선, ',
             style: context.textTheme.headlineLarge,
           ),
           TextSpan(
-            text: '우학동',
+            text: '알아야 할 주의사항',
             style: context.textTheme.headlineLarge?.copyWith(
               color: context.colorScheme.primary,
             ),
           ),
           TextSpan(
-            text: '에 가입해야 해요',
+            text: '이에요',
             style: context.textTheme.headlineLarge,
           ),
         ],
