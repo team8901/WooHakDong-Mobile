@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import '../../service/dio/dio_service.dart';
 import '../../service/logger/logger.dart';
 
-class Auth {
+class WoohakdongAuth {
   final Dio _dio = DioService().dio;
 
   Future<Map<String, String>?> logIn(String googleAccessToken) async {

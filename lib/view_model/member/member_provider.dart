@@ -9,7 +9,6 @@ final memberProvider = StateNotifierProvider<MemberNotifier, Member?>((ref) {
   return notifier;
 });
 
-
 class MemberNotifier extends StateNotifier<Member?> {
   MemberNotifier() : super(null);
 
@@ -17,9 +16,13 @@ class MemberNotifier extends StateNotifier<Member?> {
     final memberInfo = await MemberInfo().getMemberInfo();
 
     state = memberInfo;
-    }
+  }
 
-  Future<void> registerMemberInfo(Member member) async {
-    await MemberInfo().registerMemberInfo(member);
+  Future<void> registerMemberInfo(Member memberInfo) async {
+    await MemberInfo().registerMemberInfo(memberInfo);
+  }
+
+  Future<void> saveMemberInfo(Member memberInfo) async {
+    state = memberInfo;
   }
 }

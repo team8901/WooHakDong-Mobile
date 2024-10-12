@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../themes/spacing.dart';
 import 'components/member_register_bottom_button.dart';
 import 'components/register_introduce_word.dart';
 import 'member_register_info_form_page.dart';
 
-class MemberRegisterPage extends ConsumerWidget {
+class MemberRegisterPage extends StatelessWidget {
   const MemberRegisterPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: const SafeArea(
         child: Padding(

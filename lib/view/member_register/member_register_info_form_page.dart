@@ -6,7 +6,6 @@ import 'package:gap/gap.dart';
 import 'package:woohakdong/view/member_register/components/member_register_bottom_button.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../model/member/member_model.dart';
 import '../../view_model/member/member_provider.dart';
 import '../themes/custom_widget/custom_dropdown_form_field.dart';
 import '../themes/custom_widget/custom_text_form_field.dart';
@@ -20,6 +19,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = GlobalKey<FormState>();
     final memberInfo = ref.watch(memberProvider);
+    final memberNotifier = ref.read(memberProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(),
@@ -122,10 +122,15 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: MemberRegisterBottomButton(
-          onTap: () {
+          onTap: () async {
             if (formKey.currentState?.validate() == true) {
               formKey.currentState?.save();
-              _pushCheckPage(context, memberInfo!);
+
+              await memberNotifier.saveMemberInfo(memberInfo!);
+
+              if (context.mounted) {
+                _pushCheckPage(context);
+              }
             }
           },
           buttonText: '다음',
@@ -136,11 +141,11 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
     );
   }
 
-  void _pushCheckPage(BuildContext context, Member memberInfo) {
+  void _pushCheckPage(BuildContext context) {
     Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (context) => MemberRegisterInfoCheckPage(memberInfo: memberInfo),
+        builder: (context) => const MemberRegisterInfoCheckPage(),
       ),
     );
   }

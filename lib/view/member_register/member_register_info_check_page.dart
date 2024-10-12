@@ -5,22 +5,17 @@ import 'package:gap/gap.dart';
 import 'package:woohakdong/view/member_register/components/member_info_check.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../model/member/member_model.dart';
 import '../../view_model/member/member_provider.dart';
 import '../themes/spacing.dart';
 import 'components/member_register_bottom_button.dart';
 import 'member_register_complete_page.dart';
 
 class MemberRegisterInfoCheckPage extends ConsumerWidget {
-  final Member memberInfo;
-
-  const MemberRegisterInfoCheckPage({
-    super.key,
-    required this.memberInfo,
-  });
+  const MemberRegisterInfoCheckPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final memberInfo = ref.watch(memberProvider)!;
     final memberNotifier = ref.read(memberProvider.notifier);
 
     return Scaffold(
@@ -45,7 +40,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
               const Gap(defaultGapXL),
               MemberInfoCheck(infoTitle: '학번', infoContent: memberInfo.memberStudentNumber!),
               const Gap(defaultGapXL),
-              MemberInfoCheck(infoTitle: '휴대폰 번호', infoContent: memberInfo.memberPhoneNumber!),
+              MemberInfoCheck(infoTitle: '휴대폰 번호', infoContent: _formatPhoneNumber(memberInfo.memberPhoneNumber!)),
             ],
           ),
         ),
@@ -65,6 +60,15 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  // 휴대폰 번호에 (-) 추가
+  String _formatPhoneNumber(String memberPhoneNumber) {
+    final formattedPhoneNumber = memberPhoneNumber.replaceFirstMapped(
+      RegExp(r'^(\d{3})(\d{4})(\d{4})$'),
+      (Match m) => '${m[1]}-${m[2]}-${m[3]}',
+    );
+    return formattedPhoneNumber;
   }
 
   String _getGenderDisplay(String? gender) {

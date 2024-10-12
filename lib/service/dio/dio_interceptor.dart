@@ -21,12 +21,10 @@ class DioInterceptor extends InterceptorsWrapper {
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     logger.t("[${options.method}] [${options.uri}]");
 
-    if (options.path != '/auth/refresh') {
-      String? accessToken = await _secureStorage.read(key: 'accessToken');
+    String? accessToken = await _secureStorage.read(key: 'accessToken');
 
-      if (accessToken != null) {
-        options.headers['Authorization'] = 'Bearer $accessToken';
-      }
+    if (accessToken != null) {
+      options.headers['Authorization'] = 'Bearer $accessToken';
     }
 
     return handler.next(options);
@@ -34,16 +32,18 @@ class DioInterceptor extends InterceptorsWrapper {
 
   @override
   Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
-    if (err.response?.statusCode == 401) {
+    if (err.response?.statusCode == 401 || err.response?.statusCode == 403) {
       final String? refreshToken = await _secureStorage.read(key: 'refreshToken');
 
       if (refreshToken != null) {
         try {
-          logger.w("토큰 만료로 인한 토큰 재발급 시도");
+          logger.w("액세스 토큰 만료로 인한 토큰 재발급 시도");
 
-          // Dio로 시도했을 떄, 오류가 계속 발생하여 http로 시도
+          final baseUrl = dotenv.env['V1_SERVER_BASE_URL'];
+
+          // Dio로 시도했을 때, 오류가 계속 발생하여 http로 시도
           final tokenResponse = await http.post(
-            Uri.parse('${dotenv.env['V1_SERVER_BASE_URL']}/auth/refresh'),
+            Uri.parse('$baseUrl/auth/refresh'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode({'refreshToken': refreshToken}),
           );
@@ -72,6 +72,10 @@ class DioInterceptor extends InterceptorsWrapper {
             );
 
             return handler.resolve(retryRequest);
+          } else {
+            logger.w("리프레시 토큰 만료");
+            _signOutAtInterceptor();
+            return handler.reject(err);
           }
         } catch (e) {
           logger.e("토큰 재발급 실패", error: e);
@@ -79,7 +83,7 @@ class DioInterceptor extends InterceptorsWrapper {
           return handler.reject(err);
         }
       } else {
-        logger.e('리프레시 토큰이 없음');
+        logger.w('리프레시 토큰이 없음');
         _signOutAtInterceptor();
         return handler.reject(err);
       }
@@ -87,10 +91,9 @@ class DioInterceptor extends InterceptorsWrapper {
   }
 
   Future<void> _signOutAtInterceptor() async {
-    logger.w('엑세스 토큰 만료에 토큰 재발급 실패로 인한 로그아웃');
+    logger.w('토큰 재발급 실패로 인한 로그아웃');
 
-    await _secureStorage.delete(key: 'accessToken');
-    await _secureStorage.delete(key: 'refreshToken');
+    await _secureStorage.deleteAll();
 
     await _firebaseAuth.signOut();
 
