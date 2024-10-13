@@ -13,7 +13,12 @@ class GoogleLoginButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authNotifier = ref.read(authProvider.notifier);
 
-    return SizedBox(
+    return Container(
+      margin: const EdgeInsets.only(
+        left: defaultPaddingM,
+        right: defaultPaddingM,
+        bottom: defaultPaddingM,
+      ),
       width: double.infinity,
       height: 52,
       child: InkWell(

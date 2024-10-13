@@ -31,7 +31,7 @@ class ClubRegisterCautionPage extends ConsumerWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
-          onTap: () => _pushCompletePage(context),
+          onTap: () => _pushNameInfoPage(context),
           buttonText: '확인했어요',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
@@ -40,7 +40,7 @@ class ClubRegisterCautionPage extends ConsumerWidget {
     );
   }
 
-  void _pushCompletePage(BuildContext context) {
+  void _pushNameInfoPage(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute(

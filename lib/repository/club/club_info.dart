@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:woohakdong/model/club/club.dart';
 
 import '../../service/dio/dio_service.dart';
 import '../../service/logger/logger.dart';
@@ -29,6 +30,25 @@ class ClubInfo {
     } catch (e) {
       logger.e('동아리 이름 유효성 검증 실패', error: e);
       return false;
+    }
+  }
+
+  Future<void> registerClubInfo(Club club) async {
+    try {
+      final response = await _dio.post(
+        '/clubs',
+        data: club.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        logger.i('동아리 등록 성공');
+      } else {
+        logger.e('서버 에러', error: response.data);
+        throw Exception();
+      }
+    } catch (e) {
+      logger.e('동아리 등록 실패', error: e);
+      throw Exception();
     }
   }
 }

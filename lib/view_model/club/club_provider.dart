@@ -10,6 +10,9 @@ final clubProvider = StateNotifierProvider<ClubNotifier, Club>((ref) {
 });
 
 class ClubNotifier extends StateNotifier<Club> {
+  final Ref ref;
+  final ClubInfo clubInfo = ClubInfo();
+
   ClubNotifier(this.ref)
       : super(
           Club(
@@ -17,16 +20,13 @@ class ClubNotifier extends StateNotifier<Club> {
             clubEnglishName: '',
             clubImage: '',
             clubDescription: '',
-            clubRoom: '없음',
+            clubRoom: '',
             clubGeneration: '',
             clubDues: 0,
           ),
         );
 
-  final Ref ref;
-  final ClubInfo clubInfo = ClubInfo();
-
-  Future<void> clubNameValidation(String clubName, String clubEnglishName) async {
+  Future<void> saveClubNameInfo(String clubName, String clubEnglishName) async {
     final isValid = await clubInfo.clubNameValidation(clubName, clubEnglishName);
 
     if (isValid) {
@@ -37,5 +37,20 @@ class ClubNotifier extends StateNotifier<Club> {
     } else {
       ref.read(clubNameValidationProvider.notifier).state = ClubNameValidationState.invalid;
     }
+  }
+
+  Future<void> saveClubOtherInfo(String clubImage, String clubGeneration, int clubDues, String clubRoom) async {
+    state.clubImage = clubImage;
+    state.clubGeneration = clubGeneration;
+    state.clubDues = clubDues;
+    state.clubRoom = clubRoom;
+  }
+
+  Future<void> saveClubDescription(String clubDescription) async {
+    state.clubDescription = clubDescription;
+  }
+
+  Future<void> registerClubInfo() async {
+    await clubInfo.registerClubInfo(state);
   }
 }

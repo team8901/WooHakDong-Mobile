@@ -104,12 +104,12 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 if (validationState == ClubNameValidationState.valid)
                   Text(
                     '사용 가능한 동아리 이름이에요',
-                    style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.tertiary),
+                    style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.tertiary),
                   )
                 else if (validationState == ClubNameValidationState.invalid)
                   Text(
                     '이미 사용 중인 동아리 이름이에요',
-                    style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.error),
+                    style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.error),
                   ),
               ],
             ),
@@ -122,11 +122,11 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
             if (formKey.currentState?.validate() == true) {
               if (validationState == ClubNameValidationState.valid) {
                 if (context.mounted) {
-                  _pushCheckPage(context);
+                  _pushOtherInfoPage(context);
                 }
               } else if (validationState == ClubNameValidationState.notChecked ||
                   validationState == ClubNameValidationState.invalid) {
-                await clubNotifier.clubNameValidation(
+                await clubNotifier.saveClubNameInfo(
                   clubNameController.text,
                   clubEnglishNameController.text,
                 );
@@ -141,7 +141,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
     );
   }
 
-  void _pushCheckPage(BuildContext context) {
+  void _pushOtherInfoPage(BuildContext context) {
     Navigator.push(
       context,
       CupertinoPageRoute(

@@ -18,7 +18,7 @@ class LoginPage extends StatelessWidget {
             top: 100,
             left: defaultPaddingM,
             right: defaultPaddingM,
-            bottom: defaultPaddingM,
+            bottom: defaultGapS,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,11 +26,12 @@ class LoginPage extends StatelessWidget {
               LoginIntroduce(),
               Spacer(),
               LoginRecommned(),
-              Gap(defaultGapS),
-              GoogleLoginButton(),
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: GoogleLoginButton(),
       ),
     );
   }

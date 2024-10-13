@@ -48,7 +48,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
           onTap: () async {
-            await memberNotifier.registerMemberInfo(memberInfo);
+            await memberNotifier.registerMemberInfo();
 
             if (context.mounted) {
               _pushCompletePage(context);
