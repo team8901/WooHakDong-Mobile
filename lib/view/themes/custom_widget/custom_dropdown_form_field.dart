@@ -6,6 +6,7 @@ class CustomDropdownFormField extends StatelessWidget {
   final List<Map<String, String>> items;
   final ValueChanged<String?>? onChanged;
   final FormFieldValidator<String>? validator;
+  final String? initialValue;
 
   const CustomDropdownFormField({
     super.key,
@@ -13,6 +14,7 @@ class CustomDropdownFormField extends StatelessWidget {
     required this.items,
     this.onChanged,
     this.validator,
+    this.initialValue,
   });
 
   @override
@@ -48,6 +50,7 @@ class CustomDropdownFormField extends StatelessWidget {
       onChanged: onChanged,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      value: initialValue,
     );
   }
 }

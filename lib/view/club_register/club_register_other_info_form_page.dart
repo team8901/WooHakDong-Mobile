@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
@@ -17,41 +16,19 @@ import '../themes/custom_widget/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'club_register_description_form_page.dart';
 
-class ClubRegisterOtherInfoFormPage extends ConsumerStatefulWidget {
+class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
   const ClubRegisterOtherInfoFormPage({super.key});
 
   @override
-  ConsumerState<ClubRegisterOtherInfoFormPage> createState() => _ClubRegisterOtherInfoFormPageState();
-}
-
-class _ClubRegisterOtherInfoFormPageState extends ConsumerState<ClubRegisterOtherInfoFormPage> {
-  final formKey = GlobalKey<FormState>();
-
-  late TextEditingController clubGenerationController;
-  late TextEditingController clubDuesController;
-  late TextEditingController? clubRoomController;
-
-  @override
-  void initState() {
-    super.initState();
-    clubGenerationController = TextEditingController();
-    clubDuesController = TextEditingController();
-    clubRoomController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    clubGenerationController.dispose();
-    clubDuesController.dispose();
-    clubRoomController!.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formKey = GlobalKey<FormState>();
     final s3ImageNotifier = ref.read(s3ImageProvider.notifier);
     final s3ImageState = ref.watch(s3ImageProvider);
     final clubNotifier = ref.read(clubProvider.notifier);
+
+    String? clubGeneration;
+    String? clubDues;
+    String? clubRoom;
 
     return Scaffold(
       appBar: AppBar(),
@@ -85,44 +62,49 @@ class _ClubRegisterOtherInfoFormPageState extends ConsumerState<ClubRegisterOthe
                   ),
                 ),
                 const Gap(defaultGapS),
-                SizedBox(
-                  width: double.infinity,
-                  height: 180.h,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                    onTap: () => _pickClubImage(s3ImageNotifier),
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: context.colorScheme.surfaceContainer,
+                AspectRatio(
+                  aspectRatio: 1.61,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                      onTap: () => _pickClubImage(s3ImageNotifier),
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: context.colorScheme.surfaceContainer,
+                          ),
+                          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
                         ),
-                        borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                        child: s3ImageState.pickedImages.isEmpty
+                            ? Center(
+                                child: Icon(
+                                  Icons.add,
+                                  color: context.colorScheme.onSurface,
+                                ),
+                              )
+                            : AspectRatio(
+                                aspectRatio: 1.61,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                                  child: Image.file(
+                                    s3ImageState.pickedImages[0],
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                  ),
+                                ),
+                              ),
                       ),
-                      child: s3ImageState.pickedImages.isEmpty
-                          ? Center(
-                              child: Icon(
-                                Icons.add,
-                                color: context.colorScheme.onSurface,
-                              ),
-                            )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                              child: Image.file(
-                                s3ImageState.pickedImages[0],
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: 180.h,
-                              ),
-                            ),
                     ),
                   ),
                 ),
                 const Gap(defaultGapXL),
                 CustomTextFormField(
-                  controller: clubGenerationController,
                   labelText: '동아리 기수',
+                  hintText: '숫자만 입력해 주세요',
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  onSaved: (value) => clubGeneration = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '동아리 기수를 입력해 주세요';
@@ -132,16 +114,15 @@ class _ClubRegisterOtherInfoFormPageState extends ConsumerState<ClubRegisterOthe
                 ),
                 const Gap(defaultGapXL),
                 CustomTextFormField(
-                  controller: clubDuesController,
                   labelText: '동아리 회비',
                   keyboardType: TextInputType.number,
                   inputFormatters: [
                     CurrencyTextInputFormatter.currency(
-                      locale: 'ko',
-                      decimalDigits: 0,
                       symbol: '',
-                    ),
+                      locale: 'ko_KR',
+                    )
                   ],
+                  onSaved: (value) => clubDues = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '동아리 회비를 입력해 주세요';
@@ -151,9 +132,9 @@ class _ClubRegisterOtherInfoFormPageState extends ConsumerState<ClubRegisterOthe
                 ),
                 const Gap(defaultGapXL),
                 CustomTextFormField(
-                  controller: clubRoomController,
                   labelText: '동아리 방',
-                  keyboardType: TextInputType.text,
+                  onSaved: (value) => clubRoom = value,
+                  textInputAction: TextInputAction.done,
                 ),
               ],
             ),
@@ -166,11 +147,10 @@ class _ClubRegisterOtherInfoFormPageState extends ConsumerState<ClubRegisterOthe
             if (formKey.currentState?.validate() == true) {
               formKey.currentState?.save();
 
-              await clubNotifier.saveClubOtherInfo(
-                s3ImageState.s3ImageUrls[0],
-                clubGenerationController.text,
-                int.parse(clubDuesController.text.replaceAll(',', '')),
-                clubRoomController!.text,
+              clubNotifier.saveClubOtherInfo(
+                clubGeneration!,
+                int.parse(clubDues!.replaceAll(',', '')),
+                clubRoom ?? '없음',
               );
 
               if (context.mounted) {
@@ -194,7 +174,7 @@ class _ClubRegisterOtherInfoFormPageState extends ConsumerState<ClubRegisterOthe
 
       List<File> pickedImage = [imageFile];
 
-      await s3ImageNotifier.setPickedImages(pickedImage, '1');
+      await s3ImageNotifier.setClubImage(pickedImage);
     }
   }
 

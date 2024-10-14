@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:woohakdong/view/club_register/club_register_name_info_form_page.dart';
 import 'package:woohakdong/view/club_register/components/club_register_caution.dart';
 
+import '../../view_model/auth/auth_provider.dart';
 import '../themes/custom_widget/custom_bottom_button.dart';
 import '../themes/spacing.dart';
 import 'components/club_register_caution_introduce.dart';
@@ -14,6 +15,8 @@ class ClubRegisterCautionPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final authNotifier = ref.read(authProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(),
       body: const SafeArea(
@@ -31,8 +34,11 @@ class ClubRegisterCautionPage extends ConsumerWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
-          onTap: () => _pushNameInfoPage(context),
-          buttonText: '확인했어요',
+          onTap: () {
+            //authNotifier.signOut();
+            _pushNameInfoPage(context);
+          },
+          buttonText: '알겠어요',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
         ),

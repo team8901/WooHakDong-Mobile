@@ -19,6 +19,27 @@ class Club {
     this.clubDues,
   });
 
+  Club copyWith({
+    int? clubId,
+    String? clubName,
+    String? clubEnglishName,
+    String? clubImage,
+    String? clubDescription,
+    String? clubRoom,
+    String? clubGeneration,
+    int? clubDues,
+  }) {
+    return Club(
+      clubName: clubName ?? this.clubName,
+      clubEnglishName: clubEnglishName ?? this.clubEnglishName,
+      clubImage: clubImage ?? this.clubImage,
+      clubDescription: clubDescription ?? this.clubDescription,
+      clubRoom: clubRoom ?? this.clubRoom,
+      clubGeneration: clubGeneration ?? this.clubGeneration,
+      clubDues: clubDues ?? this.clubDues,
+    );
+  }
+
   factory Club.fromJson(Map<String, dynamic> json) {
     return Club(
       clubId: json['clubId'],

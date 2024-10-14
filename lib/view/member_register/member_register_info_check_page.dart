@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:woohakdong/view/member_register/components/member_info_check_tile.dart';
+import 'package:woohakdong/view/themes/custom_widget/custom_info_check_tile.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/member/member_provider.dart';
-import '../themes/spacing.dart';
 import '../themes/custom_widget/custom_bottom_button.dart';
+import '../themes/spacing.dart';
 import 'member_register_complete_page.dart';
 
 class MemberRegisterInfoCheckPage extends ConsumerWidget {
@@ -28,19 +28,19 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
             children: [
               Text('회장님의 정보가 맞으신가요?', style: context.textTheme.titleLarge),
               const Gap(defaultGapXL * 2),
-              MemberInfoCheckTile(infoTitle: '학교', infoContent: memberInfo.memberSchool),
+              CustomInfoCheckTile(infoTitle: '학교', infoContent: memberInfo.memberSchool),
               const Gap(defaultGapXL),
-              MemberInfoCheckTile(infoTitle: '이메일 주소', infoContent: memberInfo.memberEmail),
+              CustomInfoCheckTile(infoTitle: '이메일 주소', infoContent: memberInfo.memberEmail),
               const Gap(defaultGapXL),
-              MemberInfoCheckTile(infoTitle: '이름', infoContent: memberInfo.memberName),
+              CustomInfoCheckTile(infoTitle: '이름', infoContent: memberInfo.memberName),
               const Gap(defaultGapXL),
-              MemberInfoCheckTile(infoTitle: '성별', infoContent: _getGenderDisplay(memberInfo.memberGender!)),
+              CustomInfoCheckTile(infoTitle: '성별', infoContent: _getGenderDisplay(memberInfo.memberGender!)),
               const Gap(defaultGapXL),
-              MemberInfoCheckTile(infoTitle: '학과', infoContent: memberInfo.memberMajor!),
+              CustomInfoCheckTile(infoTitle: '학과', infoContent: memberInfo.memberMajor!),
               const Gap(defaultGapXL),
-              MemberInfoCheckTile(infoTitle: '학번', infoContent: memberInfo.memberStudentNumber!),
+              CustomInfoCheckTile(infoTitle: '학번', infoContent: memberInfo.memberStudentNumber!),
               const Gap(defaultGapXL),
-              MemberInfoCheckTile(infoTitle: '휴대폰 번호', infoContent: _formatPhoneNumber(memberInfo.memberPhoneNumber!)),
+              CustomInfoCheckTile(infoTitle: '휴대폰 번호', infoContent: _formatPhoneNumber(memberInfo.memberPhoneNumber!)),
             ],
           ),
         ),
@@ -48,13 +48,13 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
           onTap: () async {
-            await memberNotifier.registerMemberInfo();
+            await memberNotifier.registerMember();
 
             if (context.mounted) {
               _pushCompletePage(context);
             }
           },
-          buttonText: '완료',
+          buttonText: '맞아요',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
         ),

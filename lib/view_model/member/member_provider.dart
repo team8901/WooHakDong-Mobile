@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/member/member.dart';
-import '../../repository/member/member_info.dart';
+import '../../repository/member/member_repository.dart';
 
 final memberProvider = StateNotifierProvider<MemberNotifier, Member?>((ref) {
   final notifier = MemberNotifier();
@@ -13,16 +13,16 @@ class MemberNotifier extends StateNotifier<Member?> {
   MemberNotifier() : super(null);
 
   Future<void> getMemberInfo() async {
-    final memberInfo = await MemberInfo().getMemberInfo();
+    final memberRepository = await MemberRepository().getMemberInfo();
 
-    state = memberInfo;
-  }
-
-  Future<void> registerMemberInfo() async {
-    await MemberInfo().registerMemberInfo(state!);
+    state = memberRepository;
   }
 
   Future<void> saveMemberInfo(Member memberInfo) async {
     state = memberInfo;
+  }
+
+  Future<void> registerMember() async {
+    await MemberRepository().registerMemberInfo(state!);
   }
 }

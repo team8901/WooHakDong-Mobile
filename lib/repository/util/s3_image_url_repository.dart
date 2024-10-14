@@ -7,7 +7,7 @@ import '../../model/util/s3_image_url.dart';
 import '../../service/dio/dio_service.dart';
 import '../../service/logger/logger.dart';
 
-class S3ImageUrlInfo {
+class S3ImageUrlRepository {
   final Dio _dio = DioService().dio;
 
   Future<List<S3ImageUrl>> getS3ImageUrl(String imageCount) async {
@@ -37,7 +37,7 @@ class S3ImageUrlInfo {
     }
   }
 
-  Future<void> uploadImageToS3(String s3ImageUrl, File pickedImage) async {
+  Future<void> uploadImageToS3(File pickedImage, String s3ImageUrl) async {
     try {
       Dio dio = Dio();
 
@@ -45,10 +45,13 @@ class S3ImageUrlInfo {
 
       final response = await dio.put(
         s3ImageUrl,
-        data: pickedImage.readAsBytes(),
+        data: pickedImage.readAsBytesSync(),
         options: Options(
           contentType: mimeType,
         ),
+        onSendProgress: (int sent, int total) {
+          logger.i('업로드 중: $sent / $total');
+        },
       );
 
       if (response.statusCode == 200 || response.statusCode == 204) {

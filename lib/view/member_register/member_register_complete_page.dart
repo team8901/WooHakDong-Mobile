@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/member_register/components/member_register_complete_introduce.dart';
 
 import '../../view_model/auth/auth_provider.dart';
@@ -27,14 +29,20 @@ class MemberRegisterCompletePage extends ConsumerWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
-          onTap: () {
-            authNotifier.signOut();
-          },
-          buttonText: '동아리 등록하기',
+          onTap: () => _pushClubRegisterPage(context),
+          buttonText: '우학동 시작하기',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
         ),
       ),
+    );
+  }
+
+  void _pushClubRegisterPage(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      CupertinoPageRoute(builder: (context) => const ClubRegisterPage()),
+      (route) => false,
     );
   }
 }

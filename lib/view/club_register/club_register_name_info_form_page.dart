@@ -73,9 +73,8 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                   controller: clubNameController,
                   labelText: '동아리 이름',
                   keyboardType: TextInputType.name,
-                  onChanged: (value) {
-                    ref.read(clubNameValidationProvider.notifier).state = ClubNameValidationState.notChecked;
-                  },
+                  onChanged: (value) =>
+                      ref.read(clubNameValidationProvider.notifier).state = ClubNameValidationState.notChecked,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '동아리 이름을 입력해 주세요';
@@ -87,12 +86,12 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 CustomTextFormField(
                   controller: clubEnglishNameController,
                   labelText: '동아리 영문 이름',
+                  hintText: '소문자로 입력해 주세요',
                   keyboardType: TextInputType.name,
-                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]'))],
+                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-z]'))],
                   textInputAction: TextInputAction.done,
-                  onChanged: (value) {
-                    ref.read(clubNameValidationProvider.notifier).state = ClubNameValidationState.notChecked;
-                  },
+                  onChanged: (value) =>
+                      ref.read(clubNameValidationProvider.notifier).state = ClubNameValidationState.notChecked,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '동아리 영문 이름을 입력해 주세요';
@@ -126,7 +125,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 }
               } else if (validationState == ClubNameValidationState.notChecked ||
                   validationState == ClubNameValidationState.invalid) {
-                await clubNotifier.saveClubNameInfo(
+                clubNotifier.saveClubNameInfo(
                   clubNameController.text,
                   clubEnglishNameController.text,
                 );

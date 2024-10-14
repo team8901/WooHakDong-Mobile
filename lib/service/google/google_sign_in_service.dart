@@ -2,13 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../repository/auth/woohakdong_auth.dart';
+import '../../repository/auth/woohakdong_auth_repository.dart';
 import '../../service/logger/logger.dart';
 
 class GoogleSignInService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final WoohakdongAuth _auth = WoohakdongAuth();
+  final WoohakdongAuthRepository _auth = WoohakdongAuthRepository();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   Future<bool> signInWithGoogle() async {
@@ -24,6 +24,8 @@ class GoogleSignInService {
 
       final String? googleAccessToken = googleAuth.accessToken;
       final String? googleIdToken = googleAuth.idToken;
+
+      //print('googleAccessToken: $googleAccessToken');
 
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAccessToken,
@@ -42,6 +44,8 @@ class GoogleSignInService {
 
           await _secureStorage.write(key: 'accessToken', value: accessToken);
           await _secureStorage.write(key: 'refreshToken', value: refreshToken);
+
+          logger.i("구글 로그인 성공");
 
           return true;
         } else {

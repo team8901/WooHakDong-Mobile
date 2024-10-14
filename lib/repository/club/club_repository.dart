@@ -4,7 +4,7 @@ import 'package:woohakdong/model/club/club.dart';
 import '../../service/dio/dio_service.dart';
 import '../../service/logger/logger.dart';
 
-class ClubInfo {
+class ClubRepository {
   final Dio _dio = DioService().dio;
 
   Future<bool> clubNameValidation(String clubName, String clubEnglishName) async {
@@ -20,7 +20,7 @@ class ClubInfo {
       if (response.statusCode == 200) {
         logger.i('동아리 이름 사용 가능');
         return true;
-      } else if (response.statusCode == 400) {
+      } else if (response.statusCode == 409) {
         logger.i('동아리 이름 중복');
         return false;
       } else {
@@ -33,7 +33,7 @@ class ClubInfo {
     }
   }
 
-  Future<void> registerClubInfo(Club club) async {
+  Future<int?> registerClubInfo(Club club) async {
     try {
       final response = await _dio.post(
         '/clubs',
@@ -42,13 +42,15 @@ class ClubInfo {
 
       if (response.statusCode == 200) {
         logger.i('동아리 등록 성공');
+
+        return response.data['clubId'];
       } else {
-        logger.e('서버 에러', error: response.data);
-        throw Exception();
+        logger.e('서버 에러', error: response.statusCode);
+        return null;
       }
     } catch (e) {
       logger.e('동아리 등록 실패', error: e);
-      throw Exception();
+      return null;
     }
   }
 }

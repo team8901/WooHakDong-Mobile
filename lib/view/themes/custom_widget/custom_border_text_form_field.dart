@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-class CustomTextFormField extends StatelessWidget {
-  final String labelText;
+class CustomBorderTextFormField extends StatelessWidget {
   final String? hintText;
   final bool readOnly;
   final String? initialValue;
+  final int minLines;
   final TextInputType keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputAction textInputAction;
@@ -15,12 +16,12 @@ class CustomTextFormField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final TextEditingController? controller;
 
-  const CustomTextFormField({
+  const CustomBorderTextFormField({
     super.key,
-    required this.labelText,
     this.hintText,
     this.readOnly = false,
     this.initialValue,
+    this.minLines = 1,
     this.keyboardType = TextInputType.text,
     this.inputFormatters,
     this.textInputAction = TextInputAction.next,
@@ -40,11 +41,9 @@ class CustomTextFormField extends StatelessWidget {
       readOnly: readOnly,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
+      minLines: minLines,
+      maxLines: null,
       decoration: InputDecoration(
-        labelText: labelText,
-        labelStyle: context.textTheme.titleSmall?.copyWith(
-          color: context.colorScheme.outline,
-        ),
         hintText: hintText,
         hintStyle: context.textTheme.titleSmall?.copyWith(
           color: context.colorScheme.outline,
@@ -52,16 +51,20 @@ class CustomTextFormField extends StatelessWidget {
         errorStyle: context.textTheme.labelLarge?.copyWith(
           color: context.colorScheme.error,
         ),
-        errorBorder: UnderlineInputBorder(
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.error),
         ),
-        focusedErrorBorder: UnderlineInputBorder(
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.error),
         ),
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.surfaceContainer),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.primary),
         ),
       ),

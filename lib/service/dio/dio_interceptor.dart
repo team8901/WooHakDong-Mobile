@@ -23,7 +23,7 @@ class DioInterceptor extends InterceptorsWrapper {
 
     String? accessToken = await _secureStorage.read(key: 'accessToken');
 
-    if (accessToken != null) {
+    if (!options.uri.path.contains('/auth/login/social')) {
       options.headers['Authorization'] = 'Bearer $accessToken';
     }
 
@@ -74,23 +74,26 @@ class DioInterceptor extends InterceptorsWrapper {
             return handler.resolve(retryRequest);
           } else {
             logger.w("리프레시 토큰 만료");
-            _signOutAtInterceptor();
+            _signOutByTokenRefreshFailed();
             return handler.reject(err);
           }
         } catch (e) {
           logger.e("토큰 재발급 실패", error: e);
-          _signOutAtInterceptor();
+          _signOutByTokenRefreshFailed();
           return handler.reject(err);
         }
       } else {
         logger.w('리프레시 토큰이 없음');
-        _signOutAtInterceptor();
+        _signOutByTokenRefreshFailed();
         return handler.reject(err);
       }
+    } else {
+      logger.e('알 수 없는 에러 발생', error: err.response?.statusMessage);
+      return handler.reject(err);
     }
   }
 
-  Future<void> _signOutAtInterceptor() async {
+  Future<void> _signOutByTokenRefreshFailed() async {
     logger.w('토큰 재발급 실패로 인한 로그아웃');
 
     await _secureStorage.deleteAll();

@@ -4,7 +4,7 @@ import 'package:woohakdong/service/logger/logger.dart';
 import '../../model/member/member.dart';
 import '../../service/dio/dio_service.dart';
 
-class MemberInfo {
+class MemberRepository {
   final Dio _dio = DioService().dio;
 
   Future<Member> getMemberInfo() async {
@@ -12,6 +12,7 @@ class MemberInfo {
       final response = await _dio.get('/member/info');
 
       if (response.statusCode == 200) {
+        print(response.data);
         logger.i('회원 정보 조회 성공');
         return Member.fromJson(response.data);
       } else {
