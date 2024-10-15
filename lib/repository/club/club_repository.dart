@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:woohakdong/model/club/club.dart';
+import 'package:woohakdong/model/group/group.dart';
 
 import '../../service/dio/dio_service.dart';
 import '../../service/logger/logger.dart';
@@ -48,6 +49,25 @@ class ClubRepository {
     } catch (e) {
       logger.e('동아리 등록 실패', error: e);
       return null;
+    }
+  }
+
+  Future<Group> getClubRegisterPageInfo(int clubId) async {
+    try {
+      final response = await _dio.get('/clubs/$clubId/join');
+
+      print(response.data);
+
+      if (response.statusCode == 200) {
+        logger.i('동아리 등록 페이지 정보 가져오기 성공');
+        return Group.fromJson(response.data);
+      } else {
+        logger.e('서버 에러', error: response.statusCode);
+        throw Exception();
+      }
+    } catch (e) {
+      logger.e('동아리 등록 페이지 정보 가져오기 실패', error: e);
+      throw Exception();
     }
   }
 }

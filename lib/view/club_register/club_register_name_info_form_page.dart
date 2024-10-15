@@ -68,7 +68,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                     color: context.colorScheme.onSurface,
                   ),
                 ),
-                const Gap(defaultGapXL * 2),
+                const Gap(defaultGapXL),
                 CustomTextFormField(
                   controller: clubNameController,
                   labelText: '동아리 이름',

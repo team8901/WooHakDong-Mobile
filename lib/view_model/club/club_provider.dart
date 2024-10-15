@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:woohakdong/model/group/group.dart';
 import 'package:woohakdong/view_model/club/components/club_name_validation_state.dart';
 import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 
@@ -53,26 +54,28 @@ class ClubNotifier extends StateNotifier<Club> {
   }
 
   void saveClubDescription(String clubDescription) {
-    state = state.copyWith(
-      clubDescription: clubDescription,
-    );
+    state = state.copyWith(clubDescription: clubDescription);
   }
 
-  Future<int?> registerClub(String clubImageForServer) async {
+  Future<void> registerClub(String clubImageForServer) async {
     try {
       final clubId = await clubRepository.registerClubInfo(state.copyWith(clubImage: clubImageForServer));
       await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
 
-      if (clubId != null) {
-        logger.i('동아리 ID 등록 성공');
-        return clubId;
-      } else {
-        logger.e('동아리 ID 등록 실패');
-        return null;
-      }
+      state = state.copyWith(clubId: clubId);
     } catch (e) {
       logger.e('동아리 ID 실패', error: e);
-      return null;
+    }
+  }
+
+  Future<Group> getClubRegisterPageInfo() async {
+    try {
+      Group groupInfo = await clubRepository.getClubRegisterPageInfo(state.clubId!);
+
+      return groupInfo;
+    } catch (e) {
+      logger.e('동아리 등록 페이지 정보 가져오기 실패', error: e);
+      throw Exception();
     }
   }
 }

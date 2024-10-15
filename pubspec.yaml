@@ -36,6 +36,8 @@ dependencies:
   currency_formatter: ^2.2.1
   http_parser: ^4.0.2
   path_provider: ^2.1.4
+  qr_flutter: ^4.1.0
+  fluttertoast: ^8.2.8
 
 dev_dependencies:
   flutter_test:

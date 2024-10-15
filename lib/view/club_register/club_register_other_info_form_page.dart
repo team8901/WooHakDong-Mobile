@@ -46,12 +46,12 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                   style: context.textTheme.headlineSmall,
                 ),
                 Text(
-                  '동아리 방은 비워놔도 돼요',
+                  '동아리 사진, 동아리 방은 비워놔도 돼요',
                   style: context.textTheme.bodySmall?.copyWith(
                     color: context.colorScheme.onSurface,
                   ),
                 ),
-                const Gap(defaultGapXL * 2),
+                const Gap(defaultGapXL),
                 Text(
                   '동아리 사진',
                   style: context.textTheme.labelLarge?.copyWith(

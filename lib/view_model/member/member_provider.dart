@@ -13,9 +13,9 @@ class MemberNotifier extends StateNotifier<Member?> {
   MemberNotifier() : super(null);
 
   Future<void> getMemberInfo() async {
-    final memberRepository = await MemberRepository().getMemberInfo();
+    final memberInfo = await MemberRepository().getMemberInfo();
 
-    state = memberRepository;
+    state = memberInfo;
   }
 
   Future<void> saveMemberInfo(Member memberInfo) async {

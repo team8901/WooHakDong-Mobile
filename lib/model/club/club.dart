@@ -30,6 +30,7 @@ class Club {
     int? clubDues,
   }) {
     return Club(
+      clubId: clubId ?? this.clubId,
       clubName: clubName ?? this.clubName,
       clubEnglishName: clubEnglishName ?? this.clubEnglishName,
       clubImage: clubImage ?? this.clubImage,

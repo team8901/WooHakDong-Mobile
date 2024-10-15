@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/club/club_account_provider.dart';
 import '../../view_model/club/club_account_validation_provider.dart';
+import '../../view_model/club/club_provider.dart';
 import '../../view_model/club/components/club_account_validation_state.dart';
 import '../themes/custom_widget/custom_bottom_button.dart';
 import '../themes/custom_widget/custom_dropdown_form_field.dart';
@@ -16,12 +16,7 @@ import '../themes/spacing.dart';
 import 'club_register_complete_page.dart';
 
 class ClubRegisterAccountFormPage extends ConsumerStatefulWidget {
-  final int clubId;
-
-  const ClubRegisterAccountFormPage({
-    super.key,
-    required this.clubId,
-  });
+  const ClubRegisterAccountFormPage({super.key});
 
   @override
   ConsumerState<ClubRegisterAccountFormPage> createState() => _ClubRegisterAccountFormPageState();
@@ -46,6 +41,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
 
   @override
   Widget build(BuildContext context) {
+    final clubInfo = ref.watch(clubProvider);
     final clubAccountValidationState = ref.watch(clubAccountValidationProvider);
     final clubAccountInfo = ref.watch(clubAccountProvider);
     final clubAccountNotifier = ref.read(clubAccountProvider.notifier);
@@ -121,14 +117,16 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                       const Gap(defaultGapS),
                       Container(
                         width: double.infinity,
-                        height: 48.h,
                         decoration: BoxDecoration(
-                          border: Border.all(
-                            color: context.colorScheme.surfaceContainer,
-                          ),
+                          border: Border.all(color: context.colorScheme.surfaceContainer),
                           borderRadius: BorderRadius.circular(defaultBorderRadiusM),
                         ),
-                        child: Center(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPaddingS,
+                          vertical: defaultPaddingXS,
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             '*' * (clubAccountInfo.clubAccountPinTechNumber?.length ?? 0),
                             style: context.textTheme.titleSmall,
@@ -139,7 +137,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                   )
                 else if (clubAccountValidationState == ClubAccountValidationState.invalid)
                   Text(
-                    '유효하지 않은 계좌이에요',
+                    '유효하지 않은 계좌예요',
                     style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.error),
                   ),
               ],
@@ -154,7 +152,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
               formKey.currentState?.save();
 
               if (isClubAccountValid(clubAccountValidationState)) {
-                await clubAccountNotifier.registerClubAccount(widget.clubId);
+                await clubAccountNotifier.registerClubAccount(clubInfo.clubId);
 
                 if (context.mounted) {
                   _pushCompletePage(context);
