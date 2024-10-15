@@ -25,10 +25,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
     final s3ImageNotifier = ref.read(s3ImageProvider.notifier);
     final s3ImageState = ref.watch(s3ImageProvider);
     final clubNotifier = ref.read(clubProvider.notifier);
-
-    String? clubGeneration;
-    String? clubDues;
-    String? clubRoom;
+    final clubInfo = ref.watch(clubProvider);
 
     return Scaffold(
       appBar: AppBar(),
@@ -104,7 +101,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                   hintText: '숫자만 입력해 주세요',
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  onSaved: (value) => clubGeneration = value,
+                  onSaved: (value) => clubInfo.clubGeneration = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '동아리 기수를 입력해 주세요';
@@ -122,7 +119,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                       locale: 'ko_KR',
                     )
                   ],
-                  onSaved: (value) => clubDues = value,
+                  onSaved: (value) => clubInfo.clubDues = int.parse(value!.replaceAll(',', '')),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '동아리 회비를 입력해 주세요';
@@ -133,7 +130,8 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                 const Gap(defaultGapXL),
                 CustomTextFormField(
                   labelText: '동아리 방',
-                  onSaved: (value) => clubRoom = value,
+                  onSaved: (value) =>
+                      (value == null || value.isEmpty) ? clubInfo.clubRoom = '없음' : clubInfo.clubRoom = value,
                   textInputAction: TextInputAction.done,
                 ),
               ],
@@ -148,9 +146,9 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
               formKey.currentState?.save();
 
               clubNotifier.saveClubOtherInfo(
-                clubGeneration!,
-                int.parse(clubDues!.replaceAll(',', '')),
-                clubRoom ?? '없음',
+                clubInfo.clubGeneration!,
+                clubInfo.clubDues!,
+                clubInfo.clubRoom!,
               );
 
               if (context.mounted) {

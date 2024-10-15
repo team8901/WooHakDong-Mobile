@@ -20,9 +20,6 @@ class ClubRepository {
       if (response.statusCode == 200) {
         logger.i('동아리 이름 사용 가능');
         return true;
-      } else if (response.statusCode == 409) {
-        logger.i('동아리 이름 중복');
-        return false;
       } else {
         logger.e('서버 에러');
         return false;

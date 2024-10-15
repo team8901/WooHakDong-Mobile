@@ -41,17 +41,15 @@ class S3ImageUrlRepository {
     try {
       Dio dio = Dio();
 
-      String? mimeType = lookupMimeType(pickedImage.path);
-
       final response = await dio.put(
         s3ImageUrl,
-        data: pickedImage.readAsBytesSync(),
+        data: Stream.fromIterable(pickedImage.readAsBytesSync().map((e) => [e])),
         options: Options(
-          contentType: mimeType,
+          contentType: lookupMimeType(pickedImage.path),
+          headers: {
+            Headers.contentLengthHeader: pickedImage.lengthSync(),
+          },
         ),
-        onSendProgress: (int sent, int total) {
-          logger.i('업로드 중: $sent / $total');
-        },
       );
 
       if (response.statusCode == 200 || response.statusCode == 204) {

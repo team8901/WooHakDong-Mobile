@@ -63,11 +63,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                     {'value': 'MAN', 'displayText': '남성'},
                     {'value': 'WOMAN', 'displayText': '여성'},
                   ],
-                  onChanged: (value) {
-                    if (value != null) {
-                      memberInfo?.memberGender = value;
-                    }
-                  },
+                  onChanged: (value) => memberInfo?.memberGender = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '성별을 선택해 주세요';

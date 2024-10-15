@@ -4,6 +4,7 @@ import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 
 import '../../model/club/club.dart';
 import '../../repository/club/club_repository.dart';
+import '../../service/logger/logger.dart';
 import 'club_name_validation_provider.dart';
 
 final clubProvider = StateNotifierProvider<ClubNotifier, Club>((ref) {
@@ -17,6 +18,7 @@ class ClubNotifier extends StateNotifier<Club> {
   ClubNotifier(this.ref)
       : super(
           Club(
+            clubId: 0,
             clubName: '',
             clubEnglishName: '',
             clubGeneration: '',
@@ -24,11 +26,10 @@ class ClubNotifier extends StateNotifier<Club> {
             clubRoom: '',
             clubDescription: '',
             clubImage: '',
-            clubId: 0,
           ),
         );
 
-  void saveClubNameInfo(String clubName, String clubEnglishName) async {
+  Future<void> saveClubNameInfo(String clubName, String clubEnglishName) async {
     final isValid = await clubRepository.clubNameValidation(clubName, clubEnglishName);
 
     if (isValid) {
@@ -57,10 +58,21 @@ class ClubNotifier extends StateNotifier<Club> {
     );
   }
 
-  Future<void> registerClub(String clubImageForServer) async {
-    final clubId = await clubRepository.registerClubInfo(state.copyWith(clubImage: clubImageForServer));
-    state = state.copyWith(clubId: clubId);
+  Future<int?> registerClub(String clubImageForServer) async {
+    try {
+      final clubId = await clubRepository.registerClubInfo(state.copyWith(clubImage: clubImageForServer));
+      await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
 
-    await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
+      if (clubId != null) {
+        logger.i('동아리 ID 등록 성공');
+        return clubId;
+      } else {
+        logger.e('동아리 ID 등록 실패');
+        return null;
+      }
+    } catch (e) {
+      logger.e('동아리 ID 실패', error: e);
+      return null;
+    }
   }
 }

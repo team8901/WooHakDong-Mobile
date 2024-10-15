@@ -1,6 +1,6 @@
 class ClubAccount {
-  final String clubAccountBankName;
-  final String clubAccountNumber;
+  String clubAccountBankName;
+  String clubAccountNumber;
   String? clubAccountPinTechNumber;
 
   ClubAccount({
@@ -8,6 +8,18 @@ class ClubAccount {
     required this.clubAccountNumber,
     this.clubAccountPinTechNumber,
   });
+
+  ClubAccount copyWith({
+    String? clubAccountBankName,
+    String? clubAccountNumber,
+    String? clubAccountPinTechNumber,
+  }) {
+    return ClubAccount(
+      clubAccountBankName: clubAccountBankName ?? this.clubAccountBankName,
+      clubAccountNumber: clubAccountNumber ?? this.clubAccountNumber,
+      clubAccountPinTechNumber: clubAccountPinTechNumber ?? this.clubAccountPinTechNumber,
+    );
+  }
 
   factory ClubAccount.fromJson(Map<String, dynamic> json) {
     return ClubAccount(
@@ -17,18 +29,18 @@ class ClubAccount {
     );
   }
 
-  factory ClubAccount.fromMap(Map<String, dynamic> map) {
-    return ClubAccount(
-      clubAccountBankName: map['clubAccountBankName'],
-      clubAccountNumber: map['clubAccountNumber'],
-      clubAccountPinTechNumber: map['clubAccountPinTechNumber'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJsonForValidation() {
     return {
       'clubAccountBankName': clubAccountBankName,
       'clubAccountNumber': clubAccountNumber,
+    };
+  }
+
+  Map<String, dynamic> toJsonForRegister() {
+    return {
+      'clubAccountBankName': clubAccountBankName,
+      'clubAccountNumber': clubAccountNumber,
+      'clubAccountPinTechNumber': clubAccountPinTechNumber,
     };
   }
 }

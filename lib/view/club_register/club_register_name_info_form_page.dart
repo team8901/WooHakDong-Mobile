@@ -42,7 +42,8 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
   @override
   Widget build(BuildContext context) {
     final clubNotifier = ref.read(clubProvider.notifier);
-    final validationState = ref.watch(clubNameValidationProvider);
+    final clubNameValidationState = ref.watch(clubNameValidationProvider);
+    final clubNameValidationNotifier = ref.read(clubNameValidationProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(),
@@ -73,8 +74,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                   controller: clubNameController,
                   labelText: '동아리 이름',
                   keyboardType: TextInputType.name,
-                  onChanged: (value) =>
-                      ref.read(clubNameValidationProvider.notifier).state = ClubNameValidationState.notChecked,
+                  onChanged: (value) => clubNameValidationNotifier.state = ClubNameValidationState.notChecked,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '동아리 이름을 입력해 주세요';
@@ -86,12 +86,11 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 CustomTextFormField(
                   controller: clubEnglishNameController,
                   labelText: '동아리 영문 이름',
-                  hintText: '소문자로 입력해 주세요',
+                  hintText: '소문자와 숫자만 입력해 주세요',
                   keyboardType: TextInputType.name,
-                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-z]'))],
+                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))],
                   textInputAction: TextInputAction.done,
-                  onChanged: (value) =>
-                      ref.read(clubNameValidationProvider.notifier).state = ClubNameValidationState.notChecked,
+                  onChanged: (value) => clubNameValidationNotifier.state = ClubNameValidationState.notChecked,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '동아리 영문 이름을 입력해 주세요';
@@ -100,12 +99,12 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                   },
                 ),
                 const Gap(defaultGapXL),
-                if (validationState == ClubNameValidationState.valid)
+                if (isClubNameValid(clubNameValidationState))
                   Text(
                     '사용 가능한 동아리 이름이에요',
                     style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.tertiary),
                   )
-                else if (validationState == ClubNameValidationState.invalid)
+                else if (clubNameValidationState == ClubNameValidationState.invalid)
                   Text(
                     '이미 사용 중인 동아리 이름이에요',
                     style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.error),
@@ -119,12 +118,11 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
         child: CustomBottomButton(
           onTap: () async {
             if (formKey.currentState?.validate() == true) {
-              if (validationState == ClubNameValidationState.valid) {
+              if (isClubNameValid(clubNameValidationState)) {
                 if (context.mounted) {
                   _pushOtherInfoPage(context);
                 }
-              } else if (validationState == ClubNameValidationState.notChecked ||
-                  validationState == ClubNameValidationState.invalid) {
+              } else {
                 clubNotifier.saveClubNameInfo(
                   clubNameController.text,
                   clubEnglishNameController.text,
@@ -132,13 +130,16 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
               }
             }
           },
-          buttonText: (validationState == ClubNameValidationState.valid) ? '다음' : '중복 확인',
+          buttonText: (isClubNameValid(clubNameValidationState)) ? '다음' : '중복 확인',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.onPrimary,
         ),
       ),
     );
   }
+
+  bool isClubNameValid(ClubNameValidationState clubNameValidationState) =>
+      clubNameValidationState == ClubNameValidationState.valid;
 
   void _pushOtherInfoPage(BuildContext context) {
     Navigator.push(

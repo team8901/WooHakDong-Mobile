@@ -80,10 +80,18 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
 
             String clubImageForServer = clubImageUrl.substring(0, clubImageUrl.indexOf('?'));
 
-            await clubNotifier.registerClub(clubImageForServer);
+            final clubId = await clubNotifier.registerClub(clubImageForServer);
+
+            print('clubName: ${clubInfo.clubName}');
+            print('clubEnglishName: ${clubInfo.clubEnglishName}');
+            print('clubGeneration: ${clubInfo.clubGeneration}');
+            print('clubDues: ${clubInfo.clubDues}');
+            print('clubRoom: ${clubInfo.clubRoom}');
+            print('clubDescription: ${clubInfo.clubDescription}');
+
 
             if (context.mounted) {
-              _pushAccountFormPage(context);
+              _pushAccountFormPage(context, clubId!);
             }
           },
           buttonText: '확인했어요',
@@ -113,11 +121,11 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
     return formattedDues;
   }
 
-  void _pushAccountFormPage(BuildContext context) {
+  void _pushAccountFormPage(BuildContext context, int clubId) {
     Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute(
-        builder: (context) => const ClubRegisterAccountFormPage(),
+        builder: (context) => ClubRegisterAccountFormPage(clubId: clubId),
       ),
       (route) => false,
     );
