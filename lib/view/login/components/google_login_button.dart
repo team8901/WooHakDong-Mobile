@@ -17,7 +17,7 @@ class GoogleLoginButton extends ConsumerWidget {
       margin: const EdgeInsets.only(
         left: defaultPaddingM,
         right: defaultPaddingM,
-        bottom: defaultPaddingM,
+        bottom: defaultPaddingM * 3,
       ),
       width: double.infinity,
       height: 52,

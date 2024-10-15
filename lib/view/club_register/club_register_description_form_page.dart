@@ -33,7 +33,7 @@ class ClubRegisterDescriptionFormPage extends ConsumerWidget {
             children: [
               Text(
                 '어떤 동아리인지 궁금해요',
-                style: context.textTheme.titleLarge,
+                style: context.textTheme.headlineSmall,
               ),
               const Gap(defaultGapXL * 2),
               Text(

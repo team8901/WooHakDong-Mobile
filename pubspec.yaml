@@ -35,6 +35,7 @@ dependencies:
   mime: ^1.0.6
   currency_formatter: ^2.2.1
   http_parser: ^4.0.2
+  path_provider: ^2.1.4
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +49,7 @@ flutter:
   assets:
     - .env
     - assets/images/logos/google.png
+    - assets/images/club/club_basic_image.jpg
 
   fonts:
     - family: Pretendard

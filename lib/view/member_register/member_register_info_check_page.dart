@@ -26,7 +26,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('회장님의 정보가 맞으신가요?', style: context.textTheme.titleLarge),
+              Text('회장님의 정보가 맞으신가요?', style: context.textTheme.headlineSmall),
               const Gap(defaultGapXL * 2),
               CustomInfoCheckTile(infoTitle: '학교', infoContent: memberInfo.memberSchool),
               const Gap(defaultGapXL),

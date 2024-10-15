@@ -12,7 +12,6 @@ class MemberRepository {
       final response = await _dio.get('/member/info');
 
       if (response.statusCode == 200) {
-        print(response.data);
         logger.i('회원 정보 조회 성공');
         return Member.fromJson(response.data);
       } else {

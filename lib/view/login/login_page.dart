@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:woohakdong/view/login/components/google_login_button.dart';
 import 'package:woohakdong/view/login/components/login_introduce.dart';
 
@@ -11,11 +10,12 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(
+    return Scaffold(
+      appBar: AppBar(),
+      body: const SafeArea(
         child: Padding(
           padding: EdgeInsets.only(
-            top: 100,
+            top: defaultPaddingM * 3,
             left: defaultPaddingM,
             right: defaultPaddingM,
             bottom: defaultGapS,
@@ -30,7 +30,7 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: SafeArea(
+      bottomNavigationBar: const SafeArea(
         child: GoogleLoginButton(),
       ),
     );

@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:woohakdong/view/club_register/club_register_account_form_page.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/login/login_page.dart';
 import 'package:woohakdong/view/member_register/member_register_page.dart';
@@ -20,13 +20,15 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await dotenv.load(fileName: ".env");
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await Permission.camera.request();
+  await Permission.photos.request();
 
   HttpOverrides.global = MyHttpOverrides();
 

@@ -12,10 +12,11 @@ class MemberRegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: const SafeArea(
         child: Padding(
           padding: EdgeInsets.only(
-            top: 100,
+            top: defaultPaddingM * 3,
             left: defaultPaddingM,
             right: defaultPaddingM,
           ),

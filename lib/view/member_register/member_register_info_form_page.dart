@@ -36,7 +36,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
               children: [
                 Text(
                   '회장님의 정보를 알려주세요',
-                  style: context.textTheme.titleLarge,
+                  style: context.textTheme.headlineSmall,
                 ),
                 const Gap(defaultGapXL * 2),
                 CustomTextFormField(

@@ -12,10 +12,11 @@ class ClubRegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: const SafeArea(
         child: Padding(
           padding: EdgeInsets.only(
-            top: 100,
+            top: defaultPaddingM * 3,
             left: defaultPaddingM,
             right: defaultPaddingM,
           ),
@@ -25,7 +26,7 @@ class ClubRegisterPage extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
           onTap: () => _pushCautionPage(context),
-          buttonText: '동아리 등록하기',
+          buttonText: '등록할게요',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
         ),

@@ -60,12 +60,11 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
               children: [
                 Text(
                   '동아리 이름을 알고 싶어요',
-                  style: context.textTheme.titleLarge,
+                  style: context.textTheme.headlineSmall,
                 ),
-                const Gap(defaultGapS / 2),
                 Text(
                   '동아리 영문 이름은 동아리 페이지를 만드는 데 사용돼요',
-                  style: context.textTheme.labelLarge?.copyWith(
+                  style: context.textTheme.bodySmall?.copyWith(
                     color: context.colorScheme.onSurface,
                   ),
                 ),

@@ -65,7 +65,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
               children: [
                 Text(
                   '마지막으로 계좌를 확인해야 해요',
-                  style: context.textTheme.titleLarge,
+                  style: context.textTheme.headlineSmall,
                 ),
                 const Gap(defaultGapXL * 2),
                 IgnorePointer(

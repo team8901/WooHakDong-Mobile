@@ -34,8 +34,8 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '한 번 확인해 주세요',
-                style: context.textTheme.titleLarge,
+                '한 번 더 확인해 주세요',
+                style: context.textTheme.headlineSmall,
               ),
               const Gap(defaultGapXL * 2),
               Text(
@@ -45,14 +45,21 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                 ),
               ),
               const Gap(defaultGapS),
-              AspectRatio(
-                aspectRatio: 1.61,
-                child: ClipRRect(
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(color: context.colorScheme.surfaceContainer),
                   borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                  child: Image.file(
-                    s3ImageState.pickedImages[0],
-                    fit: BoxFit.cover,
-                    width: double.infinity,
+                ),
+                child: AspectRatio(
+                  aspectRatio: 1.61,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                    child: Image.file(
+                      s3ImageState.pickedImages[0],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
                   ),
                 ),
               ),
@@ -88,7 +95,6 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
             print('clubDues: ${clubInfo.clubDues}');
             print('clubRoom: ${clubInfo.clubRoom}');
             print('clubDescription: ${clubInfo.clubDescription}');
-
 
             if (context.mounted) {
               _pushAccountFormPage(context, clubId!);

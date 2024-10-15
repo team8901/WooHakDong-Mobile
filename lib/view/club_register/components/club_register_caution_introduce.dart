@@ -13,17 +13,17 @@ class ClubRegisterCautionIntroduce extends StatelessWidget {
         children: [
           TextSpan(
             text: '우선, ',
-            style: context.textTheme.headlineLarge,
+            style: context.textTheme.headlineSmall,
           ),
           TextSpan(
             text: '알아야 할 주의사항',
-            style: context.textTheme.headlineLarge?.copyWith(
+            style: context.textTheme.headlineSmall?.copyWith(
               color: context.colorScheme.primary,
             ),
           ),
           TextSpan(
             text: '이에요',
-            style: context.textTheme.headlineLarge,
+            style: context.textTheme.headlineSmall,
           ),
         ],
       ),

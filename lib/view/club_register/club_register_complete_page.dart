@@ -10,13 +10,12 @@ class ClubRegisterCompletePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            top: 100,
-            left: defaultPaddingM,
-            right: defaultPaddingM,
-            bottom: defaultPaddingM,
+          padding: const EdgeInsets.symmetric(
+            horizontal: defaultPaddingM,
+            vertical: defaultPaddingM,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

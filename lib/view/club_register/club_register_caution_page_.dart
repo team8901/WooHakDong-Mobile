@@ -38,7 +38,7 @@ class ClubRegisterCautionPage extends ConsumerWidget {
             //authNotifier.signOut();
             _pushNameInfoPage(context);
           },
-          buttonText: '알겠어요',
+          buttonText: '다 읽었어요',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
         ),

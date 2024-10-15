@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/club/club_provider.dart';
@@ -42,12 +43,11 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
               children: [
                 Text(
                   '동아리 기본 정보가 필요해요',
-                  style: context.textTheme.titleLarge,
+                  style: context.textTheme.headlineSmall,
                 ),
-                const Gap(defaultGapS / 2),
                 Text(
                   '동아리 방은 비워놔도 돼요',
-                  style: context.textTheme.labelLarge?.copyWith(
+                  style: context.textTheme.bodySmall?.copyWith(
                     color: context.colorScheme.onSurface,
                   ),
                 ),
@@ -144,6 +144,16 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
           onTap: () async {
             if (formKey.currentState?.validate() == true) {
               formKey.currentState?.save();
+
+              if (s3ImageState.pickedImages.isEmpty) {
+                final byteData = await rootBundle.load('assets/images/club/club_basic_image.jpg');
+
+                final tempFile = File('${(await getTemporaryDirectory()).path}/club_basic_image.jpg');
+                await tempFile.writeAsBytes(byteData.buffer.asUint8List());
+
+                List<File> pickedImage = [tempFile];
+                await s3ImageNotifier.setClubImage(pickedImage);
+              }
 
               clubNotifier.saveClubOtherInfo(
                 clubInfo.clubGeneration!,
