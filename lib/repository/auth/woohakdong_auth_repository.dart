@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../service/dio/dio_service.dart';
+import '../../service/general/general_functions.dart';
 import '../../service/logger/logger.dart';
 
 class WoohakdongAuthRepository {
@@ -26,6 +27,7 @@ class WoohakdongAuthRepository {
         return null;
       }
     } catch (e) {
+      GeneralFunctions.generalToastMessage('오류가 발생했어요. 다시 로그인해 주세요.');
       logger.e('토큰 발급 실패', error: e);
       return null;
     }

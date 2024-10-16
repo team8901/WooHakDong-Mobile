@@ -12,11 +12,11 @@ class ClubRegisterCautionIntroduce extends StatelessWidget {
       text: TextSpan(
         children: [
           TextSpan(
-            text: '우선, ',
+            text: '동아리 등록 전, ',
             style: context.textTheme.headlineSmall,
           ),
           TextSpan(
-            text: '알아야 할 주의사항',
+            text: '안내사항',
             style: context.textTheme.headlineSmall?.copyWith(
               color: context.colorScheme.primary,
             ),

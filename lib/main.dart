@@ -8,7 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:woohakdong/view/club_register/club_register_page.dart'; // ClubRegisterPage import
+import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/login/login_page.dart';
 import 'package:woohakdong/view/member_register/member_register_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/custom_circular_progress_indicator.dart';
@@ -17,22 +17,24 @@ import 'package:woohakdong/view/themes/light_theme.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
 import 'package:woohakdong/view_model/auth/components/auth_state.dart';
 import 'package:woohakdong/view_model/member/components/member_state.dart';
-import 'package:woohakdong/view_model/member/member_provider.dart'; // memberProvider, memberStateProvider import
+import 'package:woohakdong/view_model/member/member_provider.dart';
 import 'package:woohakdong/view_model/member/member_state_provider.dart';
 
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Permission.camera.request();
+  await Permission.photos.request();
+  await Permission.storage.request();
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await dotenv.load(fileName: ".env");
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  await Permission.camera.request();
-  await Permission.photos.request();
 
   HttpOverrides.global = MyHttpOverrides();
 

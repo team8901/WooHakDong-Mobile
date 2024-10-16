@@ -101,12 +101,12 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 if (isClubNameValid(clubNameValidationState))
                   Text(
                     '사용 가능한 동아리 이름이에요',
-                    style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.tertiary),
+                    style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.tertiary),
                   )
                 else if (clubNameValidationState == ClubNameValidationState.invalid)
                   Text(
                     '이미 사용 중인 동아리 이름이에요',
-                    style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.error),
+                    style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.error),
                   ),
               ],
             ),
@@ -131,7 +131,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
           },
           buttonText: (isClubNameValid(clubNameValidationState)) ? '다음' : '중복 확인',
           buttonColor: Theme.of(context).colorScheme.primary,
-          buttonTextColor: Theme.of(context).colorScheme.onPrimary,
+          buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
         ),
       ),
     );

@@ -168,7 +168,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
           },
           buttonText: '다음',
           buttonColor: Theme.of(context).colorScheme.primary,
-          buttonTextColor: Theme.of(context).colorScheme.onPrimary,
+          buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
         ),
       ),
     );

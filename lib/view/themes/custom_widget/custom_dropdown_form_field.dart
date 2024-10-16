@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 class CustomDropdownFormField extends StatelessWidget {
@@ -7,6 +8,7 @@ class CustomDropdownFormField extends StatelessWidget {
   final ValueChanged<String?>? onChanged;
   final FormFieldValidator<String>? validator;
   final void Function()? onTap;
+  final double menuMaxHeight;
 
   const CustomDropdownFormField({
     super.key,
@@ -15,6 +17,7 @@ class CustomDropdownFormField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.onTap,
+    this.menuMaxHeight = 384,
   });
 
   @override
@@ -22,6 +25,7 @@ class CustomDropdownFormField extends StatelessWidget {
     return DropdownButtonFormField<String>(
       style: context.textTheme.titleSmall,
       elevation: 0,
+      menuMaxHeight: menuMaxHeight.h,
       dropdownColor: context.colorScheme.surfaceContainer,
       decoration: InputDecoration(
         labelText: labelText,

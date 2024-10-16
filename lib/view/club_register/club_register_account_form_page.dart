@@ -69,23 +69,23 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                   child: CustomDropdownFormField(
                     labelText: '동아리 계좌 은행',
                     items: const [
-                      {'value': '산업은행', 'displayText': '산업은행'},
-                      {'value': '기업은행', 'displayText': '기업은행'},
+                      {'value': '경남은행', 'displayText': '경남은행'},
+                      {'value': '광주은행', 'displayText': '광주은행'},
                       {'value': '국민은행', 'displayText': '국민은행'},
-                      {'value': '농협은행', 'displayText': '농협은행'},
+                      {'value': '기업은행', 'displayText': '기업은행'},
                       {'value': '농협상호금융', 'displayText': '농협상호금융'},
-                      {'value': '우리은행', 'displayText': '우리은행'},
+                      {'value': '농협은행', 'displayText': '농협은행'},
+                      {'value': '대구은행', 'displayText': '대구은행'},
+                      {'value': '새마을금고', 'displayText': '새마을금고'},
+                      {'value': '산업은행', 'displayText': '산업은행'},
                       {'value': 'SC제일은행', 'displayText': 'SC제일은행'},
                       {'value': '시티은행', 'displayText': '시티은행'},
-                      {'value': '대구은행', 'displayText': '대구은행'},
-                      {'value': '광주은행', 'displayText': '광주은행'},
-                      {'value': '제주은행', 'displayText': '제주은행'},
-                      {'value': '전북은행', 'displayText': '전북은행'},
-                      {'value': '경남은행', 'displayText': '경남은행'},
-                      {'value': '새마을금고', 'displayText': '새마을금고'},
-                      {'value': 'KEB하나은행', 'displayText': 'KEB하나은행'},
                       {'value': '신한은행', 'displayText': '신한은행'},
+                      {'value': '우리은행', 'displayText': '우리은행'},
+                      {'value': '전북은행', 'displayText': '전북은행'},
+                      {'value': '제주은행', 'displayText': '제주은행'},
                       {'value': '카카오뱅크', 'displayText': '카카오뱅크'},
+                      {'value': 'KEB하나은행', 'displayText': 'KEB하나은행'},
                     ],
                     onChanged: (value) => clubAccountBankName = value!,
                     validator: (value) {
@@ -120,7 +120,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                     children: [
                       Text(
                         '동아리 계좌가 인증되었어요',
-                        style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.tertiary),
+                        style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.tertiary),
                       ),
                       const Gap(defaultGapXL),
                       Text(
@@ -153,7 +153,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                 else if (clubAccountValidationState == ClubAccountValidationState.invalid)
                   Text(
                     '유효하지 않은 계좌예요',
-                    style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.error),
+                    style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.error),
                   ),
               ],
             ),
@@ -182,7 +182,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
           },
           buttonText: (isClubAccountValid(clubAccountValidationState)) ? '완료' : '계좌 인증',
           buttonColor: Theme.of(context).colorScheme.primary,
-          buttonTextColor: Theme.of(context).colorScheme.onPrimary,
+          buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
         ),
       ),
     );
@@ -195,7 +195,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
     Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute(
-        builder: (context) => const ClubRegisterCompletePage(),
+        builder: (context) => ClubRegisterCompletePage(),
       ),
       (route) => false,
     );
