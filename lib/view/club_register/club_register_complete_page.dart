@@ -98,7 +98,7 @@ class ClubRegisterCompletePage extends ConsumerWidget {
                       InkWell(
                         onTap: () async {
                           Clipboard.setData(ClipboardData(text: '${groupInfo?.groupLink}'));
-                          await Fluttertoast.showToast(
+                          Fluttertoast.showToast(
                             msg: '전용 페이지 링크가 복사되었어요',
                             toastLength: Toast.LENGTH_SHORT,
                             timeInSecForIosWeb: 1,
@@ -106,7 +106,7 @@ class ClubRegisterCompletePage extends ConsumerWidget {
                             textColor: context.colorScheme.inverseSurface,
                             backgroundColor: context.colorScheme.surfaceContainer.withOpacity(0.9),
                             fontSize: 16,
-                            fontAsset: 'Pretendard',
+                            fontAsset: 'assets/fonts/pretendard/Pretendard-SemiBold.otf',
                           );
                         },
                         child: Ink(

@@ -51,6 +51,7 @@ class GoogleSignInService {
         } else {
           logger.w("토큰 발급 실패");
           await _firebaseAuth.signOut();
+          await _googleSignIn.signOut();
           return false;
         }
       } else {
