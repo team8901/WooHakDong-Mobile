@@ -23,6 +23,10 @@ class CustomDropdownFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
+      icon: Icon(
+        Icons.keyboard_arrow_down_rounded,
+        color: context.colorScheme.outline,
+      ),
       style: context.textTheme.titleSmall,
       elevation: 0,
       menuMaxHeight: menuMaxHeight.h,

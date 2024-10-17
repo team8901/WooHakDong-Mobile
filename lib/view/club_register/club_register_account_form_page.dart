@@ -14,6 +14,7 @@ import '../themes/custom_widget/custom_dropdown_form_field.dart';
 import '../themes/custom_widget/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'club_register_complete_page.dart';
+import 'components/club_register_valid_account_box.dart';
 
 class ClubRegisterAccountFormPage extends ConsumerStatefulWidget {
   const ClubRegisterAccountFormPage({super.key});
@@ -115,41 +116,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                 ),
                 const Gap(defaultGapXL),
                 if (isClubAccountValid(clubAccountValidationState))
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '동아리 계좌가 인증되었어요',
-                        style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.tertiary),
-                      ),
-                      const Gap(defaultGapXL),
-                      Text(
-                        '동아리 계좌 핀테크 번호',
-                        style: context.textTheme.labelLarge?.copyWith(
-                          color: context.colorScheme.onSurface,
-                        ),
-                      ),
-                      const Gap(defaultGapS),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: context.colorScheme.surfaceContainer),
-                          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPaddingS,
-                          vertical: defaultPaddingXS,
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '*' * (clubAccountInfo.clubAccountPinTechNumber?.length ?? 0),
-                            style: context.textTheme.titleSmall,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
+                  ClubRegisterValidAccountBox(clubAccountInfo: clubAccountInfo)
                 else if (clubAccountValidationState == ClubAccountValidationState.invalid)
                   Text(
                     '유효하지 않은 계좌예요',

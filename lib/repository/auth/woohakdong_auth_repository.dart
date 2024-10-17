@@ -27,7 +27,7 @@ class WoohakdongAuthRepository {
         return null;
       }
     } catch (e) {
-      GeneralFunctions.generalToastMessage('오류가 발생했어요. 다시 로그인해 주세요.');
+      await GeneralFunctions.generalToastMessage('학교 계정으로 로그인해 주세요');
       logger.e('토큰 발급 실패', error: e);
       return null;
     }

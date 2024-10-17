@@ -25,12 +25,13 @@ class ClubRegisterCompletePage extends ConsumerWidget {
       appBar: AppBar(
         actions: [
           InkWell(
+            borderRadius: BorderRadius.circular(360),
             onTap: () async {
               await ImageConverter.saveWidgetToGallery(
                 key: _widgetToPngKey,
-                fileName: '${groupInfo?.groupName}-qr-code-${DateTime.now().millisecondsSinceEpoch}.png',
+                fileName: '${groupInfo?.groupName} QR 카드 ${DateTime.now().millisecondsSinceEpoch}.png',
               );
-              await GeneralFunctions.generalToastMessage('QR 코드 이미지를 저장했어요');
+              await GeneralFunctions.generalToastMessage('QR 카드 이미지를 저장했어요');
             },
             child: Ink(
               padding: const EdgeInsets.all(defaultPaddingM),

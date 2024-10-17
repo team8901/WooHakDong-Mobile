@@ -45,16 +45,13 @@ class ClubNotifier extends StateNotifier<Club> {
     }
   }
 
-  void saveClubOtherInfo(String clubGeneration, int clubDues, String clubRoom) {
+  void saveClubOtherInfo(String clubDescription, String clubGeneration, int clubDues, String clubRoom) {
     state = state.copyWith(
+      clubDescription: clubDescription,
       clubGeneration: clubGeneration,
       clubDues: clubDues,
       clubRoom: clubRoom,
     );
-  }
-
-  void saveClubDescription(String clubDescription) {
-    state = state.copyWith(clubDescription: clubDescription);
   }
 
   Future<void> registerClub(String clubImageForServer) async {

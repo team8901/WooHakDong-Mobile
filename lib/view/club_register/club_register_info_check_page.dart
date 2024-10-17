@@ -2,6 +2,7 @@ import 'package:currency_formatter/currency_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/club_register/club_register_account_form_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/custom_info_check_tile.dart';
@@ -46,20 +47,18 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
               ),
               const Gap(defaultGapS),
               Container(
-                width: double.infinity,
+                width: 192.r,
+                height: 192.r,
                 decoration: BoxDecoration(
                   border: Border.all(color: context.colorScheme.surfaceContainer),
                   borderRadius: BorderRadius.circular(defaultBorderRadiusM),
                 ),
-                child: AspectRatio(
-                  aspectRatio: 1.61,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                    child: Image.file(
-                      s3ImageState.pickedImages[0],
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                    ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                  child: Image.file(
+                    s3ImageState.pickedImages[0],
+                    fit: BoxFit.cover,
+                    width: double.infinity,
                   ),
                 ),
               ),
@@ -68,13 +67,13 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
               const Gap(defaultGapXL),
               CustomInfoCheckTile(infoTitle: '동아리 영문 이름', infoContent: clubInfo.clubEnglishName!),
               const Gap(defaultGapXL),
+              CustomInfoCheckTile(infoTitle: '동아리 설명', infoContent: clubInfo.clubDescription!),
+              const Gap(defaultGapXL),
               CustomInfoCheckTile(infoTitle: '동아리 기수', infoContent: _generationFormatting(clubInfo.clubGeneration!)),
               const Gap(defaultGapXL),
               CustomInfoCheckTile(infoTitle: '동아리 회비', infoContent: _currencyFormatting(clubInfo.clubDues!)),
               const Gap(defaultGapXL),
               CustomInfoCheckTile(infoTitle: '동아리 방', infoContent: clubInfo.clubRoom!),
-              const Gap(defaultGapXL),
-              CustomInfoCheckTile(infoTitle: '동아리 설명', infoContent: clubInfo.clubDescription!),
             ],
           ),
         ),

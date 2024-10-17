@@ -51,18 +51,6 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                       ),
                       const Gap(defaultGapXL * 2),
                       CustomTextFormField(
-                        labelText: '학교',
-                        initialValue: memberInfo?.memberSchool,
-                        readOnly: true,
-                      ),
-                      const Gap(defaultGapXL),
-                      CustomTextFormField(
-                        labelText: '이메일 주소',
-                        initialValue: memberInfo?.memberEmail,
-                        readOnly: true,
-                      ),
-                      const Gap(defaultGapXL),
-                      CustomTextFormField(
                         labelText: '이름',
                         initialValue: memberInfo?.memberName,
                         readOnly: true,
@@ -81,6 +69,33 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                           }
                           return null;
                         },
+                      ),
+                      const Gap(defaultGapXL),
+                      CustomTextFormField(
+                        labelText: '휴대폰 번호',
+                        hintText: '휴대폰 번호를 - 없이 입력해 주세요',
+                        keyboardType: TextInputType.phone,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        textInputAction: TextInputAction.done,
+                        onSaved: (value) => memberInfo?.memberPhoneNumber = value,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '휴대폰 번호를 입력해 주세요';
+                          }
+                          return null;
+                        },
+                      ),
+                      const Gap(defaultGapXL),
+                      CustomTextFormField(
+                        labelText: '이메일 주소',
+                        initialValue: memberInfo?.memberEmail,
+                        readOnly: true,
+                      ),
+                      const Gap(defaultGapXL),
+                      CustomTextFormField(
+                        labelText: '학교',
+                        initialValue: memberInfo?.memberSchool,
+                        readOnly: true,
                       ),
                       const Gap(defaultGapXL),
                       CustomTextFormField(
@@ -106,22 +121,6 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                           return null;
                         },
                       ),
-                      const Gap(defaultGapXL),
-                      CustomTextFormField(
-                        labelText: '휴대폰 번호',
-                        hintText: '휴대폰 번호를 - 없이 입력해 주세요',
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        textInputAction: TextInputAction.done,
-                        onSaved: (value) => memberInfo?.memberPhoneNumber = value,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '휴대폰 번호를 입력해 주세요';
-                          }
-                          return null;
-                        },
-                      ),
-                      const Gap(defaultGapXL),
                     ],
                   ),
                 ),

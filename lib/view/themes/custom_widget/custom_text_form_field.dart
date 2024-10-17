@@ -40,6 +40,8 @@ class CustomTextFormField extends StatelessWidget {
       readOnly: readOnly,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
+      minLines: 1,
+      maxLines: null,
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: context.textTheme.titleSmall?.copyWith(

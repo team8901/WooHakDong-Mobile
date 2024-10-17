@@ -56,8 +56,6 @@ class ClubRepository {
     try {
       final response = await _dio.get('/clubs/$clubId/join');
 
-      print(response.data);
-
       if (response.statusCode == 200) {
         logger.i('동아리 등록 페이지 정보 가져오기 성공');
         return Group.fromJson(response.data);

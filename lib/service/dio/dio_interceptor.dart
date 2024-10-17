@@ -61,15 +61,7 @@ class DioInterceptor extends InterceptorsWrapper {
 
             err.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
 
-            final retryRequest = await _dio.request(
-              options: Options(
-                method: err.requestOptions.method,
-                headers: err.requestOptions.headers,
-              ),
-              err.requestOptions.path,
-              data: err.requestOptions.data,
-              queryParameters: err.requestOptions.queryParameters,
-            );
+            final retryRequest = await _dio.fetch(err.requestOptions);
 
             return handler.resolve(retryRequest);
           } else {
