@@ -45,10 +45,7 @@ class ClubRegisterCompletePage extends ConsumerWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: defaultPaddingM,
-            vertical: defaultPaddingM,
-          ),
+          padding: const EdgeInsets.all(defaultPaddingM),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

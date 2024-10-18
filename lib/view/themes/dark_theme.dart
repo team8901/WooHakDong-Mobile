@@ -83,15 +83,6 @@ final ThemeData darkTheme = ThemeData(
     color: white,
   ),
 
-  /// 프로그레스바 테마
-  progressIndicatorTheme: const ProgressIndicatorThemeData(
-    color: darkGray,
-    linearTrackColor: lightGray,
-    linearMinHeight: 4,
-    circularTrackColor: lightGray,
-    refreshBackgroundColor: lightGray,
-  ),
-
   /// 바텀 네비게이션바 테마
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: black,

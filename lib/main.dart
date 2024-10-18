@@ -71,7 +71,8 @@ class MyApp extends ConsumerWidget {
                     if (memberSnapshot.connectionState == ConnectionState.waiting) {
                       return const Scaffold(body: CustomCircularProgressIndicator());
                     } else if (memberSnapshot.hasError) {
-                      return const Scaffold(body: CustomCircularProgressIndicator());
+                      // 우학동 회원 정보를 불러오지 못 하면 로그인 화면으로 이동
+                      return const LoginPage();
                     } else {
                       if (memberState == MemberState.nonMember) {
                         // 우학동에 회원가입이 되어 있지 않으면 우학동 회원가입 화면으로 이동

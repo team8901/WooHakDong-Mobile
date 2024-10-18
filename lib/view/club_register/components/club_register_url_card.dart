@@ -50,7 +50,7 @@ class ClubRegisterUrlCard extends StatelessWidget {
               child: Ink(
                 child: Icon(
                   Icons.content_copy_rounded,
-                  color: context.colorScheme.onSurface,
+                  color: context.colorScheme.outline,
                   size: 20,
                 ),
               ),

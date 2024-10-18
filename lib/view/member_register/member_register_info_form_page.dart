@@ -36,10 +36,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
               final memberInfo = ref.watch(memberProvider);
 
               return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: defaultPaddingM,
-                  vertical: defaultPaddingM,
-                ),
+                padding: const EdgeInsets.all(defaultPaddingM),
                 child: Form(
                   key: formKey,
                   child: Column(

@@ -27,54 +27,54 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: defaultPaddingM,
-            vertical: defaultPaddingM,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '한 번 더 확인해 주세요',
-                style: context.textTheme.headlineSmall,
-              ),
-              const Gap(defaultGapXL * 2),
-              Text(
-                '동아리 사진',
-                style: context.textTheme.labelLarge?.copyWith(
-                  color: context.colorScheme.onSurface,
+          padding: const EdgeInsets.all(defaultPaddingM),
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '한 번 더 확인해 주세요',
+                  style: context.textTheme.headlineSmall,
                 ),
-              ),
-              const Gap(defaultGapS),
-              Container(
-                width: 192.r,
-                height: 192.r,
-                decoration: BoxDecoration(
-                  border: Border.all(color: context.colorScheme.surfaceContainer),
-                  borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                  child: Image.file(
-                    s3ImageState.pickedImages[0],
-                    fit: BoxFit.cover,
-                    width: double.infinity,
+                const Gap(defaultGapXL * 2),
+                Text(
+                  '동아리 사진',
+                  style: context.textTheme.labelLarge?.copyWith(
+                    color: context.colorScheme.onSurface,
                   ),
                 ),
-              ),
-              const Gap(defaultGapXL),
-              CustomInfoCheckTile(infoTitle: '동아리 이름', infoContent: clubInfo.clubName!),
-              const Gap(defaultGapXL),
-              CustomInfoCheckTile(infoTitle: '동아리 영문 이름', infoContent: clubInfo.clubEnglishName!),
-              const Gap(defaultGapXL),
-              CustomInfoCheckTile(infoTitle: '동아리 설명', infoContent: clubInfo.clubDescription!),
-              const Gap(defaultGapXL),
-              CustomInfoCheckTile(infoTitle: '동아리 기수', infoContent: _generationFormatting(clubInfo.clubGeneration!)),
-              const Gap(defaultGapXL),
-              CustomInfoCheckTile(infoTitle: '동아리 회비', infoContent: _currencyFormatting(clubInfo.clubDues!)),
-              const Gap(defaultGapXL),
-              CustomInfoCheckTile(infoTitle: '동아리 방', infoContent: clubInfo.clubRoom!),
-            ],
+                const Gap(defaultGapS),
+                Container(
+                  width: 192.r,
+                  height: 192.r,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: context.colorScheme.surfaceContainer),
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                    child: Image.file(
+                      s3ImageState.pickedImages[0],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                  ),
+                ),
+                const Gap(defaultGapXL),
+                CustomInfoCheckTile(infoTitle: '동아리 이름', infoContent: clubInfo.clubName!),
+                const Gap(defaultGapXL),
+                CustomInfoCheckTile(infoTitle: '동아리 영문 이름', infoContent: clubInfo.clubEnglishName!),
+                const Gap(defaultGapXL),
+                CustomInfoCheckTile(infoTitle: '동아리 설명', infoContent: clubInfo.clubDescription!),
+                const Gap(defaultGapXL),
+                CustomInfoCheckTile(infoTitle: '동아리 기수', infoContent: _generationFormatting(clubInfo.clubGeneration!)),
+                const Gap(defaultGapXL),
+                CustomInfoCheckTile(infoTitle: '동아리 회비', infoContent: _currencyFormatting(clubInfo.clubDues!)),
+                const Gap(defaultGapXL),
+                CustomInfoCheckTile(infoTitle: '동아리 방', infoContent: clubInfo.clubRoom!),
+              ],
+            ),
           ),
         ),
       ),

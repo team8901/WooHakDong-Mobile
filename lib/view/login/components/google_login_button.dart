@@ -5,6 +5,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
 
 import '../../../view_model/auth/components/auth_state.dart';
+import '../../themes/custom_widget/custom_circular_progress_indicator.dart';
 import '../../themes/spacing.dart';
 
 class GoogleLoginButton extends ConsumerWidget {
@@ -12,7 +13,7 @@ class GoogleLoginButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider); // 상태 구독
+    final authState = ref.watch(authProvider);
     final authNotifier = ref.read(authProvider.notifier);
 
     return Container(
@@ -25,33 +26,33 @@ class GoogleLoginButton extends ConsumerWidget {
       height: 52,
       child: InkWell(
         borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-        onTap: authState == AuthState.loading
-            ? null
-            : () => authNotifier.signIn(),
+        onTap: authState == AuthState.loading ? null : () => authNotifier.signIn(),
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(defaultBorderRadiusM),
             color: context.colorScheme.surfaceContainer,
           ),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/logos/google.png',
-                  width: 20,
-                  height: 20,
+          child: (authState == AuthState.loading)
+              ? const CustomCircularProgressIndicator()
+              : Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/logos/google.png',
+                        width: 20,
+                        height: 20,
+                      ),
+                      const Gap(defaultGapM),
+                      Text(
+                        'Google로 시작하기',
+                        style: context.textTheme.bodyMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
-                const Gap(defaultGapM),
-                Text(
-                  'Google로 시작하기',
-                  style: context.textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

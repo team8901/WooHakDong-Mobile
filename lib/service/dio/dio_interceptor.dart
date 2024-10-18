@@ -49,7 +49,7 @@ class DioInterceptor extends InterceptorsWrapper {
           );
 
           if (tokenResponse.statusCode == 200) {
-            logger.i("토큰 재발급 성공, 요청 재시도");
+            logger.i("토큰 재발급 성공");
 
             final newTokenData = jsonDecode(tokenResponse.body);
 
@@ -60,6 +60,8 @@ class DioInterceptor extends InterceptorsWrapper {
             await _secureStorage.write(key: 'refreshToken', value: newRefreshToken);
 
             err.requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
+
+            logger.i("토큰 재발급 후 재요청");
 
             final retryRequest = await _dio.fetch(err.requestOptions);
 

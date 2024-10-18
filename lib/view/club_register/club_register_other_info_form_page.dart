@@ -34,10 +34,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: defaultPaddingM,
-            vertical: defaultPaddingM,
-          ),
+          padding: const EdgeInsets.all(defaultPaddingM),
           child: Form(
             key: formKey,
             child: Column(

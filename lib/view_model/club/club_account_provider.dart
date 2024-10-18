@@ -24,6 +24,10 @@ class ClubAccountNotifier extends StateNotifier<ClubAccount> {
         );
 
   Future<void> saveClubAccountInfo(String clubAccountBankName, String clubAccountNumber) async {
+    ref.read(clubAccountValidationProvider.notifier).state = ClubAccountValidationState.loading;
+
+    await Future.delayed(const Duration(seconds: 1));
+
     try {
       ClubAccount validatedClubAccount = await clubAccountRepository.clubAccountValidation(
         state.copyWith(

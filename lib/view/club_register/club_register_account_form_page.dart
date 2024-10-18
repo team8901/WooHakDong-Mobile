@@ -51,10 +51,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: defaultPaddingM,
-            vertical: defaultPaddingM,
-          ),
+          padding: const EdgeInsets.all(defaultPaddingM),
           child: Form(
             key: formKey,
             child: Column(
@@ -129,27 +126,30 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
       ),
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
-          onTap: () async {
-            if (formKey.currentState?.validate() == true) {
-              formKey.currentState?.save();
+          onTap: (clubAccountValidationState == ClubAccountValidationState.loading)
+              ? null
+              : () async {
+                  if (formKey.currentState?.validate() == true) {
+                    formKey.currentState?.save();
 
-              if (isClubAccountValid(clubAccountValidationState)) {
-                await clubAccountNotifier.registerClubAccount(clubInfo.clubId);
+                    if (isClubAccountValid(clubAccountValidationState)) {
+                      await clubAccountNotifier.registerClubAccount(clubInfo.clubId);
 
-                if (context.mounted) {
-                  _pushCompletePage(context);
-                }
-              } else {
-                await clubAccountNotifier.saveClubAccountInfo(
-                  clubAccountBankName,
-                  clubAccountNumberController.text,
-                );
-              }
-            }
-          },
+                      if (context.mounted) {
+                        _pushCompletePage(context);
+                      }
+                    } else {
+                      await clubAccountNotifier.saveClubAccountInfo(
+                        clubAccountBankName,
+                        clubAccountNumberController.text,
+                      );
+                    }
+                  }
+                },
           buttonText: (isClubAccountValid(clubAccountValidationState)) ? '완료' : '계좌 인증',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+          isLoading: clubAccountValidationState == ClubAccountValidationState.loading,
         ),
       ),
     );
