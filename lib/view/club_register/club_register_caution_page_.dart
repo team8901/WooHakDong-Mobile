@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:woohakdong/view/club_register/club_register_name_info_form_page.dart';
+import 'package:woohakdong/view/club_register/club_register_info_form_page.dart';
 import 'package:woohakdong/view/club_register/components/club_register_caution.dart';
 
 import '../themes/custom_widget/custom_bottom_button.dart';

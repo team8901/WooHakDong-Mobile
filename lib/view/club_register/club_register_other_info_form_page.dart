@@ -41,7 +41,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '동아리 기본 정보가 필요해요',
+                  '동아리의 다른 정보도 필요해요',
                   style: context.textTheme.headlineSmall,
                 ),
                 Text(
@@ -94,19 +94,6 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                   ),
                 ),
                 const Gap(defaultGapXL),
-                CustomCounterTextFormField(
-                  labelText: '동아리 설명',
-                  maxLength: 500,
-                  keyboardType: TextInputType.text,
-                  onSaved: (value) => clubInfo.clubDescription = value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '동아리 설명을 입력해 주세요';
-                    }
-                    return null;
-                  },
-                ),
-                const Gap(defaultGapXL),
                 CustomTextFormField(
                   labelText: '현재 기수',
                   hintText: '숫자만 입력해 주세요',
@@ -145,6 +132,8 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                       (value == null || value.isEmpty) ? clubInfo.clubRoom = '없음' : clubInfo.clubRoom = value,
                   textInputAction: TextInputAction.done,
                 ),
+
+                /// TODO: 동아리 오픈채팅방 링크 입력 추가
               ],
             ),
           ),
@@ -167,7 +156,6 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
               }
 
               clubNotifier.saveClubOtherInfo(
-                clubInfo.clubDescription!,
                 clubInfo.clubGeneration!,
                 clubInfo.clubDues!,
                 clubInfo.clubRoom!,

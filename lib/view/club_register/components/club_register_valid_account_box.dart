@@ -18,10 +18,6 @@ class ClubRegisterValidAccountBox extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '동아리 계좌가 인증되었어요',
-          style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.tertiary),
-        ),
         const Gap(defaultGapXL),
         Text(
           '동아리 계좌 핀테크 번호',
@@ -41,7 +37,7 @@ class ClubRegisterValidAccountBox extends StatelessWidget {
             vertical: defaultPaddingXS,
           ),
           child: Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             child: Text(
               '*' * (clubAccountInfo.clubAccountPinTechNumber?.length ?? 0),
               style: context.textTheme.titleSmall,

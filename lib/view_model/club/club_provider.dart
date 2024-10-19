@@ -30,24 +30,26 @@ class ClubNotifier extends StateNotifier<Club> {
           ),
         );
 
-  Future<void> saveClubNameInfo(String clubName, String clubEnglishName) async {
+  Future<void> clubNameValidation(String clubName, String clubEnglishName) async {
     final isValid = await clubRepository.clubNameValidation(clubName, clubEnglishName);
 
     if (isValid) {
-      state = state.copyWith(
-        clubName: clubName,
-        clubEnglishName: clubEnglishName,
-      );
-
       ref.read(clubNameValidationProvider.notifier).state = ClubNameValidationState.valid;
     } else {
       ref.read(clubNameValidationProvider.notifier).state = ClubNameValidationState.invalid;
     }
   }
 
-  void saveClubOtherInfo(String clubDescription, String clubGeneration, int clubDues, String clubRoom) {
+  void saveClubInfo(String clubName, String clubEnglishName, String clubDescription) {
     state = state.copyWith(
+      clubName: clubName,
+      clubEnglishName: clubEnglishName,
       clubDescription: clubDescription,
+    );
+  }
+
+  void saveClubOtherInfo(String clubGeneration, int clubDues, String clubRoom) {
+    state = state.copyWith(
       clubGeneration: clubGeneration,
       clubDues: clubDues,
       clubRoom: clubRoom,

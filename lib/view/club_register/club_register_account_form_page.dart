@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../service/general/general_functions.dart';
 import '../../view_model/club/club_account_provider.dart';
 import '../../view_model/club/club_account_validation_provider.dart';
 import '../../view_model/club/club_provider.dart';
@@ -63,7 +64,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                 ),
                 const Gap(defaultGapXL * 2),
                 IgnorePointer(
-                  ignoring: isClubAccountValid(clubAccountValidationState),
+                  ignoring: clubAccountValidationState == ClubAccountValidationState.valid,
                   child: CustomDropdownFormField(
                     labelText: '동아리 계좌 은행',
                     items: const [
@@ -99,7 +100,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                   controller: clubAccountNumberController,
                   labelText: '동아리 계좌',
                   onSaved: (value) => clubAccountInfo.clubAccountNumber = value!,
-                  readOnly: isClubAccountValid(clubAccountValidationState),
+                  readOnly: clubAccountValidationState == ClubAccountValidationState.valid,
                   hintText: '동아리 계좌를 - 없이 입력해 주세요',
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -112,13 +113,59 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                   },
                 ),
                 const Gap(defaultGapXL),
-                if (isClubAccountValid(clubAccountValidationState))
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (clubAccountValidationState == ClubAccountValidationState.valid)
+                      Text(
+                        '동아리 계좌가 인증되었어요',
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: context.colorScheme.tertiary,
+                        ),
+                      )
+                    else if (clubAccountValidationState == ClubAccountValidationState.invalid)
+                      Text(
+                        '유효하지 않은 동아리 계좌예요',
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: context.colorScheme.error,
+                        ),
+                      )
+                    else if (clubAccountValidationState == ClubAccountValidationState.notChecked ||
+                        clubAccountValidationState == ClubAccountValidationState.loading)
+                      const SizedBox(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPaddingL / 3,
+                        vertical: defaultPaddingL / 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.surfaceContainer,
+                        borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                      ),
+                      child: InkWell(
+                        onTap: () async {
+                          if (formKey.currentState?.validate() == true) {
+                            formKey.currentState?.save();
+
+                            await clubAccountNotifier.saveClubAccountInfo(
+                              clubAccountBankName,
+                              clubAccountNumberController.text,
+                            );
+                          }
+                        },
+                        child: Center(
+                          child: Text(
+                            '계좌 인증',
+                            style: context.textTheme.bodyMedium,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                if (clubAccountValidationState == ClubAccountValidationState.valid)
                   ClubRegisterValidAccountBox(clubAccountInfo: clubAccountInfo)
-                else if (clubAccountValidationState == ClubAccountValidationState.invalid)
-                  Text(
-                    '유효하지 않은 계좌예요',
-                    style: context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.error),
-                  ),
               ],
             ),
           ),
@@ -132,21 +179,19 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                   if (formKey.currentState?.validate() == true) {
                     formKey.currentState?.save();
 
-                    if (isClubAccountValid(clubAccountValidationState)) {
+                    if (clubAccountValidationState == ClubAccountValidationState.valid) {
                       await clubAccountNotifier.registerClubAccount(clubInfo.clubId);
 
                       if (context.mounted) {
                         _pushCompletePage(context);
                       }
-                    } else {
-                      await clubAccountNotifier.saveClubAccountInfo(
-                        clubAccountBankName,
-                        clubAccountNumberController.text,
-                      );
+                    } else if (clubAccountValidationState == ClubAccountValidationState.invalid ||
+                        clubAccountValidationState == ClubAccountValidationState.notChecked) {
+                      GeneralFunctions.generalToastMessage('동아리 계좌를 인증해 주세요');
                     }
                   }
                 },
-          buttonText: (isClubAccountValid(clubAccountValidationState)) ? '완료' : '계좌 인증',
+          buttonText: '완료',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
           isLoading: clubAccountValidationState == ClubAccountValidationState.loading,
@@ -154,9 +199,6 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
       ),
     );
   }
-
-  bool isClubAccountValid(ClubAccountValidationState clubAccountValidationState) =>
-      clubAccountValidationState == ClubAccountValidationState.valid;
 
   void _pushCompletePage(BuildContext context) {
     Navigator.pushAndRemoveUntil(

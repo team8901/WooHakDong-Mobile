@@ -66,7 +66,7 @@ class DioInterceptor extends InterceptorsWrapper {
             final retryRequest = await _dio.fetch(err.requestOptions);
 
             return handler.resolve(retryRequest);
-          } else {
+          } else if (tokenResponse.statusCode == 401) {
             logger.w("리프레시 토큰 만료");
             _signOutByTokenRefreshFailed();
             return handler.reject(err);
