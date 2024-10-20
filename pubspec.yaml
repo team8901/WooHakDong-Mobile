@@ -41,6 +41,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   flutter_image_saver: ^1.0.1
   widgets_to_png: ^1.0.1
+  material_symbols_icons: ^4.2789.0
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/group/group.dart';
@@ -49,7 +50,7 @@ class ClubRegisterUrlCard extends StatelessWidget {
               },
               child: Ink(
                 child: Icon(
-                  Icons.content_copy_rounded,
+                  Symbols.content_copy_rounded,
                   color: context.colorScheme.outline,
                   size: 20,
                 ),

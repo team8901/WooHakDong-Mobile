@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
@@ -74,8 +75,8 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                       child: s3ImageState.pickedImages.isEmpty
                           ? Center(
                               child: Icon(
-                                Icons.camera_alt_outlined,
-                                color: context.colorScheme.onSurface,
+                                Symbols.camera_alt_rounded,
+                                color: context.colorScheme.outline,
                               ),
                             )
                           : SizedBox(
