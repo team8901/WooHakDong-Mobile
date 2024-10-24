@@ -9,13 +9,13 @@ class MemberRepository {
 
   Future<Member> getMemberInfo() async {
     try {
+      logger.i('회원 정보 조회 시도');
+
       final response = await _dio.get('/member/info');
 
       if (response.statusCode == 200) {
-        logger.i('회원 정보 조회 성공');
         return Member.fromJson(response.data);
       } else {
-        logger.e('서버 에러', error: response.data);
         throw Exception();
       }
     } catch (e) {
@@ -26,17 +26,12 @@ class MemberRepository {
 
   Future<void> registerMemberInfo(Member member) async {
     try {
-      final response = await _dio.post(
+      logger.i('회원 정보 등록 시도');
+
+      await _dio.post(
         '/member/info',
         data: member.toJson(),
       );
-
-      if (response.statusCode == 200) {
-        logger.i('회원 정보 등록 성공');
-      } else {
-        logger.e('서버 에러', error: response.data);
-        throw Exception();
-      }
     } catch (e) {
       logger.e('회원 정보 등록 실패', error: e);
       throw Exception();
@@ -45,17 +40,12 @@ class MemberRepository {
 
   Future<void> updateMemberInfo(Member member) async {
     try {
-      final response = await _dio.put(
+      logger.i('회원 정보 수정 시도');
+
+      await _dio.put(
         '/member/info',
         data: member.toJson(),
       );
-
-      if (response.statusCode == 200) {
-        logger.i('회원 정보 수정 성공');
-      } else {
-        logger.e('서버 에러', error: response.data);
-        throw Exception();
-      }
     } catch (e) {
       logger.e('회원 정보 수정 실패', error: e);
       throw Exception();

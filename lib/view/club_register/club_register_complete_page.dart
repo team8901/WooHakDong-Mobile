@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -7,7 +8,10 @@ import 'package:widgets_to_png/widgets_to_png.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../service/general/general_functions.dart';
+import '../../view_model/club/club_id_provider.dart';
+import '../../view_model/club/club_provider.dart';
 import '../../view_model/group/group_provider.dart';
+import '../route_page.dart';
 import '../themes/custom_widget/custom_bottom_button.dart';
 import '../themes/spacing.dart';
 import 'components/club_register_qr_card.dart';
@@ -21,26 +25,20 @@ class ClubRegisterCompletePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final groupInfo = ref.watch(groupProvider);
+    final clubInfo = ref.watch(clubProvider);
 
     return Scaffold(
       appBar: AppBar(
         actions: [
-          InkWell(
-            borderRadius: BorderRadius.circular(360),
-            onTap: () async {
+          IconButton(
+            onPressed: () async {
               await ImageConverter.saveWidgetToGallery(
                 key: _widgetToPngKey,
                 fileName: '${groupInfo?.groupName} QR 카드 ${DateTime.now().millisecondsSinceEpoch}.png',
               );
               await GeneralFunctions.generalToastMessage('QR 카드 이미지를 저장했어요');
             },
-            child: Ink(
-              padding: const EdgeInsets.all(defaultPaddingM),
-              child: const Icon(
-                Symbols.download_rounded,
-                size: 24,
-              ),
-            ),
+            icon: const Icon(Symbols.download_rounded),
           ),
         ],
       ),
@@ -80,12 +78,25 @@ class ClubRegisterCompletePage extends ConsumerWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
-          onTap: () => {},
-          buttonText: '우학동 시작하기',
+          onTap: () async {
+            await ref.read(clubIdProvider.notifier).saveClubId(clubInfo.clubId!);
+
+            if (context.mounted) {
+              _pushRoutePage(context);
+            }
+          },
+          buttonText: '내 동아리 확인하기',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
         ),
       ),
+    );
+  }
+
+  Future<dynamic> _pushRoutePage(BuildContext context) {
+    return Navigator.pushReplacement(
+      context,
+      CupertinoPageRoute(builder: (context) => const RoutePage()),
     );
   }
 }

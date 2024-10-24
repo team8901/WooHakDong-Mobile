@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:woohakdong/model/club/club.dart';
-import 'package:woohakdong/model/group/group.dart';
 
 import '../../service/dio/dio_service.dart';
 import '../../service/logger/logger.dart';
@@ -10,6 +9,8 @@ class ClubRepository {
 
   Future<bool> clubNameValidation(String clubName, String clubEnglishName) async {
     try {
+      logger.i('동아리 이름 유효성 검증 시도');
+
       final response = await _dio.post(
         '/clubs/validate',
         data: {
@@ -19,7 +20,6 @@ class ClubRepository {
       );
 
       if (response.statusCode == 200) {
-        logger.i('동아리 이름 사용 가능');
         return true;
       } else {
         logger.e('서버 에러');
@@ -33,17 +33,16 @@ class ClubRepository {
 
   Future<int?> registerClubInfo(Club club) async {
     try {
+      logger.i('동아리 등록 시도');
+
       final response = await _dio.post(
         '/clubs',
         data: club.toJson(),
       );
 
       if (response.statusCode == 200) {
-        logger.i('동아리 등록 성공');
-
         return response.data['clubId'];
       } else {
-        logger.e('서버 에러', error: response.statusCode);
         return null;
       }
     } catch (e) {
@@ -52,20 +51,24 @@ class ClubRepository {
     }
   }
 
-  Future<Group> getClubRegisterPageInfo(int clubId) async {
+  Future<List<Club>> getClubList() async {
     try {
-      final response = await _dio.get('/clubs/$clubId/join');
+      logger.i('동아리 목록 조회 시도');
+
+      final response = await _dio.get('/clubs');
 
       if (response.statusCode == 200) {
-        logger.i('동아리 등록 페이지 정보 가져오기 성공');
-        return Group.fromJson(response.data);
+        final Map<String, dynamic> jsonData = response.data;
+
+        List<dynamic> clubListData = jsonData['result'] as List<dynamic>;
+
+        return clubListData.map((json) => Club.fromJson(json as Map<String, dynamic>)).toList();
       } else {
-        logger.e('서버 에러', error: response.statusCode);
         throw Exception();
       }
     } catch (e) {
-      logger.e('동아리 등록 페이지 정보 가져오기 실패', error: e);
-      throw Exception();
+      logger.e('동아리 목록 조회 실패', error: e);
+      rethrow;
     }
   }
 }

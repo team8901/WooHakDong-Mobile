@@ -49,8 +49,6 @@ class DioInterceptor extends InterceptorsWrapper {
           );
 
           if (tokenResponse.statusCode == 200) {
-            logger.i("토큰 재발급 성공");
-
             final newTokenData = jsonDecode(tokenResponse.body);
 
             final String newAccessToken = newTokenData['accessToken'];
@@ -77,12 +75,12 @@ class DioInterceptor extends InterceptorsWrapper {
           return handler.reject(err);
         }
       } else {
-        logger.w('리프레시 토큰이 없음');
+        logger.w('리프레시 토큰 없음');
         _signOutByTokenRefreshFailed();
         return handler.reject(err);
       }
     } else {
-      logger.e('서버 에러 발생', error: err.response?.statusCode);
+      logger.e('서버 에러 발생', error: '에러 내용: ${err.response?.data}');
       return handler.reject(err);
     }
   }

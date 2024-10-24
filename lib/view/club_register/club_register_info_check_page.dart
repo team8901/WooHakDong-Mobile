@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_register/club_register_account_form_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/custom_info_check_tile.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
@@ -73,6 +74,10 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                 CustomInfoCheckTile(infoTitle: '동아리 회비', infoContent: _currencyFormatting(clubInfo.clubDues!)),
                 const Gap(defaultGapXL),
                 CustomInfoCheckTile(infoTitle: '동아리 방', infoContent: clubInfo.clubRoom!),
+                const Gap(defaultGapXL),
+                CustomInfoCheckTile(infoTitle: '카카오톡 채팅방 링크', infoContent: clubInfo.clubGroupChatLink!),
+                const Gap(defaultGapXL),
+                CustomInfoCheckTile(infoTitle: '카카오톡 채팅방 비밀번호', infoContent: clubInfo.clubGroupChatPassword!),
               ],
             ),
           ),
@@ -81,15 +86,19 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
           onTap: () async {
-            List<String> imageUrls = await s3ImageNotifier.setClubImageUrl('1');
-            final clubImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
+            try {
+              List<String> imageUrls = await s3ImageNotifier.setClubImageUrl('1');
+              final clubImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
 
-            String clubImageForServer = clubImageUrl.substring(0, clubImageUrl.indexOf('?'));
+              String clubImageForServer = clubImageUrl.substring(0, clubImageUrl.indexOf('?'));
 
-            await clubNotifier.registerClub(clubImageForServer);
+              await clubNotifier.registerClub(clubImageForServer);
 
-            if (context.mounted) {
-              _pushAccountFormPage(context);
+              if (context.mounted) {
+                _pushAccountFormPage(context);
+              }
+            } catch (e) {
+              GeneralFunctions.generalToastMessage('등아리 등록에 실패했어요\n다시 시도해 주세요');
             }
           },
           buttonText: '확인했어요',

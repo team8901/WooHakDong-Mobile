@@ -9,6 +9,8 @@ class WoohakdongAuthRepository {
 
   Future<Map<String, String>?> logIn(String googleAccessToken) async {
     try {
+      logger.i('토큰 발급 시도');
+
       final response = await _dio.post(
         '/auth/login/social',
         data: {
@@ -17,13 +19,11 @@ class WoohakdongAuthRepository {
       );
 
       if (response.statusCode == 200) {
-        logger.i('토큰 발급 성공');
         return {
           'accessToken': response.data['accessToken'],
           'refreshToken': response.data['refreshToken'],
         };
       } else {
-        logger.e('서버 에러', error: response.data);
         return null;
       }
     } catch (e) {
@@ -35,22 +35,17 @@ class WoohakdongAuthRepository {
 
   Future<void> logOut(String refreshToken) async {
     try {
-      final response = await _dio.post(
+      logger.i('토큰 삭제 시도');
+
+      await _dio.post(
         '/auth/logout',
         data: {
           'refreshToken': refreshToken,
         },
       );
-
-      if (response.statusCode == 200) {
-        logger.i('토큰 삭제 성공');
-      } else {
-        logger.e('서버 에러', error: response.data);
-        throw Exception('토큰 삭제 실패');
-      }
     } catch (e) {
       logger.e('토큰 삭제 실패', error: e);
-      throw Exception('토큰 삭제 실패');
+      throw Exception();
     }
   }
 }

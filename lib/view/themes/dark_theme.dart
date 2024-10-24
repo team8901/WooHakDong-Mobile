@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/text_style.dart';
 
@@ -68,19 +69,27 @@ final ThemeData darkTheme = ThemeData(
   ),
 
   /// 앱바 테마
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     backgroundColor: black,
-    titleSpacing: defaultPaddingM,
     elevation: 0,
     scrolledUnderElevation: 0,
     centerTitle: false,
-    iconTheme: IconThemeData(color: white),
-    actionsIconTheme: IconThemeData(color: white),
+    titleSpacing: defaultPaddingM,
+    titleTextStyle: CustomTextStyle.titleMedium,
+    iconTheme: const IconThemeData(color: white),
+    actionsIconTheme: const IconThemeData(color: white),
   ),
 
   /// 아이콘 테마
   iconTheme: const IconThemeData(
     color: white,
+  ),
+
+  iconButtonTheme: const IconButtonThemeData(
+    style: ButtonStyle(
+      padding: WidgetStatePropertyAll(EdgeInsets.zero),
+
+    )
   ),
 
   /// 바텀 네비게이션바 테마
@@ -89,10 +98,18 @@ final ThemeData darkTheme = ThemeData(
     elevation: 0,
     selectedItemColor: white,
     unselectedItemColor: lightGray,
-    selectedLabelStyle: CustomTextStyle.labelLarge.copyWith(color: white),
-    unselectedLabelStyle: CustomTextStyle.labelLarge.copyWith(color: lightGray),
+    selectedLabelStyle: CustomTextStyle.labelLarge.copyWith(
+      color: white,
+      fontWeight: FontWeight.w600,
+    ),
+    unselectedLabelStyle: CustomTextStyle.labelLarge.copyWith(
+      color: lightGray,
+      fontWeight: FontWeight.w600,
+    ),
     type: BottomNavigationBarType.fixed,
     enableFeedback: false,
+    selectedIconTheme: const IconThemeData(size: 24),
+    unselectedIconTheme: const IconThemeData(size: 24),
   ),
 
   /// 서치바 태마

@@ -25,14 +25,11 @@ class GoogleSignInService {
       final String? googleAccessToken = googleAuth.accessToken;
       final String? googleIdToken = googleAuth.idToken;
 
-      //print('googleAccessToken: $googleAccessToken');
-
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAccessToken,
         idToken: googleIdToken,
       );
 
-      // ignore: unused_local_variable
       final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
 
       if (googleAccessToken != null) {
@@ -44,8 +41,6 @@ class GoogleSignInService {
 
           await _secureStorage.write(key: 'accessToken', value: accessToken);
           await _secureStorage.write(key: 'refreshToken', value: refreshToken);
-
-          logger.i("구글 로그인 성공");
 
           return true;
         } else {
@@ -66,6 +61,8 @@ class GoogleSignInService {
 
   Future<bool> signOut() async {
     try {
+      logger.i("로그아웃 시도");
+
       final String? refreshToken = await _secureStorage.read(key: 'refreshToken');
 
       if (refreshToken != null) {
@@ -80,7 +77,6 @@ class GoogleSignInService {
       await _firebaseAuth.signOut();
       await _googleSignIn.signOut();
 
-      logger.i("로그아웃 성공");
       return true;
     } catch (e) {
       logger.e("로그아웃 실패", error: e);

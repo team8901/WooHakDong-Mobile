@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:woohakdong/model/group/group.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:woohakdong/view_model/club/components/club_name_validation_state.dart';
 import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 
@@ -7,6 +7,7 @@ import '../../model/club/club.dart';
 import '../../repository/club/club_repository.dart';
 import '../../service/logger/logger.dart';
 import 'club_name_validation_provider.dart';
+import 'current_club_provider.dart';
 
 final clubProvider = StateNotifierProvider<ClubNotifier, Club>((ref) {
   return ClubNotifier(ref);
@@ -48,11 +49,14 @@ class ClubNotifier extends StateNotifier<Club> {
     );
   }
 
-  void saveClubOtherInfo(String clubGeneration, int clubDues, String clubRoom) {
+  void saveClubOtherInfo(
+      String clubGeneration, int clubDues, String clubRoom, String clubGroupChatLink, String clubGroupChatPassword) {
     state = state.copyWith(
       clubGeneration: clubGeneration,
       clubDues: clubDues,
       clubRoom: clubRoom,
+      clubGroupChatLink: clubGroupChatLink,
+      clubGroupChatPassword: clubGroupChatPassword,
     );
   }
 
@@ -64,17 +68,6 @@ class ClubNotifier extends StateNotifier<Club> {
       state = state.copyWith(clubId: clubId);
     } catch (e) {
       logger.e('동아리 ID 실패', error: e);
-    }
-  }
-
-  Future<Group> getClubRegisterPageInfo() async {
-    try {
-      Group groupInfo = await clubRepository.getClubRegisterPageInfo(state.clubId!);
-
-      return groupInfo;
-    } catch (e) {
-      logger.e('동아리 등록 페이지 정보 가져오기 실패', error: e);
-      throw Exception();
     }
   }
 }
