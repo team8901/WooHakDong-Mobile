@@ -14,7 +14,7 @@ class ClubInformationPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final clubInfo = ref.watch(currentClubProvider);
+    final currentClubInfo = ref.watch(currentClubProvider);
     final authNotifier = ref.read(authProvider.notifier);
 
     return Scaffold(
@@ -23,7 +23,12 @@ class ClubInformationPage extends ConsumerWidget {
           onTap: () {
             showModalBottomSheet(
               useSafeArea: true,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(defaultBorderRadiusL)),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(defaultBorderRadiusL),
+                  topRight: Radius.circular(defaultBorderRadiusL),
+                ),
+              ),
               showDragHandle: true,
               backgroundColor: context.colorScheme.surfaceDim,
               context: context,
@@ -34,7 +39,7 @@ class ClubInformationPage extends ConsumerWidget {
           },
           child: Row(
             children: [
-              Text(clubInfo?.clubName ?? '내 동아리'),
+              Text(currentClubInfo?.clubName ?? '내 동아리'),
               const Gap(defaultGapS),
               const Icon(
                 Symbols.keyboard_arrow_down_rounded,

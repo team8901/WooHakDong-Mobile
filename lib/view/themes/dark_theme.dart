@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/text_style.dart';
 
@@ -75,7 +74,7 @@ final ThemeData darkTheme = ThemeData(
     scrolledUnderElevation: 0,
     centerTitle: false,
     titleSpacing: defaultPaddingM,
-    titleTextStyle: CustomTextStyle.titleMedium,
+    titleTextStyle: CustomTextStyle.titleMedium.copyWith(color: white),
     iconTheme: const IconThemeData(color: white),
     actionsIconTheme: const IconThemeData(color: white),
   ),
@@ -97,13 +96,13 @@ final ThemeData darkTheme = ThemeData(
     backgroundColor: black,
     elevation: 0,
     selectedItemColor: white,
-    unselectedItemColor: lightGray,
+    unselectedItemColor: darkGray,
     selectedLabelStyle: CustomTextStyle.labelLarge.copyWith(
       color: white,
       fontWeight: FontWeight.w600,
     ),
     unselectedLabelStyle: CustomTextStyle.labelLarge.copyWith(
-      color: lightGray,
+      color: darkGray,
       fontWeight: FontWeight.w600,
     ),
     type: BottomNavigationBarType.fixed,

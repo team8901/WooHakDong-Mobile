@@ -36,7 +36,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                   style: context.textTheme.headlineSmall,
                 ),
                 Text(
-                  '동아리 방과 채팅창 비밀번호는 비워놔도 돼요',
+                  '현재 기수, 동아리 방, 채팅창 비밀번호는 비워놔도 돼요',
                   style: context.textTheme.bodySmall?.copyWith(
                     color: context.colorScheme.onSurface,
                   ),
@@ -48,12 +48,6 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   onSaved: (value) => clubInfo.clubGeneration = value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '현재 기수를 입력해 주세요';
-                    }
-                    return null;
-                  },
                 ),
                 const Gap(defaultGapXL),
                 CustomTextFormField(
@@ -76,8 +70,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                 const Gap(defaultGapXL),
                 CustomTextFormField(
                   labelText: '동아리 방',
-                  onSaved: (value) =>
-                      (value == null || value.isEmpty) ? clubInfo.clubRoom = '없음' : clubInfo.clubRoom = value,
+                  onSaved: (value) => clubInfo.clubRoom = value,
                 ),
                 const Gap(defaultGapXL),
                 CustomTextFormField(
@@ -94,9 +87,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                 const Gap(defaultGapXL),
                 CustomTextFormField(
                   labelText: '카카오톡 채팅방 비밀번호',
-                  onSaved: (value) => (value == null || value.isEmpty)
-                      ? clubInfo.clubGroupChatPassword = '비밀번호 없음'
-                      : clubInfo.clubGroupChatPassword = value,
+                  onSaved: (value) => clubInfo.clubGroupChatPassword = value,
                   textInputAction: TextInputAction.done,
                 ),
               ],

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,10 +18,12 @@ import 'package:woohakdong/view/themes/dark_theme.dart';
 import 'package:woohakdong/view/themes/light_theme.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
 import 'package:woohakdong/view_model/auth/components/auth_state.dart';
-import 'package:woohakdong/view_model/club/current_club_provider.dart';
+import 'package:woohakdong/view_model/club/club_provider.dart';
+import 'package:woohakdong/view_model/club/components/club_state.dart';
+import 'package:woohakdong/view_model/club/components/club_state_provider.dart';
 import 'package:woohakdong/view_model/member/components/member_state.dart';
+import 'package:woohakdong/view_model/member/components/member_state_provider.dart';
 import 'package:woohakdong/view_model/member/member_provider.dart';
-import 'package:woohakdong/view_model/member/member_state_provider.dart';
 
 import 'firebase_options.dart';
 
@@ -46,64 +49,69 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  late Future<void> _initialization;
+
+  @override
+  void initState() {
+    super.initState();
+    _initialization = _initializeApp();
+
+    FlutterNativeSplash.remove();
+  }
+
+  Future<void> _initializeApp() async {
     final memberNotifier = ref.read(memberProvider.notifier);
+    await memberNotifier.getMemberInfo();
+    final clubNotifier = ref.read(clubProvider.notifier);
+    await clubNotifier.getClubList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
     final memberState = ref.watch(memberStateProvider);
-    final currentClub = ref.watch(currentClubProvider);
+    final clubState = ref.watch(clubStateProvider);
 
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) {
         return MaterialApp(
-          key: ValueKey(currentClub?.clubId ?? 'no_club'),
           title: '우학동: 우리 학교 동아리',
           debugShowCheckedModeBanner: false,
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.system,
-          home: Builder(
-            builder: (context) {
-              if (authState == AuthState.authenticated) {
-                return FutureBuilder(
-                  future: memberNotifier.getMemberInfo(),
-                  builder: (context, memberSnapshot) {
-                    if (memberSnapshot.connectionState == ConnectionState.waiting) {
-                      return const Scaffold(body: CustomCircularProgressIndicator());
-                    } else if (memberSnapshot.hasError) {
-                      // 에러 발생 시 로그인 화면으로 이동
-                      return const LoginPage();
-                    } else {
-                      if (memberState == MemberState.nonMember) {
-                        // 우학동 회원가입이 안되어 있으면 회원가입 화면으로 이동
-                        FlutterNativeSplash.remove();
-                        return const MemberRegisterPage();
-                      } else if (memberState == MemberState.member) {
-                        if (currentClub == null) {
-                          // 동아리 등록이 안되어 있으면 동아리 등록 화면으로 이동
-                          FlutterNativeSplash.remove();
-                          return const ClubRegisterPage();
-                        } else {
-                          // 동아리도 등록했으면 메인 화면으로 이동
-                          FlutterNativeSplash.remove();
-                          return const RoutePage();
-                        }
-                      } else {
-                        // 로그인 실패 시 로그인 화면으로 이동
-                        FlutterNativeSplash.remove();
-                        return const LoginPage();
-                      }
-                    }
-                  },
-                );
-              } else {
-                // 인증되지 않은 경우 로그인 화면으로 이동
-                FlutterNativeSplash.remove();
+          home: FutureBuilder(
+            future: _initialization,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Scaffold(body: SafeArea(child: CustomCircularProgressIndicator()));
+              } else if (snapshot.hasError) {
                 return const LoginPage();
+              } else {
+                if (FirebaseAuth.instance.currentUser != null && authState == AuthState.authenticated) {
+                  if (memberState == MemberState.memberNotRegistered) {
+                    return const MemberRegisterPage();
+                  } else if (memberState == MemberState.memberRegistered) {
+                    if (clubState == ClubState.clubNotRegistered) {
+                      return const ClubRegisterPage();
+                    } else {
+                      return const RoutePage();
+                    }
+                  } else {
+                    return const LoginPage();
+                  }
+                } else {
+                  return const LoginPage();
+                }
               }
             },
           ),

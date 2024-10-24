@@ -28,9 +28,6 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
           future: memberNotifier.getMemberInfo(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // 로딩 중일 때 로딩 화면을 표시
-              return const CustomCircularProgressIndicator();
-            } else if (snapshot.hasError) {
               return const CustomCircularProgressIndicator();
             } else {
               final memberInfo = ref.watch(memberProvider);

@@ -29,16 +29,6 @@ class _RoutePageState extends ConsumerState<RoutePage> {
   ];
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final String? clubImage = ref.watch(currentClubProvider)?.clubImage;
 

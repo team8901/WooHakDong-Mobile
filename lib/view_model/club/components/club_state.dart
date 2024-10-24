@@ -1,0 +1,5 @@
+enum ClubState {
+  clubRegistered,
+  clubNotRegistered,
+
+}

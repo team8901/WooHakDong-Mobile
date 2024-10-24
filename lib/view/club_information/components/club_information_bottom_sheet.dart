@@ -5,9 +5,11 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../../service/general/general_functions.dart';
 import '../../../view_model/club/club_id_provider.dart';
 import '../../../view_model/club/club_list_provider.dart';
 import '../../club_register/club_register_caution_page_.dart';
+import '../../route_page.dart';
 import '../../themes/spacing.dart';
 
 class ClubInformationBottomSheet extends ConsumerWidget {
@@ -32,14 +34,14 @@ class ClubInformationBottomSheet extends ConsumerWidget {
               color: context.colorScheme.onSurface,
             ),
           ),
-          const Gap(defaultGapXL),
+          const Gap(defaultGapXL * 2),
           FutureBuilder(
             future: ref.watch(clubListProvider.future),
             builder: (context, clubListSnapshot) {
               if (clubListSnapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (clubListSnapshot.hasError) {
-                return const Text('오류가 발생했습니다.');
+                return Text('동아리 목록을 불러올 수 없어요', style: context.textTheme.bodyLarge);
               } else {
                 final clubList = clubListSnapshot.data;
 
@@ -61,8 +63,10 @@ class ClubInformationBottomSheet extends ConsumerWidget {
                               await ref.read(clubIdProvider.notifier).saveClubId(club.clubId!);
 
                               if (context.mounted) {
-                                Navigator.of(context).pop();
+                                _pushRoutePage(context);
                               }
+
+                              GeneralFunctions.generalToastMessage('${club.clubName} 동아리로 전환되었어요');
                             },
                             child: Ink(
                               child: Row(
@@ -138,6 +142,7 @@ class ClubInformationBottomSheet extends ConsumerWidget {
               }
             },
           ),
+          const Gap(defaultGapXL),
         ],
       ),
     );
@@ -151,6 +156,25 @@ class ClubInformationBottomSheet extends ConsumerWidget {
       CupertinoPageRoute(
         builder: (context) => const ClubRegisterCautionPage(),
       ),
+    );
+  }
+
+  void _pushRoutePage(BuildContext context) {
+    Navigator.of(context).pop();
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      PageRouteBuilder(
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+        pageBuilder: (
+          context,
+          Animation<double> animation1,
+          Animation<double> animation2,
+        ) =>
+            const RoutePage(),
+      ),
+      (route) => false,
     );
   }
 }

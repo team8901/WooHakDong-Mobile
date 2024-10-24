@@ -7,7 +7,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../service/general/general_functions.dart';
 import '../../view_model/club/club_account_provider.dart';
-import '../../view_model/club/club_account_validation_provider.dart';
+import '../../view_model/club/components/club_account_validation_provider.dart';
 import '../../view_model/club/club_provider.dart';
 import '../../view_model/club/components/club_account_validation_state.dart';
 import '../themes/custom_widget/custom_bottom_button.dart';

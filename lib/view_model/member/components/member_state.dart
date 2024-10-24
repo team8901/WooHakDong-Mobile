@@ -1,4 +1,4 @@
 enum MemberState {
-  member,
-  nonMember,
+  memberRegistered,
+  memberNotRegistered,
 }

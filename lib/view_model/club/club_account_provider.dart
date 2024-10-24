@@ -3,7 +3,7 @@ import 'package:woohakdong/model/club/club_account.dart';
 import 'package:woohakdong/repository/club/club_account_repository.dart';
 
 import '../../service/logger/logger.dart';
-import 'club_account_validation_provider.dart';
+import 'components/club_account_validation_provider.dart';
 import 'components/club_account_validation_state.dart';
 
 final clubAccountProvider = StateNotifierProvider<ClubAccountNotifier, ClubAccount>((ref) {
@@ -20,7 +20,7 @@ class ClubAccountNotifier extends StateNotifier<ClubAccount> {
             clubAccountBankName: '',
             clubAccountNumber: '',
             clubAccountPinTechNumber: '',
-          ),
+          )
         );
 
   Future<void> saveClubAccountInfo(String clubAccountBankName, String clubAccountNumber) async {

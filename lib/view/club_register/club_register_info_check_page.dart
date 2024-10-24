@@ -68,16 +68,36 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                 CustomInfoCheckTile(infoTitle: '동아리 영문 이름', infoContent: clubInfo.clubEnglishName!),
                 const Gap(defaultGapXL),
                 CustomInfoCheckTile(infoTitle: '동아리 설명', infoContent: clubInfo.clubDescription!),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '동아리 기수', infoContent: _generationFormatting(clubInfo.clubGeneration!)),
+                (clubInfo.clubGeneration != null)
+                    ? Column(
+                        children: [
+                          const Gap(defaultGapXL),
+                          CustomInfoCheckTile(
+                              infoTitle: '현재 기수', infoContent: _generationFormatting(clubInfo.clubGeneration!)),
+                        ],
+                      )
+                    : const SizedBox(),
                 const Gap(defaultGapXL),
                 CustomInfoCheckTile(infoTitle: '동아리 회비', infoContent: _currencyFormatting(clubInfo.clubDues!)),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '동아리 방', infoContent: clubInfo.clubRoom!),
+                (clubInfo.clubRoom != null)
+                    ? Column(
+                        children: [
+                          const Gap(defaultGapXL),
+                          CustomInfoCheckTile(infoTitle: '동아리 방', infoContent: clubInfo.clubRoom!),
+                        ],
+                      )
+                    : const SizedBox(),
                 const Gap(defaultGapXL),
                 CustomInfoCheckTile(infoTitle: '카카오톡 채팅방 링크', infoContent: clubInfo.clubGroupChatLink!),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '카카오톡 채팅방 비밀번호', infoContent: clubInfo.clubGroupChatPassword!),
+                (clubInfo.clubGroupChatPassword != null)
+                    ? Column(
+                        children: [
+                          const Gap(defaultGapXL),
+                          CustomInfoCheckTile(
+                              infoTitle: '카카오톡 채팅방 비밀번호', infoContent: clubInfo.clubGroupChatPassword!),
+                        ],
+                      )
+                    : const SizedBox(),
               ],
             ),
           ),
