@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,26 +8,21 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/login/login_page.dart';
-import 'package:woohakdong/view/member_register/member_register_page.dart';
 import 'package:woohakdong/view/route_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view/themes/dark_theme.dart';
 import 'package:woohakdong/view/themes/light_theme.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
 import 'package:woohakdong/view_model/auth/components/auth_state.dart';
-import 'package:woohakdong/view_model/club/club_provider.dart';
-import 'package:woohakdong/view_model/club/components/club_state.dart';
-import 'package:woohakdong/view_model/club/components/club_state_provider.dart';
-import 'package:woohakdong/view_model/member/components/member_state.dart';
-import 'package:woohakdong/view_model/member/components/member_state_provider.dart';
-import 'package:woohakdong/view_model/member/member_provider.dart';
+import 'package:woohakdong/view_model/auth/components/auth_state_provider.dart';
 
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await Permission.camera.request();
   await Permission.photos.request();
@@ -36,13 +30,9 @@ void main() async {
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
   await dotenv.load(fileName: ".env");
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   HttpOverrides.global = MyHttpOverrides();
 
@@ -63,22 +53,15 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     super.initState();
     _initialization = _initializeApp();
-
-    FlutterNativeSplash.remove();
   }
 
   Future<void> _initializeApp() async {
-    final memberNotifier = ref.read(memberProvider.notifier);
-    await memberNotifier.getMemberInfo();
-    final clubNotifier = ref.read(clubProvider.notifier);
-    await clubNotifier.getClubList();
+    await ref.read(authProvider.notifier).checkLoginStatus();
   }
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authProvider);
-    final memberState = ref.watch(memberStateProvider);
-    final clubState = ref.watch(clubStateProvider);
+    final authState = ref.watch(authStateProvider);
 
     return ScreenUtilInit(
       designSize: const Size(375, 812),
@@ -91,25 +74,14 @@ class _MyAppState extends ConsumerState<MyApp> {
           themeMode: ThemeMode.system,
           home: FutureBuilder(
             future: _initialization,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+            builder: (context, infoSnapshot) {
+              if (infoSnapshot.connectionState == ConnectionState.waiting) {
                 return const Scaffold(body: SafeArea(child: CustomCircularProgressIndicator()));
-              } else if (snapshot.hasError) {
-                return const LoginPage();
               } else {
-                if (FirebaseAuth.instance.currentUser != null && authState == AuthState.authenticated) {
-                  if (memberState == MemberState.memberNotRegistered) {
-                    return const MemberRegisterPage();
-                  } else if (memberState == MemberState.memberRegistered) {
-                    if (clubState == ClubState.clubNotRegistered) {
-                      return const ClubRegisterPage();
-                    } else {
-                      return const RoutePage();
-                    }
-                  } else {
-                    return const LoginPage();
-                  }
+                if (authState == AuthState.authenticated) {
+                  return const RoutePage();
                 } else {
+                  FlutterNativeSplash.remove();
                   return const LoginPage();
                 }
               }

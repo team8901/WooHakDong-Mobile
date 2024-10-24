@@ -62,6 +62,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
     final s3ImageState = ref.watch(s3ImageProvider);
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -146,7 +147,6 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                       hintText: '소문자와 숫자만 입력해 주세요',
                       keyboardType: TextInputType.name,
                       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))],
-                      textInputAction: TextInputAction.done,
                       onChanged: (value) => clubNameValidationNotifier.state = ClubNameValidationState.notChecked,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -214,6 +214,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                   labelText: '동아리 설명',
                   maxLength: 500,
                   keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '동아리 설명을 입력해 주세요';

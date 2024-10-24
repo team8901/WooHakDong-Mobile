@@ -68,7 +68,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                 CustomInfoCheckTile(infoTitle: '동아리 영문 이름', infoContent: clubInfo.clubEnglishName!),
                 const Gap(defaultGapXL),
                 CustomInfoCheckTile(infoTitle: '동아리 설명', infoContent: clubInfo.clubDescription!),
-                (clubInfo.clubGeneration != null)
+                (clubInfo.clubGeneration != '')
                     ? Column(
                         children: [
                           const Gap(defaultGapXL),
@@ -79,7 +79,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                     : const SizedBox(),
                 const Gap(defaultGapXL),
                 CustomInfoCheckTile(infoTitle: '동아리 회비', infoContent: _currencyFormatting(clubInfo.clubDues!)),
-                (clubInfo.clubRoom != null)
+                (clubInfo.clubRoom != '')
                     ? Column(
                         children: [
                           const Gap(defaultGapXL),
@@ -89,12 +89,11 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                     : const SizedBox(),
                 const Gap(defaultGapXL),
                 CustomInfoCheckTile(infoTitle: '카카오톡 채팅방 링크', infoContent: clubInfo.clubGroupChatLink!),
-                (clubInfo.clubGroupChatPassword != null)
+                (clubInfo.clubGroupChatPassword != '')
                     ? Column(
                         children: [
                           const Gap(defaultGapXL),
-                          CustomInfoCheckTile(
-                              infoTitle: '카카오톡 채팅방 비밀번호', infoContent: clubInfo.clubGroupChatPassword!),
+                          CustomInfoCheckTile(infoTitle: '카카오톡 채팅방 비밀번호', infoContent: clubInfo.clubGroupChatPassword!),
                         ],
                       )
                     : const SizedBox(),

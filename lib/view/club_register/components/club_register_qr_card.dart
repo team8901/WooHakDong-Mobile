@@ -25,40 +25,40 @@ class ClubRegisterQrCard extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(
         vertical: defaultPaddingS * 2,
-        horizontal: defaultPaddingM * 3,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            '${groupInfo?.groupName}',
-            style: context.textTheme.headlineLarge?.copyWith(
-              fontSize: 32,
-              color: context.colorScheme.primary,
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: defaultPaddingS * 2),
+            child: Text(
+              '${groupInfo?.groupName}',
+              style: context.textTheme.headlineLarge?.copyWith(
+                fontSize: 28,
+                color: context.colorScheme.primary,
+              ),
             ),
           ),
           const Gap(defaultGapL * 2),
-          AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                border: Border.all(color: context.colorScheme.primary, width: 5),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(defaultBorderRadiusL),
+              border: Border.all(color: context.colorScheme.primary, width: 5),
+            ),
+            padding: const EdgeInsets.all(defaultPaddingS),
+            margin: const EdgeInsets.symmetric(horizontal: defaultPaddingM * 3),
+            child: QrImageView(
+              data: '${groupInfo?.groupJoinLink}',
+              version: QrVersions.auto,
+              padding: EdgeInsets.zero,
+              eyeStyle: QrEyeStyle(
+                eyeShape: QrEyeShape.square,
+                color: context.colorScheme.inverseSurface,
               ),
-              padding: const EdgeInsets.all(defaultPaddingS),
-              child: QrImageView(
-                data: '${groupInfo?.groupLink}',
-                version: QrVersions.auto,
-                padding: EdgeInsets.zero,
-                eyeStyle: QrEyeStyle(
-                  eyeShape: QrEyeShape.square,
-                  color: context.colorScheme.inverseSurface,
-                ),
-                dataModuleStyle: QrDataModuleStyle(
-                  dataModuleShape: QrDataModuleShape.square,
-                  color: context.colorScheme.inverseSurface,
-                ),
+              dataModuleStyle: QrDataModuleStyle(
+                dataModuleShape: QrDataModuleShape.square,
+                color: context.colorScheme.inverseSurface,
               ),
             ),
           ),

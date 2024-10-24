@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,7 +24,7 @@ class ClubInformationBottomSheet extends ConsumerWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: defaultPaddingM),
+      padding: const EdgeInsets.all(defaultPaddingM),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -54,6 +55,7 @@ class ClubInformationBottomSheet extends ConsumerWidget {
                       if (index != clubList.length) {
                         final club = clubList[index];
                         final isCurrent = club.clubId == currentClubId;
+                        final CachedNetworkImageProvider imageProvider = CachedNetworkImageProvider(club.clubImage!);
 
                         return SizedBox(
                           width: double.infinity,
@@ -63,10 +65,8 @@ class ClubInformationBottomSheet extends ConsumerWidget {
                               await ref.read(clubIdProvider.notifier).saveClubId(club.clubId!);
 
                               if (context.mounted) {
-                                _pushRoutePage(context);
+                                _pushRoutePage(context, club.clubName!);
                               }
-
-                              GeneralFunctions.generalToastMessage('${club.clubName} 동아리로 전환되었어요');
                             },
                             child: Ink(
                               child: Row(
@@ -76,16 +76,15 @@ class ClubInformationBottomSheet extends ConsumerWidget {
                                     width: 36,
                                     height: 36,
                                     decoration: BoxDecoration(
+                                      color: context.colorScheme.surfaceContainer,
                                       shape: BoxShape.circle,
                                       border: Border.all(
-                                        color: (isCurrent)
-                                            ? context.colorScheme.primary
-                                            : context.colorScheme.surfaceContainer,
+                                        color: context.colorScheme.surfaceContainer,
                                       ),
                                     ),
                                     child: CircleAvatar(
                                       radius: 18,
-                                      backgroundImage: NetworkImage(club.clubImage!),
+                                      backgroundImage: imageProvider,
                                     ),
                                   ),
                                   const Gap(defaultGapXL),
@@ -96,6 +95,7 @@ class ClubInformationBottomSheet extends ConsumerWidget {
                                   const Spacer(),
                                   if (isCurrent)
                                     Icon(
+                                      size: 20,
                                       Symbols.check_circle_rounded,
                                       color: context.colorScheme.primary,
                                     ),
@@ -142,7 +142,6 @@ class ClubInformationBottomSheet extends ConsumerWidget {
               }
             },
           ),
-          const Gap(defaultGapXL),
         ],
       ),
     );
@@ -159,7 +158,7 @@ class ClubInformationBottomSheet extends ConsumerWidget {
     );
   }
 
-  void _pushRoutePage(BuildContext context) {
+  void _pushRoutePage(BuildContext context, String clubName) {
     Navigator.of(context).pop();
 
     Navigator.pushAndRemoveUntil(
@@ -176,5 +175,7 @@ class ClubInformationBottomSheet extends ConsumerWidget {
       ),
       (route) => false,
     );
+
+    GeneralFunctions.generalToastMessage('$clubName 동아리로 전환되었어요');
   }
 }

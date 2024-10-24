@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/view/club_calendar/club_calendar_page.dart';
-import 'package:woohakdong/view/club_dues/club_dues_page.dart';
-import 'package:woohakdong/view/club_information/club_information_page.dart';
-import 'package:woohakdong/view/club_item/club_item_list_page.dart';
-import 'package:woohakdong/view/club_member/club_member_list_page.dart';
-import 'package:woohakdong/view/themes/theme_context.dart';
-
-import '../view_model/club/current_club_provider.dart';
+import 'package:woohakdong/view/club_register/club_register_page.dart';
+import 'package:woohakdong/view/member_register/member_register_page.dart';
+import 'package:woohakdong/view/navigator/navigator_page.dart';
+import 'package:woohakdong/view/themes/custom_widget/custom_circular_progress_indicator.dart';
+import 'package:woohakdong/view_model/club/club_provider.dart';
+import 'package:woohakdong/view_model/club/components/club_state.dart';
+import 'package:woohakdong/view_model/club/components/club_state_provider.dart';
+import 'package:woohakdong/view_model/member/components/member_state.dart';
+import 'package:woohakdong/view_model/member/components/member_state_provider.dart';
+import 'package:woohakdong/view_model/member/member_provider.dart';
 
 class RoutePage extends ConsumerStatefulWidget {
   const RoutePage({super.key});
@@ -18,81 +20,44 @@ class RoutePage extends ConsumerStatefulWidget {
 }
 
 class _RoutePageState extends ConsumerState<RoutePage> {
-  int _selectedIndex = 0;
+  late Future<void> _initialization;
 
-  final List<Widget> _widgetOptions = <Widget>[
-    const ClubMemberListPage(),
-    const ClubItemListPage(),
-    const ClubDuesPage(),
-    const ClubCalendarPage(),
-    const ClubInformationPage(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _initialization = _initializeApp();
+    FlutterNativeSplash.remove();
+  }
+
+  Future<void> _initializeApp() async {
+    await ref.read(memberProvider.notifier).getMemberInfo();
+    await ref.read(clubProvider.notifier).getClubList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final String? clubImage = ref.watch(currentClubProvider)?.clubImage;
+    final memberState = ref.watch(memberStateProvider);
+    final clubState = ref.watch(clubStateProvider);
 
-    return Scaffold(
-      body: SizedBox(
-        height: double.infinity,
-        width: double.infinity,
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: context.colorScheme.surfaceContainer,
-            ),
-          ),
-        ),
-        child: BottomNavigationBar(
-          items: [
-            const BottomNavigationBarItem(
-              icon: Icon(Symbols.group_rounded),
-              label: '회원',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Symbols.list_alt_rounded),
-              label: '물품',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Symbols.wallet_rounded),
-              label: '회비',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Symbols.calendar_month_rounded),
-              label: '일정',
-            ),
-            BottomNavigationBarItem(
-              icon: clubImage != null
-                  ? Container(
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: _selectedIndex == 4 ? context.colorScheme.inverseSurface : context.colorScheme.outline,
-                          width: 1,
-                        ),
-                        image: DecorationImage(
-                          image: NetworkImage(clubImage),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    )
-                  : const Icon(Symbols.more_horiz_rounded),
-              label: '내 동아리',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-        ),
-      ),
+    return FutureBuilder(
+      future: _initialization,
+      builder: (context, infoSnapshot) {
+        if (infoSnapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(body: SafeArea(child: CustomCircularProgressIndicator()));
+        } else {
+          if (memberState == MemberState.memberNotRegistered) {
+            return const MemberRegisterPage();
+          } else if (memberState == MemberState.memberRegistered) {
+            if (clubState == ClubState.clubNotRegistered) {
+              return const ClubRegisterPage();
+            } else {
+              return const NavigatorPage();
+            }
+          } else {
+            return const Scaffold(body: SafeArea(child: CustomCircularProgressIndicator()));
+          }
+        }
+      },
     );
-  }
-
-  void _onItemTapped(int index) {
-    setState(() => _selectedIndex = index);
   }
 }

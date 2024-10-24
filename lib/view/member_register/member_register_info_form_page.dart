@@ -22,6 +22,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
     final memberNotifier = ref.read(memberProvider.notifier);
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(),
       body: SafeArea(
         child: FutureBuilder(
@@ -70,7 +71,6 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                         hintText: '휴대폰 번호를 - 없이 입력해 주세요',
                         keyboardType: TextInputType.phone,
                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        textInputAction: TextInputAction.done,
                         onSaved: (value) => memberInfo?.memberPhoneNumber = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -107,6 +107,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                         labelText: '학번',
                         keyboardType: TextInputType.number,
                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        textInputAction: TextInputAction.done,
                         onSaved: (value) => memberInfo?.memberStudentNumber = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {

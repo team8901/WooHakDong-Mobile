@@ -6,6 +6,7 @@ class CustomDropdownFormField extends StatelessWidget {
   final String labelText;
   final List<Map<String, String>> items;
   final ValueChanged<String?>? onChanged;
+  final FormFieldSetter<String>? onSaved;
   final FormFieldValidator<String>? validator;
   final void Function()? onTap;
   final double menuMaxHeight;
@@ -15,6 +16,7 @@ class CustomDropdownFormField extends StatelessWidget {
     required this.labelText,
     required this.items,
     this.onChanged,
+    this.onSaved,
     this.validator,
     this.onTap,
     this.menuMaxHeight = 384,
@@ -56,6 +58,7 @@ class CustomDropdownFormField extends StatelessWidget {
         );
       }).toList(),
       onChanged: onChanged,
+      onSaved: onSaved,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onTap: onTap,

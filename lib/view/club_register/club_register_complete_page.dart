@@ -10,6 +10,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 import '../../service/general/general_functions.dart';
 import '../../view_model/club/club_id_provider.dart';
 import '../../view_model/club/club_provider.dart';
+import '../../view_model/club/current_club_provider.dart';
 import '../../view_model/group/group_provider.dart';
 import '../route_page.dart';
 import '../themes/custom_widget/custom_bottom_button.dart';
@@ -81,6 +82,8 @@ class ClubRegisterCompletePage extends ConsumerWidget {
           onTap: () async {
             await ref.read(clubIdProvider.notifier).saveClubId(clubInfo.clubId!);
 
+            ref.refresh(currentClubProvider);
+
             if (context.mounted) {
               _pushRoutePage(context);
             }
@@ -93,10 +96,13 @@ class ClubRegisterCompletePage extends ConsumerWidget {
     );
   }
 
-  Future<dynamic> _pushRoutePage(BuildContext context) {
-    return Navigator.pushReplacement(
+  void _pushRoutePage(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
       context,
-      CupertinoPageRoute(builder: (context) => const RoutePage()),
+      CupertinoPageRoute(
+        builder: (context) => const RoutePage(),
+      ),
+      (route) => false,
     );
   }
 }

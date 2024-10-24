@@ -45,6 +45,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
   Widget build(BuildContext context) {
     final clubInfo = ref.watch(clubProvider);
     final clubAccountValidationState = ref.watch(clubAccountValidationProvider);
+    final clubAccountValidationNotifier = ref.read(clubAccountValidationProvider.notifier);
     final clubAccountInfo = ref.watch(clubAccountProvider);
     final clubAccountNotifier = ref.read(clubAccountProvider.notifier);
 
@@ -63,44 +64,42 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                   style: context.textTheme.headlineSmall,
                 ),
                 const Gap(defaultGapXL * 2),
-                IgnorePointer(
-                  ignoring: clubAccountValidationState == ClubAccountValidationState.valid,
-                  child: CustomDropdownFormField(
-                    labelText: '동아리 계좌 은행',
-                    items: const [
-                      {'value': '경남은행', 'displayText': '경남은행'},
-                      {'value': '광주은행', 'displayText': '광주은행'},
-                      {'value': '국민은행', 'displayText': '국민은행'},
-                      {'value': '기업은행', 'displayText': '기업은행'},
-                      {'value': '농협상호금융', 'displayText': '농협상호금융'},
-                      {'value': '농협은행', 'displayText': '농협은행'},
-                      {'value': '대구은행', 'displayText': '대구은행'},
-                      {'value': '새마을금고', 'displayText': '새마을금고'},
-                      {'value': '산업은행', 'displayText': '산업은행'},
-                      {'value': 'SC제일은행', 'displayText': 'SC제일은행'},
-                      {'value': '시티은행', 'displayText': '시티은행'},
-                      {'value': '신한은행', 'displayText': '신한은행'},
-                      {'value': '우리은행', 'displayText': '우리은행'},
-                      {'value': '전북은행', 'displayText': '전북은행'},
-                      {'value': '제주은행', 'displayText': '제주은행'},
-                      {'value': '카카오뱅크', 'displayText': '카카오뱅크'},
-                      {'value': 'KEB하나은행', 'displayText': 'KEB하나은행'},
-                    ],
-                    onChanged: (value) => clubAccountBankName = value!,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '동아리 계좌 은행을 선택해 주세요';
-                      }
-                      return null;
-                    },
-                  ),
+                CustomDropdownFormField(
+                  labelText: '동아리 계좌 은행',
+                  items: const [
+                    {'value': '경남은행', 'displayText': '경남은행'},
+                    {'value': '광주은행', 'displayText': '광주은행'},
+                    {'value': '국민은행', 'displayText': '국민은행'},
+                    {'value': '기업은행', 'displayText': '기업은행'},
+                    {'value': '농협상호금융', 'displayText': '농협상호금융'},
+                    {'value': '농협은행', 'displayText': '농협은행'},
+                    {'value': '대구은행', 'displayText': '대구은행'},
+                    {'value': '새마을금고', 'displayText': '새마을금고'},
+                    {'value': '산업은행', 'displayText': '산업은행'},
+                    {'value': 'SC제일은행', 'displayText': 'SC제일은행'},
+                    {'value': '시티은행', 'displayText': '시티은행'},
+                    {'value': '신한은행', 'displayText': '신한은행'},
+                    {'value': '우리은행', 'displayText': '우리은행'},
+                    {'value': '전북은행', 'displayText': '전북은행'},
+                    {'value': '제주은행', 'displayText': '제주은행'},
+                    {'value': '카카오뱅크', 'displayText': '카카오뱅크'},
+                    {'value': 'KEB하나은행', 'displayText': 'KEB하나은행'},
+                  ],
+                  onSaved: (value) => clubAccountBankName = value!,
+                  onChanged: (value) => clubAccountValidationNotifier.state = ClubAccountValidationState.notChecked,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '동아리 계좌 은행을 선택해 주세요';
+                    }
+                    return null;
+                  },
                 ),
                 const Gap(defaultGapXL),
                 CustomTextFormField(
                   controller: clubAccountNumberController,
                   labelText: '동아리 계좌',
                   onSaved: (value) => clubAccountInfo.clubAccountNumber = value!,
-                  readOnly: clubAccountValidationState == ClubAccountValidationState.valid,
+                  onChanged: (value) => clubAccountValidationNotifier.state = ClubAccountValidationState.notChecked,
                   hintText: '동아리 계좌를 - 없이 입력해 주세요',
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
