@@ -19,7 +19,7 @@ class ClubNotifier extends StateNotifier<Club> {
 
   ClubNotifier(this.ref) : super(Club());
 
-  Future<void> getClubList() async {
+  Future<List<Club>> getClubList() async {
     final List<Club> clubList = await clubRepository.getClubList();
 
     if (clubList.isEmpty) {
@@ -27,6 +27,8 @@ class ClubNotifier extends StateNotifier<Club> {
     } else {
       ref.read(clubStateProvider.notifier).state = ClubState.clubRegistered;
     }
+
+    return clubList;
   }
 
   Future<void> clubNameValidation(String clubName, String clubEnglishName) async {
