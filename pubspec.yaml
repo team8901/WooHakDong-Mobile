@@ -43,6 +43,7 @@ dependencies:
   material_symbols_icons: ^4.2789.0
   image_gallery_saver: ^2.0.3
   cached_network_image: ^3.4.1
+  sentry_flutter: ^8.9.0
 
 dev_dependencies:
   flutter_test:

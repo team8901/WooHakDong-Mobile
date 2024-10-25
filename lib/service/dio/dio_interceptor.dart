@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../logger/logger.dart';
 
@@ -81,6 +82,12 @@ class DioInterceptor extends InterceptorsWrapper {
       }
     } else {
       logger.e('서버 에러 발생', error: '에러 내용: ${err.response?.data}');
+
+      await Sentry.captureException(
+        err,
+        stackTrace: err.toString(),
+      );
+
       return handler.reject(err);
     }
   }

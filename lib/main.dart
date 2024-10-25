@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:woohakdong/view/login/login_page.dart';
 import 'package:woohakdong/view/route_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/custom_circular_progress_indicator.dart';
@@ -19,7 +21,7 @@ import 'package:woohakdong/view_model/auth/components/auth_state_provider.dart';
 
 import 'firebase_options.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -36,7 +38,18 @@ void main() async {
 
   HttpOverrides.global = MyHttpOverrides();
 
-  runApp(const ProviderScope(child: MyApp()));
+  if (!kDebugMode) {
+    runApp(const ProviderScope(child: MyApp()));
+  } else {
+    await SentryFlutter.init(
+      (options) {
+        options.dsn = dotenv.env['SENTRY_DSN'];
+        options.tracesSampleRate = 1.0;
+        options.profilesSampleRate = 1.0;
+      },
+      appRunner: () => runApp(const ProviderScope(child: MyApp())),
+    );
+  }
 }
 
 class MyApp extends ConsumerStatefulWidget {

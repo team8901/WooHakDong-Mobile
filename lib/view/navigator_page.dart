@@ -1,14 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_calendar/club_calendar_page.dart';
 import 'package:woohakdong/view/club_dues/club_dues_page.dart';
 import 'package:woohakdong/view/club_information/club_information_page.dart';
 import 'package:woohakdong/view/club_item/club_item_list_page.dart';
 import 'package:woohakdong/view/club_member/club_member_list_page.dart';
+import 'package:woohakdong/view/themes/custom_widget/custom_pop_scope.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../view_model/club/current_club_provider.dart';
@@ -22,7 +21,6 @@ class NavigatorPage extends ConsumerStatefulWidget {
 
 class _RoutePageState extends ConsumerState<NavigatorPage> {
   int _selectedIndex = 0;
-  DateTime? currentBackPressTime;
 
   final List<Widget> _widgetOptions = <Widget>[
     const ClubMemberListPage(),
@@ -37,21 +35,7 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
     final String? clubImage = ref.watch(currentClubProvider)?.clubImage;
 
     return Scaffold(
-      body: PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (didPop, dynamic) {
-          final now = DateTime.now();
-
-          if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(seconds: 1)) {
-            currentBackPressTime = now;
-
-            GeneralFunctions.generalToastMessage("'뒤로' 버튼을 한번 더 누르면 종료돼요");
-
-            return;
-          } else {
-            SystemNavigator.pop();
-          }
-        },
+      body: CustomPopScope(
         child: SizedBox(
           height: double.infinity,
           width: double.infinity,
@@ -126,7 +110,7 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: context.colorScheme.inverseSurface,
-                          width: _selectedIndex == 4 ? 2 : 0.5,
+                          width: _selectedIndex == 4 ? 2 : 1,
                           strokeAlign:
                               _selectedIndex == 4 ? BorderSide.strokeAlignCenter : BorderSide.strokeAlignInside,
                         ),

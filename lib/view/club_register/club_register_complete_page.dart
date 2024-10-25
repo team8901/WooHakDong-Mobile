@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -15,6 +14,7 @@ import '../../view_model/club/club_provider.dart';
 import '../../view_model/group/group_provider.dart';
 import '../route_page.dart';
 import '../themes/custom_widget/custom_bottom_button.dart';
+import '../themes/custom_widget/custom_pop_scope.dart';
 import '../themes/spacing.dart';
 import 'components/club_register_qr_card.dart';
 import 'components/club_register_url_card.dart';
@@ -28,23 +28,8 @@ class ClubRegisterCompletePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final groupInfo = ref.watch(groupProvider);
     final clubInfo = ref.watch(clubProvider);
-    DateTime? currentBackPressTime;
 
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, dynamic) {
-        final now = DateTime.now();
-
-        if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(seconds: 1)) {
-          currentBackPressTime = now;
-
-          GeneralFunctions.generalToastMessage("한 번 더 누르면 앱이 종료돼요");
-
-          return;
-        } else {
-          SystemNavigator.pop();
-        }
-      },
+    return CustomPopScope(
       child: Scaffold(
         appBar: AppBar(
           actions: [

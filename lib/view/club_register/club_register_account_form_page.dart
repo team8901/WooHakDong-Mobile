@@ -12,6 +12,7 @@ import '../../view_model/club/components/club_account_validation_provider.dart';
 import '../../view_model/club/components/club_account_validation_state.dart';
 import '../themes/custom_widget/custom_bottom_button.dart';
 import '../themes/custom_widget/custom_dropdown_form_field.dart';
+import '../themes/custom_widget/custom_pop_scope.dart';
 import '../themes/custom_widget/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'club_register_complete_page.dart';
@@ -28,7 +29,6 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
   final formKey = GlobalKey<FormState>();
   String clubAccountBankName = '';
   late TextEditingController clubAccountNumberController;
-  DateTime? currentBackPressTime;
 
   @override
   void initState() {
@@ -50,21 +50,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
     final clubAccountInfo = ref.watch(clubAccountProvider);
     final clubAccountNotifier = ref.read(clubAccountProvider.notifier);
 
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, dynamic) {
-        final now = DateTime.now();
-
-        if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(seconds: 1)) {
-          currentBackPressTime = now;
-
-          GeneralFunctions.generalToastMessage("한 번 더 누르면 앱이 종료돼요");
-
-          return;
-        } else {
-          SystemNavigator.pop();
-        }
-      },
+    return CustomPopScope(
       child: Scaffold(
         appBar: AppBar(),
         body: SafeArea(
