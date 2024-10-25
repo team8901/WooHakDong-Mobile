@@ -20,13 +20,13 @@ class ClubAccountNotifier extends StateNotifier<ClubAccount> {
             clubAccountBankName: '',
             clubAccountNumber: '',
             clubAccountPinTechNumber: '',
-          )
+          ),
         );
 
   Future<void> saveClubAccountInfo(String clubAccountBankName, String clubAccountNumber) async {
     ref.read(clubAccountValidationProvider.notifier).state = ClubAccountValidationState.loading;
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 750));
 
     try {
       ClubAccount validatedClubAccount = await clubAccountRepository.clubAccountValidation(

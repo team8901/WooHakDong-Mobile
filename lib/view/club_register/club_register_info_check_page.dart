@@ -10,6 +10,8 @@ import 'package:woohakdong/view/themes/custom_widget/custom_info_check_tile.dart
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/club/club_provider.dart';
+import '../../view_model/club/components/club_state.dart';
+import '../../view_model/club/components/club_state_provider.dart';
 import '../../view_model/util/s3_image_provider.dart';
 import '../themes/custom_widget/custom_bottom_button.dart';
 import '../themes/spacing.dart';
@@ -23,6 +25,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
     final s3ImageNotifier = ref.read(s3ImageProvider.notifier);
     final clubNotifier = ref.read(clubProvider.notifier);
     final clubInfo = ref.watch(clubProvider);
+    final clubState = ref.watch(clubStateProvider);
 
     return Scaffold(
       appBar: AppBar(),
@@ -114,15 +117,16 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
               await clubNotifier.registerClub(clubImageForServer);
 
               if (context.mounted) {
-                _pushAccountFormPage(context);
+                await _pushAccountFormPage(context);
               }
             } catch (e) {
-              GeneralFunctions.generalToastMessage('등아리 등록에 실패했어요\n다시 시도해 주세요');
+              await GeneralFunctions.generalToastMessage('오류가 발생했어요\n다시 시도해 주세요');
             }
           },
           buttonText: '확인했어요',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+          isLoading: clubState == ClubState.loading,
         ),
       ),
     );
@@ -147,8 +151,8 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
     return formattedDues;
   }
 
-  void _pushAccountFormPage(BuildContext context) {
-    Navigator.pushAndRemoveUntil(
+  Future<void> _pushAccountFormPage(BuildContext context) async {
+    await Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute(
         builder: (context) => const ClubRegisterAccountFormPage(),

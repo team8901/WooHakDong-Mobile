@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -27,70 +28,87 @@ class ClubRegisterCompletePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final groupInfo = ref.watch(groupProvider);
     final clubInfo = ref.watch(clubProvider);
+    DateTime? currentBackPressTime;
 
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () async {
-              await ImageConverter.saveWidgetToGallery(
-                key: _widgetToPngKey,
-                fileName: '${groupInfo?.groupName} QR 카드 ${DateTime.now().millisecondsSinceEpoch}.png',
-              );
-              await GeneralFunctions.generalToastMessage('QR 카드 이미지를 저장했어요');
-            },
-            icon: const Icon(Symbols.download_rounded),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(defaultPaddingM),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '동아리가 등록되었어요! 🎉',
-                style: context.textTheme.headlineLarge?.copyWith(
-                  color: context.colorScheme.primary,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, dynamic) {
+        final now = DateTime.now();
+
+        if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(seconds: 1)) {
+          currentBackPressTime = now;
+
+          GeneralFunctions.generalToastMessage("한 번 더 누르면 앱이 종료돼요");
+
+          return;
+        } else {
+          SystemNavigator.pop();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              onPressed: () async {
+                await ImageConverter.saveWidgetToGallery(
+                  key: _widgetToPngKey,
+                  fileName: '${groupInfo?.groupName} QR 카드 ${DateTime.now().millisecondsSinceEpoch}.png',
+                );
+                await GeneralFunctions.generalToastMessage('QR 카드 이미지를 저장했어요');
+              },
+              icon: const Icon(Symbols.download_rounded),
+            ),
+          ],
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(defaultPaddingM),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '동아리가 등록되었어요! 🎉',
+                  style: context.textTheme.headlineLarge?.copyWith(
+                    color: context.colorScheme.primary,
+                  ),
                 ),
-              ),
-              const Gap(defaultGapXL * 2),
-              Text(
-                '${groupInfo?.groupName} 전용 페이지',
-                style: context.textTheme.titleMedium,
-              ),
-              Text(
-                '동아리 회원 가입 및 동아리 서비스 이용이 가능해요',
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: context.colorScheme.onSurface,
+                const Gap(defaultGapXL * 2),
+                Text(
+                  '${groupInfo?.groupName} 전용 페이지',
+                  style: context.textTheme.titleMedium,
                 ),
-              ),
-              const Gap(defaultGapS),
-              ClubRegisterUrlCard(groupInfo: groupInfo),
-              const Gap(defaultGapS),
-              WidgetToPng(
-                keyToCapture: _widgetToPngKey,
-                child: ClubRegisterQrCard(groupInfo: groupInfo),
-              ),
-            ],
+                Text(
+                  '동아리 회원 가입 및 동아리 서비스 이용이 가능해요',
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: context.colorScheme.onSurface,
+                  ),
+                ),
+                const Gap(defaultGapS),
+                ClubRegisterUrlCard(groupInfo: groupInfo),
+                const Gap(defaultGapS),
+                WidgetToPng(
+                  keyToCapture: _widgetToPngKey,
+                  child: ClubRegisterQrCard(groupInfo: groupInfo),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: CustomBottomButton(
-          onTap: () async {
-            await ref.read(clubIdProvider.notifier).saveClubId(clubInfo.clubId!);
+        bottomNavigationBar: SafeArea(
+          child: CustomBottomButton(
+            onTap: () async {
+              await ref.read(clubIdProvider.notifier).saveClubId(clubInfo.clubId!);
 
-            ref.invalidate(clubListProvider);
+              ref.invalidate(clubListProvider);
 
-            if (context.mounted) {
-              _pushRoutePage(context);
-            }
-          },
-          buttonText: '내 동아리 확인하기',
-          buttonColor: Theme.of(context).colorScheme.primary,
-          buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+              if (context.mounted) {
+                _pushRoutePage(context);
+              }
+            },
+            buttonText: '내 동아리 확인하기',
+            buttonColor: Theme.of(context).colorScheme.primary,
+            buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+          ),
         ),
       ),
     );

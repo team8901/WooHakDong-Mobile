@@ -22,8 +22,8 @@ final ThemeData lightTheme = ThemeData(
   primaryColor: primary,
   scaffoldBackgroundColor: white,
   applyElevationOverlayColor: false,
-  splashColor: lightGray.withOpacity(0.1),
-  highlightColor: lightGray.withOpacity(0.1),
+  splashColor: Colors.transparent,
+  highlightColor: Colors.transparent,
 
   /// 컬러 스키마
   colorScheme: const ColorScheme.light(
@@ -74,7 +74,7 @@ final ThemeData lightTheme = ThemeData(
     scrolledUnderElevation: 0,
     centerTitle: false,
     titleSpacing: defaultPaddingM,
-    titleTextStyle: CustomTextStyle.titleMedium,
+    titleTextStyle: CustomTextStyle.titleLarge,
     iconTheme: const IconThemeData(color: black),
     actionsIconTheme: const IconThemeData(color: black),
   ),
@@ -87,16 +87,11 @@ final ThemeData lightTheme = ThemeData(
   /// 바텀 네비게이션바 테마
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: white,
-    elevation: 0,
+    elevation: 1,
     selectedItemColor: black,
-    unselectedItemColor: gray,
-    selectedLabelStyle: CustomTextStyle.labelLarge.copyWith(
-      fontWeight: FontWeight.w600,
-    ),
-    unselectedLabelStyle: CustomTextStyle.labelLarge.copyWith(
-      color: gray,
-      fontWeight: FontWeight.w600,
-    ),
+    unselectedItemColor: black,
+    selectedLabelStyle: CustomTextStyle.labelLarge,
+    unselectedLabelStyle: CustomTextStyle.labelLarge,
     type: BottomNavigationBarType.fixed,
     enableFeedback: false,
     selectedIconTheme: const IconThemeData(size: 24),
@@ -143,5 +138,21 @@ final ThemeData lightTheme = ThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(defaultBorderRadiusM),
     ),
+  ),
+
+  /// 바텀 시트 테마
+  bottomSheetTheme: const BottomSheetThemeData(
+    backgroundColor: white,
+    modalBackgroundColor: white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(defaultBorderRadiusL),
+        topRight: Radius.circular(defaultBorderRadiusL),
+      ),
+    ),
+    elevation: 1,
+    modalElevation: 1,
+    showDragHandle: true,
+    dragHandleColor: gray,
   ),
 );

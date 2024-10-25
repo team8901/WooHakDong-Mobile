@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/club_register/club_register_info_form_page.dart';
 import 'package:woohakdong/view/club_register/components/club_register_caution.dart';
+import 'package:woohakdong/view_model/club/components/club_name_validation_provider.dart';
+import 'package:woohakdong/view_model/club/components/club_name_validation_state.dart';
 
 import '../themes/custom_widget/custom_bottom_button.dart';
 import '../themes/spacing.dart';
@@ -31,7 +33,7 @@ class ClubRegisterCautionPage extends ConsumerWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
-          onTap: () => _pushNameInfoPage(context),
+          onTap: () => _pushNameInfoPage(context, ref),
           buttonText: '다 읽었어요',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
@@ -40,13 +42,14 @@ class ClubRegisterCautionPage extends ConsumerWidget {
     );
   }
 
-  void _pushNameInfoPage(BuildContext context) {
-    Navigator.pushAndRemoveUntil(
+  void _pushNameInfoPage(BuildContext context, WidgetRef ref) {
+    ref.read(clubNameValidationProvider.notifier).state = ClubNameValidationState.notChecked;
+
+    Navigator.push(
       context,
       CupertinoPageRoute(
         builder: (context) => const ClubRegisterNameInfoFormPage(),
       ),
-      (route) => false,
     );
   }
 }

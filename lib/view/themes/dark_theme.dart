@@ -22,8 +22,8 @@ final ThemeData darkTheme = ThemeData(
   primaryColor: primary,
   scaffoldBackgroundColor: black,
   applyElevationOverlayColor: false,
-  splashColor: darkGray.withOpacity(0.1),
-  highlightColor: darkGray.withOpacity(0.1),
+  splashColor: Colors.transparent,
+  highlightColor: Colors.transparent,
 
   /// 컬러 스키마
   colorScheme: const ColorScheme.dark(
@@ -74,7 +74,7 @@ final ThemeData darkTheme = ThemeData(
     scrolledUnderElevation: 0,
     centerTitle: false,
     titleSpacing: defaultPaddingM,
-    titleTextStyle: CustomTextStyle.titleMedium.copyWith(color: white),
+    titleTextStyle: CustomTextStyle.titleLarge.copyWith(color: white),
     iconTheme: const IconThemeData(color: white),
     actionsIconTheme: const IconThemeData(color: white),
   ),
@@ -85,26 +85,18 @@ final ThemeData darkTheme = ThemeData(
   ),
 
   iconButtonTheme: const IconButtonThemeData(
-    style: ButtonStyle(
-      padding: WidgetStatePropertyAll(EdgeInsets.zero),
-
-    )
-  ),
+      style: ButtonStyle(
+    padding: WidgetStatePropertyAll(EdgeInsets.zero),
+  )),
 
   /// 바텀 네비게이션바 테마
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: black,
-    elevation: 0,
+    elevation: 1,
     selectedItemColor: white,
-    unselectedItemColor: darkGray,
-    selectedLabelStyle: CustomTextStyle.labelLarge.copyWith(
-      color: white,
-      fontWeight: FontWeight.w600,
-    ),
-    unselectedLabelStyle: CustomTextStyle.labelLarge.copyWith(
-      color: darkGray,
-      fontWeight: FontWeight.w600,
-    ),
+    unselectedItemColor: white,
+    selectedLabelStyle: CustomTextStyle.labelLarge.copyWith(color: white),
+    unselectedLabelStyle: CustomTextStyle.labelLarge.copyWith(color: white),
     type: BottomNavigationBarType.fixed,
     enableFeedback: false,
     selectedIconTheme: const IconThemeData(size: 24),
@@ -151,5 +143,21 @@ final ThemeData darkTheme = ThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(defaultBorderRadiusM),
     ),
+  ),
+
+  /// 바텀 시트 테마
+  bottomSheetTheme: const BottomSheetThemeData(
+    backgroundColor: black,
+    modalBackgroundColor: black,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(defaultBorderRadiusL),
+        topRight: Radius.circular(defaultBorderRadiusL),
+      ),
+    ),
+    elevation: 1,
+    modalElevation: 1,
+    showDragHandle: true,
+    dragHandleColor: gray,
   ),
 );

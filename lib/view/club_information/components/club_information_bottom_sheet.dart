@@ -24,125 +24,129 @@ class ClubInformationBottomSheet extends ConsumerWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(defaultPaddingM),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('동아리 목록', style: context.textTheme.titleLarge),
-          Text(
-            '현재 등록되어 있는 동아리 목록이에요',
-            style: context.textTheme.bodySmall?.copyWith(
-              color: context.colorScheme.onSurface,
-            ),
-          ),
-          const Gap(defaultGapXL * 2),
-          FutureBuilder(
-            future: ref.watch(clubListProvider.future),
-            builder: (context, clubListSnapshot) {
-              if (clubListSnapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (clubListSnapshot.hasError) {
-                return Text('동아리 목록을 불러올 수 없어요', style: context.textTheme.bodyLarge);
-              } else {
-                final clubList = clubListSnapshot.data;
+      padding: const EdgeInsets.symmetric(horizontal: defaultPaddingM),
+      child: FutureBuilder(
+        future: ref.watch(clubListProvider.future),
+        builder: (context, clubListSnapshot) {
+          if (clubListSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (clubListSnapshot.hasError) {
+            return Text('동아리 목록을 불러올 수 없어요', style: context.textTheme.bodyLarge);
+          } else {
+            final clubList = clubListSnapshot.data;
 
-                return Expanded(
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    separatorBuilder: (context, index) => const Gap(defaultGapXL),
-                    itemCount: clubList!.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index != clubList.length) {
-                        final club = clubList[index];
-                        final isCurrent = club.clubId == currentClubId;
-                        final CachedNetworkImageProvider imageProvider = CachedNetworkImageProvider(club.clubImage!);
+            return ListView.separated(
+              physics: const ClampingScrollPhysics(),
+              separatorBuilder: (context, index) => const Gap(defaultGapS),
+              itemCount: clubList!.length + 2,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('동아리 목록', style: context.textTheme.titleLarge),
+                      Text(
+                        '현재 등록되어 있는 동아리 목록이에요',
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.colorScheme.onSurface,
+                        ),
+                      ),
+                      const Gap(defaultGapM),
+                    ],
+                  );
+                } else if (index != clubList.length + 1) {
+                  final club = clubList[index - 1];
+                  final isCurrent = club.clubId == currentClubId;
+                  final CachedNetworkImageProvider imageProvider = CachedNetworkImageProvider(club.clubImage!);
 
-                        return SizedBox(
-                          width: double.infinity,
-                          height: 40,
-                          child: InkWell(
-                            onTap: () async {
-                              await ref.read(clubIdProvider.notifier).saveClubId(club.clubId!);
+                  return SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: InkWell(
+                      onTap: () async {
+                        await ref.read(clubIdProvider.notifier).saveClubId(club.clubId!);
 
-                              if (context.mounted) {
-                                _pushRoutePage(context, club.clubName!);
-                              }
-                            },
-                            child: Ink(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 36,
-                                    height: 36,
-                                    decoration: BoxDecoration(
-                                      color: context.colorScheme.surfaceContainer,
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: context.colorScheme.surfaceContainer,
-                                      ),
-                                    ),
-                                    child: CircleAvatar(
-                                      radius: 18,
-                                      backgroundImage: imageProvider,
-                                    ),
-                                  ),
-                                  const Gap(defaultGapXL),
-                                  Text(
-                                    club.clubName!,
-                                    style: context.textTheme.bodyLarge,
-                                  ),
-                                  const Spacer(),
-                                  if (isCurrent)
-                                    Icon(
-                                      size: 20,
-                                      Symbols.check_circle_rounded,
-                                      color: context.colorScheme.primary,
-                                    ),
-                                ],
+                        if (context.mounted) {
+                          _pushRoutePage(context, club.clubName!);
+                        }
+                      },
+                      child: Ink(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: context.colorScheme.surfaceContainer,
+                                ),
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      } else {
-                        return SizedBox(
-                          width: double.infinity,
-                          height: 40,
-                          child: InkWell(
-                            onTap: () => _pushClubRegisterCautionPage(context),
-                            child: Ink(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 36,
-                                    height: 36,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: context.colorScheme.surfaceContainer,
-                                    ),
-                                    child: Center(
-                                      child: Icon(Symbols.add_rounded, color: context.colorScheme.outline),
-                                    ),
-                                  ),
-                                  const Gap(defaultGapXL),
-                                  Text(
-                                    '동아리 추가',
-                                    style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface),
-                                  ),
-                                ],
+                            const Gap(defaultGapXL),
+                            Text(
+                              club.clubName!,
+                              style: context.textTheme.bodyLarge,
+                            ),
+                            const Spacer(),
+                            if (isCurrent)
+                              Icon(
+                                size: 20,
+                                Symbols.check_circle_rounded,
+                                fill: 1,
+                                color: context.colorScheme.primary,
                               ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: InkWell(
+                          onTap: () => _pushClubRegisterCautionPage(context),
+                          child: Ink(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: context.colorScheme.surfaceContainer,
+                                  ),
+                                  child: Center(
+                                    child: Icon(Symbols.add_rounded, color: context.colorScheme.onSurface),
+                                  ),
+                                ),
+                                const Gap(defaultGapXL),
+                                Text(
+                                  '동아리 추가',
+                                  style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface),
+                                ),
+                              ],
                             ),
                           ),
-                        );
-                      }
-                    },
-                  ),
-                );
-              }
-            },
-          ),
-        ],
+                        ),
+                      ),
+                      const Gap(defaultPaddingM),
+                    ],
+                  );
+                }
+              },
+            );
+          }
+        },
       ),
     );
   }

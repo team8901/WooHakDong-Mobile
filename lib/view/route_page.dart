@@ -3,7 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/member_register/member_register_page.dart';
-import 'package:woohakdong/view/navigator/navigator_page.dart';
+import 'package:woohakdong/view/navigator_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view_model/club/club_provider.dart';
 import 'package:woohakdong/view_model/club/components/club_state.dart';

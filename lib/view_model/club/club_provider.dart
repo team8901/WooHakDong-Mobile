@@ -7,6 +7,7 @@ import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 import '../../model/club/club.dart';
 import '../../repository/club/club_repository.dart';
 import '../../service/logger/logger.dart';
+import 'club_id_provider.dart';
 import 'components/club_name_validation_provider.dart';
 
 final clubProvider = StateNotifierProvider<ClubNotifier, Club>((ref) {
@@ -61,11 +62,15 @@ class ClubNotifier extends StateNotifier<Club> {
   }
 
   Future<void> registerClub(String clubImageForServer) async {
+    ref.read(clubStateProvider.notifier).state = ClubState.loading;
+
     try {
       final clubId = await clubRepository.registerClubInfo(state.copyWith(clubImage: clubImageForServer));
       await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
 
       state = state.copyWith(clubId: clubId);
+
+      await ref.read(clubIdProvider.notifier).saveClubId(state.clubId!);
     } catch (e) {
       logger.e('동아리 ID 실패', error: e);
     }

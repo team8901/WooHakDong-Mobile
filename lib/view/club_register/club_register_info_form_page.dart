@@ -47,10 +47,10 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
 
   @override
   void dispose() {
+    super.dispose();
     clubNameController.dispose();
     clubEnglishNameController.dispose();
     clubDescriptionController.dispose();
-    super.dispose();
   }
 
   @override

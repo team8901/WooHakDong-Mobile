@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_calendar/club_calendar_page.dart';
 import 'package:woohakdong/view/club_dues/club_dues_page.dart';
 import 'package:woohakdong/view/club_information/club_information_page.dart';
@@ -9,7 +11,7 @@ import 'package:woohakdong/view/club_item/club_item_list_page.dart';
 import 'package:woohakdong/view/club_member/club_member_list_page.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../view_model/club/current_club_provider.dart';
+import '../view_model/club/current_club_provider.dart';
 
 class NavigatorPage extends ConsumerStatefulWidget {
   const NavigatorPage({super.key});
@@ -20,6 +22,7 @@ class NavigatorPage extends ConsumerStatefulWidget {
 
 class _RoutePageState extends ConsumerState<NavigatorPage> {
   int _selectedIndex = 0;
+  DateTime? currentBackPressTime;
 
   final List<Widget> _widgetOptions = <Widget>[
     const ClubMemberListPage(),
@@ -34,39 +37,84 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
     final String? clubImage = ref.watch(currentClubProvider)?.clubImage;
 
     return Scaffold(
-      body: SizedBox(
-        height: double.infinity,
-        width: double.infinity,
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, dynamic) {
+          final now = DateTime.now();
+
+          if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(seconds: 1)) {
+            currentBackPressTime = now;
+
+            GeneralFunctions.generalToastMessage("'뒤로' 버튼을 한번 더 누르면 종료돼요");
+
+            return;
+          } else {
+            SystemNavigator.pop();
+          }
+        },
+        child: SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
               color: context.colorScheme.surfaceContainer,
+              width: 0.2,
             ),
           ),
         ),
         child: BottomNavigationBar(
           items: [
             const BottomNavigationBarItem(
-              icon: Icon(Symbols.group_rounded),
-              activeIcon: Icon(Symbols.group_rounded, fill: 1),
+              icon: Icon(
+                Symbols.group_rounded,
+                weight: 300,
+              ),
+              activeIcon: Icon(
+                Symbols.group_rounded,
+                fill: 1,
+                weight: 600,
+              ),
               label: '회원',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Symbols.list_alt_rounded),
-              activeIcon: Icon(Symbols.list_alt_rounded, fill: 1),
+              icon: Icon(
+                Symbols.list_alt_rounded,
+                weight: 300,
+              ),
+              activeIcon: Icon(
+                Symbols.list_alt_rounded,
+                fill: 1,
+                weight: 600,
+              ),
               label: '물품',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Symbols.savings_rounded),
-              activeIcon: Icon(Symbols.savings_rounded, fill: 1),
+              icon: Icon(
+                Symbols.savings_rounded,
+                weight: 300,
+              ),
+              activeIcon: Icon(
+                Symbols.savings_rounded,
+                fill: 1,
+                weight: 600,
+              ),
               label: '회비',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Symbols.event_note_rounded),
-              activeIcon: Icon(Symbols.event_note_rounded, fill: 1),
+              icon: Icon(
+                Symbols.event_note_rounded,
+                weight: 300,
+              ),
+              activeIcon: Icon(
+                Symbols.event_note_rounded,
+                fill: 1,
+                weight: 600,
+              ),
               label: '일정',
             ),
             BottomNavigationBarItem(
@@ -77,8 +125,10 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: _selectedIndex == 4 ? context.colorScheme.inverseSurface : context.colorScheme.outline,
-                          width: _selectedIndex == 4 ? 2 : 1,
+                          color: context.colorScheme.inverseSurface,
+                          width: _selectedIndex == 4 ? 2 : 0.5,
+                          strokeAlign:
+                              _selectedIndex == 4 ? BorderSide.strokeAlignCenter : BorderSide.strokeAlignInside,
                         ),
                         image: DecorationImage(
                           image: CachedNetworkImageProvider(clubImage),

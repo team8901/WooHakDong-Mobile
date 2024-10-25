@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/auth/auth_provider.dart';
 import '../../view_model/club/current_club_provider.dart';
@@ -19,18 +18,10 @@ class ClubInformationPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: InkWell(
+        title: GestureDetector(
           onTap: () {
             showModalBottomSheet(
               useSafeArea: true,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(defaultBorderRadiusL),
-                  topRight: Radius.circular(defaultBorderRadiusL),
-                ),
-              ),
-              showDragHandle: true,
-              backgroundColor: context.colorScheme.surfaceDim,
               context: context,
               builder: (context) {
                 return const ClubInformationBottomSheet();
@@ -38,9 +29,11 @@ class ClubInformationPage extends ConsumerWidget {
             );
           },
           child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(currentClubInfo?.clubName ?? '내 동아리'),
-              const Gap(defaultGapS),
+              const Gap(defaultGapS / 2),
               const Icon(
                 Symbols.keyboard_arrow_down_rounded,
                 size: 20,
