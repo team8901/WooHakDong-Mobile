@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/view/club_calendar/club_calendar_page.dart';
 import 'package:woohakdong/view/club_dues/club_dues_page.dart';
 import 'package:woohakdong/view/club_information/club_information_page.dart';
 import 'package:woohakdong/view/club_item/club_item_list_page.dart';
 import 'package:woohakdong/view/club_member/club_member_list_page.dart';
+import 'package:woohakdong/view/club_schedule/club_calendar_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/custom_pop_scope.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
@@ -26,7 +26,7 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
     const ClubMemberListPage(),
     const ClubItemListPage(),
     const ClubDuesPage(),
-    const ClubCalendarPage(),
+    const ClubSchedulePage(),
     const ClubInformationPage(),
   ];
 

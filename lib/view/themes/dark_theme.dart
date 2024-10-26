@@ -73,7 +73,6 @@ final ThemeData darkTheme = ThemeData(
     elevation: 0,
     scrolledUnderElevation: 0,
     centerTitle: false,
-    titleSpacing: defaultPaddingM,
     titleTextStyle: CustomTextStyle.titleLarge.copyWith(color: white),
     iconTheme: const IconThemeData(color: white),
     actionsIconTheme: const IconThemeData(color: white),
@@ -159,5 +158,40 @@ final ThemeData darkTheme = ThemeData(
     modalElevation: 1,
     showDragHandle: true,
     dragHandleColor: gray,
+  ),
+
+  /// 탭바 테마
+  tabBarTheme: TabBarTheme(
+    indicator: const BoxDecoration(
+      border: Border(
+        bottom: BorderSide(
+          color: white,
+          width: 2,
+        ),
+      ),
+    ),
+    indicatorColor: white,
+    indicatorSize: TabBarIndicatorSize.tab,
+    dividerColor: Colors.transparent,
+    dividerHeight: 0,
+    labelColor: white,
+    labelPadding: const EdgeInsets.symmetric(horizontal: defaultPaddingS),
+    labelStyle: CustomTextStyle.bodyMedium.copyWith(color: white),
+    unselectedLabelColor: white,
+    unselectedLabelStyle: CustomTextStyle.bodySmall.copyWith(color: white),
+    overlayColor: WidgetStateProperty.all(Colors.transparent),
+    tabAlignment: TabAlignment.center,
+  ),
+
+  /// 플로팅 액션 버튼 테마
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: primary,
+    foregroundColor: white,
+    elevation: 4,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(defaultBorderRadiusL * 2),
+    ),
+    iconSize: 20,
+    extendedTextStyle: CustomTextStyle.titleSmall.copyWith(color: white),
   ),
 );

@@ -32,7 +32,7 @@ class S3ImageUrlRepository {
       }
     } catch (e) {
       logger.e('S3 이미지 URL 조회 실패', error: e);
-      rethrow;
+      throw Exception();
     }
   }
 
@@ -54,7 +54,7 @@ class S3ImageUrlRepository {
       );
     } catch (e) {
       logger.e('S3에 이미지 업로드 실패', error: e);
-      rethrow;
+      throw Exception();
     }
   }
 }

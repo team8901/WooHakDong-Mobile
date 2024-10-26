@@ -7,7 +7,7 @@ import '../../service/logger/logger.dart';
 class WoohakdongAuthRepository {
   final Dio _dio = DioService().dio;
 
-  Future<Map<String, String>?> logIn(String googleAccessToken) async {
+  Future<Map<String, String>> logIn(String googleAccessToken) async {
     try {
       logger.i('토큰 발급 시도');
 
@@ -24,13 +24,13 @@ class WoohakdongAuthRepository {
           'refreshToken': response.data['refreshToken'],
         };
       } else {
-        return null;
+        throw Exception();
       }
     } catch (e) {
       await GeneralFunctions.generalToastMessage('학교 계정으로 로그인해 주세요');
       logger.e('토큰 발급 실패', error: e);
 
-      return null;
+      throw Exception();
     }
   }
 
