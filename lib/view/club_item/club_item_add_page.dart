@@ -294,13 +294,4 @@ class ClubItemAddPage extends ConsumerWidget {
     List<File> pickedImage = [imageFile];
     await s3ImageNotifier.setImage(pickedImage);
   }
-
-  void _pushItemDetailPage(BuildContext context, int itemId) {
-    Navigator.pushReplacement(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => ClubItemDetailPage(itemId: itemId),
-      ),
-    );
-  }
 }

@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:woohakdong/view/themes/custom_widget/custom_info_check_tile.dart';
+import 'package:woohakdong/view/themes/custom_widget/custom_info_box.dart';
+import 'package:woohakdong/view/themes/custom_widget/custom_info_content.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/member/member_provider.dart';
@@ -30,58 +31,32 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
               children: [
                 Text('회장님의 정보가 맞으신가요?', style: context.textTheme.headlineSmall),
                 const Gap(defaultGapXL * 2),
-                Text(
-                  '기본 정보',
-                  style: context.textTheme.labelLarge,
-                ),
-                const Gap(defaultGapM),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: context.colorScheme.surfaceContainer),
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: defaultPaddingM,
-                    vertical: defaultPaddingXS,
-                  ),
+                CustomInfoBox(
+                  infoTitle: '기본 정보',
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomInfoCheckTile(infoContent: memberInfo.memberName),
+                      CustomInfoContent(infoContent: memberInfo.memberName),
                       const Gap(defaultGapM),
-                      CustomInfoCheckTile(infoContent: _getGenderDisplay(memberInfo.memberGender!)),
+                      CustomInfoContent(infoContent: _getGenderDisplay(memberInfo.memberGender!)),
                       const Gap(defaultGapM),
-                      CustomInfoCheckTile(infoContent: _formatPhoneNumber(memberInfo.memberPhoneNumber!)),
+                      CustomInfoContent(infoContent: _formatPhoneNumber(memberInfo.memberPhoneNumber!)),
                       const Gap(defaultGapM),
-                      CustomInfoCheckTile(infoContent: memberInfo.memberEmail),
+                      CustomInfoContent(infoContent: memberInfo.memberEmail),
                     ],
                   ),
                 ),
                 const Gap(defaultGapXL),
-                Text(
-                  '학교 정보',
-                  style: context.textTheme.labelLarge,
-                ),
-                const Gap(defaultGapM),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: context.colorScheme.surfaceContainer),
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: defaultPaddingM,
-                    vertical: defaultPaddingXS,
-                  ),
+                CustomInfoBox(
+                  infoTitle: '학교 정보',
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomInfoCheckTile(infoContent: memberInfo.memberSchool),
+                      CustomInfoContent(infoContent: memberInfo.memberSchool),
                       const Gap(defaultGapM),
-                      CustomInfoCheckTile(infoContent: memberInfo.memberMajor!),
+                      CustomInfoContent(infoContent: memberInfo.memberMajor!),
                       const Gap(defaultGapM),
-                      CustomInfoCheckTile(infoContent: memberInfo.memberStudentNumber!),
+                      CustomInfoContent(infoContent: memberInfo.memberStudentNumber!),
                     ],
                   ),
                 ),

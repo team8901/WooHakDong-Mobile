@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-class CustomInfoCheckTile extends StatelessWidget {
+class CustomInfoContent extends StatelessWidget {
   final String infoContent;
 
-  const CustomInfoCheckTile({
+  const CustomInfoContent({
     super.key,
     required this.infoContent,
   });

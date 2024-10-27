@@ -9,6 +9,7 @@ class Item {
   bool? itemAvailable;
   bool? itemUsing;
   DateTime? itemRentalDate;
+  int? itemRentalTime;
 
   Item({
     this.itemId,
@@ -21,6 +22,7 @@ class Item {
     this.itemAvailable,
     this.itemUsing,
     this.itemRentalDate,
+    this.itemRentalTime,
   });
 
   Item copyWith({
@@ -55,6 +57,7 @@ class Item {
       itemAvailable: json['itemAvailable'],
       itemUsing: json['itemUsing'],
       itemRentalDate: json['itemRentalDate'],
+      itemRentalTime: json['itemRentalTime'],
     );
   }
 

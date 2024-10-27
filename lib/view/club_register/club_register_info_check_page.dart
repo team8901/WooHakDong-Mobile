@@ -6,7 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_register/club_register_account_form_page.dart';
-import 'package:woohakdong/view/themes/custom_widget/custom_info_check_tile.dart';
+import 'package:woohakdong/view/themes/custom_widget/custom_info_box.dart';
+import 'package:woohakdong/view/themes/custom_widget/custom_info_content.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/club/club_provider.dart';
@@ -64,27 +65,14 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                   ),
                 ),
                 const Gap(defaultGapXL),
-                Text(
-                  '동아리 기본 정보',
-                  style: context.textTheme.labelLarge,
-                ),
-                const Gap(defaultGapM),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: context.colorScheme.surfaceContainer),
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: defaultPaddingM,
-                    vertical: defaultPaddingXS,
-                  ),
+                CustomInfoBox(
+                  infoTitle: '동아리 기본 정보',
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomInfoCheckTile(infoContent: clubInfo.clubName!),
+                      CustomInfoContent(infoContent: clubInfo.clubName!),
                       const Gap(defaultGapM),
-                      CustomInfoCheckTile(infoContent: clubInfo.clubEnglishName!),
+                      CustomInfoContent(infoContent: clubInfo.clubEnglishName!),
                     ],
                   ),
                 ),
@@ -99,41 +87,28 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                     horizontal: defaultPaddingM,
                     vertical: defaultPaddingXS,
                   ),
-                  child: CustomInfoCheckTile(infoContent: clubInfo.clubDescription!),
+                  child: CustomInfoContent(infoContent: clubInfo.clubDescription!),
                 ),
                 const Gap(defaultGapXL),
-                Text(
-                  '동아리 추가 정보',
-                  style: context.textTheme.labelLarge,
-                ),
-                const Gap(defaultGapM),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: context.colorScheme.surfaceContainer),
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: defaultPaddingM,
-                    vertical: defaultPaddingXS,
-                  ),
+                CustomInfoBox(
+                  infoTitle: '동아리 추가 정보',
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       (clubInfo.clubGeneration != '')
                           ? Column(
                               children: [
-                                CustomInfoCheckTile(infoContent: _generationFormatting(clubInfo.clubGeneration!)),
+                                CustomInfoContent(infoContent: _generationFormatting(clubInfo.clubGeneration!)),
                                 const Gap(defaultGapM),
                               ],
                             )
                           : const SizedBox(),
-                      CustomInfoCheckTile(infoContent: _currencyFormatting(clubInfo.clubDues!)),
+                      CustomInfoContent(infoContent: _currencyFormatting(clubInfo.clubDues!)),
                       (clubInfo.clubRoom != '')
                           ? Column(
                               children: [
                                 const Gap(defaultGapM),
-                                CustomInfoCheckTile(infoContent: clubInfo.clubRoom!),
+                                CustomInfoContent(infoContent: clubInfo.clubRoom!),
                               ],
                             )
                           : const SizedBox(),
@@ -141,30 +116,17 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                   ),
                 ),
                 const Gap(defaultGapXL),
-                Text(
-                  '카카오톡 채팅방',
-                  style: context.textTheme.labelLarge,
-                ),
-                const Gap(defaultGapM),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: context.colorScheme.surfaceContainer),
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: defaultPaddingM,
-                    vertical: defaultPaddingXS,
-                  ),
+                CustomInfoBox(
+                  infoTitle: '카카오톡 채팅방',
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomInfoCheckTile(infoContent: clubInfo.clubGroupChatLink!),
+                      CustomInfoContent(infoContent: clubInfo.clubGroupChatLink!),
                       (clubInfo.clubGroupChatPassword != '')
                           ? Column(
                               children: [
                                 const Gap(defaultGapXL),
-                                CustomInfoCheckTile(infoContent: clubInfo.clubGroupChatPassword!),
+                                CustomInfoContent(infoContent: clubInfo.clubGroupChatPassword!),
                               ],
                             )
                           : const SizedBox(),
