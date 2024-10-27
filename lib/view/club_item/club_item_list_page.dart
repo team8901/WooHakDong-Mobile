@@ -60,7 +60,6 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
             Expanded(
               child: TabBarView(
                 controller: tabController,
-                physics: const ClampingScrollPhysics(),
                 children: const [
                   ClubItemPageView(),
                   ClubItemPageView(filterCategory: 'DIGITAL'),

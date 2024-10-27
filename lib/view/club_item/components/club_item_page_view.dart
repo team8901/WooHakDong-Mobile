@@ -23,13 +23,8 @@ class ClubItemPageView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      padding: const EdgeInsets.only(
-        top: defaultPaddingM,
-        left: defaultPaddingM,
-        right: defaultPaddingM,
-      ),
       child: FutureBuilder(
         future: ref.watch(itemListProvider.future),
         builder: (context, itemListSnapshot) {
@@ -61,6 +56,7 @@ class ClubItemPageView extends ConsumerWidget {
             return RefreshIndicator(
               onRefresh: () async => ref.refresh(itemListProvider),
               child: ListView.separated(
+                padding: const EdgeInsets.all(defaultPaddingM),
                 separatorBuilder: (context, index) => Column(
                   children: [
                     const Gap(defaultGapXL),
@@ -218,9 +214,7 @@ class ClubItemPageView extends ConsumerWidget {
     Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (context) => ClubItemDetailPage(
-          itemInfo: itemInfo,
-        ),
+        builder: (context) => ClubItemDetailPage(itemInfo: itemInfo),
       ),
     );
   }

@@ -30,26 +30,19 @@ class GoogleSignInService {
         idToken: googleIdToken,
       );
 
-      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      await _firebaseAuth.signInWithCredential(credential);
 
       if (googleAccessToken != null) {
         final tokens = await _auth.logIn(googleAccessToken);
 
-        if (tokens != null) {
-          final String accessToken = tokens['accessToken']!;
-          final String refreshToken = tokens['refreshToken']!;
+        final String accessToken = tokens['accessToken']!;
+        final String refreshToken = tokens['refreshToken']!;
 
-          await _secureStorage.write(key: 'accessToken', value: accessToken);
-          await _secureStorage.write(key: 'refreshToken', value: refreshToken);
+        await _secureStorage.write(key: 'accessToken', value: accessToken);
+        await _secureStorage.write(key: 'refreshToken', value: refreshToken);
 
-          return true;
-        } else {
-          logger.w("토큰 발급 실패");
-          await _firebaseAuth.signOut();
-          await _googleSignIn.signOut();
-          return false;
-        }
-      } else {
+        return true;
+            } else {
         logger.w("구글 액세스 토큰 없음");
         return false;
       }

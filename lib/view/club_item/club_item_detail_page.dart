@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -9,6 +10,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../themes/custom_widget/custom_info_content.dart';
 import '../themes/spacing.dart';
+import 'club_item_history_page.dart';
 
 class ClubItemDetailPage extends ConsumerWidget {
   final Item itemInfo;
@@ -24,9 +26,10 @@ class ClubItemDetailPage extends ConsumerWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => _pushItemDetailPage(context, itemInfo.itemId!),
             icon: const Icon(Symbols.history_rounded),
           ),
+          /// TODO 물품 삭제 추가하기
           IconButton(
             onPressed: () {},
             icon: const Icon(Symbols.delete_rounded),
@@ -175,5 +178,14 @@ class ClubItemDetailPage extends ConsumerWidget {
       default:
         return '전체';
     }
+  }
+
+  void _pushItemDetailPage(BuildContext context, int itemId) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => ClubItemHistoryPage(itemId: itemId),
+      ),
+    );
   }
 }

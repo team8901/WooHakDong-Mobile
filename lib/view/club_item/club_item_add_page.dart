@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,14 +8,12 @@ import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:woohakdong/view/club_item/club_item_detail_page.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/item/components/item_state.dart';
 import 'package:woohakdong/view_model/item/components/item_state_provider.dart';
 import 'package:woohakdong/view_model/item/item_provider.dart';
 
 import '../../service/general/general_functions.dart';
-import '../../view_model/item/item_list_provider.dart';
 import '../../view_model/util/s3_image_provider.dart';
 import '../themes/custom_widget/custom_bottom_button.dart';
 import '../themes/custom_widget/custom_counter_text_form_field.dart';
@@ -194,8 +191,6 @@ class ClubItemAddPage extends ConsumerWidget {
                 try {
                   formKey.currentState?.save();
 
-                  ref.read(itemStateProvider.notifier).state = ItemState.registering;
-
                   if (s3ImageState.pickedImages.isEmpty) {
                     await _pickItemBasicImage(s3ImageNotifier, itemInfo.itemCategory!);
                   }
@@ -204,7 +199,7 @@ class ClubItemAddPage extends ConsumerWidget {
                   final itemImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
                   String itemImageForServer = itemImageUrl.substring(0, itemImageUrl.indexOf('?'));
 
-                  final itemId = await itemNotifier.addItem(
+                  await itemNotifier.addItem(
                     itemInfo.itemName!,
                     itemImageForServer,
                     itemInfo.itemDescription!,
@@ -214,13 +209,7 @@ class ClubItemAddPage extends ConsumerWidget {
                   );
 
                   if (context.mounted) {
-                    ref.refresh(itemListProvider);
-                    ref.invalidate(s3ImageProvider);
-
-                    ref.read(itemStateProvider.notifier).state = ItemState.registered;
-
                     Navigator.pop(context);
-
                     GeneralFunctions.generalToastMessage('물품이 추가되었어요');
                   }
                 } catch (e) {

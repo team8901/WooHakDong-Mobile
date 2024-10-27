@@ -6,6 +6,9 @@ import 'package:woohakdong/repository/item/item_repository.dart';
 import '../../model/item/item.dart';
 import '../club/current_club_provider.dart';
 import '../util/s3_image_provider.dart';
+import 'components/item_state.dart';
+import 'components/item_state_provider.dart';
+import 'item_list_provider.dart';
 
 final itemProvider = StateNotifierProvider<ItemNotifier, Item>((ref) {
   return ItemNotifier(ref);
@@ -39,7 +42,7 @@ class ItemNotifier extends StateNotifier<Item> {
     return itemHistoryList;
   }
 
-  Future<int> addItem(
+  Future<void> addItem(
     String itemName,
     String itemPhoto,
     String itemDescription,
@@ -47,9 +50,11 @@ class ItemNotifier extends StateNotifier<Item> {
     String itemCategory,
     int itemRentalMaxDay,
   ) async {
+    ref.read(itemStateProvider.notifier).state = ItemState.registering;
+
     final currentClubInfo = ref.watch(currentClubProvider);
 
-    final response = await itemRepository.addItem(
+    await itemRepository.addItem(
       currentClubInfo!.clubId!,
       state.copyWith(
         itemName: itemName,
@@ -63,8 +68,9 @@ class ItemNotifier extends StateNotifier<Item> {
 
     await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
 
-    final registeredItemId = response['itemId'];
+    ref.refresh(itemListProvider);
+    ref.invalidate(s3ImageProvider);
 
-    return registeredItemId;
+    ref.read(itemStateProvider.notifier).state = ItemState.registered;
   }
 }
