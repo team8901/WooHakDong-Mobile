@@ -64,7 +64,41 @@ class ClubItemAddPage extends ConsumerWidget {
                     height: 96.r,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                      onTap: () => _pickItemImage(s3ImageNotifier),
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('물품 사진 추가'),
+                            titleTextStyle: context.textTheme.titleMedium,
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ListTile(
+                                  leading: const Icon(Symbols.camera_alt_rounded),
+                                  title: const Text('사진 촬영'),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    _shootItemImage(s3ImageNotifier);
+                                  },
+                                ),
+                                ListTile(
+                                  leading: const Icon(Symbols.photo_rounded),
+                                  title: const Text('사진 선택'),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    _pickItemImage(s3ImageNotifier);
+                                  },
+                                ),
+                              ],
+                            ),
+                            backgroundColor: context.colorScheme.surfaceDim,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(defaultBorderRadiusL),
+                            ),
+                            insetPadding: const EdgeInsets.all(defaultPaddingS * 2),
+                          );
+                        },
+                      ),
                       child: Ink(
                         decoration: BoxDecoration(
                           border: Border.all(
@@ -227,6 +261,16 @@ class ClubItemAddPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _shootItemImage(S3ImageNotifier s3ImageNotifier) async {
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      File imageFile = File(image.path);
+
+      await _setImage(imageFile, s3ImageNotifier);
+    }
   }
 
   Future<void> _pickItemImage(S3ImageNotifier s3ImageNotifier) async {

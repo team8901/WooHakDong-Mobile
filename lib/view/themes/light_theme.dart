@@ -127,18 +127,6 @@ final ThemeData lightTheme = ThemeData(
     menuPadding: const EdgeInsets.all(defaultPaddingS / 2),
   ),
 
-  /// 다이어로그 테마
-  dialogTheme: DialogTheme(
-    backgroundColor: lightGray,
-    surfaceTintColor: lightGray,
-    elevation: 1,
-    alignment: Alignment.center,
-    insetPadding: const EdgeInsets.symmetric(horizontal: defaultPaddingM * 2),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-    ),
-  ),
-
   /// 바텀 시트 테마
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: white,
@@ -191,5 +179,15 @@ final ThemeData lightTheme = ThemeData(
     thickness: WidgetStateProperty.all(2),
     radius: const Radius.circular(4),
     thumbColor: WidgetStateProperty.all(lightGray),
+  ),
+
+  /// 리스트 타일 테마
+  listTileTheme: ListTileThemeData(
+    contentPadding: EdgeInsets.zero,
+    iconColor: black,
+    textColor: black,
+    titleTextStyle: CustomTextStyle.bodyMedium,
+    subtitleTextStyle: CustomTextStyle.labelLarge,
+    selectedTileColor: lightGray,
   ),
 );

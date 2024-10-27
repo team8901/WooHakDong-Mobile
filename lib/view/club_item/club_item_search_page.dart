@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class ClubItemSearchPage extends StatefulWidget {
@@ -30,7 +31,7 @@ class _ClubItemSearchPageState extends State<ClubItemSearchPage> {
     return Scaffold(
       appBar: AppBar(
         title: SizedBox(
-          height: 46,
+          height: 40.h,
           child: SearchBar(
             hintText: '물품 검색',
             textInputAction: TextInputAction.search,
@@ -59,7 +60,7 @@ class _ClubItemSearchPageState extends State<ClubItemSearchPage> {
                 ),
             ],
           ),
-        )
+        ),
       ),
     );
   }
