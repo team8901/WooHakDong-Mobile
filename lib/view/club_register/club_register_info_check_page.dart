@@ -109,7 +109,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
         child: CustomBottomButton(
           onTap: () async {
             try {
-              List<String> imageUrls = await s3ImageNotifier.setClubImageUrl('1');
+              List<String> imageUrls = await s3ImageNotifier.setImageUrl('1');
               final clubImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
 
               String clubImageForServer = clubImageUrl.substring(0, clubImageUrl.indexOf('?'));
@@ -133,7 +133,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
   }
 
   String _generationFormatting(String clubGeneration) {
-    String formattedGeneration = '$clubGeneration기';
+    String formattedGeneration = '$clubGeneration 기';
 
     return formattedGeneration;
   }

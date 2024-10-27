@@ -45,6 +45,7 @@ class CustomCounterTextFormField extends StatelessWidget {
       minLines: 1,
       maxLines: null,
       maxLength: maxLength,
+      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: context.textTheme.titleSmall?.copyWith(

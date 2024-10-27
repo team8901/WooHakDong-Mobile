@@ -42,6 +42,7 @@ class CustomTextFormField extends StatelessWidget {
       inputFormatters: inputFormatters,
       minLines: 1,
       maxLines: null,
+      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: context.textTheme.titleSmall?.copyWith(

@@ -187,11 +187,14 @@ final ThemeData darkTheme = ThemeData(
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: primary,
     foregroundColor: white,
-    elevation: 4,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(defaultBorderRadiusL * 2),
-    ),
-    iconSize: 20,
+    shape: const CircleBorder(),
     extendedTextStyle: CustomTextStyle.titleSmall.copyWith(color: white),
+  ),
+
+  /// 스크롤바 테마
+  scrollbarTheme: ScrollbarThemeData(
+    thickness: WidgetStateProperty.all(2),
+    radius: const Radius.circular(4),
+    thumbColor: WidgetStateProperty.all(darkGray),
   ),
 );

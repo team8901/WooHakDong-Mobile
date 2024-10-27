@@ -47,7 +47,7 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
           border: Border(
             top: BorderSide(
               color: context.colorScheme.surfaceContainer,
-              width: 0.2,
+              width: 0.6,
             ),
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:woohakdong/repository/item/item_repository.dart';
 
 import '../../model/item/item.dart';
 import '../club/current_club_provider.dart';
+import '../util/s3_image_provider.dart';
 
 final itemProvider = StateNotifierProvider<ItemNotifier, Item>((ref) {
   return ItemNotifier(ref);
@@ -20,10 +21,6 @@ class ItemNotifier extends StateNotifier<Item> {
   Future<List<Item>> getItemList() async {
     final currentClubInfo = ref.watch(currentClubProvider);
 
-    if (currentClubInfo?.clubId == null) {
-      throw Exception();
-    }
-
     final List<Item> itemList = await itemRepository.getItemList(
       currentClubInfo!.clubId!,
     );
@@ -34,10 +31,6 @@ class ItemNotifier extends StateNotifier<Item> {
   Future<List<ItemHistory>> getItemHistoryList(int itemId) async {
     final currentClubInfo = ref.watch(currentClubProvider);
 
-    if (currentClubInfo?.clubId == null) {
-      throw Exception();
-    }
-
     final List<ItemHistory> itemHistoryList = await itemHistoryRepository.getItemHistoryList(
       currentClubInfo!.clubId!,
       itemId,
@@ -46,7 +39,7 @@ class ItemNotifier extends StateNotifier<Item> {
     return itemHistoryList;
   }
 
-  Future<Map<String, dynamic>> addItem(
+  Future<int> addItem(
     String itemName,
     String itemPhoto,
     String itemDescription,
@@ -55,10 +48,6 @@ class ItemNotifier extends StateNotifier<Item> {
     int itemRentalMaxDay,
   ) async {
     final currentClubInfo = ref.watch(currentClubProvider);
-
-    if (currentClubInfo?.clubId == null) {
-      throw Exception();
-    }
 
     final response = await itemRepository.addItem(
       currentClubInfo!.clubId!,
@@ -71,6 +60,8 @@ class ItemNotifier extends StateNotifier<Item> {
         itemRentalMaxDay: itemRentalMaxDay,
       ),
     );
+
+    await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
 
     final registeredItemId = response['itemId'];
 

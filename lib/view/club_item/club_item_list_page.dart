@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_item/club_item_add_page.dart';
@@ -17,19 +16,15 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
     length: 7,
     vsync: this,
   );
-  final ScrollController scrollController = ScrollController();
-  bool isFabExtended = true;
 
   @override
   void initState() {
     super.initState();
-    scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
     tabController.dispose();
-    scrollController.dispose();
     super.dispose();
   }
 
@@ -66,25 +61,24 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
               child: TabBarView(
                 controller: tabController,
                 physics: const ClampingScrollPhysics(),
-                children: [
-                  ClubItemPageView(scrollController: scrollController),
-                  ClubItemPageView(filterCategory: 'DIGITAL', scrollController: scrollController),
-                  ClubItemPageView(filterCategory: 'SPORT', scrollController: scrollController),
-                  ClubItemPageView(filterCategory: 'BOOK', scrollController: scrollController),
-                  ClubItemPageView(filterCategory: 'CLOTHES', scrollController: scrollController),
-                  ClubItemPageView(filterCategory: 'STATIONERY', scrollController: scrollController),
-                  ClubItemPageView(filterCategory: 'ETC', scrollController: scrollController),
+                children: const [
+                  ClubItemPageView(),
+                  ClubItemPageView(filterCategory: 'DIGITAL'),
+                  ClubItemPageView(filterCategory: 'SPORT'),
+                  ClubItemPageView(filterCategory: 'BOOK'),
+                  ClubItemPageView(filterCategory: 'CLOTHES'),
+                  ClubItemPageView(filterCategory: 'STATIONERY'),
+                  ClubItemPageView(filterCategory: 'ETC'),
                 ],
               ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         onPressed: () => _pushItemAddPage(context),
-        label: const Text('물품 추가'),
-        icon: const Icon(Symbols.add_rounded),
-        isExtended: isFabExtended,
+        tooltip: '동아리 물품을 추가해 보세요',
+        child: const Icon(Symbols.add_rounded, weight: 600, size: 32),
       ),
     );
   }
@@ -112,13 +106,5 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
         },
       ),
     );
-  }
-
-  void _onScroll() {
-    if (scrollController.position.userScrollDirection == ScrollDirection.reverse) {
-      if (isFabExtended) setState(() => isFabExtended = false);
-    } else if (scrollController.position.userScrollDirection == ScrollDirection.forward) {
-      if (!isFabExtended) setState(() => isFabExtended = true);
-    }
   }
 }

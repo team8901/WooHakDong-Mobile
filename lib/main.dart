@@ -46,6 +46,12 @@ Future<void> main() async {
         options.dsn = dotenv.env['SENTRY_DSN'];
         options.tracesSampleRate = 1.0;
         options.profilesSampleRate = 1.0;
+        options.beforeSend = (event, hint) {
+          if (event.throwable is FlutterError) {
+            return null;
+          }
+          return event;
+        };
       },
       appRunner: () => runApp(const ProviderScope(child: MyApp())),
     );

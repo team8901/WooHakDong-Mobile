@@ -49,6 +49,7 @@ class Item {
       itemName: json['itemName'],
       itemPhoto: json['itemPhoto'],
       itemDescription: json['itemDescription'],
+      itemLocation: json['itemLocation'],
       itemCategory: json['itemCategory'],
       itemRentalMaxDay: json['itemRentalMaxDay'],
       itemAvailable: json['itemAvailable'],

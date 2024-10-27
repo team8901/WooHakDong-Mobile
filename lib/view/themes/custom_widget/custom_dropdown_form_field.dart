@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 class CustomDropdownFormField extends StatelessWidget {
@@ -19,14 +20,14 @@ class CustomDropdownFormField extends StatelessWidget {
     this.onSaved,
     this.validator,
     this.onTap,
-    this.menuMaxHeight = 384,
+    this.menuMaxHeight = 208,
   });
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       icon: Icon(
-        Icons.keyboard_arrow_down_rounded,
+        Symbols.keyboard_arrow_down_rounded,
         color: context.colorScheme.outline,
       ),
       style: context.textTheme.titleSmall,

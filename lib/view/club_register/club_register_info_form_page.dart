@@ -240,7 +240,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                     await tempFile.writeAsBytes(byteData.buffer.asUint8List());
 
                     List<File> pickedImage = [tempFile];
-                    await s3ImageNotifier.setClubImage(pickedImage);
+                    await s3ImageNotifier.setImage(pickedImage);
                   }
 
                   clubNotifier.saveClubInfo(
@@ -275,7 +275,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
 
       List<File> pickedImage = [imageFile];
 
-      await s3ImageNotifier.setClubImage(pickedImage);
+      await s3ImageNotifier.setImage(pickedImage);
     }
   }
 
