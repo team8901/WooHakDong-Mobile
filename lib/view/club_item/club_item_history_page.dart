@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,9 +46,13 @@ class ClubItemHistoryPage extends ConsumerWidget {
                   );
                 }
 
-                return RefreshIndicator(
-                  onRefresh: () async => ref.refresh(itemHistoryListProvider(itemId)),
+                return CustomMaterialIndicator(
+                  onRefresh: () async {
+                    await Future.delayed(const Duration(milliseconds: 750));
+                    ref.refresh(itemHistoryListProvider(itemId));
+                  },
                   child: ListView.separated(
+                    physics: const ClampingScrollPhysics(),
                     padding: const EdgeInsets.all(defaultPaddingM),
                     separatorBuilder: (context, index) => Column(
                       children: [
@@ -105,7 +110,8 @@ class ClubItemHistoryPage extends ConsumerWidget {
                                     const Gap(defaultGapS / 4),
                                     Text(
                                       _formatRentalDate(itemHistoryList[index].itemRentalDate),
-                                      style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                                      style:
+                                          context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
                                     ),
                                   ],
                                 ),
@@ -120,7 +126,8 @@ class ClubItemHistoryPage extends ConsumerWidget {
                                     const Gap(defaultGapS / 4),
                                     Text(
                                       _formatRentalDate(itemHistoryList[index].itemReturnDate),
-                                      style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                                      style:
+                                          context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
                                     ),
                                   ],
                                 ),

@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_item/club_item_add_page.dart';
 import 'package:woohakdong/view/club_item/components/club_item_page_view.dart';
+
+import 'club_item_search_page.dart';
 
 class ClubItemListPage extends ConsumerStatefulWidget {
   const ClubItemListPage({super.key});
@@ -35,7 +38,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
         title: const Text('물품'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => _pushItemSearchPage(context),
             icon: const Icon(Symbols.search_rounded),
           ),
         ],
@@ -79,6 +82,12 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
         tooltip: '동아리 물품을 추가해 보세요',
         child: const Icon(Symbols.add_rounded, weight: 600, size: 32),
       ),
+    );
+  }
+
+  void _pushItemSearchPage(BuildContext context) {
+    Navigator.of(context).push(
+      CupertinoPageRoute(builder: (context) => const ClubItemSearchPage()),
     );
   }
 

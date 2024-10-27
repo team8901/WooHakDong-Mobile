@@ -45,6 +45,7 @@ dependencies:
   cached_network_image: ^3.4.1
   sentry_flutter: ^8.9.0
   dropdown_button2: ^2.3.9
+  custom_refresh_indicator: ^4.0.1
 
 dev_dependencies:
   flutter_test:

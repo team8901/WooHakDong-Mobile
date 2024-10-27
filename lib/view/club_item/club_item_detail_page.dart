@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/item/item.dart';
+import 'package:woohakdong/view/club_item/components/club_item_rental_state_box.dart';
 import 'package:woohakdong/view/themes/custom_widget/custom_info_box.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
@@ -76,61 +77,7 @@ class ClubItemDetailPage extends ConsumerWidget {
                       ),
                     ),
                     const Gap(defaultGapS),
-                    (itemInfo.itemUsing!)
-                        ? Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPaddingS - 8,
-                              vertical: defaultPaddingXS - 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: context.colorScheme.primary,
-                              borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Symbols.lock_clock_rounded,
-                                  size: 20,
-                                  color: context.colorScheme.inversePrimary,
-                                ),
-                                const Gap(defaultGapS),
-                                Text(
-                                  '대여 중',
-                                  style: context.textTheme.titleSmall?.copyWith(
-                                    color: context.colorScheme.inversePrimary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPaddingS - 8,
-                              vertical: defaultPaddingXS - 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: context.colorScheme.surfaceContainer,
-                              borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Symbols.lock_open_rounded,
-                                  size: 20,
-                                  color: context.colorScheme.outline,
-                                ),
-                                const Gap(defaultGapS),
-                                Text(
-                                  '보관 중',
-                                  style: context.textTheme.bodyLarge?.copyWith(
-                                    color: context.colorScheme.outline,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                    ClubItemRentalStateBox(isRented: itemInfo.itemUsing!),
                     const Gap(defaultGapXL * 2),
                     CustomInfoBox(
                       infoTitle: '물품 설명',
