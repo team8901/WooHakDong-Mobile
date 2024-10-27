@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../spacing.dart';
+
 class CustomDropdownFormField extends StatelessWidget {
   final String labelText;
   final List<Map<String, String>> items;
@@ -35,6 +37,10 @@ class CustomDropdownFormField extends StatelessWidget {
       menuMaxHeight: menuMaxHeight.h,
       dropdownColor: context.colorScheme.surfaceContainer,
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: defaultPaddingS,
+          vertical: defaultPaddingXS,
+        ),
         labelText: labelText,
         labelStyle: context.textTheme.titleSmall?.copyWith(
           color: context.colorScheme.outline,
@@ -42,13 +48,20 @@ class CustomDropdownFormField extends StatelessWidget {
         errorStyle: context.textTheme.labelLarge?.copyWith(
           color: context.colorScheme.error,
         ),
-        errorBorder: UnderlineInputBorder(
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.error),
         ),
-        enabledBorder: UnderlineInputBorder(
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+          borderSide: BorderSide(color: context.colorScheme.error),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.surfaceContainer),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.primary),
         ),
       ),

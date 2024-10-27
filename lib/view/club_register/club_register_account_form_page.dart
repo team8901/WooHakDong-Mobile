@@ -52,6 +52,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
 
     return CustomPopScope(
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -66,8 +67,13 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                     style: context.textTheme.headlineSmall,
                   ),
                   const Gap(defaultGapXL * 2),
+                  Text(
+                    '동아리 회비 계좌',
+                    style: context.textTheme.labelLarge,
+                  ),
+                  const Gap(defaultGapM),
                   CustomDropdownFormField(
-                    labelText: '동아리 계좌 은행',
+                    labelText: '은행',
                     items: const [
                       {'value': '경남은행', 'displayText': '경남은행'},
                       {'value': '광주은행', 'displayText': '광주은행'},
@@ -91,32 +97,32 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                     onChanged: (value) => clubAccountValidationNotifier.state = ClubAccountValidationState.notChecked,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return '동아리 계좌 은행을 선택해 주세요';
+                        return '은행을 선택해 주세요';
                       }
                       return null;
                     },
                   ),
-                  const Gap(defaultGapXL),
+                  const Gap(defaultGapM),
                   CustomTextFormField(
                     controller: clubAccountNumberController,
-                    labelText: '동아리 계좌',
+                    labelText: '계좌번호',
                     onSaved: (value) => clubAccountInfo.clubAccountNumber = value!,
                     onChanged: (value) => clubAccountValidationNotifier.state = ClubAccountValidationState.notChecked,
-                    hintText: '동아리 계좌를 - 없이 입력해 주세요',
+                    hintText: '계좌번호를 - 없이 입력해 주세요',
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     textInputAction: TextInputAction.done,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return '동아리 계좌를 입력해 주세요';
+                        return '계좌번호를 입력해 주세요';
                       }
                       return null;
                     },
                   ),
-                  const Gap(defaultGapXL),
+                  const Gap(defaultGapM),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       if (clubAccountValidationState == ClubAccountValidationState.valid)
                         Text(
@@ -135,6 +141,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                       else if (clubAccountValidationState == ClubAccountValidationState.notChecked ||
                           clubAccountValidationState == ClubAccountValidationState.loading)
                         const SizedBox(),
+                      const Gap(defaultGapXL),
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: defaultPaddingL / 3,

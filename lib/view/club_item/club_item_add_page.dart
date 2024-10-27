@@ -36,182 +36,205 @@ class ClubItemAddPage extends ConsumerWidget {
     final itemInfo = ref.watch(itemProvider);
     final itemNotifier = ref.read(itemProvider.notifier);
 
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: const Text('물품 추가'),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(defaultPaddingM),
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '물품 사진',
-                  style: context.textTheme.labelLarge?.copyWith(
-                    color: context.colorScheme.onSurface,
-                  ),
-                ),
-                const Gap(defaultGapS),
-                SizedBox(
-                  width: 96.r,
-                  height: 96.r,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                    onTap: () => _pickItemImage(s3ImageNotifier),
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: context.colorScheme.surfaceContainer,
-                        ),
-                        borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                      ),
-                      child: s3ImageState.pickedImages.isEmpty
-                          ? Center(
-                              child: Icon(
-                                Symbols.camera_alt_rounded,
-                                color: context.colorScheme.outline,
-                              ),
-                            )
-                          : SizedBox(
-                              width: 96.r,
-                              height: 96.r,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                                child: Image.file(
-                                  s3ImageState.pickedImages[0],
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                ),
-                              ),
-                            ),
+    return PopScope(
+      onPopInvokedWithResult: (didPop, dynamic) {
+        if (didPop) {
+          ref.invalidate(s3ImageProvider);
+        }
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          title: const Text('물품 추가'),
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(defaultPaddingM),
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '물품 사진',
+                    style: context.textTheme.labelLarge?.copyWith(
+                      color: context.colorScheme.onSurface,
                     ),
                   ),
-                ),
-                const Gap(defaultGapXL),
-                CustomTextFormField(
-                  labelText: '물품 이름',
-                  keyboardType: TextInputType.text,
-                  onSaved: (value) => itemInfo.itemName = value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '물품 이름을 입력해 주세요';
-                    }
-                    return null;
-                  },
-                ),
-                const Gap(defaultGapXL),
-                CustomDropdownFormField(
-                  labelText: '카테고리',
-                  items: const [
-                    {'value': 'DIGITAL', 'displayText': '디지털'},
-                    {'value': 'SPORT', 'displayText': '스포츠'},
-                    {'value': 'BOOK', 'displayText': '도서'},
-                    {'value': 'CLOTHES', 'displayText': '의류'},
-                    {'value': 'STATIONERY', 'displayText': '문구류'},
-                    {'value': 'ETC', 'displayText': '기타'},
-                  ],
-                  onChanged: (value) => itemInfo.itemCategory = value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '카테고리를 선택해 주세요';
-                    }
-                    return null;
-                  },
-                ),
-                const Gap(defaultGapXL),
-                CustomCounterTextFormField(
-                  labelText: '물품 설명',
-                  maxLength: 100,
-                  keyboardType: TextInputType.text,
-                  onSaved: (value) => itemInfo.itemDescription = value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '물품 설명을 입력해 주세요';
-                    }
-                    return null;
-                  },
-                ),
-                CustomTextFormField(
-                  labelText: '물품 위치',
-                  keyboardType: TextInputType.text,
-                  onSaved: (value) => itemInfo.itemLocation = value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '물품 위치를 입력해 주세요';
-                    }
-                    return null;
-                  },
-                ),
-                const Gap(defaultGapXL),
-                CustomTextFormField(
-                  labelText: '최대 대여 가능 기간',
-                  hintText: '숫자만 입력해 주세요',
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  onSaved: (value) => itemInfo.itemRentalMaxDay = int.parse(value!),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '최대 대여 가능 기간를 입력해 주세요';
-                    }
-                    return null;
-                  },
-                ),
-              ],
+                  const Gap(defaultGapM),
+                  SizedBox(
+                    width: 96.r,
+                    height: 96.r,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                      onTap: () => _pickItemImage(s3ImageNotifier),
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: context.colorScheme.surfaceContainer,
+                          ),
+                          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                        ),
+                        child: s3ImageState.pickedImages.isEmpty
+                            ? Center(
+                                child: Icon(
+                                  Symbols.camera_alt_rounded,
+                                  color: context.colorScheme.outline,
+                                ),
+                              )
+                            : SizedBox(
+                                width: 96.r,
+                                height: 96.r,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                                  child: Image.file(
+                                    s3ImageState.pickedImages[0],
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                  ),
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
+                  const Gap(defaultGapXL),
+                  Text(
+                    '물품 정보',
+                    style: context.textTheme.labelLarge?.copyWith(
+                      color: context.colorScheme.onSurface,
+                    ),
+                  ),
+                  const Gap(defaultGapM),
+                  CustomTextFormField(
+                    labelText: '물품 이름',
+                    keyboardType: TextInputType.text,
+                    onSaved: (value) => itemInfo.itemName = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '물품 이름을 입력해 주세요';
+                      }
+                      return null;
+                    },
+                  ),
+                  const Gap(defaultGapM),
+                  CustomDropdownFormField(
+                    labelText: '카테고리',
+                    items: const [
+                      {'value': 'DIGITAL', 'displayText': '디지털'},
+                      {'value': 'SPORT', 'displayText': '스포츠'},
+                      {'value': 'BOOK', 'displayText': '도서'},
+                      {'value': 'CLOTHES', 'displayText': '의류'},
+                      {'value': 'STATIONERY', 'displayText': '문구류'},
+                      {'value': 'ETC', 'displayText': '기타'},
+                    ],
+                    onChanged: (value) => itemInfo.itemCategory = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '카테고리를 선택해 주세요';
+                      }
+                      return null;
+                    },
+                  ),
+                  const Gap(defaultGapM),
+                  CustomCounterTextFormField(
+                    labelText: '물품 설명',
+                    minLines: 3,
+                    maxLength: 200,
+                    keyboardType: TextInputType.text,
+                    onSaved: (value) => itemInfo.itemDescription = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '물품 설명을 입력해 주세요';
+                      }
+                      return null;
+                    },
+                  ),
+                  const Gap(defaultGapXL),
+                  Text(
+                    '물품 사진',
+                    style: context.textTheme.labelLarge?.copyWith(
+                      color: context.colorScheme.onSurface,
+                    ),
+                  ),
+                  const Gap(defaultGapM),
+                  CustomTextFormField(
+                    labelText: '물품 위치',
+                    keyboardType: TextInputType.text,
+                    onSaved: (value) => itemInfo.itemLocation = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '물품 위치를 입력해 주세요';
+                      }
+                      return null;
+                    },
+                  ),
+                  const Gap(defaultGapM),
+                  CustomTextFormField(
+                    labelText: '최대 대여 가능 기간',
+                    hintText: '숫자만 입력해 주세요',
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    onSaved: (value) => itemInfo.itemRentalMaxDay = int.parse(value!),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '최대 대여 가능 기간를 입력해 주세요';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: CustomBottomButton(
-          onTap: () async {
-            if (formKey.currentState?.validate() == true) {
-              try {
-                formKey.currentState?.save();
+        bottomNavigationBar: SafeArea(
+          child: CustomBottomButton(
+            onTap: () async {
+              if (formKey.currentState?.validate() == true) {
+                try {
+                  formKey.currentState?.save();
 
-                ref.read(itemStateProvider.notifier).state = ItemState.registering;
+                  ref.read(itemStateProvider.notifier).state = ItemState.registering;
 
-                if (s3ImageState.pickedImages.isEmpty) {
-                  await _pickItemBasicImage(s3ImageNotifier, itemInfo.itemCategory!);
+                  if (s3ImageState.pickedImages.isEmpty) {
+                    await _pickItemBasicImage(s3ImageNotifier, itemInfo.itemCategory!);
+                  }
+
+                  List<String> imageUrls = await s3ImageNotifier.setImageUrl('1');
+                  final itemImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
+                  String itemImageForServer = itemImageUrl.substring(0, itemImageUrl.indexOf('?'));
+
+                  final itemId = await itemNotifier.addItem(
+                    itemInfo.itemName!,
+                    itemImageForServer,
+                    itemInfo.itemDescription!,
+                    itemInfo.itemLocation!,
+                    itemInfo.itemCategory!,
+                    itemInfo.itemRentalMaxDay!,
+                  );
+
+                  if (context.mounted) {
+                    ref.refresh(itemListProvider);
+                    ref.invalidate(s3ImageProvider);
+
+                    ref.read(itemStateProvider.notifier).state = ItemState.registered;
+
+                    Navigator.pop(context);
+
+                    GeneralFunctions.generalToastMessage('물품이 추가되었어요');
+                  }
+                } catch (e) {
+                  ref.read(itemStateProvider.notifier).state = ItemState.initial;
+
+                  await GeneralFunctions.generalToastMessage('오류가 발생했어요\n다시 시도해 주세요');
                 }
-
-                List<String> imageUrls = await s3ImageNotifier.setImageUrl('1');
-                final itemImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
-                String itemImageForServer = itemImageUrl.substring(0, itemImageUrl.indexOf('?'));
-
-                final itemId = await itemNotifier.addItem(
-                  itemInfo.itemName!,
-                  itemImageForServer,
-                  itemInfo.itemDescription!,
-                  itemInfo.itemLocation!,
-                  itemInfo.itemCategory!,
-                  itemInfo.itemRentalMaxDay!,
-                );
-
-                if (context.mounted) {
-                  ref.refresh(itemListProvider);
-                  ref.invalidate(s3ImageProvider);
-
-                  ref.read(itemStateProvider.notifier).state = ItemState.registered;
-
-                  Navigator.pop(context);
-
-                  GeneralFunctions.generalToastMessage('물품이 추가되었어요');
-                }
-              } catch (e) {
-                ref.read(itemStateProvider.notifier).state = ItemState.initial;
-
-                await GeneralFunctions.generalToastMessage('오류가 발생했어요\n다시 시도해 주세요');
               }
-            }
-          },
-          buttonText: '완료',
-          buttonColor: Theme.of(context).colorScheme.primary,
-          buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
-          isLoading: itemState == ItemState.registering,
+            },
+            buttonText: '완료',
+            buttonColor: Theme.of(context).colorScheme.primary,
+            buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+            isLoading: itemState == ItemState.registering,
+          ),
         ),
       ),
     );

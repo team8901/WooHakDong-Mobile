@@ -13,10 +13,10 @@ class ClubRegisterCaution extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '동아리 회원 관리',
-          style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.onSurface),
+          '1. 동아리 회원 관리',
+          style: context.textTheme.labelLarge,
         ),
-        const Gap(defaultGapS / 2),
+        const Gap(defaultGapM),
         RichText(
           text: TextSpan(
             style: context.textTheme.bodyLarge,
@@ -36,35 +36,34 @@ class ClubRegisterCaution extends StatelessWidget {
         ),
         const Gap(defaultGapXL),
         Text(
-          '동아리 물품 관리',
-          style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.onSurface),
+          '2. 동아리 물품 관리',
+          style: context.textTheme.labelLarge,
         ),
-        const Gap(defaultGapS / 2),
+        const Gap(defaultGapM),
         Text(
           '동아리의 공용 물품을 등록 및 관리할 수 있어요. 동아리 회원들은 동아리 공용 물품을 간단하게 대여하고 누가 언제 대여했는지 쉽게 확인할 수 있어요.',
           style: context.textTheme.bodyLarge,
         ),
         const Gap(defaultGapXL),
         Text(
-          '동아리 회비 관리',
-          style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.onSurface),
+          '3. 동아리 회비 관리',
+          style: context.textTheme.labelLarge,
         ),
-        const Gap(defaultGapS / 2),
+        const Gap(defaultGapM),
         Text(
           '동아리 회비 계좌와 연동해서 회비 사용 내역을 자동으로 기록할 수 있어요. 기록된 동아리 회비 사용 내역은 동아리 회원들도 투명하게 볼 수 있어요.',
           style: context.textTheme.bodyLarge,
         ),
         const Gap(defaultGapXL),
         Text(
-          '동아리 일정 관리',
-          style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.onSurface),
+          '4. 동아리 일정 관리',
+          style: context.textTheme.labelLarge,
         ),
-        const Gap(defaultGapS / 2),
+        const Gap(defaultGapM),
         Text(
           '동아리 회비 사용 내역 혹은 일정을 새로 등록해서 캘린더에서 볼 수 있어요. 일정을 새로 등록하면 동아리 회원들에게 메일이 전송돼요.',
           style: context.textTheme.bodyLarge,
         ),
-        const Gap(defaultGapXL),
       ],
     );
   }

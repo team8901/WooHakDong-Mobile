@@ -6,6 +6,7 @@ import 'package:woohakdong/view/club_register/club_register_info_form_page.dart'
 import 'package:woohakdong/view/club_register/components/club_register_caution.dart';
 import 'package:woohakdong/view_model/club/components/club_name_validation_provider.dart';
 import 'package:woohakdong/view_model/club/components/club_name_validation_state.dart';
+import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 
 import '../themes/custom_widget/custom_bottom_button.dart';
 import '../themes/spacing.dart';
@@ -16,27 +17,34 @@ class ClubRegisterCautionPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: const SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(defaultPaddingM),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClubRegisterCautionIntroduce(),
-              Gap(defaultGapXL * 2),
-              ClubRegisterCaution(),
-            ],
+    return PopScope(
+      onPopInvokedWithResult: (didPop, dynamic) {
+        if (didPop) {
+          ref.invalidate(s3ImageProvider);
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(),
+        body: const SafeArea(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(defaultPaddingM),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClubRegisterCautionIntroduce(),
+                Gap(defaultGapXL * 2),
+                ClubRegisterCaution(),
+              ],
+            ),
           ),
         ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: CustomBottomButton(
-          onTap: () => _pushNameInfoPage(context, ref),
-          buttonText: '다 읽었어요',
-          buttonColor: Theme.of(context).colorScheme.primary,
-          buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+        bottomNavigationBar: SafeArea(
+          child: CustomBottomButton(
+            onTap: () => _pushNameInfoPage(context, ref),
+            buttonText: '다 읽었어요',
+            buttonColor: Theme.of(context).colorScheme.primary,
+            buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+          ),
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -44,6 +45,10 @@ class CustomTextFormField extends StatelessWidget {
       maxLines: null,
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: defaultPaddingS,
+          vertical: defaultPaddingXS,
+        ),
         labelText: labelText,
         labelStyle: context.textTheme.titleSmall?.copyWith(
           color: context.colorScheme.outline,
@@ -55,17 +60,25 @@ class CustomTextFormField extends StatelessWidget {
         errorStyle: context.textTheme.labelLarge?.copyWith(
           color: context.colorScheme.error,
         ),
-        errorBorder: UnderlineInputBorder(
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.error),
         ),
-        focusedErrorBorder: UnderlineInputBorder(
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.error),
         ),
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.surfaceContainer),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.primary),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+          borderSide: BorderSide(color: context.colorScheme.surfaceContainer),
         ),
       ),
       validator: validator,

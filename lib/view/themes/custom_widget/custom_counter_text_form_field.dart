@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../spacing.dart';
+
 class CustomCounterTextFormField extends StatelessWidget {
   final String labelText;
   final String? hintText;
@@ -14,6 +16,7 @@ class CustomCounterTextFormField extends StatelessWidget {
   final FormFieldSetter<String>? onSaved;
   final ValueChanged<String>? onChanged;
   final TextEditingController? controller;
+  final int minLines;
   final int maxLength;
 
   const CustomCounterTextFormField({
@@ -29,6 +32,7 @@ class CustomCounterTextFormField extends StatelessWidget {
     this.onSaved,
     this.onChanged,
     this.controller,
+    required this.minLines,
     required this.maxLength,
   });
 
@@ -42,11 +46,16 @@ class CustomCounterTextFormField extends StatelessWidget {
       readOnly: readOnly,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
-      minLines: 1,
+      minLines: minLines,
       maxLines: null,
       maxLength: maxLength,
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: InputDecoration(
+        alignLabelWithHint: true,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: defaultPaddingS,
+          vertical: defaultPaddingXS,
+        ),
         labelText: labelText,
         labelStyle: context.textTheme.titleSmall?.copyWith(
           color: context.colorScheme.outline,
@@ -61,16 +70,20 @@ class CustomCounterTextFormField extends StatelessWidget {
         errorStyle: context.textTheme.labelLarge?.copyWith(
           color: context.colorScheme.error,
         ),
-        errorBorder: UnderlineInputBorder(
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.error),
         ),
-        focusedErrorBorder: UnderlineInputBorder(
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.error),
         ),
-        enabledBorder: UnderlineInputBorder(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.surfaceContainer),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.primary),
         ),
       ),

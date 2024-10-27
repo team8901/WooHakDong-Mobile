@@ -44,11 +44,9 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                 const Gap(defaultGapXL * 2),
                 Text(
                   '동아리 사진',
-                  style: context.textTheme.labelLarge?.copyWith(
-                    color: context.colorScheme.onSurface,
-                  ),
+                  style: context.textTheme.labelLarge,
                 ),
-                const Gap(defaultGapS),
+                const Gap(defaultGapM),
                 Container(
                   width: 192.r,
                   height: 192.r,
@@ -66,40 +64,113 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                   ),
                 ),
                 const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '동아리 이름', infoContent: clubInfo.clubName!),
+                Text(
+                  '동아리 기본 정보',
+                  style: context.textTheme.labelLarge,
+                ),
+                const Gap(defaultGapM),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: context.colorScheme.surfaceContainer),
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingM,
+                    vertical: defaultPaddingXS,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomInfoCheckTile(infoContent: clubInfo.clubName!),
+                      const Gap(defaultGapM),
+                      CustomInfoCheckTile(infoContent: clubInfo.clubEnglishName!),
+                    ],
+                  ),
+                ),
+                const Gap(defaultGapM),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: context.colorScheme.surfaceContainer),
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingM,
+                    vertical: defaultPaddingXS,
+                  ),
+                  child: CustomInfoCheckTile(infoContent: clubInfo.clubDescription!),
+                ),
                 const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '동아리 영문 이름', infoContent: clubInfo.clubEnglishName!),
+                Text(
+                  '동아리 추가 정보',
+                  style: context.textTheme.labelLarge,
+                ),
+                const Gap(defaultGapM),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: context.colorScheme.surfaceContainer),
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingM,
+                    vertical: defaultPaddingXS,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      (clubInfo.clubGeneration != '')
+                          ? Column(
+                              children: [
+                                CustomInfoCheckTile(infoContent: _generationFormatting(clubInfo.clubGeneration!)),
+                                const Gap(defaultGapM),
+                              ],
+                            )
+                          : const SizedBox(),
+                      CustomInfoCheckTile(infoContent: _currencyFormatting(clubInfo.clubDues!)),
+                      (clubInfo.clubRoom != '')
+                          ? Column(
+                              children: [
+                                const Gap(defaultGapM),
+                                CustomInfoCheckTile(infoContent: clubInfo.clubRoom!),
+                              ],
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
+                ),
                 const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '동아리 설명', infoContent: clubInfo.clubDescription!),
-                (clubInfo.clubGeneration != '')
-                    ? Column(
-                        children: [
-                          const Gap(defaultGapXL),
-                          CustomInfoCheckTile(
-                              infoTitle: '현재 기수', infoContent: _generationFormatting(clubInfo.clubGeneration!)),
-                        ],
-                      )
-                    : const SizedBox(),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '동아리 회비', infoContent: _currencyFormatting(clubInfo.clubDues!)),
-                (clubInfo.clubRoom != '')
-                    ? Column(
-                        children: [
-                          const Gap(defaultGapXL),
-                          CustomInfoCheckTile(infoTitle: '동아리 방', infoContent: clubInfo.clubRoom!),
-                        ],
-                      )
-                    : const SizedBox(),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '카카오톡 채팅방 링크', infoContent: clubInfo.clubGroupChatLink!),
-                (clubInfo.clubGroupChatPassword != '')
-                    ? Column(
-                        children: [
-                          const Gap(defaultGapXL),
-                          CustomInfoCheckTile(infoTitle: '카카오톡 채팅방 비밀번호', infoContent: clubInfo.clubGroupChatPassword!),
-                        ],
-                      )
-                    : const SizedBox(),
+                Text(
+                  '카카오톡 채팅방',
+                  style: context.textTheme.labelLarge,
+                ),
+                const Gap(defaultGapM),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: context.colorScheme.surfaceContainer),
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingM,
+                    vertical: defaultPaddingXS,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomInfoCheckTile(infoContent: clubInfo.clubGroupChatLink!),
+                      (clubInfo.clubGroupChatPassword != '')
+                          ? Column(
+                              children: [
+                                const Gap(defaultGapXL),
+                                CustomInfoCheckTile(infoContent: clubInfo.clubGroupChatPassword!),
+                              ],
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

@@ -30,19 +30,61 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
               children: [
                 Text('회장님의 정보가 맞으신가요?', style: context.textTheme.headlineSmall),
                 const Gap(defaultGapXL * 2),
-                CustomInfoCheckTile(infoTitle: '이름', infoContent: memberInfo.memberName),
+                Text(
+                  '기본 정보',
+                  style: context.textTheme.labelLarge,
+                ),
+                const Gap(defaultGapM),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: context.colorScheme.surfaceContainer),
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingM,
+                    vertical: defaultPaddingXS,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomInfoCheckTile(infoContent: memberInfo.memberName),
+                      const Gap(defaultGapM),
+                      CustomInfoCheckTile(infoContent: _getGenderDisplay(memberInfo.memberGender!)),
+                      const Gap(defaultGapM),
+                      CustomInfoCheckTile(infoContent: _formatPhoneNumber(memberInfo.memberPhoneNumber!)),
+                      const Gap(defaultGapM),
+                      CustomInfoCheckTile(infoContent: memberInfo.memberEmail),
+                    ],
+                  ),
+                ),
                 const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '성별', infoContent: _getGenderDisplay(memberInfo.memberGender!)),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '휴대폰 번호', infoContent: _formatPhoneNumber(memberInfo.memberPhoneNumber!)),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '이메일 주소', infoContent: memberInfo.memberEmail),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '학교', infoContent: memberInfo.memberSchool),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '학과', infoContent: memberInfo.memberMajor!),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '학번', infoContent: memberInfo.memberStudentNumber!),
+                Text(
+                  '학교 정보',
+                  style: context.textTheme.labelLarge,
+                ),
+                const Gap(defaultGapM),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: context.colorScheme.surfaceContainer),
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingM,
+                    vertical: defaultPaddingXS,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomInfoCheckTile(infoContent: memberInfo.memberSchool),
+                      const Gap(defaultGapM),
+                      CustomInfoCheckTile(infoContent: memberInfo.memberMajor!),
+                      const Gap(defaultGapM),
+                      CustomInfoCheckTile(infoContent: memberInfo.memberStudentNumber!),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

@@ -68,9 +68,9 @@ class ClubRegisterCompletePage extends ConsumerWidget {
                     color: context.colorScheme.onSurface,
                   ),
                 ),
-                const Gap(defaultGapS),
+                const Gap(defaultGapM),
                 ClubRegisterUrlCard(groupInfo: groupInfo),
-                const Gap(defaultGapS),
+                const Gap(defaultGapM),
                 WidgetToPng(
                   keyToCapture: _widgetToPngKey,
                   child: ClubRegisterQrCard(groupInfo: groupInfo),

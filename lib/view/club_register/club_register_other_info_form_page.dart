@@ -22,6 +22,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
     final clubInfo = ref.watch(clubProvider);
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -35,21 +36,20 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                   '동아리의 다른 정보도 필요해요',
                   style: context.textTheme.headlineSmall,
                 ),
+                const Gap(defaultGapXL * 2),
                 Text(
-                  '현재 기수, 동아리 방, 채팅창 비밀번호는 비워놔도 돼요',
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: context.colorScheme.onSurface,
-                  ),
+                  '동아리 추가 정보',
+                  style: context.textTheme.labelLarge,
                 ),
-                const Gap(defaultGapXL),
+                const Gap(defaultGapM),
                 CustomTextFormField(
                   labelText: '현재 기수',
-                  hintText: '숫자만 입력해 주세요',
+                  hintText: '비워놔도 돼요',
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   onSaved: (value) => clubInfo.clubGeneration = value,
                 ),
-                const Gap(defaultGapXL),
+                const Gap(defaultGapM),
                 CustomTextFormField(
                   labelText: '동아리 회비',
                   keyboardType: TextInputType.number,
@@ -67,12 +67,18 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                     return null;
                   },
                 ),
-                const Gap(defaultGapXL),
+                const Gap(defaultGapM),
                 CustomTextFormField(
                   labelText: '동아리 방',
+                  hintText: '비워놔도 돼요',
                   onSaved: (value) => clubInfo.clubRoom = value,
                 ),
                 const Gap(defaultGapXL),
+                Text(
+                  '카카오톡 채팅방',
+                  style: context.textTheme.labelLarge,
+                ),
+                const Gap(defaultGapM),
                 CustomTextFormField(
                   labelText: '카카오톡 채팅방 링크',
                   keyboardType: TextInputType.text,
@@ -84,9 +90,10 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                     return null;
                   },
                 ),
-                const Gap(defaultGapXL),
+                const Gap(defaultGapM),
                 CustomTextFormField(
                   labelText: '카카오톡 채팅방 비밀번호',
+                  hintText: '비워놔도 돼요',
                   onSaved: (value) => clubInfo.clubGroupChatPassword = value,
                   textInputAction: TextInputAction.done,
                 ),

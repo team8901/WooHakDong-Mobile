@@ -83,11 +83,9 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
               const Gap(defaultGapXL),
               Text(
                 '동아리 로고 및 대표 사진',
-                style: context.textTheme.labelLarge?.copyWith(
-                  color: context.colorScheme.onSurface,
-                ),
+                style: context.textTheme.labelLarge,
               ),
-              const Gap(defaultGapS),
+              const Gap(defaultGapM),
               SizedBox(
                 width: 96.r,
                 height: 96.r,
@@ -124,6 +122,11 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 ),
               ),
               const Gap(defaultGapXL),
+              Text(
+                '동아리 기본 정보',
+                style: context.textTheme.labelLarge,
+              ),
+              const Gap(defaultGapM),
               Form(
                 key: nameFormKey,
                 child: Column(
@@ -140,7 +143,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                         return null;
                       },
                     ),
-                    const Gap(defaultGapXL),
+                    const Gap(defaultGapM),
                     CustomTextFormField(
                       controller: clubEnglishNameController,
                       labelText: '동아리 영문 이름',
@@ -158,10 +161,10 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                   ],
                 ),
               ),
-              const Gap(defaultGapXL),
+              const Gap(defaultGapM),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   if (clubNameValidationState == ClubNameValidationState.valid)
                     Text(
@@ -179,6 +182,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                     )
                   else if (clubNameValidationState == ClubNameValidationState.notChecked)
                     const SizedBox(),
+                  const Gap(defaultGapXL),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: defaultPaddingL / 3,
@@ -207,12 +211,15 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                   ),
                 ],
               ),
+              const Gap(defaultGapM),
               Form(
                 key: descriptionFormKey,
                 child: CustomCounterTextFormField(
                   controller: clubDescriptionController,
                   labelText: '동아리 설명',
-                  maxLength: 500,
+                  hintText: '500자 이내로 입력해 주세요',
+                  minLines: 4,
+                  maxLength: 300,
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.done,
                   validator: (value) {

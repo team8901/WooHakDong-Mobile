@@ -8,10 +8,10 @@ import 'package:woohakdong/view/themes/custom_widget/custom_circular_progress_in
 import 'package:woohakdong/view_model/club/club_provider.dart';
 import 'package:woohakdong/view_model/club/components/club_state.dart';
 import 'package:woohakdong/view_model/club/components/club_state_provider.dart';
-import 'package:woohakdong/view_model/item/item_provider.dart';
 import 'package:woohakdong/view_model/member/components/member_state.dart';
 import 'package:woohakdong/view_model/member/components/member_state_provider.dart';
 import 'package:woohakdong/view_model/member/member_provider.dart';
+import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 
 class RoutePage extends ConsumerStatefulWidget {
   const RoutePage({super.key});
@@ -33,6 +33,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
   Future<void> _initializeApp() async {
     await ref.read(memberProvider.notifier).getMemberInfo();
     await ref.read(clubProvider.notifier).getClubList();
+    ref.invalidate(s3ImageProvider);
   }
 
   @override
