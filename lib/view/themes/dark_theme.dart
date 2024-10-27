@@ -11,10 +11,10 @@ const Color green = Color(0xFF43A047);
 
 /// 그레이 스케일
 const Color black = Color(0xFF111111);
-const Color darkGray = Color(0xFF6C6E75);
-const Color gray = Color(0xFF797B82);
-const Color lightGray = Color(0xFFB2B4B9);
-const Color white = Color(0xFFEDEEEF);
+const Color darkGray = Color(0xFF303136);
+const Color gray = Color(0xFF6C6E79);
+const Color lightGray = Color(0xFFB2B3BD);
+const Color white = Color(0xFFEEEEF0);
 
 final ThemeData darkTheme = ThemeData(
   /// 기본

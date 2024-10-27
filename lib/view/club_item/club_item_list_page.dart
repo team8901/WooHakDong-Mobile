@@ -94,22 +94,21 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
   void _pushItemAddPage(BuildContext context) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (
-          BuildContext context,
-          Animation<double> animation,
-          Animation<double> secondaryAnimation,
-        ) {
+        pageBuilder: (context, animation, secondaryAnimation) => const ClubItemAddPage(),
+        transitionDuration: const Duration(milliseconds: 350),
+        reverseTransitionDuration: const Duration(milliseconds: 350),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
           var curve = CurvedAnimation(
             parent: animation,
-            curve: Curves.easeOutQuad,
-            reverseCurve: Curves.easeOutQuad,
+            curve: Curves.fastOutSlowIn,
+            reverseCurve: Curves.fastOutSlowIn,
           );
           return SlideTransition(
             position: Tween<Offset>(
               begin: const Offset(0, 1),
               end: Offset.zero,
             ).animate(curve),
-            child: const ClubItemAddPage(),
+            child: child,
           );
         },
       ),

@@ -12,6 +12,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 import '../themes/custom_widget/custom_info_content.dart';
 import '../themes/spacing.dart';
 import 'club_item_history_page.dart';
+import 'components/club_item_photo_view.dart';
 
 class ClubItemDetailPage extends ConsumerWidget {
   final Item itemInfo;
@@ -23,6 +24,7 @@ class ClubItemDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final CachedNetworkImageProvider itemPhoto = CachedNetworkImageProvider(itemInfo.itemPhoto!);
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -30,6 +32,7 @@ class ClubItemDetailPage extends ConsumerWidget {
             onPressed: () => _pushItemDetailPage(context, itemInfo.itemId!),
             icon: const Icon(Symbols.history_rounded),
           ),
+
           /// TODO 물품 삭제 추가하기
           IconButton(
             onPressed: () {},
@@ -43,20 +46,23 @@ class ClubItemDetailPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AspectRatio(
-                aspectRatio: 1,
-                child: CachedNetworkImage(
-                  imageUrl: itemInfo.itemPhoto!,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) {
-                    return AspectRatio(
-                      aspectRatio: 1,
-                      child: Container(
-                        width: double.infinity,
-                        color: context.colorScheme.surfaceContainer,
-                      ),
-                    );
-                  },
+              GestureDetector(
+                onTap: () => _pushItemPhotoView(context, itemPhoto),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CachedNetworkImage(
+                    imageUrl: itemInfo.itemPhoto!,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) {
+                      return AspectRatio(
+                        aspectRatio: 1,
+                        child: Container(
+                          width: double.infinity,
+                          color: context.colorScheme.surfaceContainer,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
               Padding(
@@ -125,6 +131,30 @@ class ClubItemDetailPage extends ConsumerWidget {
       default:
         return '전체';
     }
+  }
+
+  void _pushItemPhotoView(BuildContext context, CachedNetworkImageProvider itemPhoto) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => ClubItemPhotoView(itemPhoto: itemPhoto),
+        transitionDuration: const Duration(milliseconds: 150),
+        reverseTransitionDuration: const Duration(milliseconds: 150),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var curve = CurvedAnimation(
+            parent: animation,
+            curve: Curves.fastOutSlowIn,
+            reverseCurve: Curves.fastOutSlowIn,
+          );
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 1),
+              end: Offset.zero,
+            ).animate(curve),
+            child: child,
+          );
+        },
+      ),
+    );
   }
 
   void _pushItemDetailPage(BuildContext context, int itemId) {

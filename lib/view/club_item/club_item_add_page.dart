@@ -204,6 +204,7 @@ class ClubItemAddPage extends ConsumerWidget {
                     labelText: '최대 대여 가능 기간',
                     hintText: '숫자만 입력해 주세요',
                     keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.done,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     onSaved: (value) => itemInfo.itemRentalMaxDay = int.parse(value!),
                     validator: (value) {
