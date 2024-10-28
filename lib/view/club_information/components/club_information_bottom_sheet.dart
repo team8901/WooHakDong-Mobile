@@ -22,9 +22,8 @@ class ClubInformationBottomSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentClubId = ref.watch(clubIdProvider);
 
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: defaultPaddingM),
       child: FutureBuilder(
         future: ref.watch(clubListProvider.future),
         builder: (context, clubListSnapshot) {
@@ -41,36 +40,45 @@ class ClubInformationBottomSheet extends ConsumerWidget {
               itemCount: clubList!.length + 2,
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('동아리 목록', style: context.textTheme.titleLarge),
-                      Text(
-                        '현재 등록되어 있는 동아리 목록이에요',
-                        style: context.textTheme.bodySmall?.copyWith(
-                          color: context.colorScheme.onSurface,
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: defaultPaddingM,
+                      vertical: defaultPaddingS / 2,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('동아리 목록', style: context.textTheme.titleLarge),
+                        Text(
+                          '현재 등록되어 있는 동아리 목록이에요',
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: context.colorScheme.onSurface,
+                          ),
                         ),
-                      ),
-                      const Gap(defaultGapM),
-                    ],
+                        const Gap(defaultGapM),
+                      ],
+                    ),
                   );
                 } else if (index != clubList.length + 1) {
                   final club = clubList[index - 1];
                   final isCurrent = club.clubId == currentClubId;
                   final CachedNetworkImageProvider imageProvider = CachedNetworkImageProvider(club.clubImage!);
 
-                  return SizedBox(
-                    width: double.infinity,
-                    height: 52,
-                    child: InkWell(
-                      onTap: () async {
-                        await ref.read(clubIdProvider.notifier).saveClubId(club.clubId!);
+                  return InkWell(
+                    onTap: () async {
+                      await ref.read(clubIdProvider.notifier).saveClubId(club.clubId!);
 
-                        if (context.mounted) {
-                          _pushRoutePage(context, club.clubName!);
-                        }
-                      },
-                      child: Ink(
+                      if (context.mounted) {
+                        _pushRoutePage(context, club.clubName!);
+                      }
+                    },
+                    highlightColor: context.colorScheme.surfaceContainer,
+                    child: Ink(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPaddingM,
+                          vertical: defaultPaddingS / 2,
+                        ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -89,11 +97,14 @@ class ClubInformationBottomSheet extends ConsumerWidget {
                               ),
                             ),
                             const Gap(defaultGapXL),
-                            Text(
-                              club.clubName!,
-                              style: context.textTheme.bodyLarge,
+                            Expanded(
+                              child: Text(
+                                club.clubName!,
+                                style: context.textTheme.bodyLarge,
+                                softWrap: true,
+                              ),
                             ),
-                            const Spacer(),
+                            const Gap(defaultGapXL),
                             if (isCurrent)
                               Icon(
                                 size: 20,
@@ -109,12 +120,15 @@ class ClubInformationBottomSheet extends ConsumerWidget {
                 } else {
                   return Column(
                     children: [
-                      SizedBox(
-                        width: double.infinity,
-                        height: 52,
-                        child: InkWell(
-                          onTap: () => _pushClubRegisterCautionPage(context),
-                          child: Ink(
+                      InkWell(
+                        onTap: () => _pushClubRegisterCautionPage(context),
+                        highlightColor: context.colorScheme.surfaceContainer,
+                        child: Ink(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPaddingM,
+                              vertical: defaultPaddingS / 2,
+                            ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -139,7 +153,6 @@ class ClubInformationBottomSheet extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      const Gap(defaultPaddingM),
                     ],
                   );
                 }

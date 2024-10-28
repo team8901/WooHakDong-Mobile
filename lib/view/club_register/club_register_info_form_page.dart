@@ -66,6 +66,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.all(defaultPaddingM),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,7 +219,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                   controller: clubDescriptionController,
                   labelText: '동아리 설명',
                   hintText: '500자 이내로 입력해 주세요',
-                  minLines: 4,
+                  minLines: 5,
                   maxLength: 300,
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.done,

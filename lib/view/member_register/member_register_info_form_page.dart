@@ -34,6 +34,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
               final memberInfo = ref.watch(memberProvider);
 
               return SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.all(defaultPaddingM),
                 child: Form(
                   key: formKey,

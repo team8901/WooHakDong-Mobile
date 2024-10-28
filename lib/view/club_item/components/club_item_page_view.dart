@@ -11,6 +11,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 import '../../../model/item/item.dart';
 import '../../../view_model/item/item_list_provider.dart';
 import '../../themes/custom_widget/custom_circular_progress_indicator.dart';
+import '../../themes/custom_widget/custom_divider.dart';
 import '../../themes/spacing.dart';
 import '../club_item_detail_page.dart';
 
@@ -60,19 +61,8 @@ class ClubItemPageView extends ConsumerWidget {
                 ref.refresh(itemListProvider);
               },
               child: ListView.separated(
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.all(defaultPaddingM),
-                separatorBuilder: (context, index) => Column(
-                  children: [
-                    const Gap(defaultGapXL),
-                    Divider(
-                      color: context.colorScheme.surfaceContainer,
-                      thickness: 0.6,
-                      height: 0,
-                    ),
-                    const Gap(defaultGapXL),
-                  ],
-                ),
+                physics: const BouncingScrollPhysics(),
+                separatorBuilder: (context, index) => const CustomDivider(),
                 itemCount: filteredList.length,
                 itemBuilder: (context, index) {
                   final CachedNetworkImageProvider imageProvider =
@@ -80,110 +70,114 @@ class ClubItemPageView extends ConsumerWidget {
 
                   return InkWell(
                     onTap: () => _pushItemDetailPage(context, filteredList[index]),
+                    highlightColor: context.colorScheme.surfaceContainer,
                     child: Ink(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 72.r,
-                            height: 72.r,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                              border: Border.all(
-                                color: context.colorScheme.surfaceContainer,
-                                width: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(defaultPaddingM),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 72.r,
+                              height: 72.r,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                                border: Border.all(
+                                  color: context.colorScheme.surfaceContainer,
+                                  width: 1,
+                                ),
                               ),
                             ),
-                          ),
-                          const Gap(defaultGapM),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  filteredList[index].itemName!,
-                                  style: context.textTheme.bodyLarge,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const Gap(defaultGapS / 4),
-                                Row(
-                                  children: [
-                                    Text(
-                                      _translateItemCategory(filteredList[index].itemCategory!),
-                                      style: context.textTheme.bodySmall?.copyWith(
-                                        color: context.colorScheme.onSurface,
+                            const Gap(defaultGapM),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    filteredList[index].itemName!,
+                                    style: context.textTheme.bodyLarge,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const Gap(defaultGapS / 4),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        _translateItemCategory(filteredList[index].itemCategory!),
+                                        style: context.textTheme.bodySmall?.copyWith(
+                                          color: context.colorScheme.onSurface,
+                                        ),
                                       ),
-                                    ),
-                                    const Gap(defaultGapS),
-                                    SizedBox(
-                                      height: 8,
-                                      child: VerticalDivider(
-                                        color: context.colorScheme.outline,
-                                        width: 1,
+                                      const Gap(defaultGapS),
+                                      SizedBox(
+                                        height: 8,
+                                        child: VerticalDivider(
+                                          color: context.colorScheme.outline,
+                                          width: 1,
+                                        ),
                                       ),
-                                    ),
-                                    const Gap(defaultGapS),
-                                    Text(
-                                      filteredList[index].itemLocation!,
-                                      style: context.textTheme.bodySmall?.copyWith(
-                                        color: context.colorScheme.onSurface,
+                                      const Gap(defaultGapS),
+                                      Text(
+                                        filteredList[index].itemLocation!,
+                                        style: context.textTheme.bodySmall?.copyWith(
+                                          color: context.colorScheme.onSurface,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                const Gap(defaultGapS / 2),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    (filteredList[index].itemUsing!)
-                                        ? Icon(
-                                            Symbols.lock_clock_rounded,
-                                            color: context.colorScheme.primary,
-                                            size: 16,
-                                          )
-                                        : Icon(
-                                            Symbols.lock_open_rounded,
-                                            color: context.colorScheme.onSurface,
-                                            size: 16,
-                                          ),
-                                    const Gap(defaultGapS / 2),
-                                    (filteredList[index].itemUsing!)
-                                        ? Text(
-                                            '대여 중',
-                                            style: context.textTheme.labelLarge?.copyWith(
+                                    ],
+                                  ),
+                                  const Gap(defaultGapS / 2),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      (filteredList[index].itemUsing!)
+                                          ? Icon(
+                                              Symbols.lock_clock_rounded,
+                                              color: context.colorScheme.primary,
+                                              size: 16,
+                                            )
+                                          : Icon(
+                                              Symbols.lock_open_rounded,
                                               color: context.colorScheme.onSurface,
+                                              size: 16,
                                             ),
-                                          )
-                                        : Text(
-                                            '보관 중',
-                                            style: context.textTheme.labelLarge?.copyWith(
-                                              color: context.colorScheme.onSurface,
+                                      const Gap(defaultGapS / 2),
+                                      (filteredList[index].itemUsing!)
+                                          ? Text(
+                                              '대여 중',
+                                              style: context.textTheme.labelLarge?.copyWith(
+                                                color: context.colorScheme.onSurface,
+                                              ),
+                                            )
+                                          : Text(
+                                              '보관 중',
+                                              style: context.textTheme.labelLarge?.copyWith(
+                                                color: context.colorScheme.onSurface,
+                                              ),
                                             ),
-                                          ),
-                                    const Gap(defaultGapS),
-                                    Icon(
-                                      Symbols.history_rounded,
-                                      color: context.colorScheme.onSurface,
-                                      size: 16,
-                                    ),
-                                    const Gap(defaultGapS / 2),
-                                    Text(
-                                      filteredList[index].itemRentalTime!.toString(),
-                                      style: context.textTheme.labelLarge?.copyWith(
+                                      const Gap(defaultGapS),
+                                      Icon(
+                                        Symbols.history_rounded,
                                         color: context.colorScheme.onSurface,
+                                        size: 16,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      const Gap(defaultGapS / 2),
+                                      Text(
+                                        filteredList[index].itemRentalTime!.toString(),
+                                        style: context.textTheme.labelLarge?.copyWith(
+                                          color: context.colorScheme.onSurface,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );

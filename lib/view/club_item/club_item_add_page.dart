@@ -8,10 +8,12 @@ import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:woohakdong/model/item/item.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/item/components/item_state.dart';
 import 'package:woohakdong/view_model/item/components/item_state_provider.dart';
 import 'package:woohakdong/view_model/item/item_provider.dart';
+import 'package:woohakdong/view_model/util/components/s3_image_state.dart';
 
 import '../../service/general/general_functions.dart';
 import '../../view_model/util/s3_image_provider.dart';
@@ -46,6 +48,7 @@ class ClubItemAddPage extends ConsumerWidget {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
             padding: const EdgeInsets.all(defaultPaddingM),
             child: Form(
               key: formKey,
@@ -169,7 +172,8 @@ class ClubItemAddPage extends ConsumerWidget {
                   const Gap(defaultGapM),
                   CustomCounterTextFormField(
                     labelText: '물품 설명',
-                    minLines: 3,
+                    hintText: '200자 이내로 입력해 주세요',
+                    minLines: 4,
                     maxLength: 200,
                     keyboardType: TextInputType.text,
                     onSaved: (value) => itemInfo.itemDescription = value,
@@ -182,7 +186,7 @@ class ClubItemAddPage extends ConsumerWidget {
                   ),
                   const Gap(defaultGapXL),
                   Text(
-                    '물품 사진',
+                    '물품 추가 정보',
                     style: context.textTheme.labelLarge?.copyWith(
                       color: context.colorScheme.onSurface,
                     ),
@@ -226,22 +230,7 @@ class ClubItemAddPage extends ConsumerWidget {
                 try {
                   formKey.currentState?.save();
 
-                  if (s3ImageState.pickedImages.isEmpty) {
-                    await _pickItemBasicImage(s3ImageNotifier, itemInfo.itemCategory!);
-                  }
-
-                  List<String> imageUrls = await s3ImageNotifier.setImageUrl('1');
-                  final itemImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
-                  String itemImageForServer = itemImageUrl.substring(0, itemImageUrl.indexOf('?'));
-
-                  await itemNotifier.addItem(
-                    itemInfo.itemName!,
-                    itemImageForServer,
-                    itemInfo.itemDescription!,
-                    itemInfo.itemLocation!,
-                    itemInfo.itemCategory!,
-                    itemInfo.itemRentalMaxDay!,
-                  );
+                  await _addItemToServer(s3ImageState, s3ImageNotifier, itemInfo, itemNotifier);
 
                   if (context.mounted) {
                     Navigator.pop(context);
@@ -261,6 +250,31 @@ class ClubItemAddPage extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _addItemToServer(
+    S3ImageState s3ImageState,
+    S3ImageNotifier s3ImageNotifier,
+    Item itemInfo,
+    ItemNotifier itemNotifier,
+  ) async {
+    if (s3ImageState.pickedImages.isEmpty) {
+      await _pickItemBasicImage(s3ImageNotifier, itemInfo.itemCategory!);
+    }
+
+    List<String> imageUrls = await s3ImageNotifier.setImageUrl('1');
+    final itemImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
+
+    String itemImageForServer = itemImageUrl.substring(0, itemImageUrl.indexOf('?'));
+
+    await itemNotifier.addItem(
+      itemInfo.itemName!,
+      itemImageForServer,
+      itemInfo.itemDescription!,
+      itemInfo.itemLocation!,
+      itemInfo.itemCategory!,
+      itemInfo.itemRentalMaxDay!,
     );
   }
 

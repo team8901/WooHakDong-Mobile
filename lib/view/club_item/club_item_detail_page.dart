@@ -29,10 +29,13 @@ class ClubItemDetailPage extends ConsumerWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () => _pushItemDetailPage(context, itemInfo.itemId!),
+            onPressed: () => _pushItemHistoryPage(context, itemInfo.itemId!),
             icon: const Icon(Symbols.history_rounded),
           ),
-
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Symbols.edit_rounded),
+          ),
           /// TODO 물품 삭제 추가하기
           IconButton(
             onPressed: () {},
@@ -157,7 +160,7 @@ class ClubItemDetailPage extends ConsumerWidget {
     );
   }
 
-  void _pushItemDetailPage(BuildContext context, int itemId) {
+  void _pushItemHistoryPage(BuildContext context, int itemId) {
     Navigator.push(
       context,
       CupertinoPageRoute(

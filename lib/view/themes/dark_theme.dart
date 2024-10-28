@@ -83,11 +83,6 @@ final ThemeData darkTheme = ThemeData(
     color: white,
   ),
 
-  iconButtonTheme: const IconButtonThemeData(
-      style: ButtonStyle(
-    padding: WidgetStatePropertyAll(EdgeInsets.zero),
-  )),
-
   /// 바텀 네비게이션바 테마
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: black,

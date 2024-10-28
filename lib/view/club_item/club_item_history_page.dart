@@ -10,6 +10,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/item/item_history_list_provider.dart';
 import '../themes/custom_widget/custom_circular_progress_indicator.dart';
+import '../themes/custom_widget/custom_divider.dart';
 import '../themes/spacing.dart';
 
 class ClubItemHistoryPage extends ConsumerWidget {
@@ -52,89 +53,88 @@ class ClubItemHistoryPage extends ConsumerWidget {
                     ref.refresh(itemHistoryListProvider(itemId));
                   },
                   child: ListView.separated(
-                    physics: const ClampingScrollPhysics(),
-                    padding: const EdgeInsets.all(defaultPaddingM),
-                    separatorBuilder: (context, index) => Column(
-                      children: [
-                        const Gap(defaultGapXL),
-                        Divider(
-                          color: context.colorScheme.surfaceContainer,
-                          thickness: 0.6,
-                          height: 0,
-                        ),
-                        const Gap(defaultGapXL),
-                      ],
-                    ),
+                    reverse: true,
+                    physics: const BouncingScrollPhysics(),
+                    separatorBuilder: (context, index) => const CustomDivider(),
                     itemCount: itemHistoryList.length,
                     itemBuilder: (context, index) {
-                      final CachedNetworkImageProvider imageProvider =
-                          CachedNetworkImageProvider(itemHistoryList[index].itemReturnImage!);
+                      final reversedItemHistoryList = itemHistoryList[itemHistoryList.length - 1 - index];
 
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 72.r,
-                            height: 72.r,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                              border: Border.all(
-                                color: context.colorScheme.surfaceContainer,
-                                width: 1,
+                      final CachedNetworkImageProvider itemReturnImageProvider =
+                          CachedNetworkImageProvider(reversedItemHistoryList.itemReturnImage!);
+
+                      return Padding(
+                        padding: const EdgeInsets.all(defaultPaddingM),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 72.r,
+                              height: 72.r,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                                image: DecorationImage(
+                                  image: itemReturnImageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                                border: Border.all(
+                                  color: context.colorScheme.surfaceContainer,
+                                  width: 1,
+                                ),
                               ),
                             ),
-                          ),
-                          const Gap(defaultGapM),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  itemHistoryList[index].memberName!,
-                                  style: context.textTheme.bodyLarge,
-                                  softWrap: true,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const Gap(defaultGapS / 2),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Symbols.output_rounded,
-                                      size: 20,
-                                      color: context.colorScheme.onSurface,
-                                    ),
-                                    const Gap(defaultGapS / 4),
-                                    Text(
-                                      _formatRentalDate(itemHistoryList[index].itemRentalDate),
-                                      style:
-                                          context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-                                    ),
-                                  ],
-                                ),
-                                const Gap(defaultGapS / 4),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Symbols.input_rounded,
-                                      size: 20,
-                                      color: context.colorScheme.onSurface,
-                                    ),
-                                    const Gap(defaultGapS / 4),
-                                    Text(
-                                      _formatRentalDate(itemHistoryList[index].itemReturnDate),
-                                      style:
-                                          context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                            const Gap(defaultGapM),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    reversedItemHistoryList.memberName!,
+                                    style: context.textTheme.bodyLarge,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const Gap(defaultGapS / 2),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Symbols.output_rounded,
+                                        size: 20,
+                                        color: context.colorScheme.onSurface,
+                                      ),
+                                      const Gap(defaultGapS / 4),
+                                      Text(
+                                        _formatRentalDate(reversedItemHistoryList.itemRentalDate),
+                                        style: context.textTheme.bodySmall?.copyWith(
+                                          color: context.colorScheme.onSurface,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Gap(defaultGapS / 4),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Symbols.input_rounded,
+                                        size: 20,
+                                        color: context.colorScheme.onSurface,
+                                      ),
+                                      const Gap(defaultGapS / 4),
+                                      Text(
+                                        (reversedItemHistoryList.itemReturnDate == null)
+                                            ? '아직 반납하지 않았어요'
+                                            : _formatRentalDate(reversedItemHistoryList.itemReturnDate),
+                                        style: context.textTheme.bodySmall?.copyWith(
+                                          color: context.colorScheme.onSurface,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       );
                     },
                   ),

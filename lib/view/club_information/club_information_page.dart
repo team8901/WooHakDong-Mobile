@@ -18,7 +18,7 @@ class ClubInformationPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: GestureDetector(
+        title: InkWell(
           onTap: () {
             showModalBottomSheet(
               useSafeArea: true,
@@ -30,10 +30,9 @@ class ClubInformationPage extends ConsumerWidget {
           },
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(currentClubInfo?.clubName ?? '내 동아리'),
-              const Gap(defaultGapS / 2),
+              Flexible(child: Text(currentClubInfo?.clubName ?? '내 동아리', softWrap: false)),
+              const Gap(defaultGapS),
               const Icon(
                 Symbols.keyboard_arrow_down_rounded,
                 size: 20,
