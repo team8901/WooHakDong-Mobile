@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -47,10 +48,10 @@ Future<void> main() async {
         options.tracesSampleRate = 1.0;
         options.profilesSampleRate = 1.0;
         options.beforeSend = (event, hint) {
-          if (event.throwable is FlutterError) {
-            return null;
+          if (event.throwable is DioException) {
+            return event;
           }
-          return event;
+          return null;
         };
       },
       appRunner: () => runApp(const ProviderScope(child: MyApp())),
