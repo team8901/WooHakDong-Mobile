@@ -48,7 +48,7 @@ Future<void> main() async {
         options.tracesSampleRate = 1.0;
         options.profilesSampleRate = 1.0;
         options.beforeSend = (event, hint) {
-          if (event.throwable is DioException) {
+          if (event.throwable is DioException || event.throwable is HttpException) {
             return event;
           }
           return null;
