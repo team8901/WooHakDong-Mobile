@@ -1,12 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:woohakdong/model/group/group.dart';
 import 'package:woohakdong/view_model/club/components/club_name_validation_state.dart';
+import 'package:woohakdong/view_model/club/components/club_state.dart';
+import 'package:woohakdong/view_model/club/components/club_state_provider.dart';
 import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 
 import '../../model/club/club.dart';
 import '../../repository/club/club_repository.dart';
 import '../../service/logger/logger.dart';
-import 'club_name_validation_provider.dart';
+import 'club_id_provider.dart';
+import 'components/club_name_validation_provider.dart';
 
 final clubProvider = StateNotifierProvider<ClubNotifier, Club>((ref) {
   return ClubNotifier(ref);
@@ -16,19 +18,19 @@ class ClubNotifier extends StateNotifier<Club> {
   final Ref ref;
   final ClubRepository clubRepository = ClubRepository();
 
-  ClubNotifier(this.ref)
-      : super(
-          Club(
-            clubId: 0,
-            clubName: '',
-            clubEnglishName: '',
-            clubGeneration: '',
-            clubDues: 0,
-            clubRoom: '',
-            clubDescription: '',
-            clubImage: '',
-          ),
-        );
+  ClubNotifier(this.ref) : super(Club());
+
+  Future<List<Club>> getClubList() async {
+    final List<Club> clubList = await clubRepository.getClubList();
+
+    if (clubList.isEmpty) {
+      ref.read(clubStateProvider.notifier).state = ClubState.clubNotRegistered;
+    } else {
+      ref.read(clubStateProvider.notifier).state = ClubState.clubRegistered;
+    }
+
+    return clubList;
+  }
 
   Future<void> clubNameValidation(String clubName, String clubEnglishName) async {
     final isValid = await clubRepository.clubNameValidation(clubName, clubEnglishName);
@@ -48,33 +50,29 @@ class ClubNotifier extends StateNotifier<Club> {
     );
   }
 
-  void saveClubOtherInfo(String clubGeneration, int clubDues, String clubRoom) {
+  void saveClubOtherInfo(
+      String clubGeneration, int clubDues, String clubRoom, String clubGroupChatLink, String clubGroupChatPassword) {
     state = state.copyWith(
       clubGeneration: clubGeneration,
       clubDues: clubDues,
       clubRoom: clubRoom,
+      clubGroupChatLink: clubGroupChatLink,
+      clubGroupChatPassword: clubGroupChatPassword,
     );
   }
 
   Future<void> registerClub(String clubImageForServer) async {
+    ref.read(clubStateProvider.notifier).state = ClubState.loading;
+
     try {
       final clubId = await clubRepository.registerClubInfo(state.copyWith(clubImage: clubImageForServer));
       await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
 
       state = state.copyWith(clubId: clubId);
+
+      await ref.read(clubIdProvider.notifier).saveClubId(state.clubId!);
     } catch (e) {
       logger.e('동아리 ID 실패', error: e);
-    }
-  }
-
-  Future<Group> getClubRegisterPageInfo() async {
-    try {
-      Group groupInfo = await clubRepository.getClubRegisterPageInfo(state.clubId!);
-
-      return groupInfo;
-    } catch (e) {
-      logger.e('동아리 등록 페이지 정보 가져오기 실패', error: e);
-      throw Exception();
     }
   }
 }

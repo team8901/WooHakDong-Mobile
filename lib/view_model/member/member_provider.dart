@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/view_model/member/components/member_state.dart';
-import 'package:woohakdong/view_model/member/member_state_provider.dart';
+import 'package:woohakdong/view_model/member/components/member_state_provider.dart';
 
 import '../../model/member/member.dart';
 import '../../repository/member/member_repository.dart';
@@ -18,9 +18,9 @@ class MemberNotifier extends StateNotifier<Member?> {
     final memberInfo = await MemberRepository().getMemberInfo();
 
     if (hasNullFields(memberInfo)) {
-      ref.read(memberStateProvider.notifier).state = MemberState.nonMember;
+      ref.read(memberStateProvider.notifier).state = MemberState.memberNotRegistered;
     } else {
-      ref.read(memberStateProvider.notifier).state = MemberState.member;
+      ref.read(memberStateProvider.notifier).state = MemberState.memberRegistered;
     }
 
     state = memberInfo;

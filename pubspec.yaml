@@ -39,9 +39,14 @@ dependencies:
   qr_flutter: ^4.1.0
   fluttertoast: ^8.2.8
   font_awesome_flutter: ^10.7.0
-  flutter_image_saver: ^1.0.1
   widgets_to_png: ^1.0.1
   material_symbols_icons: ^4.2789.0
+  image_gallery_saver: ^2.0.3
+  cached_network_image: ^3.4.1
+  sentry_flutter: ^8.9.0
+  dropdown_button2: ^2.3.9
+  custom_refresh_indicator: ^4.0.1
+  photo_view: ^0.15.0
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +61,12 @@ flutter:
     - .env
     - assets/images/logos/google.png
     - assets/images/club/club_basic_image.jpg
+    - assets/images/item/item_digital_basic_image.jpg
+    - assets/images/item/item_sport_basic_image.jpg
+    - assets/images/item/item_book_basic_image.jpg
+    - assets/images/item/item_clothes_basic_image.jpg
+    - assets/images/item/item_stationery_basic_image.jpg
+    - assets/images/item/item_etc_basic_image.jpg
 
   fonts:
     - family: Pretendard

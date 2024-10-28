@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_register/club_register_account_form_page.dart';
-import 'package:woohakdong/view/themes/custom_widget/custom_info_check_tile.dart';
+import 'package:woohakdong/view/themes/custom_widget/custom_info_box.dart';
+import 'package:woohakdong/view/themes/custom_widget/custom_info_content.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/club/club_provider.dart';
+import '../../view_model/club/components/club_state.dart';
+import '../../view_model/club/components/club_state_provider.dart';
 import '../../view_model/util/s3_image_provider.dart';
 import '../themes/custom_widget/custom_bottom_button.dart';
 import '../themes/spacing.dart';
@@ -22,11 +26,13 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
     final s3ImageNotifier = ref.read(s3ImageProvider.notifier);
     final clubNotifier = ref.read(clubProvider.notifier);
     final clubInfo = ref.watch(clubProvider);
+    final clubState = ref.watch(clubStateProvider);
 
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.all(defaultPaddingM),
           child: SizedBox(
             width: double.infinity,
@@ -40,11 +46,9 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                 const Gap(defaultGapXL * 2),
                 Text(
                   '동아리 사진',
-                  style: context.textTheme.labelLarge?.copyWith(
-                    color: context.colorScheme.onSurface,
-                  ),
+                  style: context.textTheme.labelLarge,
                 ),
-                const Gap(defaultGapS),
+                const Gap(defaultGapM),
                 Container(
                   width: 192.r,
                   height: 192.r,
@@ -62,17 +66,74 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                   ),
                 ),
                 const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '동아리 이름', infoContent: clubInfo.clubName!),
+                CustomInfoBox(
+                  infoTitle: '동아리 기본 정보',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomInfoContent(infoContent: clubInfo.clubName!),
+                      const Gap(defaultGapM),
+                      CustomInfoContent(infoContent: clubInfo.clubEnglishName!),
+                    ],
+                  ),
+                ),
+                const Gap(defaultGapM),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: context.colorScheme.surfaceContainer),
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingM,
+                    vertical: defaultPaddingXS,
+                  ),
+                  child: CustomInfoContent(infoContent: clubInfo.clubDescription!),
+                ),
                 const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '동아리 영문 이름', infoContent: clubInfo.clubEnglishName!),
+                CustomInfoBox(
+                  infoTitle: '동아리 추가 정보',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      (clubInfo.clubGeneration != '')
+                          ? Column(
+                              children: [
+                                CustomInfoContent(infoContent: _generationFormatting(clubInfo.clubGeneration!)),
+                                const Gap(defaultGapM),
+                              ],
+                            )
+                          : const SizedBox(),
+                      CustomInfoContent(infoContent: _currencyFormatting(clubInfo.clubDues!)),
+                      (clubInfo.clubRoom != '')
+                          ? Column(
+                              children: [
+                                const Gap(defaultGapM),
+                                CustomInfoContent(infoContent: clubInfo.clubRoom!),
+                              ],
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
+                ),
                 const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '동아리 설명', infoContent: clubInfo.clubDescription!),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '동아리 기수', infoContent: _generationFormatting(clubInfo.clubGeneration!)),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '동아리 회비', infoContent: _currencyFormatting(clubInfo.clubDues!)),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '동아리 방', infoContent: clubInfo.clubRoom!),
+                CustomInfoBox(
+                  infoTitle: '카카오톡 채팅방',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomInfoContent(infoContent: clubInfo.clubGroupChatLink!),
+                      (clubInfo.clubGroupChatPassword != '')
+                          ? Column(
+                              children: [
+                                const Gap(defaultGapXL),
+                                CustomInfoContent(infoContent: clubInfo.clubGroupChatPassword!),
+                              ],
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -81,27 +142,32 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
           onTap: () async {
-            List<String> imageUrls = await s3ImageNotifier.setClubImageUrl('1');
-            final clubImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
+            try {
+              List<String> imageUrls = await s3ImageNotifier.setImageUrl('1');
+              final clubImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
 
-            String clubImageForServer = clubImageUrl.substring(0, clubImageUrl.indexOf('?'));
+              String clubImageForServer = clubImageUrl.substring(0, clubImageUrl.indexOf('?'));
 
-            await clubNotifier.registerClub(clubImageForServer);
+              await clubNotifier.registerClub(clubImageForServer);
 
-            if (context.mounted) {
-              _pushAccountFormPage(context);
+              if (context.mounted) {
+                await _pushAccountFormPage(context);
+              }
+            } catch (e) {
+              await GeneralFunctions.generalToastMessage('오류가 발생했어요\n다시 시도해 주세요');
             }
           },
           buttonText: '확인했어요',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+          isLoading: clubState == ClubState.loading,
         ),
       ),
     );
   }
 
   String _generationFormatting(String clubGeneration) {
-    String formattedGeneration = '$clubGeneration기';
+    String formattedGeneration = '$clubGeneration 기';
 
     return formattedGeneration;
   }
@@ -119,8 +185,8 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
     return formattedDues;
   }
 
-  void _pushAccountFormPage(BuildContext context) {
-    Navigator.pushAndRemoveUntil(
+  Future<void> _pushAccountFormPage(BuildContext context) async {
+    await Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute(
         builder: (context) => const ClubRegisterAccountFormPage(),

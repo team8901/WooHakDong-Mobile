@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+
+import '../spacing.dart';
 
 class CustomDropdownFormField extends StatelessWidget {
   final String labelText;
   final List<Map<String, String>> items;
   final ValueChanged<String?>? onChanged;
+  final FormFieldSetter<String>? onSaved;
   final FormFieldValidator<String>? validator;
   final void Function()? onTap;
   final double menuMaxHeight;
@@ -15,16 +19,17 @@ class CustomDropdownFormField extends StatelessWidget {
     required this.labelText,
     required this.items,
     this.onChanged,
+    this.onSaved,
     this.validator,
     this.onTap,
-    this.menuMaxHeight = 384,
+    this.menuMaxHeight = 208,
   });
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       icon: Icon(
-        Icons.keyboard_arrow_down_rounded,
+        Symbols.keyboard_arrow_down_rounded,
         color: context.colorScheme.outline,
       ),
       style: context.textTheme.titleSmall,
@@ -32,6 +37,10 @@ class CustomDropdownFormField extends StatelessWidget {
       menuMaxHeight: menuMaxHeight.h,
       dropdownColor: context.colorScheme.surfaceContainer,
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: defaultPaddingS,
+          vertical: defaultPaddingXS,
+        ),
         labelText: labelText,
         labelStyle: context.textTheme.titleSmall?.copyWith(
           color: context.colorScheme.outline,
@@ -39,13 +48,20 @@ class CustomDropdownFormField extends StatelessWidget {
         errorStyle: context.textTheme.labelLarge?.copyWith(
           color: context.colorScheme.error,
         ),
-        errorBorder: UnderlineInputBorder(
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.error),
         ),
-        enabledBorder: UnderlineInputBorder(
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+          borderSide: BorderSide(color: context.colorScheme.error),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.surfaceContainer),
         ),
-        focusedBorder: UnderlineInputBorder(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.primary),
         ),
       ),
@@ -56,6 +72,7 @@ class CustomDropdownFormField extends StatelessWidget {
         );
       }).toList(),
       onChanged: onChanged,
+      onSaved: onSaved,
       validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onTap: onTap,

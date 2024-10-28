@@ -21,14 +21,14 @@ class S3ImageNotifier extends StateNotifier<S3ImageState> {
           ),
         );
 
-  Future<void> setClubImage(List<File> pickedImages) async {
+  Future<void> setImage(List<File> pickedImages) async {
     state = S3ImageState(
       pickedImages: pickedImages,
       s3ImageUrls: state.s3ImageUrls,
     );
   }
 
-  Future<List<String>> setClubImageUrl(String imageCount) async {
+  Future<List<String>> setImageUrl(String imageCount) async {
     List<S3ImageUrl> imageUrls = await s3ImageUrlRepository.getS3ImageUrl(imageCount);
 
     List<String> imageUrlList = imageUrls.map((url) => url.imageUrl).toList();

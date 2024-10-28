@@ -12,6 +12,8 @@ class S3ImageUrlRepository {
 
   Future<List<S3ImageUrl>> getS3ImageUrl(String imageCount) async {
     try {
+      logger.i('S3 이미지 URL 조회 시도');
+
       final response = await _dio.get(
         '/utils/images/urls',
         queryParameters: {
@@ -20,20 +22,17 @@ class S3ImageUrlRepository {
       );
 
       if (response.statusCode == 200) {
-        logger.i('S3 이미지 URL 조회 성공');
-
         final Map<String, dynamic> jsonData = response.data;
 
         List<dynamic> urlData = jsonData['result'] as List<dynamic>;
 
         return urlData.map((json) => S3ImageUrl.fromJson(json as Map<String, dynamic>)).toList();
       } else {
-        logger.e('서버 에러');
         throw Exception();
       }
     } catch (e) {
       logger.e('S3 이미지 URL 조회 실패', error: e);
-      rethrow;
+      throw Exception();
     }
   }
 
@@ -41,7 +40,9 @@ class S3ImageUrlRepository {
     try {
       Dio dio = Dio();
 
-      final response = await dio.put(
+      logger.i('S3에 이미지 업로드 시도');
+
+      await dio.put(
         s3ImageUrl,
         data: Stream.fromIterable(pickedImage.readAsBytesSync().map((e) => [e])),
         options: Options(
@@ -51,16 +52,9 @@ class S3ImageUrlRepository {
           },
         ),
       );
-
-      if (response.statusCode == 200 || response.statusCode == 204) {
-        logger.i('S3에 이미지 업로드 성공');
-      } else {
-        logger.e('서버 에러');
-        throw Exception(response.statusCode);
-      }
     } catch (e) {
       logger.e('S3에 이미지 업로드 실패', error: e);
-      rethrow;
+      throw Exception();
     }
   }
 }

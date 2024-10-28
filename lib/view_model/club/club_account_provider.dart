@@ -3,7 +3,7 @@ import 'package:woohakdong/model/club/club_account.dart';
 import 'package:woohakdong/repository/club/club_account_repository.dart';
 
 import '../../service/logger/logger.dart';
-import 'club_account_validation_provider.dart';
+import 'components/club_account_validation_provider.dart';
 import 'components/club_account_validation_state.dart';
 
 final clubAccountProvider = StateNotifierProvider<ClubAccountNotifier, ClubAccount>((ref) {
@@ -26,7 +26,7 @@ class ClubAccountNotifier extends StateNotifier<ClubAccount> {
   Future<void> saveClubAccountInfo(String clubAccountBankName, String clubAccountNumber) async {
     ref.read(clubAccountValidationProvider.notifier).state = ClubAccountValidationState.loading;
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 750));
 
     try {
       ClubAccount validatedClubAccount = await clubAccountRepository.clubAccountValidation(

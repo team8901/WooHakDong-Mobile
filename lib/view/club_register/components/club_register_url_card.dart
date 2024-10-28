@@ -35,7 +35,7 @@ class ClubRegisterUrlCard extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                '${groupInfo?.groupLink}',
+                '${groupInfo?.groupJoinLink}',
                 style: context.textTheme.titleSmall,
                 softWrap: true,
                 overflow: TextOverflow.visible,
@@ -44,7 +44,7 @@ class ClubRegisterUrlCard extends StatelessWidget {
             const Gap(defaultGapL),
             InkWell(
               onTap: () async {
-                Clipboard.setData(ClipboardData(text: '${groupInfo?.groupLink}'));
+                Clipboard.setData(ClipboardData(text: '${groupInfo?.groupJoinLink}'));
 
                 await GeneralFunctions.generalToastMessage('전용 페이지 링크를 복사했어요');
               },

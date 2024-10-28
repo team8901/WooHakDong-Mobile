@@ -1,14 +1,14 @@
 class Group {
   int? groupId;
   String? groupName;
-  String? groupLink;
+  String? groupJoinLink;
   String? groupDescription;
   int? groupAmount;
 
   Group({
     this.groupId,
     this.groupName,
-    this.groupLink,
+    this.groupJoinLink,
     this.groupDescription,
     this.groupAmount,
   });
@@ -17,7 +17,7 @@ class Group {
     return Group(
       groupId: json['groupId'],
       groupName: json['groupName'],
-      groupLink: json['groupLink'],
+      groupJoinLink: json['groupJoinLink'],
       groupDescription: json['groupDescription'],
       groupAmount: json['groupAmount'],
     );

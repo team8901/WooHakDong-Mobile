@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
+import 'package:woohakdong/view_model/auth/components/auth_state_provider.dart';
 
 import '../../../view_model/auth/components/auth_state.dart';
 import '../../themes/custom_widget/custom_circular_progress_indicator.dart';
@@ -13,7 +14,7 @@ class GoogleLoginButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
+    final authState = ref.watch(authStateProvider);
     final authNotifier = ref.read(authProvider.notifier);
 
     return Container(

@@ -22,20 +22,19 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
     final memberNotifier = ref.read(memberProvider.notifier);
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(),
       body: SafeArea(
         child: FutureBuilder(
           future: memberNotifier.getMemberInfo(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // 로딩 중일 때 로딩 화면을 표시
-              return const CustomCircularProgressIndicator();
-            } else if (snapshot.hasError) {
               return const CustomCircularProgressIndicator();
             } else {
               final memberInfo = ref.watch(memberProvider);
 
               return SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.all(defaultPaddingM),
                 child: Form(
                   key: formKey,
@@ -47,12 +46,17 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                         style: context.textTheme.headlineSmall,
                       ),
                       const Gap(defaultGapXL * 2),
+                      Text(
+                        '기본 정보',
+                        style: context.textTheme.labelLarge,
+                      ),
+                      const Gap(defaultGapM),
                       CustomTextFormField(
                         labelText: '이름',
                         initialValue: memberInfo?.memberName,
                         readOnly: true,
                       ),
-                      const Gap(defaultGapXL),
+                      const Gap(defaultGapM),
                       CustomDropdownFormField(
                         labelText: '성별',
                         items: const [
@@ -67,13 +71,12 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                           return null;
                         },
                       ),
-                      const Gap(defaultGapXL),
+                      const Gap(defaultGapM),
                       CustomTextFormField(
                         labelText: '휴대폰 번호',
                         hintText: '휴대폰 번호를 - 없이 입력해 주세요',
                         keyboardType: TextInputType.phone,
                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        textInputAction: TextInputAction.done,
                         onSaved: (value) => memberInfo?.memberPhoneNumber = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -82,7 +85,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                           return null;
                         },
                       ),
-                      const Gap(defaultGapXL),
+                      const Gap(defaultGapM),
                       CustomTextFormField(
                         labelText: '이메일 주소',
                         initialValue: memberInfo?.memberEmail,
@@ -95,6 +98,11 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                         readOnly: true,
                       ),
                       const Gap(defaultGapXL),
+                      Text(
+                        '학교 정보',
+                        style: context.textTheme.labelLarge,
+                      ),
+                      const Gap(defaultGapM),
                       CustomTextFormField(
                         labelText: '학과',
                         onSaved: (value) => memberInfo?.memberMajor = value,
@@ -105,11 +113,12 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                           return null;
                         },
                       ),
-                      const Gap(defaultGapXL),
+                      const Gap(defaultGapM),
                       CustomTextFormField(
                         labelText: '학번',
                         keyboardType: TextInputType.number,
                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        textInputAction: TextInputAction.done,
                         onSaved: (value) => memberInfo?.memberStudentNumber = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {

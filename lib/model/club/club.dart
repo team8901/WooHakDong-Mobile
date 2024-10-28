@@ -6,6 +6,8 @@ class Club {
   String? clubDescription;
   String? clubRoom;
   String? clubGeneration;
+  String? clubGroupChatLink;
+  String? clubGroupChatPassword;
   int? clubDues;
 
   Club({
@@ -16,6 +18,8 @@ class Club {
     this.clubDescription,
     this.clubRoom,
     this.clubGeneration,
+    this.clubGroupChatLink,
+    this.clubGroupChatPassword,
     this.clubDues,
   });
 
@@ -27,6 +31,8 @@ class Club {
     String? clubDescription,
     String? clubRoom,
     String? clubGeneration,
+    String? clubGroupChatLink,
+    String? clubGroupChatPassword,
     int? clubDues,
   }) {
     return Club(
@@ -37,6 +43,8 @@ class Club {
       clubDescription: clubDescription ?? this.clubDescription,
       clubRoom: clubRoom ?? this.clubRoom,
       clubGeneration: clubGeneration ?? this.clubGeneration,
+      clubGroupChatLink: clubGroupChatLink ?? this.clubGroupChatLink,
+      clubGroupChatPassword: clubGroupChatPassword ?? this.clubGroupChatPassword,
       clubDues: clubDues ?? this.clubDues,
     );
   }
@@ -50,6 +58,7 @@ class Club {
       clubDescription: json['clubDescription'],
       clubRoom: json['clubRoom'],
       clubGeneration: json['clubGeneration'],
+      clubDues: json['clubDues'],
     );
   }
 
@@ -61,6 +70,8 @@ class Club {
       'clubDescription': clubDescription,
       'clubRoom': clubRoom,
       'clubGeneration': clubGeneration,
+      'clubGroupChatLink': clubGroupChatLink,
+      'clubGroupChatPassword': clubGroupChatPassword,
       'clubDues': clubDues,
     };
   }

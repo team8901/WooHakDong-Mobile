@@ -10,8 +10,8 @@ class CustomCircularProgressIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: CircularProgressIndicator(
-        color: context.colorScheme.inversePrimary,
-        backgroundColor: Colors.transparent,
+        color: context.colorScheme.primary,
+        backgroundColor: context.colorScheme.surfaceDim,
         strokeAlign: BorderSide.strokeAlignInside,
         strokeCap: StrokeCap.round,
       ),

@@ -31,8 +31,9 @@ class CustomBottomButton extends StatelessWidget {
       width: double.infinity,
       height: 52,
       child: InkWell(
-        borderRadius: BorderRadius.circular(defaultBorderRadiusM),
         onTap: isLoading ? null : onTap,
+        borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+        highlightColor: context.colorScheme.surfaceContainer,
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(defaultBorderRadiusM),

@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:woohakdong/view/themes/custom_widget/custom_info_check_tile.dart';
+import 'package:woohakdong/view/themes/custom_widget/custom_info_box.dart';
+import 'package:woohakdong/view/themes/custom_widget/custom_info_content.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/member/member_provider.dart';
@@ -22,6 +23,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.all(defaultPaddingM),
           child: SizedBox(
             width: double.infinity,
@@ -30,19 +32,35 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
               children: [
                 Text('회장님의 정보가 맞으신가요?', style: context.textTheme.headlineSmall),
                 const Gap(defaultGapXL * 2),
-                CustomInfoCheckTile(infoTitle: '이름', infoContent: memberInfo.memberName),
+                CustomInfoBox(
+                  infoTitle: '기본 정보',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomInfoContent(infoContent: memberInfo.memberName),
+                      const Gap(defaultGapM),
+                      CustomInfoContent(infoContent: _getGenderDisplay(memberInfo.memberGender!)),
+                      const Gap(defaultGapM),
+                      CustomInfoContent(infoContent: _formatPhoneNumber(memberInfo.memberPhoneNumber!)),
+                      const Gap(defaultGapM),
+                      CustomInfoContent(infoContent: memberInfo.memberEmail),
+                    ],
+                  ),
+                ),
                 const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '성별', infoContent: _getGenderDisplay(memberInfo.memberGender!)),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '휴대폰 번호', infoContent: _formatPhoneNumber(memberInfo.memberPhoneNumber!)),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '이메일 주소', infoContent: memberInfo.memberEmail),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '학교', infoContent: memberInfo.memberSchool),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '학과', infoContent: memberInfo.memberMajor!),
-                const Gap(defaultGapXL),
-                CustomInfoCheckTile(infoTitle: '학번', infoContent: memberInfo.memberStudentNumber!),
+                CustomInfoBox(
+                  infoTitle: '학교 정보',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomInfoContent(infoContent: memberInfo.memberSchool),
+                      const Gap(defaultGapM),
+                      CustomInfoContent(infoContent: memberInfo.memberMajor!),
+                      const Gap(defaultGapM),
+                      CustomInfoContent(infoContent: memberInfo.memberStudentNumber!),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

@@ -21,11 +21,9 @@ class ClubRegisterValidAccountBox extends StatelessWidget {
         const Gap(defaultGapXL),
         Text(
           '동아리 계좌 핀테크 번호',
-          style: context.textTheme.labelLarge?.copyWith(
-            color: context.colorScheme.onSurface,
-          ),
+          style: context.textTheme.labelLarge,
         ),
-        const Gap(defaultGapS),
+        const Gap(defaultGapM),
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -33,7 +31,7 @@ class ClubRegisterValidAccountBox extends StatelessWidget {
             borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           ),
           padding: const EdgeInsets.symmetric(
-            horizontal: defaultPaddingS,
+            horizontal: defaultPaddingM,
             vertical: defaultPaddingXS,
           ),
           child: Align(

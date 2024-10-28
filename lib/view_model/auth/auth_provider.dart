@@ -1,61 +1,59 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:woohakdong/service/google/google_sign_in_service.dart';
+import 'package:woohakdong/view_model/auth/components/auth_state_provider.dart';
 
 import 'components/auth_state.dart';
 
-final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  return AuthNotifier();
+final authProvider = StateNotifierProvider((ref) {
+  return AuthNotifier(ref);
 });
 
-class AuthNotifier extends StateNotifier<AuthState> {
+class AuthNotifier extends StateNotifier {
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   final GoogleSignInService googleSignInService = GoogleSignInService();
+  final Ref ref;
 
-  AuthNotifier() : super(AuthState.unauthenticated) {
-    _checkLoginStatus();
-  }
+  AuthNotifier(this.ref) : super(null);
 
-  Future<void> _checkLoginStatus() async {
+  Future<void> checkLoginStatus() async {
     String? accessToken = await secureStorage.read(key: 'accessToken');
     String? refreshToken = await secureStorage.read(key: 'refreshToken');
 
     if (accessToken != null && refreshToken != null) {
-      state = AuthState.authenticated;
+      ref.read(authStateProvider.notifier).state = AuthState.authenticated;
     } else {
-      state = AuthState.unauthenticated;
+      ref.read(authStateProvider.notifier).state = AuthState.unauthenticated;
     }
   }
 
   Future<void> signIn() async {
     try {
-      state = AuthState.loading;
+      ref.read(authStateProvider.notifier).state = AuthState.loading;
 
       bool isSignedIn = await googleSignInService.signInWithGoogle();
 
       if (isSignedIn) {
-        state = AuthState.authenticated;
+        ref.read(authStateProvider.notifier).state = AuthState.authenticated;
       } else {
-        state = AuthState.unauthenticated;
+        ref.read(authStateProvider.notifier).state = AuthState.unauthenticated;
       }
     } catch (e) {
-      state = AuthState.unauthenticated;
+      ref.read(authStateProvider.notifier).state = AuthState.unauthenticated;
     }
   }
 
   Future<void> signOut() async {
     try {
-      state = AuthState.loading;
-
       bool isSignedOut = await googleSignInService.signOut();
 
       if (isSignedOut) {
-        state = AuthState.unauthenticated;
+        ref.read(authStateProvider.notifier).state = AuthState.unauthenticated;
       } else {
-        state = AuthState.authenticated;
+        ref.read(authStateProvider.notifier).state = AuthState.authenticated;
       }
     } catch (e) {
-      state = AuthState.authenticated;
+      ref.read(authStateProvider.notifier).state = AuthState.authenticated;
     }
   }
 }
