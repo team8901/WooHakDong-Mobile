@@ -60,4 +60,23 @@ class GeneralFunctions {
 
     return term;
   }
+
+  static String translateItemCategory(String itemCategory) {
+    switch (itemCategory) {
+      case 'DIGITAL':
+        return '디지털';
+      case 'SPORT':
+        return '스포츠';
+      case 'BOOK':
+        return '도서';
+      case 'CLOTHES':
+        return '의류';
+      case 'STATIONERY':
+        return '문구류';
+      case 'ETC':
+        return '기타';
+      default:
+        return '전체';
+    }
+  }
 }

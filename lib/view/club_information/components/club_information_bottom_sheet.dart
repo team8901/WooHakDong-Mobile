@@ -35,6 +35,7 @@ class ClubInformationBottomSheet extends ConsumerWidget {
             final clubList = clubListSnapshot.data;
 
             return ListView.separated(
+              padding: const EdgeInsets.only(bottom: defaultPaddingM),
               physics: const ClampingScrollPhysics(),
               separatorBuilder: (context, index) => const Gap(defaultGapS),
               itemCount: clubList!.length + 2,
@@ -55,7 +56,6 @@ class ClubInformationBottomSheet extends ConsumerWidget {
                             color: context.colorScheme.onSurface,
                           ),
                         ),
-                        const Gap(defaultGapM),
                       ],
                     ),
                   );

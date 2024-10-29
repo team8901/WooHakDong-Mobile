@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:woohakdong/view/club_register/club_register_caution_page_.dart';
 
 import '../themes/custom_widget/custom_bottom_button.dart';
@@ -7,8 +8,19 @@ import '../themes/custom_widget/custom_pop_scope.dart';
 import '../themes/spacing.dart';
 import 'components/club_register_introduce.dart';
 
-class ClubRegisterPage extends StatelessWidget {
+class ClubRegisterPage extends StatefulWidget {
   const ClubRegisterPage({super.key});
+
+  @override
+  State<ClubRegisterPage> createState() => _ClubRegisterPageState();
+}
+
+class _ClubRegisterPageState extends State<ClubRegisterPage> {
+  @override
+  void initState() {
+    super.initState();
+    FlutterNativeSplash.remove();
+  }
 
   @override
   Widget build(BuildContext context) {

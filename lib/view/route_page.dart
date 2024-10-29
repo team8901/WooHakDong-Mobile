@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/member_register/member_register_page.dart';
@@ -27,7 +26,6 @@ class _RoutePageState extends ConsumerState<RoutePage> {
   void initState() {
     super.initState();
     _initialization = _initializeApp();
-    FlutterNativeSplash.remove();
   }
 
   Future<void> _initializeApp() async {
