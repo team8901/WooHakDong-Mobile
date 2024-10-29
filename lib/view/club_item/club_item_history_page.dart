@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../view_model/item/item_history_list_provider.dart';
+import '../../view_model/item/item_provider.dart';
 import '../themes/custom_widget/custom_circular_progress_indicator.dart';
 import '../themes/custom_widget/custom_divider.dart';
 import '../themes/spacing.dart';
@@ -31,7 +31,7 @@ class ClubItemHistoryPage extends ConsumerWidget {
         child: SizedBox(
           width: double.infinity,
           child: FutureBuilder(
-            future: ref.watch(itemHistoryListProvider(itemId).future),
+            future: ref.watch(itemProvider.notifier).getItemHistoryList(itemId),
             builder: (context, itemListSnapshot) {
               if (itemListSnapshot.connectionState == ConnectionState.waiting) {
                 return const CustomCircularProgressIndicator();
@@ -50,7 +50,7 @@ class ClubItemHistoryPage extends ConsumerWidget {
                 return CustomMaterialIndicator(
                   onRefresh: () async {
                     await Future.delayed(const Duration(milliseconds: 750));
-                    ref.refresh(itemHistoryListProvider(itemId));
+                    ref.refresh(itemProvider);
                   },
                   child: ListView.separated(
                     reverse: true,

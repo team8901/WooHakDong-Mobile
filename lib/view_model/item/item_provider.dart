@@ -4,11 +4,10 @@ import 'package:woohakdong/repository/item/item_history_repository.dart';
 import 'package:woohakdong/repository/item/item_repository.dart';
 
 import '../../model/item/item.dart';
-import '../club/current_club_provider.dart';
+import '../club/club_id_provider.dart';
 import '../util/s3_image_provider.dart';
 import 'components/item_state.dart';
 import 'components/item_state_provider.dart';
-import 'item_list_provider.dart';
 
 final itemProvider = StateNotifierProvider<ItemNotifier, Item>((ref) {
   return ItemNotifier(ref);
@@ -22,20 +21,20 @@ class ItemNotifier extends StateNotifier<Item> {
   ItemNotifier(this.ref) : super(Item());
 
   Future<List<Item>> getItemList() async {
-    final currentClubInfo = ref.watch(currentClubProvider);
+    final currentClubId = ref.watch(clubIdProvider);
 
     final List<Item> itemList = await itemRepository.getItemList(
-      currentClubInfo!.clubId!,
+      currentClubId!,
     );
 
     return itemList;
   }
 
   Future<List<ItemHistory>> getItemHistoryList(int itemId) async {
-    final currentClubInfo = ref.watch(currentClubProvider);
+    final currentClubId = ref.watch(clubIdProvider);
 
     final List<ItemHistory> itemHistoryList = await itemHistoryRepository.getItemHistoryList(
-      currentClubInfo!.clubId!,
+      currentClubId!,
       itemId,
     );
 
@@ -52,10 +51,10 @@ class ItemNotifier extends StateNotifier<Item> {
   ) async {
     ref.read(itemStateProvider.notifier).state = ItemState.registering;
 
-    final currentClubInfo = ref.watch(currentClubProvider);
+    final currentClubId = ref.watch(clubIdProvider);
 
     await itemRepository.addItem(
-      currentClubInfo!.clubId!,
+      currentClubId!,
       state.copyWith(
         itemName: itemName,
         itemPhoto: itemPhoto,
@@ -68,7 +67,7 @@ class ItemNotifier extends StateNotifier<Item> {
 
     await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
 
-    ref.refresh(itemListProvider);
+    ref.refresh(itemProvider.notifier).getItemList();
     ref.invalidate(s3ImageProvider);
 
     ref.read(itemStateProvider.notifier).state = ItemState.registered;

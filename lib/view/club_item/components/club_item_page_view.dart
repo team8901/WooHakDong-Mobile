@@ -9,7 +9,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/item/item.dart';
-import '../../../view_model/item/item_list_provider.dart';
+import '../../../view_model/item/item_provider.dart';
 import '../../themes/custom_widget/custom_circular_progress_indicator.dart';
 import '../../themes/custom_widget/custom_divider.dart';
 import '../../themes/spacing.dart';
@@ -28,7 +28,7 @@ class ClubItemPageView extends ConsumerWidget {
     return SizedBox(
       width: double.infinity,
       child: FutureBuilder(
-        future: ref.watch(itemListProvider.future),
+        future: ref.watch(itemProvider.notifier).getItemList(),
         builder: (context, itemListSnapshot) {
           if (itemListSnapshot.connectionState == ConnectionState.waiting) {
             return const CustomCircularProgressIndicator();
@@ -58,7 +58,7 @@ class ClubItemPageView extends ConsumerWidget {
             return CustomMaterialIndicator(
               onRefresh: () async {
                 await Future.delayed(const Duration(milliseconds: 750));
-                ref.refresh(itemListProvider);
+                ref.refresh(itemProvider);
               },
               child: ListView.separated(
                 physics: const BouncingScrollPhysics(),
