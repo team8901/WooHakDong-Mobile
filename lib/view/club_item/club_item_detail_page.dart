@@ -32,10 +32,13 @@ class ClubItemDetailPage extends ConsumerWidget {
             onPressed: () => _pushItemHistoryPage(context, itemInfo.itemId!),
             icon: const Icon(Symbols.history_rounded),
           ),
+
+          /// TODO 물품 편집 추가하기
           IconButton(
             onPressed: () {},
             icon: const Icon(Symbols.edit_rounded),
           ),
+
           /// TODO 물품 삭제 추가하기
           IconButton(
             onPressed: () {},
@@ -90,9 +93,13 @@ class ClubItemDetailPage extends ConsumerWidget {
                     const Gap(defaultGapXL * 2),
                     CustomInfoBox(
                       infoTitle: '물품 설명',
-                      child: Text(
-                        itemInfo.itemDescription!,
-                        style: context.textTheme.titleSmall,
+                      child: CustomInfoContent(
+                        infoContent: itemInfo.itemDescription!,
+                        icon: Icon(
+                          Symbols.info_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
                       ),
                     ),
                     const Gap(defaultGapXL),
@@ -101,9 +108,23 @@ class ClubItemDetailPage extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomInfoContent(infoContent: itemInfo.itemLocation!),
+                          CustomInfoContent(
+                            infoContent: itemInfo.itemLocation!,
+                            icon: Icon(
+                              Symbols.pin_drop_rounded,
+                              size: 16,
+                              color: context.colorScheme.outline,
+                            ),
+                          ),
                           const Gap(defaultGapM),
-                          CustomInfoContent(infoContent: '${itemInfo.itemRentalMaxDay!.toString()} 일'),
+                          CustomInfoContent(
+                            infoContent: '${itemInfo.itemRentalMaxDay!.toString()} 일',
+                            icon: Icon(
+                              Symbols.hourglass_rounded,
+                              size: 16,
+                              color: context.colorScheme.outline,
+                            ),
+                          ),
                         ],
                       ),
                     ),

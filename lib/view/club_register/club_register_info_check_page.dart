@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_register/club_register_account_form_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/custom_info_box.dart';
@@ -71,9 +72,23 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomInfoContent(infoContent: clubInfo.clubName!),
+                      CustomInfoContent(
+                        infoContent: clubInfo.clubName!,
+                        icon: Icon(
+                          Symbols.account_balance_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                       const Gap(defaultGapM),
-                      CustomInfoContent(infoContent: clubInfo.clubEnglishName!),
+                      CustomInfoContent(
+                        infoContent: clubInfo.clubEnglishName!,
+                        icon: Icon(
+                          Symbols.signature_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -88,7 +103,14 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                     horizontal: defaultPaddingM,
                     vertical: defaultPaddingXS,
                   ),
-                  child: CustomInfoContent(infoContent: clubInfo.clubDescription!),
+                  child: CustomInfoContent(
+                    infoContent: clubInfo.clubDescription!,
+                    icon: Icon(
+                      Symbols.info_rounded,
+                      size: 16,
+                      color: context.colorScheme.outline,
+                    ),
+                  ),
                 ),
                 const Gap(defaultGapXL),
                 CustomInfoBox(
@@ -99,17 +121,38 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                       (clubInfo.clubGeneration != '')
                           ? Column(
                               children: [
-                                CustomInfoContent(infoContent: _generationFormatting(clubInfo.clubGeneration!)),
+                                CustomInfoContent(
+                                  infoContent: _generationFormatting(clubInfo.clubGeneration!),
+                                  icon: Icon(
+                                    Symbols.numbers_rounded,
+                                    size: 16,
+                                    color: context.colorScheme.outline,
+                                  ),
+                                ),
                                 const Gap(defaultGapM),
                               ],
                             )
                           : const SizedBox(),
-                      CustomInfoContent(infoContent: _currencyFormatting(clubInfo.clubDues!)),
+                      CustomInfoContent(
+                        infoContent: _currencyFormatting(clubInfo.clubDues!),
+                        icon: Icon(
+                          Symbols.payment_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                       (clubInfo.clubRoom != '')
                           ? Column(
                               children: [
                                 const Gap(defaultGapM),
-                                CustomInfoContent(infoContent: clubInfo.clubRoom!),
+                                CustomInfoContent(
+                                  infoContent: clubInfo.clubRoom!,
+                                  icon: Icon(
+                                    Symbols.location_on_rounded,
+                                    size: 16,
+                                    color: context.colorScheme.outline,
+                                  ),
+                                ),
                               ],
                             )
                           : const SizedBox(),
@@ -122,12 +165,26 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomInfoContent(infoContent: clubInfo.clubGroupChatLink!),
+                      CustomInfoContent(
+                        infoContent: clubInfo.clubGroupChatLink!,
+                        icon: Icon(
+                          Symbols.forum_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                       (clubInfo.clubGroupChatPassword != '')
                           ? Column(
                               children: [
                                 const Gap(defaultGapXL),
-                                CustomInfoContent(infoContent: clubInfo.clubGroupChatPassword!),
+                                CustomInfoContent(
+                                  infoContent: clubInfo.clubGroupChatPassword!,
+                                  icon: Icon(
+                                    Symbols.key_rounded,
+                                    size: 16,
+                                    color: context.colorScheme.outline,
+                                  ),
+                                ),
                               ],
                             )
                           : const SizedBox(),

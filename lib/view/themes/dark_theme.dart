@@ -190,4 +190,14 @@ final ThemeData darkTheme = ThemeData(
     subtitleTextStyle: CustomTextStyle.labelLarge,
     selectedTileColor: darkGray,
   ),
+
+  /// 텍스트 버튼 테마
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      textStyle: WidgetStateProperty.all(CustomTextStyle.bodyMedium),
+      foregroundColor: WidgetStateProperty.all(primary),
+      backgroundColor: WidgetStateProperty.all(Colors.transparent),
+      overlayColor: WidgetStateProperty.all(darkGray),
+    ),
+  ),
 );

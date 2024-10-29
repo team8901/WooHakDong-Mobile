@@ -111,8 +111,6 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
                         border: Border.all(
                           color: context.colorScheme.inverseSurface,
                           width: _selectedIndex == 4 ? 2 : 1,
-                          strokeAlign:
-                              _selectedIndex == 4 ? BorderSide.strokeAlignCenter : BorderSide.strokeAlignInside,
                         ),
                         image: DecorationImage(
                           image: CachedNetworkImageProvider(clubImage),

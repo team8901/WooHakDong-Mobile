@@ -68,7 +68,6 @@ class ItemNotifier extends StateNotifier<Item> {
     await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
 
     ref.refresh(itemProvider.notifier).getItemList();
-    ref.invalidate(s3ImageProvider);
 
     ref.read(itemStateProvider.notifier).state = ItemState.registered;
   }

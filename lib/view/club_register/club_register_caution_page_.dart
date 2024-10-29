@@ -27,7 +27,7 @@ class ClubRegisterCautionPage extends ConsumerWidget {
         appBar: AppBar(),
         body: const SafeArea(
           child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
+            physics: ClampingScrollPhysics(),
             padding: EdgeInsets.all(defaultPaddingM),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

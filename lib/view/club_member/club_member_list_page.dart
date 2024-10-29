@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:woohakdong/model/club_member/club_member.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../service/general/general_functions.dart';
 import '../../view_model/club_member/club_member_provider.dart';
 import '../themes/custom_widget/custom_circular_progress_indicator.dart';
 import '../themes/custom_widget/custom_divider.dart';
 import '../themes/spacing.dart';
+import 'club_member_detail_page.dart';
 import 'club_member_search_page.dart';
 
 class ClubMemberListPage extends ConsumerWidget {
@@ -21,6 +24,7 @@ class ClubMemberListPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('회원'),
         actions: [
+          /// 검색 기능 추가하기
           IconButton(
             onPressed: () => _pushMemberSearchPage(context),
             icon: const Icon(Symbols.search_rounded),
@@ -63,7 +67,7 @@ class ClubMemberListPage extends ConsumerWidget {
                       final clubMember = clubMemberList[index];
 
                       return InkWell(
-                        onTap: () {},
+                        onTap: () => _pushMemberDetailPage(context, clubMember),
                         highlightColor: context.colorScheme.surfaceContainer,
                         child: Ink(
                           child: Padding(
@@ -89,7 +93,7 @@ class ClubMemberListPage extends ConsumerWidget {
                                                 borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
                                               ),
                                               child: Text(
-                                                _getRoleDisplayName(clubMember.clubMemberRole!),
+                                                GeneralFunctions.getRoleDisplayName(clubMember.clubMemberRole!),
                                                 style: context.textTheme.labelLarge
                                                     ?.copyWith(color: context.colorScheme.primary),
                                               ),
@@ -124,7 +128,12 @@ class ClubMemberListPage extends ConsumerWidget {
                                       ),
                                     ],
                                   ),
-                                )
+                                ),
+                                const Gap(defaultGapS),
+                                Icon(
+                                  Symbols.chevron_right_rounded,
+                                  color: context.colorScheme.outline,
+                                ),
                               ],
                             ),
                           ),
@@ -141,39 +150,16 @@ class ClubMemberListPage extends ConsumerWidget {
     );
   }
 
-  String _getRoleDisplayName(String role) {
-    switch (role) {
-      case 'PRESIDENT':
-        return '회장';
-      case 'OFFICER':
-        return '임원진';
-      case 'MEMBER':
-        return '일반 회원';
-      default:
-        return '회원';
-    }
-  }
-
-  String _getAssignedTermDisplay(String term) {
-    final date = DateTime.tryParse(term);
-
-    if (date == null) return term;
-
-    final year = date.year;
-    final month = date.month;
-
-    if (month >= 1 && month <= 6) {
-      return '$year년 1학기';
-    } else if (month >= 7 && month <= 12) {
-      return '$year년 2학기';
-    }
-
-    return term;
-  }
 
   void _pushMemberSearchPage(BuildContext context) {
     Navigator.of(context).push(
       CupertinoPageRoute(builder: (context) => const ClubMemberSearchPage()),
+    );
+  }
+
+  void _pushMemberDetailPage(BuildContext context, ClubMember clubMember) {
+    Navigator.of(context).push(
+      CupertinoPageRoute(builder: (context) => ClubMemberDetailPage(clubMember: clubMember)),
     );
   }
 }
