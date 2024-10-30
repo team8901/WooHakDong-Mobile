@@ -65,7 +65,7 @@ class ClubItemListTile extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          GeneralFunctions.translateItemCategory(item.itemCategory!),
+                          GeneralFunctions.formatItemCategory(item.itemCategory!),
                           style: context.textTheme.bodySmall?.copyWith(
                             color: context.colorScheme.onSurface,
                           ),

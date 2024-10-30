@@ -1,4 +1,3 @@
-import 'package:currency_formatter/currency_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -100,7 +99,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(defaultBorderRadiusM),
                   ),
                   padding: const EdgeInsets.symmetric(
-                    horizontal: defaultPaddingM,
+                    horizontal: defaultPaddingS,
                     vertical: defaultPaddingXS,
                   ),
                   child: CustomInfoContent(
@@ -122,7 +121,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                           ? Column(
                               children: [
                                 CustomInfoContent(
-                                  infoContent: _generationFormatting(clubInfo.clubGeneration!),
+                                  infoContent: GeneralFunctions.formatClubGeneration(clubInfo.clubGeneration!),
                                   icon: Icon(
                                     Symbols.numbers_rounded,
                                     size: 16,
@@ -134,7 +133,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                             )
                           : const SizedBox(),
                       CustomInfoContent(
-                        infoContent: _currencyFormatting(clubInfo.clubDues!),
+                        infoContent: GeneralFunctions.formatClubDues(clubInfo.clubDues!),
                         icon: Icon(
                           Symbols.payment_rounded,
                           size: 16,
@@ -211,7 +210,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                 await _pushAccountFormPage(context);
               }
             } catch (e) {
-              await GeneralFunctions.generalToastMessage('오류가 발생했어요\n다시 시도해 주세요');
+              await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
             }
           },
           buttonText: '확인했어요',
@@ -221,25 +220,6 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  String _generationFormatting(String clubGeneration) {
-    String formattedGeneration = '$clubGeneration 기';
-
-    return formattedGeneration;
-  }
-
-  String _currencyFormatting(int clubDues) {
-    String formattedDues = CurrencyFormatter.format(
-      clubDues.toString(),
-      const CurrencyFormat(
-        symbol: '원',
-        symbolSide: SymbolSide.right,
-        decimalSeparator: ',',
-      ),
-    );
-
-    return formattedDues;
   }
 
   Future<void> _pushAccountFormPage(BuildContext context) async {

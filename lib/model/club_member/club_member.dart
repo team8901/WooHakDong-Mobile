@@ -8,8 +8,8 @@ class ClubMember {
   final String? memberMajor;
   final String? memberStudentNumber;
   final String? clubMemberRole;
-  final String? clubJoinedDate;
-  final String? clubMemberAssignedTerm;
+  final DateTime? clubJoinedDate;
+  final DateTime? clubMemberAssignedTerm;
 
   ClubMember({
     this.memberId,
@@ -36,8 +36,9 @@ class ClubMember {
       memberMajor: json['memberMajor'] as String?,
       memberStudentNumber: json['memberStudentNumber'] as String?,
       clubMemberRole: json['clubMemberRole'] as String?,
-      clubJoinedDate: json['clubJoinedDate'] as String?,
-      clubMemberAssignedTerm: json['clubMemberAssignedTerm'] as String?,
+      clubJoinedDate: json['clubJoinedDate'] != null ? DateTime.parse(json['clubJoinedDate']) : null,
+      clubMemberAssignedTerm:
+          json['clubMemberAssignedTerm'] != null ? DateTime.parse(json['clubMemberAssignedTerm']) : null,
     );
   }
 }

@@ -49,26 +49,30 @@ class ItemNotifier extends StateNotifier<Item> {
     String itemCategory,
     int itemRentalMaxDay,
   ) async {
-    ref.read(itemStateProvider.notifier).state = ItemState.registering;
+    try {
+      ref.read(itemStateProvider.notifier).state = ItemState.registering;
 
-    final currentClubId = ref.watch(clubIdProvider);
+      final currentClubId = ref.watch(clubIdProvider);
 
-    await itemRepository.addItem(
-      currentClubId!,
-      state.copyWith(
-        itemName: itemName,
-        itemPhoto: itemPhoto,
-        itemDescription: itemDescription,
-        itemLocation: itemLocation,
-        itemCategory: itemCategory,
-        itemRentalMaxDay: itemRentalMaxDay,
-      ),
-    );
+      await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
 
-    await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
+      await itemRepository.addItem(
+        currentClubId!,
+        state.copyWith(
+          itemName: itemName,
+          itemPhoto: itemPhoto,
+          itemDescription: itemDescription,
+          itemLocation: itemLocation,
+          itemCategory: itemCategory,
+          itemRentalMaxDay: itemRentalMaxDay,
+        ),
+      );
 
-    ref.refresh(itemProvider.notifier).getItemList();
-
-    ref.read(itemStateProvider.notifier).state = ItemState.registered;
+      ref.refresh(itemProvider.notifier).getItemList();
+      ref.read(itemStateProvider.notifier).state = ItemState.registered;
+    } catch (e) {
+      ref.read(itemStateProvider.notifier).state = ItemState.initial;
+      rethrow;
+    }
   }
 }

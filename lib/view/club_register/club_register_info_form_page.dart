@@ -263,7 +263,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 }
               } else if (clubNameValidationState == ClubNameValidationState.invalid ||
                   clubNameValidationState == ClubNameValidationState.notChecked) {
-                GeneralFunctions.generalToastMessage('동아리 이름을 중복 확인해 주세요');
+                GeneralFunctions.toastMessage('동아리 이름을 중복 확인해 주세요');
               }
             }
           },

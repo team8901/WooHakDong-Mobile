@@ -46,7 +46,7 @@ class ClubRegisterUrlCard extends StatelessWidget {
               onTap: () async {
                 Clipboard.setData(ClipboardData(text: '${groupInfo?.groupJoinLink}'));
 
-                await GeneralFunctions.generalToastMessage('전용 페이지 링크를 복사했어요');
+                await GeneralFunctions.toastMessage('전용 페이지 링크를 복사했어요');
               },
               child: Ink(
                 child: Icon(

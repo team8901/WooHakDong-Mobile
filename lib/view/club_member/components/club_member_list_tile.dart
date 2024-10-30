@@ -47,7 +47,7 @@ class ClubMemberListTile extends StatelessWidget {
                               borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
                             ),
                             child: Text(
-                              GeneralFunctions.getRoleDisplayName(clubMember.clubMemberRole!),
+                              GeneralFunctions.formatClubRole(clubMember.clubMemberRole!),
                               style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.primary),
                             ),
                           ),

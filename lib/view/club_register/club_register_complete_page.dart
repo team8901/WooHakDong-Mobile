@@ -40,7 +40,7 @@ class ClubRegisterCompletePage extends ConsumerWidget {
                   key: _widgetToPngKey,
                   fileName: '${groupInfo?.groupName} QR 카드 ${DateTime.now().millisecondsSinceEpoch}.png',
                 );
-                await GeneralFunctions.generalToastMessage('QR 카드 이미지를 저장했어요');
+                await GeneralFunctions.toastMessage('QR 카드 이미지를 저장했어요');
               },
               icon: const Icon(Symbols.download_rounded),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/text_style.dart';
 
@@ -24,6 +25,8 @@ final ThemeData lightTheme = ThemeData(
   applyElevationOverlayColor: false,
   splashColor: Colors.transparent,
   highlightColor: Colors.transparent,
+
+  extensions: const [SkeletonizerConfigData()],
 
   /// 컬러 스키마
   colorScheme: const ColorScheme.light(

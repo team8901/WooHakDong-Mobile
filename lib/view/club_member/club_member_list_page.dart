@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:woohakdong/model/club_member/club_member.dart';
+import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/club_member/club_member_provider.dart';
@@ -17,6 +18,8 @@ class ClubMemberListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    DateTime? selectedTerm;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('회원'),
@@ -25,13 +28,39 @@ class ClubMemberListPage extends ConsumerWidget {
             onPressed: () => _pushMemberSearchPage(context),
             icon: const Icon(Symbols.search_rounded),
           ),
+          FutureBuilder(
+            future: ref.watch(clubMemberProvider.notifier).getClubMemberTermList(),
+            builder: (context, snapshot) {
+              final termList = snapshot.data ?? [];
+
+              return PopupMenuButton<DateTime?>(
+                icon: const Icon(Symbols.filter_list),
+                onSelected: (DateTime? term) {
+                  selectedTerm = term;
+                  ref.refresh(clubMemberProvider);
+                },
+                itemBuilder: (context) {
+                  return [
+                    for (final term in termList)
+                      PopupMenuItem<DateTime>(
+                        value: term,
+                        child: Text(
+                          GeneralFunctions.formatClubAssignedTerm(term.toIso8601String()),
+                          style: context.textTheme.bodyMedium,
+                        ),
+                      ),
+                  ];
+                },
+              );
+            },
+          ),
         ],
       ),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
           child: FutureBuilder(
-            future: ref.watch(clubMemberProvider.notifier).getClubMemberList(null),
+            future: ref.watch(clubMemberProvider.notifier).getClubMemberList(selectedTerm),
             builder: (context, clubMemberSnapshot) {
               final isLoading = clubMemberSnapshot.connectionState == ConnectionState.waiting;
 

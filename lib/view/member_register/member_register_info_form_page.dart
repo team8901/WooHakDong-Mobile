@@ -92,15 +92,15 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                         readOnly: true,
                       ),
                       const Gap(defaultGapXL),
+                      Text(
+                        '학교 정보',
+                        style: context.textTheme.labelLarge,
+                      ),
+                      const Gap(defaultGapM),
                       CustomTextFormField(
                         labelText: '학교',
                         initialValue: memberInfo?.memberSchool,
                         readOnly: true,
-                      ),
-                      const Gap(defaultGapXL),
-                      Text(
-                        '학교 정보',
-                        style: context.textTheme.labelLarge,
                       ),
                       const Gap(defaultGapM),
                       CustomTextFormField(
@@ -141,7 +141,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
             if (formKey.currentState?.validate() == true) {
               formKey.currentState?.save();
 
-              await memberNotifier.saveMemberInfo(ref.read(memberProvider)!); // 저장
+              await memberNotifier.saveMemberInfo(ref.read(memberProvider)!);
 
               if (context.mounted) {
                 _pushCheckPage(context);

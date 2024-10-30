@@ -39,10 +39,17 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomInfoContent(infoContent: memberInfo.memberName),
+                      CustomInfoContent(
+                        infoContent: memberInfo.memberName,
+                        icon: Icon(
+                          Symbols.account_box_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                       const Gap(defaultGapM),
                       CustomInfoContent(
-                        infoContent: GeneralFunctions.getGenderDisplay(memberInfo.memberGender!),
+                        infoContent: GeneralFunctions.formatMemberGender(memberInfo.memberGender!),
                         icon: Icon(
                           Symbols.wc_rounded,
                           size: 16,
@@ -51,7 +58,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
                       ),
                       const Gap(defaultGapM),
                       CustomInfoContent(
-                        infoContent: GeneralFunctions.formatPhoneNumber(memberInfo.memberPhoneNumber!),
+                        infoContent: GeneralFunctions.formatMemberPhoneNumber(memberInfo.memberPhoneNumber!),
                         icon: Icon(
                           Symbols.call_rounded,
                           size: 16,
@@ -113,10 +120,14 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
           onTap: () async {
-            await memberNotifier.registerMember();
+            try {
+              await memberNotifier.registerMember();
 
-            if (context.mounted) {
-              _pushCompletePage(context);
+              if (context.mounted) {
+                _pushCompletePage(context);
+              }
+            } catch (e) {
+              await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
             }
           },
           buttonText: '맞아요',

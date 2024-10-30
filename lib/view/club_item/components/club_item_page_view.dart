@@ -45,7 +45,7 @@ class ClubItemPageView extends ConsumerWidget {
           } else if (!isLoading && (filteredList == null || filteredList.isEmpty)) {
             return Center(
               child: Text(
-                '${GeneralFunctions.translateItemCategory(filterCategory!)} 카테고리에 등록된 물품이 없어요',
+                '${GeneralFunctions.formatItemCategory(filterCategory!)} 카테고리에 등록된 물품이 없어요',
                 style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
               ),
             );

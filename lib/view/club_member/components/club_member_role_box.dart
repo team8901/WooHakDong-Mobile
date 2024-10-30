@@ -27,7 +27,7 @@ class ClubMemberRoleBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
       ),
       child: Text(
-        GeneralFunctions.getRoleDisplayName(clubMember.clubMemberRole!),
+        GeneralFunctions.formatClubRole(clubMember.clubMemberRole!),
         style: context.textTheme.titleMedium?.copyWith(
           color: (clubMember.clubMemberRole != 'MEMBER')
               ? context.colorScheme.primary

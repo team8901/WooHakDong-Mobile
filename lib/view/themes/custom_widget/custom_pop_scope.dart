@@ -30,7 +30,7 @@ class _CustomPopScopeState extends State<CustomPopScope> {
         if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(milliseconds: 1500)) {
           currentBackPressTime = now;
 
-          GeneralFunctions.generalToastMessage("'뒤로' 버튼을 한번 더 누르면 종료돼요");
+          GeneralFunctions.toastMessage("'뒤로' 버튼을 한번 더 누르면 종료돼요");
 
           return;
         } else {

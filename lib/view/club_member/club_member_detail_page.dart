@@ -81,7 +81,7 @@ class _ClubMemberDetailPageState extends State<ClubMemberDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomInfoContent(
-                      infoContent: GeneralFunctions.getGenderDisplay(widget.clubMember.memberGender!),
+                      infoContent: GeneralFunctions.formatMemberGender(widget.clubMember.memberGender!),
                       icon: Icon(
                         Symbols.wc_rounded,
                         size: 16,
@@ -90,7 +90,7 @@ class _ClubMemberDetailPageState extends State<ClubMemberDetailPage> {
                     ),
                     const Gap(defaultGapM),
                     CustomInfoContent(
-                      infoContent: GeneralFunctions.formatPhoneNumber(widget.clubMember.memberPhoneNumber!),
+                      infoContent: GeneralFunctions.formatMemberPhoneNumber(widget.clubMember.memberPhoneNumber!),
                       icon: Icon(
                         Symbols.call_rounded,
                         size: 16,
@@ -148,7 +148,7 @@ class _ClubMemberDetailPageState extends State<ClubMemberDetailPage> {
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  GeneralFunctions.getAssignedTermDisplay(widget.clubMember.clubMemberAssignedTerm!),
+                  '가입일: ${widget.clubMember.clubJoinedDate!.year}년 ${widget.clubMember.clubJoinedDate!.month}월 ${widget.clubMember.clubJoinedDate!.day}일',
                   style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
                 ),
               ),

@@ -193,6 +193,6 @@ class ClubInformationBottomSheet extends ConsumerWidget {
       (route) => false,
     );
 
-    GeneralFunctions.generalToastMessage('$clubName 동아리로 전환되었어요');
+    GeneralFunctions.toastMessage('$clubName 동아리로 전환되었어요');
   }
 }

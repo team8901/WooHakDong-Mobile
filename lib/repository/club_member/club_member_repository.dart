@@ -6,14 +6,14 @@ import 'package:woohakdong/service/logger/logger.dart';
 class ClubMemberRepository {
   final Dio _dio = DioService().dio;
 
-  Future<List<ClubMember>> getClubMemberList(int clubId, String? clubMemberAssignedTerm) async {
+  Future<List<ClubMember>> getClubMemberList(int clubId, DateTime? clubMemberAssignedTerm) async {
     try {
       logger.i('동아리 회원 목록 조회 시도');
 
       final response = await _dio.get(
         '/club/$clubId/members',
         queryParameters: clubMemberAssignedTerm != null
-            ? {'clubMemberAssignedTerm': clubMemberAssignedTerm}
+            ? {'clubMemberAssignedTerm': clubMemberAssignedTerm.toIso8601String()}
             : {},
       );
 
@@ -22,34 +22,43 @@ class ClubMemberRepository {
 
         List<dynamic> clubMemberListData = jsonData['result'] as List<dynamic>;
 
-        return clubMemberListData.map((json) => ClubMember.fromJson(json as Map<String, dynamic>)).toList();
+        return clubMemberListData
+            .map((json) => ClubMember.fromJson(json as Map<String, dynamic>))
+            .toList();
       } else {
-        throw Exception();
+        throw Exception('동아리 회원 목록 조회 실패: 상태 코드 ${response.statusCode}');
       }
     } catch (e) {
       logger.e('동아리 회원 목록 조회 실패', error: e);
-      throw Exception();
+      throw Exception('동아리 회원 목록 조회 실패');
     }
   }
 
-  Future<List> getClubMemberTermList(int clubId) async {
+  Future<List<DateTime>> getClubMemberTermList(int clubId) async {
     try {
       logger.i('동아리 가입 기수 리스트 조회 시도');
 
-      final response = await _dio.get('/v1/clubs/$clubId/terms');
+      final response = await _dio.get<Map<String, dynamic>>('/clubs/$clubId/terms');
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonData = response.data;
+        final jsonData = response.data;
 
-        List<dynamic> clubTermListData = jsonData['result'] as List<dynamic>;
+        if (jsonData != null && jsonData['result'] is List) {
+          List<dynamic> clubTermListData = jsonData['result'];
 
-        return clubTermListData.map((json) => json['clubHistoryUsageDate']).toList();
+          return clubTermListData
+              .map((json) => DateTime.parse(json['clubHistoryUsageDate'] as String))
+              .toList();
+        } else {
+          throw Exception('데이터 형식이 잘못되었습니다.');
+        }
       } else {
-        throw Exception();
+        throw Exception('동아리 가입 기수 리스트 조회 실패: 상태 코드 ${response.statusCode}');
       }
     } catch (e) {
       logger.e('동아리 가입 기수 리스트 조회 실패', error: e);
-      throw Exception();
+      throw Exception('동아리 가입 기수 리스트 조회 실패');
     }
   }
+
 }

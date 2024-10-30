@@ -196,19 +196,16 @@ class ClubItemAddPage extends ConsumerWidget {
           child: CustomBottomButton(
             onTap: () async {
               if (formKey.currentState?.validate() == true) {
+                formKey.currentState?.save();
                 try {
-                  formKey.currentState?.save();
-
                   await _addItemToServer(s3ImageState, s3ImageNotifier, itemInfo, itemNotifier);
 
                   if (context.mounted) {
                     Navigator.pop(context);
-                    GeneralFunctions.generalToastMessage('물품이 추가되었어요');
+                    GeneralFunctions.toastMessage('물품이 추가되었어요');
                   }
                 } catch (e) {
-                  ref.read(itemStateProvider.notifier).state = ItemState.initial;
-
-                  await GeneralFunctions.generalToastMessage('오류가 발생했어요\n다시 시도해 주세요');
+                  await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
                 }
               }
             },
@@ -228,23 +225,27 @@ class ClubItemAddPage extends ConsumerWidget {
     Item itemInfo,
     ItemNotifier itemNotifier,
   ) async {
-    if (s3ImageState.pickedImages.isEmpty) {
-      await _pickItemBasicImage(s3ImageNotifier, itemInfo.itemCategory!);
+    try {
+      if (s3ImageState.pickedImages.isEmpty) {
+        await _pickItemBasicImage(s3ImageNotifier, itemInfo.itemCategory!);
+      }
+
+      List<String> imageUrls = await s3ImageNotifier.setImageUrl('1');
+      final itemImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
+
+      String itemImageForServer = itemImageUrl.substring(0, itemImageUrl.indexOf('?'));
+
+      await itemNotifier.addItem(
+        itemInfo.itemName!,
+        itemImageForServer,
+        itemInfo.itemDescription!,
+        itemInfo.itemLocation!,
+        itemInfo.itemCategory!,
+        itemInfo.itemRentalMaxDay!,
+      );
+    } catch (e) {
+      rethrow;
     }
-
-    List<String> imageUrls = await s3ImageNotifier.setImageUrl('1');
-    final itemImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
-
-    String itemImageForServer = itemImageUrl.substring(0, itemImageUrl.indexOf('?'));
-
-    await itemNotifier.addItem(
-      itemInfo.itemName!,
-      itemImageForServer,
-      itemInfo.itemDescription!,
-      itemInfo.itemLocation!,
-      itemInfo.itemCategory!,
-      itemInfo.itemRentalMaxDay!,
-    );
   }
 
   Future<void> _pickItemBasicImage(S3ImageNotifier s3ImageNotifier, String itemCategory) async {

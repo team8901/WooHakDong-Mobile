@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/model/club/club_account.dart';
 import 'package:woohakdong/repository/club/club_account_repository.dart';
 
-import '../../service/logger/logger.dart';
 import 'components/club_account_validation_provider.dart';
 import 'components/club_account_validation_state.dart';
 
@@ -41,8 +40,7 @@ class ClubAccountNotifier extends StateNotifier<ClubAccount> {
       ref.read(clubAccountValidationProvider.notifier).state = ClubAccountValidationState.valid;
     } catch (e) {
       ref.read(clubAccountValidationProvider.notifier).state = ClubAccountValidationState.invalid;
-
-      logger.e('동아리 계좌 정보 저장 실패', error: e);
+      rethrow;
     }
   }
 
@@ -50,7 +48,7 @@ class ClubAccountNotifier extends StateNotifier<ClubAccount> {
     try {
       await clubAccountRepository.clubAccountRegister(clubId!, state);
     } catch (e) {
-      logger.e('동아리 계좌 등록 실패', error: e);
+      rethrow;
     }
   }
 }
