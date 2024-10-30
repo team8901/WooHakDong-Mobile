@@ -21,7 +21,7 @@ import '../themes/custom_widget/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/custom_dropdown_form_field.dart';
 import '../themes/custom_widget/custom_text_form_field.dart';
 import '../themes/spacing.dart';
-import 'components/club_item_photo_dialog.dart';
+import 'components/club_item_image_dialog.dart';
 
 class ClubItemAddPage extends ConsumerWidget {
   const ClubItemAddPage({super.key});
@@ -69,14 +69,18 @@ class ClubItemAddPage extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(defaultBorderRadiusM),
                       onTap: () => showDialog(
                         context: context,
-                        builder: (context) => ClubItemPhotoDialog(s3ImageNotifier: s3ImageNotifier),
+                        builder: (context) => ClubItemImageDialog(s3ImageNotifier: s3ImageNotifier),
                       ),
                       child: Ink(
                         decoration: BoxDecoration(
-                          border: Border.all(
-                            color: context.colorScheme.surfaceContainer,
-                          ),
+                          border: Border.all(color: context.colorScheme.surfaceContainer),
                           borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                          image: s3ImageState.pickedImages.isEmpty
+                              ? null
+                              : DecorationImage(
+                                  image: FileImage(s3ImageState.pickedImages[0]),
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                         child: s3ImageState.pickedImages.isEmpty
                             ? Center(
@@ -85,18 +89,7 @@ class ClubItemAddPage extends ConsumerWidget {
                                   color: context.colorScheme.outline,
                                 ),
                               )
-                            : SizedBox(
-                                width: 96.r,
-                                height: 96.r,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                                  child: Image.file(
-                                    s3ImageState.pickedImages[0],
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                  ),
-                                ),
-                              ),
+                            : const SizedBox(),
                       ),
                     ),
                   ),

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
@@ -83,8 +84,8 @@ class ClubInformationBottomSheet extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(
-                              width: 40,
-                              height: 40,
+                              width: 40.r,
+                              height: 40.r,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
@@ -133,8 +134,8 @@ class ClubInformationBottomSheet extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
-                                  width: 40,
-                                  height: 40,
+                                  width: 40.r,
+                                  height: 40.r,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: context.colorScheme.surfaceContainer,

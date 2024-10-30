@@ -9,36 +9,13 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../view_model/util/s3_image_provider.dart';
 
-class ClubItemPhotoDialog extends StatelessWidget {
+class ClubItemImageDialog extends StatelessWidget {
   final S3ImageNotifier s3ImageNotifier;
 
-  const ClubItemPhotoDialog({
+  const ClubItemImageDialog({
     super.key,
     required this.s3ImageNotifier,
   });
-
-  Future<void> _shootItemImage(BuildContext context) async {
-    final image = await ImagePicker().pickImage(source: ImageSource.camera);
-
-    if (image != null) {
-      final imageFile = File(image.path);
-      await _setImage(imageFile, s3ImageNotifier);
-    }
-  }
-
-  Future<void> _pickItemImage(BuildContext context) async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      final imageFile = File(image.path);
-      await _setImage(imageFile, s3ImageNotifier);
-    }
-  }
-
-  Future<void> _setImage(File imageFile, S3ImageNotifier s3ImageNotifier) async {
-    List<File> pickedImage = [imageFile];
-    await s3ImageNotifier.setImage(pickedImage);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +71,7 @@ class ClubItemPhotoDialog extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: defaultPaddingS / 2),
                   child: Row(
                     children: [
-                      const Icon(Symbols.photo_rounded),
+                      const Icon(Symbols.photo_library_rounded),
                       const Gap(defaultGapXL),
                       Text(
                         '사진 선택',
@@ -109,5 +86,28 @@ class ClubItemPhotoDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _shootItemImage(BuildContext context) async {
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      final imageFile = File(image.path);
+      await _setImage(imageFile, s3ImageNotifier);
+    }
+  }
+
+  Future<void> _pickItemImage(BuildContext context) async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      final imageFile = File(image.path);
+      await _setImage(imageFile, s3ImageNotifier);
+    }
+  }
+
+  Future<void> _setImage(File imageFile, S3ImageNotifier s3ImageNotifier) async {
+    List<File> pickedImage = [imageFile];
+    await s3ImageNotifier.setImage(pickedImage);
   }
 }

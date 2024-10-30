@@ -45,23 +45,21 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                 ),
                 const Gap(defaultGapXL * 2),
                 Text(
-                  '동아리 사진',
+                  '동아리 로고 및 대표 사진',
                   style: context.textTheme.labelLarge,
                 ),
                 const Gap(defaultGapM),
-                Container(
-                  width: 192.r,
-                  height: 192.r,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: context.colorScheme.surfaceContainer),
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                    child: Image.file(
-                      s3ImageState.pickedImages[0],
-                      fit: BoxFit.cover,
-                      width: double.infinity,
+                Center(
+                  child: Container(
+                    width: 192.r,
+                    height: 192.r,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: context.colorScheme.surfaceContainer),
+                      image: DecorationImage(
+                        image: FileImage(s3ImageState.pickedImages[0]),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
