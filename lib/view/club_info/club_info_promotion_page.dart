@@ -63,6 +63,7 @@ class ClubInfoPromotionPage extends ConsumerWidget {
                   const Gap(defaultGapM),
                   CustomLoadingSkeleton(
                     isLoading: isLoading,
+                    ignoreContainers: false,
                     child: ClubRegisterUrlCard(groupInfo: groupInfo),
                   ),
                   const Gap(defaultGapM),
@@ -70,6 +71,7 @@ class ClubInfoPromotionPage extends ConsumerWidget {
                     keyToCapture: _widgetToPngKey,
                     child: CustomLoadingSkeleton(
                       isLoading: isLoading,
+                      ignoreContainers: false,
                       child: ClubRegisterQrCard(groupInfo: groupInfo),
                     ),
                   ),
@@ -84,9 +86,8 @@ class ClubInfoPromotionPage extends ConsumerWidget {
 
   Group _generateFakeGroupInfo() {
     return Group(
-      groupId: 0,
       groupName: '우학동',
-      groupJoinLink: 'https://woohakdong.com',
+      groupJoinLink: 'https://www.woohakdong.com',
     );
   }
 }

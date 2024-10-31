@@ -4,11 +4,13 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 class CustomLoadingSkeleton extends StatelessWidget {
   final bool isLoading;
+  final bool ignoreContainers;
   final Widget child;
 
   const CustomLoadingSkeleton({
     super.key,
     required this.isLoading,
+    this.ignoreContainers = true,
     required this.child,
   });
 
@@ -17,7 +19,7 @@ class CustomLoadingSkeleton extends StatelessWidget {
     return Skeletonizer(
       enabled: isLoading,
       enableSwitchAnimation: true,
-      ignoreContainers: true,
+      ignoreContainers: ignoreContainers,
       effect: ShimmerEffect(
         baseColor: context.colorScheme.surfaceContainer.withOpacity(0.6),
         highlightColor: context.colorScheme.surfaceContainer.withOpacity(0.3),
