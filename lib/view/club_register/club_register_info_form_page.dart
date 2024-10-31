@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
@@ -21,6 +20,7 @@ import '../themes/custom_widget/custom_bottom_button.dart';
 import '../themes/custom_widget/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/custom_text_form_field.dart';
 import '../themes/spacing.dart';
+import 'components/club_register_image_dialog.dart';
 
 class ClubRegisterNameInfoFormPage extends ConsumerStatefulWidget {
   const ClubRegisterNameInfoFormPage({super.key});
@@ -76,7 +76,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 style: context.textTheme.headlineSmall,
               ),
               Text(
-                '영문 이름은 동아리 페이지를 만드는 데 사용돼요',
+                '영문 이름은 동아리 전용 페이지에 사용돼요',
                 style: context.textTheme.bodySmall?.copyWith(
                   color: context.colorScheme.onSurface,
                 ),
@@ -92,13 +92,20 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 height: 96.r,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                  onTap: () => _pickClubImage(s3ImageNotifier),
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => ClubRegisterImageDialog(s3ImageNotifier: s3ImageNotifier),
+                  ),
                   child: Ink(
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: context.colorScheme.surfaceContainer,
-                      ),
-                      borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: context.colorScheme.surfaceContainer),
+                      image: s3ImageState.pickedImages.isEmpty
+                          ? null
+                          : DecorationImage(
+                              image: FileImage(s3ImageState.pickedImages[0]),
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     child: s3ImageState.pickedImages.isEmpty
                         ? Center(
@@ -107,18 +114,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                               color: context.colorScheme.outline,
                             ),
                           )
-                        : SizedBox(
-                            width: 96.r,
-                            height: 96.r,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                              child: Image.file(
-                                s3ImageState.pickedImages[0],
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
-                            ),
-                          ),
+                        : const SizedBox(),
                   ),
                 ),
               ),
@@ -263,7 +259,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 }
               } else if (clubNameValidationState == ClubNameValidationState.invalid ||
                   clubNameValidationState == ClubNameValidationState.notChecked) {
-                GeneralFunctions.generalToastMessage('동아리 이름을 중복 확인해 주세요');
+                GeneralFunctions.toastMessage('동아리 이름을 중복 확인해 주세요');
               }
             }
           },
@@ -273,18 +269,6 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
         ),
       ),
     );
-  }
-
-  Future<void> _pickClubImage(S3ImageNotifier s3ImageNotifier) async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      File imageFile = File(image.path);
-
-      List<File> pickedImage = [imageFile];
-
-      await s3ImageNotifier.setImage(pickedImage);
-    }
   }
 
   void _pushOtherInfoPage(BuildContext context) {

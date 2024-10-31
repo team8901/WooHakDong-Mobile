@@ -1,9 +1,9 @@
-import 'package:currency_formatter/currency_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_register/club_register_account_form_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/custom_info_box.dart';
@@ -45,23 +45,21 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                 ),
                 const Gap(defaultGapXL * 2),
                 Text(
-                  '동아리 사진',
+                  '동아리 로고 및 대표 사진',
                   style: context.textTheme.labelLarge,
                 ),
                 const Gap(defaultGapM),
-                Container(
-                  width: 192.r,
-                  height: 192.r,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: context.colorScheme.surfaceContainer),
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                    child: Image.file(
-                      s3ImageState.pickedImages[0],
-                      fit: BoxFit.cover,
-                      width: double.infinity,
+                Center(
+                  child: Container(
+                    width: 192.r,
+                    height: 192.r,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: context.colorScheme.surfaceContainer),
+                      image: DecorationImage(
+                        image: FileImage(s3ImageState.pickedImages[0]),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -71,9 +69,23 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomInfoContent(infoContent: clubInfo.clubName!),
+                      CustomInfoContent(
+                        infoContent: clubInfo.clubName!,
+                        icon: Icon(
+                          Symbols.account_balance_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                       const Gap(defaultGapM),
-                      CustomInfoContent(infoContent: clubInfo.clubEnglishName!),
+                      CustomInfoContent(
+                        infoContent: clubInfo.clubEnglishName!,
+                        icon: Icon(
+                          Symbols.signature_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -85,10 +97,17 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(defaultBorderRadiusM),
                   ),
                   padding: const EdgeInsets.symmetric(
-                    horizontal: defaultPaddingM,
+                    horizontal: defaultPaddingS,
                     vertical: defaultPaddingXS,
                   ),
-                  child: CustomInfoContent(infoContent: clubInfo.clubDescription!),
+                  child: CustomInfoContent(
+                    infoContent: clubInfo.clubDescription!,
+                    icon: Icon(
+                      Symbols.info_rounded,
+                      size: 16,
+                      color: context.colorScheme.outline,
+                    ),
+                  ),
                 ),
                 const Gap(defaultGapXL),
                 CustomInfoBox(
@@ -99,17 +118,38 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                       (clubInfo.clubGeneration != '')
                           ? Column(
                               children: [
-                                CustomInfoContent(infoContent: _generationFormatting(clubInfo.clubGeneration!)),
+                                CustomInfoContent(
+                                  infoContent: GeneralFunctions.formatClubGeneration(clubInfo.clubGeneration!),
+                                  icon: Icon(
+                                    Symbols.numbers_rounded,
+                                    size: 16,
+                                    color: context.colorScheme.outline,
+                                  ),
+                                ),
                                 const Gap(defaultGapM),
                               ],
                             )
                           : const SizedBox(),
-                      CustomInfoContent(infoContent: _currencyFormatting(clubInfo.clubDues!)),
+                      CustomInfoContent(
+                        infoContent: GeneralFunctions.formatClubDues(clubInfo.clubDues!),
+                        icon: Icon(
+                          Symbols.payment_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                       (clubInfo.clubRoom != '')
                           ? Column(
                               children: [
                                 const Gap(defaultGapM),
-                                CustomInfoContent(infoContent: clubInfo.clubRoom!),
+                                CustomInfoContent(
+                                  infoContent: clubInfo.clubRoom!,
+                                  icon: Icon(
+                                    Symbols.location_on_rounded,
+                                    size: 16,
+                                    color: context.colorScheme.outline,
+                                  ),
+                                ),
                               ],
                             )
                           : const SizedBox(),
@@ -122,12 +162,26 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomInfoContent(infoContent: clubInfo.clubGroupChatLink!),
+                      CustomInfoContent(
+                        infoContent: clubInfo.clubGroupChatLink!,
+                        icon: Icon(
+                          Symbols.forum_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                       (clubInfo.clubGroupChatPassword != '')
                           ? Column(
                               children: [
                                 const Gap(defaultGapXL),
-                                CustomInfoContent(infoContent: clubInfo.clubGroupChatPassword!),
+                                CustomInfoContent(
+                                  infoContent: clubInfo.clubGroupChatPassword!,
+                                  icon: Icon(
+                                    Symbols.key_rounded,
+                                    size: 16,
+                                    color: context.colorScheme.outline,
+                                  ),
+                                ),
                               ],
                             )
                           : const SizedBox(),
@@ -154,7 +208,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                 await _pushAccountFormPage(context);
               }
             } catch (e) {
-              await GeneralFunctions.generalToastMessage('오류가 발생했어요\n다시 시도해 주세요');
+              await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
             }
           },
           buttonText: '확인했어요',
@@ -164,25 +218,6 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  String _generationFormatting(String clubGeneration) {
-    String formattedGeneration = '$clubGeneration 기';
-
-    return formattedGeneration;
-  }
-
-  String _currencyFormatting(int clubDues) {
-    String formattedDues = CurrencyFormatter.format(
-      clubDues.toString(),
-      const CurrencyFormat(
-        symbol: '원',
-        symbolSide: SymbolSide.right,
-        decimalSeparator: ',',
-      ),
-    );
-
-    return formattedDues;
   }
 
   Future<void> _pushAccountFormPage(BuildContext context) async {

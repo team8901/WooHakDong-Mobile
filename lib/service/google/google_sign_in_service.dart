@@ -42,12 +42,18 @@ class GoogleSignInService {
         await _secureStorage.write(key: 'refreshToken', value: refreshToken);
 
         return true;
-            } else {
+      } else {
         logger.w("구글 액세스 토큰 없음");
         return false;
       }
     } catch (e) {
       logger.e("구글 로그인 실패", error: e);
+
+      await _secureStorage.deleteAll();
+
+      await _firebaseAuth.signOut();
+      await _googleSignIn.signOut();
+
       return false;
     }
   }

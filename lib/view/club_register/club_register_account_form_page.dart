@@ -197,11 +197,11 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                           }
                         } else if (clubAccountValidationState == ClubAccountValidationState.invalid ||
                             clubAccountValidationState == ClubAccountValidationState.notChecked) {
-                          GeneralFunctions.generalToastMessage('동아리 계좌를 인증해 주세요');
+                          GeneralFunctions.toastMessage('동아리 계좌를 인증해 주세요');
                         }
                       }
                     } catch (e) {
-                      GeneralFunctions.generalToastMessage('오류가 발생했어요\n다시 시도해 주세요');
+                      GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
                     }
                   },
             buttonText: '완료',

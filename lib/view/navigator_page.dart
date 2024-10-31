@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_dues/club_dues_page.dart';
@@ -29,6 +30,12 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
     const ClubSchedulePage(),
     const ClubInformationPage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    FlutterNativeSplash.remove();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +118,6 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
                         border: Border.all(
                           color: context.colorScheme.inverseSurface,
                           width: _selectedIndex == 4 ? 2 : 1,
-                          strokeAlign:
-                              _selectedIndex == 4 ? BorderSide.strokeAlignCenter : BorderSide.strokeAlignInside,
                         ),
                         image: DecorationImage(
                           image: CachedNetworkImageProvider(clubImage),
@@ -120,7 +125,18 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
                         ),
                       ),
                     )
-                  : const Icon(Symbols.more_horiz_rounded),
+                  : Container(
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.surfaceContainer,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: context.colorScheme.inverseSurface,
+                          width: 1,
+                        ),
+                      ),
+                    ),
               label: '내 동아리',
             ),
           ],

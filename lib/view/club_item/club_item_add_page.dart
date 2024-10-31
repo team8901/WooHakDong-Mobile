@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:woohakdong/model/item/item.dart';
@@ -22,6 +21,7 @@ import '../themes/custom_widget/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/custom_dropdown_form_field.dart';
 import '../themes/custom_widget/custom_text_form_field.dart';
 import '../themes/spacing.dart';
+import 'components/club_item_image_dialog.dart';
 
 class ClubItemAddPage extends ConsumerWidget {
   const ClubItemAddPage({super.key});
@@ -69,45 +69,18 @@ class ClubItemAddPage extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(defaultBorderRadiusM),
                       onTap: () => showDialog(
                         context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('물품 사진 추가'),
-                            titleTextStyle: context.textTheme.titleMedium,
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ListTile(
-                                  leading: const Icon(Symbols.camera_alt_rounded),
-                                  title: const Text('사진 촬영'),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    _shootItemImage(s3ImageNotifier);
-                                  },
-                                ),
-                                ListTile(
-                                  leading: const Icon(Symbols.photo_rounded),
-                                  title: const Text('사진 선택'),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    _pickItemImage(s3ImageNotifier);
-                                  },
-                                ),
-                              ],
-                            ),
-                            backgroundColor: context.colorScheme.surfaceDim,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(defaultBorderRadiusL),
-                            ),
-                            insetPadding: const EdgeInsets.all(defaultPaddingS * 2),
-                          );
-                        },
+                        builder: (context) => ClubItemImageDialog(s3ImageNotifier: s3ImageNotifier),
                       ),
                       child: Ink(
                         decoration: BoxDecoration(
-                          border: Border.all(
-                            color: context.colorScheme.surfaceContainer,
-                          ),
+                          border: Border.all(color: context.colorScheme.surfaceContainer),
                           borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                          image: s3ImageState.pickedImages.isEmpty
+                              ? null
+                              : DecorationImage(
+                                  image: FileImage(s3ImageState.pickedImages[0]),
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                         child: s3ImageState.pickedImages.isEmpty
                             ? Center(
@@ -116,18 +89,7 @@ class ClubItemAddPage extends ConsumerWidget {
                                   color: context.colorScheme.outline,
                                 ),
                               )
-                            : SizedBox(
-                                width: 96.r,
-                                height: 96.r,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                                  child: Image.file(
-                                    s3ImageState.pickedImages[0],
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                  ),
-                                ),
-                              ),
+                            : const SizedBox(),
                       ),
                     ),
                   ),
@@ -227,19 +189,16 @@ class ClubItemAddPage extends ConsumerWidget {
           child: CustomBottomButton(
             onTap: () async {
               if (formKey.currentState?.validate() == true) {
+                formKey.currentState?.save();
                 try {
-                  formKey.currentState?.save();
-
                   await _addItemToServer(s3ImageState, s3ImageNotifier, itemInfo, itemNotifier);
 
                   if (context.mounted) {
                     Navigator.pop(context);
-                    GeneralFunctions.generalToastMessage('물품이 추가되었어요');
+                    GeneralFunctions.toastMessage('물품이 추가되었어요');
                   }
                 } catch (e) {
-                  ref.read(itemStateProvider.notifier).state = ItemState.initial;
-
-                  await GeneralFunctions.generalToastMessage('오류가 발생했어요\n다시 시도해 주세요');
+                  await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
                 }
               }
             },
@@ -259,79 +218,44 @@ class ClubItemAddPage extends ConsumerWidget {
     Item itemInfo,
     ItemNotifier itemNotifier,
   ) async {
-    if (s3ImageState.pickedImages.isEmpty) {
-      await _pickItemBasicImage(s3ImageNotifier, itemInfo.itemCategory!);
-    }
+    try {
+      if (s3ImageState.pickedImages.isEmpty) {
+        await _pickItemBasicImage(s3ImageNotifier, itemInfo.itemCategory!);
+      }
 
-    List<String> imageUrls = await s3ImageNotifier.setImageUrl('1');
-    final itemImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
+      List<String> imageUrls = await s3ImageNotifier.setImageUrl('1');
+      final itemImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
 
-    String itemImageForServer = itemImageUrl.substring(0, itemImageUrl.indexOf('?'));
+      String itemImageForServer = itemImageUrl.substring(0, itemImageUrl.indexOf('?'));
 
-    await itemNotifier.addItem(
-      itemInfo.itemName!,
-      itemImageForServer,
-      itemInfo.itemDescription!,
-      itemInfo.itemLocation!,
-      itemInfo.itemCategory!,
-      itemInfo.itemRentalMaxDay!,
-    );
-  }
-
-  Future<void> _shootItemImage(S3ImageNotifier s3ImageNotifier) async {
-    final image = await ImagePicker().pickImage(source: ImageSource.camera);
-
-    if (image != null) {
-      File imageFile = File(image.path);
-
-      await _setImage(imageFile, s3ImageNotifier);
-    }
-  }
-
-  Future<void> _pickItemImage(S3ImageNotifier s3ImageNotifier) async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      File imageFile = File(image.path);
-
-      await _setImage(imageFile, s3ImageNotifier);
+      await itemNotifier.addItem(
+        itemInfo.itemName!,
+        itemImageForServer,
+        itemInfo.itemDescription!,
+        itemInfo.itemLocation!,
+        itemInfo.itemCategory!,
+        itemInfo.itemRentalMaxDay!,
+      );
+    } catch (e) {
+      rethrow;
     }
   }
 
   Future<void> _pickItemBasicImage(S3ImageNotifier s3ImageNotifier, String itemCategory) async {
-    if (itemCategory == 'DIGITAL') {
-      final byteData = await rootBundle.load('assets/images/item/item_digital_basic_image.jpg');
-      final tempFile = File('${(await getTemporaryDirectory()).path}/item_digital_basic_image.jpg');
-      await tempFile.writeAsBytes(byteData.buffer.asUint8List());
+    final basicImage = {
+      'DIGITAL': 'assets/images/item/item_digital_basic_image.jpg',
+      'SPORT': 'assets/images/item/item_sport_basic_image.jpg',
+      'BOOK': 'assets/images/item/item_book_basic_image.jpg',
+      'CLOTHES': 'assets/images/item/item_clothes_basic_image.jpg',
+      'STATIONERY': 'assets/images/item/item_stationery_basic_image.jpg',
+      'ETC': 'assets/images/item/item_etc_basic_image.jpg',
+    };
 
-      await _setImage(tempFile, s3ImageNotifier);
-    } else if (itemCategory == 'SPORT') {
-      final byteData = await rootBundle.load('assets/images/item/item_sport_basic_image.jpg');
-      final tempFile = File('${(await getTemporaryDirectory()).path}/item_sport_basic_image.jpg');
-      await tempFile.writeAsBytes(byteData.buffer.asUint8List());
+    final imagePath = basicImage[itemCategory];
 
-      await _setImage(tempFile, s3ImageNotifier);
-    } else if (itemCategory == 'BOOK') {
-      final byteData = await rootBundle.load('assets/images/item/item_book_basic_image.jpg');
-      final tempFile = File('${(await getTemporaryDirectory()).path}/item_book_basic_image.jpg');
-      await tempFile.writeAsBytes(byteData.buffer.asUint8List());
-
-      await _setImage(tempFile, s3ImageNotifier);
-    } else if (itemCategory == 'CLOTHES') {
-      final byteData = await rootBundle.load('assets/images/item/item_clothes_basic_image.jpg');
-      final tempFile = File('${(await getTemporaryDirectory()).path}/item_clothes_basic_image.jpg');
-      await tempFile.writeAsBytes(byteData.buffer.asUint8List());
-
-      await _setImage(tempFile, s3ImageNotifier);
-    } else if (itemCategory == 'STATIONERY') {
-      final byteData = await rootBundle.load('assets/images/item/item_stationery_basic_image.jpg');
-      final tempFile = File('${(await getTemporaryDirectory()).path}/item_stationery_basic_image.jpg');
-      await tempFile.writeAsBytes(byteData.buffer.asUint8List());
-
-      await _setImage(tempFile, s3ImageNotifier);
-    } else if (itemCategory == 'ETC') {
-      final byteData = await rootBundle.load('assets/images/item/item_etc_basic_image.jpg');
-      final tempFile = File('${(await getTemporaryDirectory()).path}/item_etc_basic_image.jpg');
+    if (imagePath != null) {
+      final byteData = await rootBundle.load(imagePath);
+      final tempFile = File('${(await getTemporaryDirectory()).path}/${imagePath.split('/').last}');
       await tempFile.writeAsBytes(byteData.buffer.asUint8List());
 
       await _setImage(tempFile, s3ImageNotifier);
@@ -339,7 +263,6 @@ class ClubItemAddPage extends ConsumerWidget {
   }
 
   Future<void> _setImage(File imageFile, S3ImageNotifier s3ImageNotifier) async {
-    List<File> pickedImage = [imageFile];
-    await s3ImageNotifier.setImage(pickedImage);
+    await s3ImageNotifier.setImage([imageFile]);
   }
 }

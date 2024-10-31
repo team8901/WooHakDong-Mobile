@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/text_style.dart';
 
@@ -24,6 +25,8 @@ final ThemeData darkTheme = ThemeData(
   applyElevationOverlayColor: false,
   splashColor: Colors.transparent,
   highlightColor: Colors.transparent,
+
+  extensions: const [SkeletonizerConfigData.dark()],
 
   /// 컬러 스키마
   colorScheme: const ColorScheme.dark(
@@ -189,5 +192,15 @@ final ThemeData darkTheme = ThemeData(
     titleTextStyle: CustomTextStyle.bodyMedium,
     subtitleTextStyle: CustomTextStyle.labelLarge,
     selectedTileColor: darkGray,
+  ),
+
+  /// 텍스트 버튼 테마
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      textStyle: WidgetStateProperty.all(CustomTextStyle.bodyMedium),
+      foregroundColor: WidgetStateProperty.all(primary),
+      backgroundColor: WidgetStateProperty.all(Colors.transparent),
+      overlayColor: WidgetStateProperty.all(darkGray),
+    ),
   ),
 );

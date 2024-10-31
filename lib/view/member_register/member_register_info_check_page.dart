@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:material_symbols_icons/symbols.dart';
+import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/custom_widget/custom_info_box.dart';
 import 'package:woohakdong/view/themes/custom_widget/custom_info_content.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
@@ -37,13 +39,41 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomInfoContent(infoContent: memberInfo.memberName),
+                      CustomInfoContent(
+                        infoContent: memberInfo.memberName,
+                        icon: Icon(
+                          Symbols.account_box_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                       const Gap(defaultGapM),
-                      CustomInfoContent(infoContent: _getGenderDisplay(memberInfo.memberGender!)),
+                      CustomInfoContent(
+                        infoContent: GeneralFunctions.formatMemberGender(memberInfo.memberGender!),
+                        icon: Icon(
+                          Symbols.wc_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                       const Gap(defaultGapM),
-                      CustomInfoContent(infoContent: _formatPhoneNumber(memberInfo.memberPhoneNumber!)),
+                      CustomInfoContent(
+                        infoContent: GeneralFunctions.formatMemberPhoneNumber(memberInfo.memberPhoneNumber!),
+                        icon: Icon(
+                          Symbols.call_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                       const Gap(defaultGapM),
-                      CustomInfoContent(infoContent: memberInfo.memberEmail),
+                      CustomInfoContent(
+                        infoContent: memberInfo.memberEmail,
+                        icon: Icon(
+                          Symbols.alternate_email_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -53,11 +83,32 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomInfoContent(infoContent: memberInfo.memberSchool),
+                      CustomInfoContent(
+                        infoContent: memberInfo.memberSchool,
+                        icon: Icon(
+                          Symbols.school_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                       const Gap(defaultGapM),
-                      CustomInfoContent(infoContent: memberInfo.memberMajor!),
+                      CustomInfoContent(
+                        infoContent: memberInfo.memberMajor!,
+                        icon: Icon(
+                          Symbols.book_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                       const Gap(defaultGapM),
-                      CustomInfoContent(infoContent: memberInfo.memberStudentNumber!),
+                      CustomInfoContent(
+                        infoContent: memberInfo.memberStudentNumber!,
+                        icon: Icon(
+                          Symbols.id_card_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -69,10 +120,14 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
           onTap: () async {
-            await memberNotifier.registerMember();
+            try {
+              await memberNotifier.registerMember();
 
-            if (context.mounted) {
-              _pushCompletePage(context);
+              if (context.mounted) {
+                _pushCompletePage(context);
+              }
+            } catch (e) {
+              await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
             }
           },
           buttonText: '맞아요',
@@ -81,23 +136,6 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  // 휴대폰 번호에 (-) 추가
-  String _formatPhoneNumber(String memberPhoneNumber) {
-    final formattedPhoneNumber = memberPhoneNumber.replaceFirstMapped(
-      RegExp(r'^(\d{3})(\d{4})(\d{4})$'),
-      (Match m) => '${m[1]}-${m[2]}-${m[3]}',
-    );
-    return formattedPhoneNumber;
-  }
-
-  String _getGenderDisplay(String? gender) {
-    if (gender == 'MAN') {
-      return '남성';
-    } else {
-      return '여성';
-    }
   }
 
   void _pushCompletePage(BuildContext context) {

@@ -14,7 +14,7 @@ class ClubRegisterCaution extends StatelessWidget {
       children: [
         Text(
           '1. 동아리 회원 관리',
-          style: context.textTheme.labelLarge,
+          style: context.textTheme.bodySmall,
         ),
         const Gap(defaultGapM),
         RichText(
@@ -22,7 +22,10 @@ class ClubRegisterCaution extends StatelessWidget {
             style: context.textTheme.bodyLarge,
             children: [
               const TextSpan(
-                text: '저희 서비스에 동아리를 등록하면 첫 6개월은 무료로 사용할 수 있어요. 이후부터 우학동 사용료를 지불해야 해요. ',
+                text: '동아리를 등록하면 동아리 전용 페이지를 제공해요. 전용 페이지에서 신규 회원의 동아리 등록 과정을 신경쓰지 않아도 쉽게 등록시킬 수 있어요.\n\n',
+              ),
+              const TextSpan(
+                text: '동아리를 등록하면 첫 6개월은 무료로 사용할 수 있어요. 이후부터 우학동 사용료를 지불해야 해요. ',
               ),
               TextSpan(
                 text: '사용료는 기본금 3만 원과 동아리 회원당 500원',
@@ -37,7 +40,7 @@ class ClubRegisterCaution extends StatelessWidget {
         const Gap(defaultGapXL),
         Text(
           '2. 동아리 물품 관리',
-          style: context.textTheme.labelLarge,
+          style: context.textTheme.bodySmall,
         ),
         const Gap(defaultGapM),
         Text(
@@ -47,7 +50,7 @@ class ClubRegisterCaution extends StatelessWidget {
         const Gap(defaultGapXL),
         Text(
           '3. 동아리 회비 관리',
-          style: context.textTheme.labelLarge,
+          style: context.textTheme.bodySmall,
         ),
         const Gap(defaultGapM),
         Text(
@@ -57,7 +60,7 @@ class ClubRegisterCaution extends StatelessWidget {
         const Gap(defaultGapXL),
         Text(
           '4. 동아리 일정 관리',
-          style: context.textTheme.labelLarge,
+          style: context.textTheme.bodySmall,
         ),
         const Gap(defaultGapM),
         Text(

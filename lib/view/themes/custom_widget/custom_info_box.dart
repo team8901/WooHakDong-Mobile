@@ -31,7 +31,7 @@ class CustomInfoBox extends StatelessWidget {
             borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           ),
           padding: const EdgeInsets.symmetric(
-            horizontal: defaultPaddingM,
+            horizontal: defaultPaddingS,
             vertical: defaultPaddingXS,
           ),
           child: child,

@@ -31,7 +31,11 @@ class MemberNotifier extends StateNotifier<Member?> {
   }
 
   Future<void> registerMember() async {
-    await MemberRepository().registerMemberInfo(state!);
+    try {
+      await MemberRepository().registerMemberInfo(state!);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   bool hasNullFields(Member memberInfo) {
