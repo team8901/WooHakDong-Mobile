@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
-class ClubItemPhotoView extends StatelessWidget {
-  final CachedNetworkImageProvider itemPhoto;
+class CustomPhotoView extends StatelessWidget {
+  final CachedNetworkImageProvider image;
 
-  const ClubItemPhotoView({
+  const CustomPhotoView({
     super.key,
-    required this.itemPhoto,
+    required this.image,
   });
 
   @override
@@ -19,7 +19,7 @@ class ClubItemPhotoView extends StatelessWidget {
         iconTheme: const IconThemeData(color: Color(0xFFFCFCFC)),
       ),
       body: PhotoView(
-        imageProvider: itemPhoto,
+        imageProvider: image,
         backgroundDecoration: const BoxDecoration(color: Color(0xFF111111)),
         maxScale: PhotoViewComputedScale.covered * 2,
         minScale: PhotoViewComputedScale.contained * 0.5,

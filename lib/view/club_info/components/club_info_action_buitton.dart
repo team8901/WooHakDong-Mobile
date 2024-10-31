@@ -36,22 +36,9 @@ class ClubInfoActionButton extends ConsumerWidget {
                 vertical: defaultPaddingXS,
               ),
               child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Symbols.account_balance_rounded,
-                      size: 16,
-                      color: context.colorScheme.onSurface,
-                    ),
-                    const Gap(defaultGapS),
-                    Flexible(
-                      child: Text(
-                        '동아리 정보',
-                        style: context.textTheme.bodySmall,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  '동아리 정보',
+                  style: context.textTheme.bodySmall,
                 ),
               ),
             ),
@@ -72,22 +59,11 @@ class ClubInfoActionButton extends ConsumerWidget {
                 horizontal: defaultPaddingS,
                 vertical: defaultPaddingXS,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Symbols.qr_code_2_rounded,
-                    size: 16,
-                    color: context.colorScheme.onSurface,
-                  ),
-                  const Gap(defaultGapS),
-                  Flexible(
-                    child: Text(
-                      '모집 정보',
-                      style: context.textTheme.bodySmall,
-                    ),
-                  ),
-                ],
+              child: Center(
+                child: Text(
+                  '모집 정보',
+                  style: context.textTheme.bodySmall,
+                ),
               ),
             ),
           ),

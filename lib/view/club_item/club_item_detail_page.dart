@@ -12,7 +12,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 import '../themes/custom_widget/interface/custom_info_content.dart';
 import '../themes/spacing.dart';
 import 'club_item_history_page.dart';
-import 'components/club_item_photo_view.dart';
+import '../themes/custom_widget/interface/cujstom_photo_view.dart';
 
 class ClubItemDetailPage extends ConsumerWidget {
   final Item itemInfo;
@@ -159,7 +159,7 @@ class ClubItemDetailPage extends ConsumerWidget {
   void _pushItemPhotoView(BuildContext context, CachedNetworkImageProvider itemPhoto) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => ClubItemPhotoView(itemPhoto: itemPhoto),
+        pageBuilder: (context, animation, secondaryAnimation) => CustomPhotoView(image: itemPhoto),
         transitionDuration: const Duration(milliseconds: 150),
         reverseTransitionDuration: const Duration(milliseconds: 150),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
