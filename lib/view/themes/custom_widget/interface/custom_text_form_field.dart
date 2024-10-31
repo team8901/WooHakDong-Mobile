@@ -7,6 +7,8 @@ class CustomTextFormField extends StatelessWidget {
   final String labelText;
   final String? hintText;
   final bool readOnly;
+  final bool enabled;
+  final bool ignore;
   final String? initialValue;
   final TextInputType keyboardType;
   final List<TextInputFormatter>? inputFormatters;
@@ -21,6 +23,8 @@ class CustomTextFormField extends StatelessWidget {
     required this.labelText,
     this.hintText,
     this.readOnly = false,
+    this.enabled = true,
+    this.ignore = false,
     this.initialValue,
     this.keyboardType = TextInputType.text,
     this.inputFormatters,
@@ -29,6 +33,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onSaved,
     this.onChanged,
     this.controller,
+
   });
 
   @override
@@ -39,6 +44,8 @@ class CustomTextFormField extends StatelessWidget {
       textInputAction: textInputAction,
       initialValue: initialValue,
       readOnly: readOnly,
+      enabled: enabled,
+      obscureText: ignore,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       minLines: 1,

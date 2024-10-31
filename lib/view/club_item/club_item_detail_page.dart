@@ -36,7 +36,7 @@ class ClubItemDetailPage extends ConsumerWidget {
           /// TODO 물품 편집 추가하기
           IconButton(
             onPressed: () {},
-            icon: const Icon(Symbols.edit_rounded),
+            icon: const Icon(Symbols.border_color_rounded),
           ),
 
           /// TODO 물품 삭제 추가하기
@@ -48,7 +48,6 @@ class ClubItemDetailPage extends ConsumerWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

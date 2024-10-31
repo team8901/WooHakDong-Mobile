@@ -32,7 +32,6 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.all(defaultPaddingM),
           child: SizedBox(
             width: double.infinity,

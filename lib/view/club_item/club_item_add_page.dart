@@ -48,7 +48,6 @@ class ClubItemAddPage extends ConsumerWidget {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
             padding: const EdgeInsets.all(defaultPaddingM),
             child: Form(
               key: formKey,

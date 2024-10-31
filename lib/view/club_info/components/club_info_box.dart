@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/model/club/club.dart';
-import 'package:woohakdong/view/club_info/club_info_detail_page.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
@@ -56,35 +55,7 @@ class ClubInfoBox extends ConsumerWidget {
             ],
           ),
         ),
-        const Gap(defaultGapM),
-        InkWell(
-          onTap: () => _pushClubInfoDetailPage(context, currentClubInfo),
-          borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
-          child: Ink(
-            decoration: BoxDecoration(
-              color: context.colorScheme.surfaceContainer,
-              borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: defaultPaddingS - 8,
-              vertical: defaultPaddingXS - 8,
-            ),
-            child: Text(
-              '상세 정보',
-              style: context.textTheme.labelLarge,
-            ),
-          ),
-        ),
       ],
-    );
-  }
-
-  void _pushClubInfoDetailPage(BuildContext context, Club currentClubInfo) {
-    Navigator.push(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => ClubInfoDetailPage(currentClubInfo: currentClubInfo),
-      ),
     );
   }
 }

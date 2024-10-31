@@ -28,6 +28,23 @@ class ClubRepository {
     }
   }
 
+  Future<Club> getClubInfo(int clubId) async {
+    try {
+      logger.i('동아리 정보 조회 시도');
+
+      final response = await _dio.get('/clubs/$clubId');
+
+      if (response.statusCode == 200) {
+        return Club.fromJson(response.data);
+      }
+
+      throw Exception();
+    } catch (e) {
+      logger.e('동아리 정보 조회 실패', error: e);
+      throw Exception();
+    }
+  }
+
   Future<bool> clubNameValidation(String clubName, String clubEnglishName) async {
     try {
       logger.i('동아리 이름 유효성 검증 시도');
@@ -68,6 +85,26 @@ class ClubRepository {
     } catch (e) {
       logger.e('동아리 등록 실패', error: e);
       return null;
+    }
+  }
+
+  Future<Club> editClubInfo(Club club, int clubId) async {
+    try {
+      logger.i('동아리 정보 수정 시도');
+
+      final response = await _dio.put(
+        '/clubs/$clubId',
+        data: club.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        return Club.fromJson(response.data);
+      }
+
+      throw Exception();
+    } catch (e) {
+      logger.e('동아리 정보 수정 실패', error: e);
+      throw Exception();
     }
   }
 }

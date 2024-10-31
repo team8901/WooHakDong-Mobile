@@ -66,7 +66,6 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.all(defaultPaddingM),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

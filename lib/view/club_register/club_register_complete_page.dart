@@ -49,7 +49,6 @@ class ClubRegisterCompletePage extends ConsumerWidget {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
             padding: const EdgeInsets.all(defaultPaddingM),
             child: FutureBuilder(
               future: ref.watch(groupProvider.notifier).getClubRegisterPageInfo(),

@@ -70,10 +70,10 @@ class Club {
       'clubEnglishName': clubEnglishName,
       'clubImage': clubImage,
       'clubDescription': clubDescription,
-      'clubRoom': clubRoom,
-      'clubGeneration': clubGeneration,
+      'clubRoom': clubRoom ?? '',
+      'clubGeneration': clubGeneration ?? '',
       'clubGroupChatLink': clubGroupChatLink,
-      'clubGroupChatPassword': clubGroupChatPassword,
+      'clubGroupChatPassword': clubGroupChatPassword ?? '',
       'clubDues': clubDues,
     };
   }

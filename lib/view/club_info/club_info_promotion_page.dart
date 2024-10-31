@@ -45,7 +45,6 @@ class ClubInfoPromotionPage extends ConsumerWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.all(defaultPaddingM),
           child: FutureBuilder(
             future: GroupRepository().getClubRegisterPageInfo(currentClubInfo.clubId!),
