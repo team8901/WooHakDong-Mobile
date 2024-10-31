@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../spacing.dart';
+import '../../spacing.dart';
 
 class CustomDivider extends StatelessWidget {
   const CustomDivider({

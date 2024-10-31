@@ -15,9 +15,9 @@ class GroupRepository {
 
       if (response.statusCode == 200) {
         return Group.fromJson(response.data);
-      } else {
-        throw Exception();
       }
+
+      throw Exception();
     } catch (e) {
       logger.e('동아리 가입 페이지 정보 조회 실패', error: e);
       throw Exception();

@@ -22,9 +22,9 @@ class ItemHistory {
       itemHistoryId: json['itemHistoryId'],
       memberId: json['memberId'],
       memberName: json['memberName'],
-      itemRentalDate: json['itemRentalDate'],
-      itemDueDate: json['itemDueDate'],
-      itemReturnDate: json['itemReturnDate'],
+      itemRentalDate: json['itemRentalDate'] != null ? DateTime.parse(json['itemRentalDate']) : null,
+      itemDueDate: json['itemDueDate'] != null ? DateTime.parse(json['itemDueDate']) : null,
+      itemReturnDate: json['itemReturnDate'] != null ? DateTime.parse(json['itemReturnDate']) : null,
       itemReturnImage: json['itemReturnImage'],
     );
   }

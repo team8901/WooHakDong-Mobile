@@ -4,14 +4,14 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_dues/club_dues_page.dart';
-import 'package:woohakdong/view/club_information/club_information_page.dart';
 import 'package:woohakdong/view/club_item/club_item_list_page.dart';
 import 'package:woohakdong/view/club_member/club_member_list_page.dart';
 import 'package:woohakdong/view/club_schedule/club_calendar_page.dart';
-import 'package:woohakdong/view/themes/custom_widget/custom_pop_scope.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_pop_scope.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../view_model/club/current_club_provider.dart';
+import 'club_info/club_info_page.dart';
 
 class NavigatorPage extends ConsumerStatefulWidget {
   const NavigatorPage({super.key});
@@ -28,7 +28,7 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
     const ClubItemListPage(),
     const ClubDuesPage(),
     const ClubSchedulePage(),
-    const ClubInformationPage(),
+    const ClubInfoPage(),
   ];
 
   @override

@@ -5,9 +5,7 @@ import '../../repository/group/group_repository.dart';
 import '../club/club_provider.dart';
 
 final groupProvider = StateNotifierProvider<GroupNotifier, Group?>((ref) {
-  final notifier = GroupNotifier(ref);
-  notifier.getClubRegisterPageInfo();
-  return notifier;
+  return GroupNotifier(ref);
 });
 
 class GroupNotifier extends StateNotifier<Group?> {
@@ -15,9 +13,9 @@ class GroupNotifier extends StateNotifier<Group?> {
 
   GroupNotifier(this.ref) : super(null);
 
-  Future<void> getClubRegisterPageInfo() async {
+  Future<Group> getClubRegisterPageInfo() async {
     final groupInfo = await GroupRepository().getClubRegisterPageInfo(ref.watch(clubProvider).clubId!);
 
-    state = groupInfo;
+    return groupInfo;
   }
 }

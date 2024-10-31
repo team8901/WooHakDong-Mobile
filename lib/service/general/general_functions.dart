@@ -35,7 +35,7 @@ class GeneralFunctions {
 
   /// 동아리 정보 관련 함수
   static String formatClubGeneration(String clubGeneration) {
-    String formattedGeneration = '$clubGeneration 기';
+    String formattedGeneration = '$clubGeneration기';
 
     return formattedGeneration;
   }
@@ -46,7 +46,8 @@ class GeneralFunctions {
       const CurrencyFormat(
         symbol: '원',
         symbolSide: SymbolSide.right,
-        decimalSeparator: ',',
+        symbolSeparator: '',
+        thousandSeparator: ',',
       ),
     );
 

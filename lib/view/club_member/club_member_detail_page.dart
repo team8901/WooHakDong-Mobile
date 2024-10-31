@@ -6,10 +6,10 @@ import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../themes/custom_widget/custom_info_box.dart';
-import '../themes/custom_widget/custom_info_content.dart';
+import '../themes/custom_widget/interface/custom_info_box.dart';
+import '../themes/custom_widget/interface/custom_info_content.dart';
 import 'components/club_member_role_box.dart';
-import 'components/club_member_role_dialog.dart';
+import 'components/club_member_role_edit_dialog.dart';
 
 class ClubMemberDetailPage extends StatefulWidget {
   final ClubMember clubMember;
@@ -41,7 +41,7 @@ class _ClubMemberDetailPageState extends State<ClubMemberDetailPage> {
             IconButton(
               onPressed: () => showDialog(
                 context: context,
-                builder: (context) => ClubMemberRoleDialog(
+                builder: (context) => ClubMemberRoleEditDialog(
                   selectedRole: _selectedRole,
                   onRoleSelected: (value) => setState(() {
                     _selectedRole = value;

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/member_register/member_register_page.dart';
 import 'package:woohakdong/view/navigator_page.dart';
-import 'package:woohakdong/view/themes/custom_widget/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view_model/club/club_provider.dart';
 import 'package:woohakdong/view_model/club/components/club_state.dart';
 import 'package:woohakdong/view_model/club/components/club_state_provider.dart';
@@ -43,7 +42,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
       future: _initialization,
       builder: (context, infoSnapshot) {
         if (infoSnapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(body: SafeArea(child: CustomCircularProgressIndicator()));
+          return const Scaffold();
         } else {
           if (memberState == MemberState.memberNotRegistered) {
             return const MemberRegisterPage();
@@ -54,7 +53,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
               return const NavigatorPage();
             }
           } else {
-            return const Scaffold(body: SafeArea(child: CustomCircularProgressIndicator()));
+            return const Scaffold();
           }
         }
       },

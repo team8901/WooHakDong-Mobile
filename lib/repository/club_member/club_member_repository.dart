@@ -11,10 +11,10 @@ class ClubMemberRepository {
       logger.i('동아리 회원 목록 조회 시도');
 
       final response = await _dio.get(
+        /// TODO /clubs로 바꾸기
         '/club/$clubId/members',
-        queryParameters: clubMemberAssignedTerm != null
-            ? {'clubMemberAssignedTerm': clubMemberAssignedTerm.toIso8601String()}
-            : {},
+        queryParameters:
+            clubMemberAssignedTerm != null ? {'clubMemberAssignedTerm': clubMemberAssignedTerm.toIso8601String()} : {},
       );
 
       if (response.statusCode == 200) {
@@ -22,12 +22,10 @@ class ClubMemberRepository {
 
         List<dynamic> clubMemberListData = jsonData['result'] as List<dynamic>;
 
-        return clubMemberListData
-            .map((json) => ClubMember.fromJson(json as Map<String, dynamic>))
-            .toList();
-      } else {
-        throw Exception('동아리 회원 목록 조회 실패: 상태 코드 ${response.statusCode}');
+        return clubMemberListData.map((json) => ClubMember.fromJson(json as Map<String, dynamic>)).toList();
       }
+
+      throw Exception();
     } catch (e) {
       logger.e('동아리 회원 목록 조회 실패', error: e);
       throw Exception('동아리 회원 목록 조회 실패');
@@ -46,19 +44,16 @@ class ClubMemberRepository {
         if (jsonData != null && jsonData['result'] is List) {
           List<dynamic> clubTermListData = jsonData['result'];
 
-          return clubTermListData
-              .map((json) => DateTime.parse(json['clubHistoryUsageDate'] as String))
-              .toList();
+          return clubTermListData.map((json) => DateTime.parse(json['clubHistoryUsageDate'] as String)).toList();
         } else {
           throw Exception('데이터 형식이 잘못되었습니다.');
         }
-      } else {
-        throw Exception('동아리 가입 기수 리스트 조회 실패: 상태 코드 ${response.statusCode}');
       }
+
+      throw Exception();
     } catch (e) {
       logger.e('동아리 가입 기수 리스트 조회 실패', error: e);
       throw Exception('동아리 가입 기수 리스트 조회 실패');
     }
   }
-
 }

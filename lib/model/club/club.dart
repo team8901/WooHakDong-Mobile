@@ -58,6 +58,8 @@ class Club {
       clubDescription: json['clubDescription'],
       clubRoom: json['clubRoom'],
       clubGeneration: json['clubGeneration'],
+      clubGroupChatLink: json['clubGroupChatLink'],
+      clubGroupChatPassword: json['clubGroupChatPassword'],
       clubDues: json['clubDues'],
     );
   }

@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/member_register/components/member_register_complete_introduce.dart';
 
-import '../themes/custom_widget/custom_bottom_button.dart';
-import '../themes/custom_widget/custom_pop_scope.dart';
+import '../themes/custom_widget/button/custom_bottom_button.dart';
+import '../themes/custom_widget/interaction/custom_pop_scope.dart';
 import '../themes/spacing.dart';
 
 class MemberRegisterCompletePage extends ConsumerWidget {

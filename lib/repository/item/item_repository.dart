@@ -19,9 +19,9 @@ class ItemRepository {
         List<dynamic> itemListData = jsonData['result'] as List<dynamic>;
 
         return itemListData.map((json) => Item.fromJson(json as Map<String, dynamic>)).toList();
-      } else {
-        throw Exception();
       }
+
+      throw Exception();
     } catch (e) {
       logger.e('물품 목록 조회 실패', error: e);
       throw Exception();
@@ -42,9 +42,9 @@ class ItemRepository {
           'itemId': response.data['itemId'],
           'itemName': response.data['itemName'],
         };
-      } else {
-        throw Exception();
       }
+
+      throw Exception();
     } catch (e) {
       logger.e('물품 추가 실패', error: e);
       throw Exception();

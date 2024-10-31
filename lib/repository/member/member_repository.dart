@@ -15,9 +15,9 @@ class MemberRepository {
 
       if (response.statusCode == 200) {
         return Member.fromJson(response.data);
-      } else {
-        throw Exception();
       }
+
+      throw Exception();
     } catch (e) {
       logger.e('회원 정보 조회 실패', error: e);
       throw Exception();
@@ -34,20 +34,6 @@ class MemberRepository {
       );
     } catch (e) {
       logger.e('회원 정보 등록 실패', error: e);
-      throw Exception();
-    }
-  }
-
-  Future<void> updateMemberInfo(Member member) async {
-    try {
-      logger.i('회원 정보 수정 시도');
-
-      await _dio.put(
-        '/member/info',
-        data: member.toJson(),
-      );
-    } catch (e) {
-      logger.e('회원 정보 수정 실패', error: e);
       throw Exception();
     }
   }

@@ -19,9 +19,9 @@ class ClubRepository {
         List<dynamic> clubListData = jsonData['result'] as List<dynamic>;
 
         return clubListData.map((json) => Club.fromJson(json as Map<String, dynamic>)).toList();
-      } else {
-        throw Exception();
       }
+
+      throw Exception();
     } catch (e) {
       logger.e('동아리 목록 조회 실패', error: e);
       throw Exception();
@@ -42,10 +42,9 @@ class ClubRepository {
 
       if (response.statusCode == 200) {
         return true;
-      } else {
-        logger.e('서버 에러');
-        return false;
       }
+
+      return false;
     } catch (e) {
       logger.e('동아리 이름 유효성 검증 실패', error: e);
       return false;
@@ -63,9 +62,9 @@ class ClubRepository {
 
       if (response.statusCode == 200) {
         return response.data['clubId'];
-      } else {
-        return null;
       }
+
+      return null;
     } catch (e) {
       logger.e('동아리 등록 실패', error: e);
       return null;

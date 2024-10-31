@@ -7,8 +7,8 @@ import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/club/club_provider.dart';
-import '../themes/custom_widget/custom_bottom_button.dart';
-import '../themes/custom_widget/custom_text_form_field.dart';
+import '../themes/custom_widget/button/custom_bottom_button.dart';
+import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'club_register_info_check_page.dart';
 

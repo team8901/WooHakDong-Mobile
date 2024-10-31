@@ -1,70 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../spacing.dart';
+import '../../spacing.dart';
 
-class CustomCounterTextFormField extends StatelessWidget {
+class CustomDropdownFormField extends StatelessWidget {
   final String labelText;
-  final String? hintText;
-  final bool readOnly;
-  final String? initialValue;
-  final TextInputType keyboardType;
-  final List<TextInputFormatter>? inputFormatters;
-  final TextInputAction textInputAction;
-  final FormFieldValidator<String>? validator;
+  final List<Map<String, String>> items;
+  final ValueChanged<String?>? onChanged;
   final FormFieldSetter<String>? onSaved;
-  final ValueChanged<String>? onChanged;
-  final TextEditingController? controller;
-  final int minLines;
-  final int maxLength;
+  final FormFieldValidator<String>? validator;
+  final void Function()? onTap;
+  final double menuMaxHeight;
 
-  const CustomCounterTextFormField({
+  const CustomDropdownFormField({
     super.key,
     required this.labelText,
-    this.hintText,
-    this.readOnly = false,
-    this.initialValue,
-    this.keyboardType = TextInputType.text,
-    this.inputFormatters,
-    this.textInputAction = TextInputAction.next,
-    this.validator,
-    this.onSaved,
+    required this.items,
     this.onChanged,
-    this.controller,
-    required this.minLines,
-    required this.maxLength,
+    this.onSaved,
+    this.validator,
+    this.onTap,
+    this.menuMaxHeight = 208,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
+    return DropdownButtonFormField<String>(
+      icon: Icon(
+        Symbols.keyboard_arrow_down_rounded,
+        color: context.colorScheme.outline,
+      ),
       style: context.textTheme.titleSmall,
-      textInputAction: textInputAction,
-      initialValue: initialValue,
-      readOnly: readOnly,
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatters,
-      minLines: minLines,
-      maxLines: null,
-      maxLength: maxLength,
-      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+      elevation: 0,
+      menuMaxHeight: menuMaxHeight.h,
+      dropdownColor: context.colorScheme.surfaceContainer,
       decoration: InputDecoration(
-        alignLabelWithHint: true,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: defaultPaddingS,
           vertical: defaultPaddingXS,
         ),
         labelText: labelText,
         labelStyle: context.textTheme.titleSmall?.copyWith(
-          color: context.colorScheme.outline,
-        ),
-        hintText: hintText,
-        hintStyle: context.textTheme.titleSmall?.copyWith(
-          color: context.colorScheme.outline,
-        ),
-        counterStyle: context.textTheme.labelLarge?.copyWith(
           color: context.colorScheme.outline,
         ),
         errorStyle: context.textTheme.labelLarge?.copyWith(
@@ -87,10 +65,17 @@ class CustomCounterTextFormField extends StatelessWidget {
           borderSide: BorderSide(color: context.colorScheme.primary),
         ),
       ),
-      validator: validator,
-      onSaved: onSaved,
+      items: items.map((item) {
+        return DropdownMenuItem<String>(
+          value: item['value'],
+          child: Text(item['displayText']!, style: context.textTheme.titleSmall),
+        );
+      }).toList(),
       onChanged: onChanged,
+      onSaved: onSaved,
+      validator: validator,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      onTap: onTap,
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/view_model/club/club_id_provider.dart';
-
 import '../../model/club_member/club_member.dart';
 import '../../repository/club_member/club_member_repository.dart';
 

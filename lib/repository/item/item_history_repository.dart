@@ -20,9 +20,9 @@ class ItemHistoryRepository {
         List<dynamic> itemHistoryListData = jsonData['result'] as List<dynamic>;
 
         return itemHistoryListData.map((json) => ItemHistory.fromJson(json as Map<String, dynamic>)).toList();
-      } else {
-        throw Exception();
       }
+
+      throw Exception();
     } catch (e) {
       logger.e('물품 대여 이력 목록 조회 실패', error: e);
       throw Exception();

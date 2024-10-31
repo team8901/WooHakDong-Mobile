@@ -6,10 +6,10 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/item/item.dart';
 import 'package:woohakdong/view/club_item/components/club_item_rental_state_box.dart';
-import 'package:woohakdong/view/themes/custom_widget/custom_info_box.dart';
+import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../themes/custom_widget/custom_info_content.dart';
+import '../themes/custom_widget/interface/custom_info_content.dart';
 import '../themes/spacing.dart';
 import 'club_item_history_page.dart';
 import 'components/club_item_photo_view.dart';

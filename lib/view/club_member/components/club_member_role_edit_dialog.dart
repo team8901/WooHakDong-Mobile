@@ -3,11 +3,11 @@ import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-class ClubMemberRoleDialog extends StatelessWidget {
+class ClubMemberRoleEditDialog extends StatelessWidget {
   final String? selectedRole;
   final ValueChanged<String?> onRoleSelected;
 
-  const ClubMemberRoleDialog({
+  const ClubMemberRoleEditDialog({
     super.key,
     required this.selectedRole,
     required this.onRoleSelected,
@@ -71,6 +71,7 @@ class ClubMemberRoleDialog extends StatelessWidget {
                 ),
                 const Gap(defaultPaddingS * 2),
                 InkWell(
+                  /// TODO 역할 변경 API 연결하기
                   onTap: () {
                     Navigator.pop(context);
                     onRoleSelected(selectedRole);

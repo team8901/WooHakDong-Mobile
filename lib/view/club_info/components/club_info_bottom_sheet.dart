@@ -14,8 +14,8 @@ import '../../club_register/club_register_caution_page_.dart';
 import '../../route_page.dart';
 import '../../themes/spacing.dart';
 
-class ClubInformationBottomSheet extends ConsumerWidget {
-  const ClubInformationBottomSheet({
+class ClubInfoBottomSheet extends ConsumerWidget {
+  const ClubInfoBottomSheet({
     super.key,
   });
 

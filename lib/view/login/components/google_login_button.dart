@@ -6,7 +6,7 @@ import 'package:woohakdong/view_model/auth/auth_provider.dart';
 import 'package:woohakdong/view_model/auth/components/auth_state_provider.dart';
 
 import '../../../view_model/auth/components/auth_state.dart';
-import '../../themes/custom_widget/custom_circular_progress_indicator.dart';
+import '../../themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import '../../themes/spacing.dart';
 
 class GoogleLoginButton extends ConsumerWidget {
