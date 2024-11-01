@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/member_register/member_register_page.dart';
 import 'package:woohakdong/view/navigator_page.dart';
+import 'package:woohakdong/view_model/club/club_id_provider.dart';
 import 'package:woohakdong/view_model/club/club_provider.dart';
 import 'package:woohakdong/view_model/club/components/club_state.dart';
 import 'package:woohakdong/view_model/club/components/club_state_provider.dart';
@@ -10,6 +11,8 @@ import 'package:woohakdong/view_model/member/components/member_state.dart';
 import 'package:woohakdong/view_model/member/components/member_state_provider.dart';
 import 'package:woohakdong/view_model/member/member_provider.dart';
 import 'package:woohakdong/view_model/util/s3_image_provider.dart';
+
+import '../model/club/club.dart';
 
 class RoutePage extends ConsumerStatefulWidget {
   const RoutePage({super.key});
@@ -29,7 +32,13 @@ class _RoutePageState extends ConsumerState<RoutePage> {
 
   Future<void> _initializeApp() async {
     await ref.read(memberProvider.notifier).getMemberInfo();
-    await ref.read(clubProvider.notifier).getClubList();
+    List<Club> clubList = await ref.read(clubProvider.notifier).getClubList();
+    final currentClubId = ref.watch(clubIdProvider);
+
+    if (currentClubId == null) {
+      ref.read(clubIdProvider.notifier).saveClubId(clubList[0].clubId!);
+    }
+
     ref.invalidate(s3ImageProvider);
   }
 

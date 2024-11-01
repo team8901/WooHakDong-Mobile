@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../../service/general/general_functions.dart';
 import '../../../view_model/util/s3_image_provider.dart';
 
 class ClubRegisterImageDialog extends StatelessWidget {
@@ -42,7 +42,7 @@ class ClubRegisterImageDialog extends StatelessWidget {
             InkWell(
               highlightColor: context.colorScheme.surfaceContainer,
               onTap: () {
-                _shootItemImage(context);
+                GeneralFunctions.requestCameraToImage(context, s3ImageNotifier);
                 Navigator.pop(context);
               },
               child: Ink(
@@ -65,7 +65,7 @@ class ClubRegisterImageDialog extends StatelessWidget {
             InkWell(
               highlightColor: context.colorScheme.surfaceContainer,
               onTap: () {
-                _pickItemImage(context);
+                GeneralFunctions.requestGalleryToImage(context, s3ImageNotifier);
                 Navigator.pop(context);
               },
               child: Ink(
@@ -113,35 +113,13 @@ class ClubRegisterImageDialog extends StatelessWidget {
     );
   }
 
-  Future<void> _shootItemImage(BuildContext context) async {
-    final image = await ImagePicker().pickImage(source: ImageSource.camera);
-
-    if (image != null) {
-      final imageFile = File(image.path);
-      await _setImage(imageFile, s3ImageNotifier);
-    }
-  }
-
-  Future<void> _pickItemImage(BuildContext context) async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      final imageFile = File(image.path);
-      await _setImage(imageFile, s3ImageNotifier);
-    }
-  }
-
   Future<void> _setBasicImage(BuildContext context) async {
     final byteData = await rootBundle.load('assets/images/club/club_basic_image.jpg');
 
     final tempFile = File('${(await getTemporaryDirectory()).path}/club_basic_image.jpg');
     await tempFile.writeAsBytes(byteData.buffer.asUint8List());
 
-    _setImage(tempFile, s3ImageNotifier);
-  }
-
-  Future<void> _setImage(File imageFile, S3ImageNotifier s3ImageNotifier) async {
-    List<File> pickedImage = [imageFile];
+    List<File> pickedImage = [tempFile];
     await s3ImageNotifier.setImage(pickedImage);
   }
 }

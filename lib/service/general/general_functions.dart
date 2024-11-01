@@ -1,7 +1,13 @@
-import 'dart:ui';
+import 'dart:io';
 
 import 'package:currency_formatter/currency_formatter.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import '../../view/themes/custom_widget/interaction/custom_permission_denied_dialog.dart';
+import '../../view_model/util/s3_image_provider.dart';
 
 class GeneralFunctions {
   static Future<bool?> toastMessage(String msg) async {
@@ -101,6 +107,77 @@ class GeneralFunctions {
         return '기타';
       default:
         return '전체';
+    }
+  }
+
+  /// 이미지 관련 함수
+  static Future<void> requestCameraToImage(BuildContext context, S3ImageNotifier s3ImageNotifier) async {
+    final status = await Permission.camera.status;
+
+    if (status.isGranted || status.isLimited) {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (image != null) {
+        final imageFile = File(image.path);
+        List<File> pickedImage = [imageFile];
+        await s3ImageNotifier.setImage(pickedImage);
+      }
+    } else {
+      final requestStatus = await Permission.camera.request();
+
+      if (requestStatus.isGranted || requestStatus.isLimited) {
+        final image = await ImagePicker().pickImage(source: ImageSource.camera);
+        if (image != null) {
+          final imageFile = File(image.path);
+          List<File> pickedImage = [imageFile];
+          await s3ImageNotifier.setImage(pickedImage);
+        }
+      } else if (requestStatus.isPermanentlyDenied) {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => const CustomPermissionDeniedDialog(
+              message: '카메라 접근 권한이 필요해요. 설정에서 권한을 허용해 주세요.',
+            ),
+          );
+        }
+      } else if (requestStatus.isDenied || requestStatus.isRestricted) {
+        GeneralFunctions.toastMessage('카메라 접근 권한이 필요해요');
+      }
+    }
+  }
+
+  static Future<void> requestGalleryToImage(BuildContext context, S3ImageNotifier s3ImageNotifier) async {
+    final status = await Permission.photos.status;
+
+    if (status.isGranted || status.isLimited) {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        final imageFile = File(image.path);
+        List<File> pickedImage = [imageFile];
+        await s3ImageNotifier.setImage(pickedImage);
+      }
+    } else {
+      final requestStatus = await Permission.photos.request();
+
+      if (requestStatus.isGranted || requestStatus.isLimited) {
+        final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+        if (image != null) {
+          final imageFile = File(image.path);
+          List<File> pickedImage = [imageFile];
+          await s3ImageNotifier.setImage(pickedImage);
+        }
+      } else if (requestStatus.isPermanentlyDenied) {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => const CustomPermissionDeniedDialog(
+              message: '앨범 접근 권한이 필요해요. 설정에서 권한을 허용해 주세요.',
+            ),
+          );
+        }
+      } else if (requestStatus.isDenied || requestStatus.isRestricted) {
+        GeneralFunctions.toastMessage('앨범 접근 권한이 필요해요');
+      }
     }
   }
 }

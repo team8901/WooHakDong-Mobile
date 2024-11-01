@@ -9,7 +9,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:woohakdong/view/login/login_page.dart';
 import 'package:woohakdong/view/route_page.dart';
@@ -19,6 +18,7 @@ import 'package:woohakdong/view/themes/light_theme.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
 import 'package:woohakdong/view_model/auth/components/auth_state.dart';
 import 'package:woohakdong/view_model/auth/components/auth_state_provider.dart';
+import 'package:woohakdong/view_model/club/club_id_provider.dart';
 
 import 'firebase_options.dart';
 
@@ -26,10 +26,6 @@ Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
-  await Permission.camera.request();
-  await Permission.photos.request();
-  await Permission.storage.request();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
@@ -77,6 +73,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   Future<void> _initializeApp() async {
     await ref.read(authProvider.notifier).checkLoginStatus();
+    ref.watch(clubIdProvider);
   }
 
   @override
