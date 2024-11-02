@@ -274,6 +274,7 @@ class _ClubInfoEditPageState extends ConsumerState<ClubInfoEditPage> {
                     ref.invalidate(clubListProvider);
                     ref.invalidate(s3ImageProvider);
                     Navigator.pop(context, updatedClubInfo);
+                    await GeneralFunctions.toastMessage('동아리 정보가 수정되었어요');
                   }
                 } catch (e) {
                   ref.read(clubStateProvider.notifier).state = ClubState.clubRegistered;
