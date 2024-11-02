@@ -12,8 +12,7 @@ class ClubMemberRepository {
 
       final response = await _dio.get(
         '/clubs/$clubId/members',
-        queryParameters:
-            clubMemberAssignedTerm != null ? {'clubMemberAssignedTerm': clubMemberAssignedTerm.toIso8601String()} : {},
+        queryParameters: clubMemberAssignedTerm != null ? {'clubMemberAssignedTerm': clubMemberAssignedTerm.toLocal()} : {},
       );
 
       if (response.statusCode == 200) {
@@ -27,32 +26,40 @@ class ClubMemberRepository {
       throw Exception();
     } catch (e) {
       logger.e('동아리 회원 목록 조회 실패', error: e);
-      throw Exception('동아리 회원 목록 조회 실패');
+      throw Exception();
     }
   }
 
-  Future<List<DateTime>> getClubMemberTermList(int clubId) async {
+  Future<ClubMember> getClubMemberMyInfo(int clubId) async {
     try {
-      logger.i('동아리 가입 기수 리스트 조회 시도');
+      logger.i('동아리 회원 정보 조회 시도');
 
-      final response = await _dio.get<Map<String, dynamic>>('/clubs/$clubId/terms');
+      final response = await _dio.get('/clubs/$clubId/members/me');
 
       if (response.statusCode == 200) {
-        final jsonData = response.data;
+        final Map<String, dynamic> jsonData = response.data;
 
-        if (jsonData != null && jsonData['result'] is List) {
-          List<dynamic> clubTermListData = jsonData['result'];
-
-          return clubTermListData.map((json) => DateTime.parse(json['clubHistoryUsageDate'] as String)).toList();
-        } else {
-          throw Exception('데이터 형식이 잘못되었습니다.');
-        }
+        return ClubMember.fromJson(jsonData);
       }
 
       throw Exception();
     } catch (e) {
-      logger.e('동아리 가입 기수 리스트 조회 실패', error: e);
-      throw Exception('동아리 가입 기수 리스트 조회 실패');
+      logger.e('동아리 회원 정보 조회 실패', error: e);
+      throw Exception();
+    }
+  }
+
+  Future<void> updateClubMemberRole(int clubId, int clubMemberId, String clubMemberRole) async {
+    try {
+      logger.i('동아리 회원 역할 수정 시도');
+
+      await _dio.put(
+        '/clubs/$clubId/members/$clubMemberId/role',
+        queryParameters: {'clubMemberRole': clubMemberRole},
+      );
+    } catch (e) {
+      logger.e('동아리 회원 역할 수정 실패', error: e);
+      throw Exception();
     }
   }
 }

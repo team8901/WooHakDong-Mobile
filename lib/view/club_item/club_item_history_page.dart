@@ -6,7 +6,7 @@ import 'package:woohakdong/view/themes/custom_widget/interaction/custom_loading_
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/item/item_provider.dart';
-import '../themes/custom_widget/etc/custom_divider.dart';
+import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import 'components/club_item_history_list_tile.dart';
 
 class ClubItemHistoryPage extends ConsumerWidget {
@@ -44,14 +44,15 @@ class ClubItemHistoryPage extends ConsumerWidget {
 
               return CustomMaterialIndicator(
                 onRefresh: () async {
-                  await Future.delayed(const Duration(milliseconds: 750));
-                  ref.refresh(itemProvider);
+                  await Future.delayed(const Duration(milliseconds: 500));
+
+                  ref.invalidate(itemProvider);
                 },
                 child: CustomLoadingSkeleton(
                   isLoading: isLoading,
                   child: ListView.separated(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    separatorBuilder: (context, index) => const CustomDivider(),
+                    separatorBuilder: (context, index) => const CustomHorizontalDivider(),
                     itemCount: itemHistoryList.length,
                     itemBuilder: (context, index) {
                       final reversedItemHistoryList = itemHistoryList[itemHistoryList.length - 1 - index];

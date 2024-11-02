@@ -5,10 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/club_member/club_member.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
+import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/club_member/club_member_term_provider.dart';
 
+import '../../model/club_member/club_member_term.dart';
 import '../../view_model/club_member/club_member_provider.dart';
-import '../themes/custom_widget/etc/custom_divider.dart';
+import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import 'club_member_search_page.dart';
 import 'components/club_member_list_tile.dart';
@@ -18,8 +21,6 @@ class ClubMemberListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    DateTime? selectedTerm;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('회원'),
@@ -29,23 +30,31 @@ class ClubMemberListPage extends ConsumerWidget {
             icon: const Icon(Symbols.search_rounded),
           ),
           FutureBuilder(
-            future: ref.watch(clubMemberProvider.notifier).getClubMemberTermList(),
+            future: ref.read(clubMemberTermProvider.notifier).getClubMemberTermList(),
             builder: (context, snapshot) {
               final termList = snapshot.data ?? [];
 
-              return PopupMenuButton<DateTime?>(
+              return PopupMenuButton<ClubMemberTerm>(
+                padding: EdgeInsets.zero,
+                elevation: 0,
                 icon: const Icon(Symbols.reorder_rounded),
-                onSelected: (DateTime? term) {
-                  selectedTerm = term;
-                  ref.refresh(clubMemberProvider);
+                onSelected: (ClubMemberTerm term) {
+                  /// TODO selectedTerm 타입 상의하기
+                  //ref.read(clubSelectedTermProvider.notifier).state = term.clubHistoryUsageDate;
+
+                  ref.invalidate(clubMemberProvider);
                 },
                 itemBuilder: (context) {
                   return [
                     for (final term in termList)
-                      PopupMenuItem<DateTime>(
+                      PopupMenuItem<ClubMemberTerm>(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPaddingS,
+                          vertical: defaultPaddingXS,
+                        ),
                         value: term,
                         child: Text(
-                          GeneralFunctions.formatClubAssignedTerm(term.toIso8601String()),
+                          GeneralFunctions.formatClubAssignedTerm(term.clubHistoryUsageDate.toString()),
                           style: context.textTheme.bodyMedium,
                         ),
                       ),
@@ -60,7 +69,7 @@ class ClubMemberListPage extends ConsumerWidget {
         child: SizedBox(
           width: double.infinity,
           child: FutureBuilder(
-            future: ref.watch(clubMemberProvider.notifier).getClubMemberList(selectedTerm),
+            future: ref.watch(clubMemberProvider.notifier).getClubMemberList(),
             builder: (context, clubMemberSnapshot) {
               final isLoading = clubMemberSnapshot.connectionState == ConnectionState.waiting;
 
@@ -72,14 +81,14 @@ class ClubMemberListPage extends ConsumerWidget {
 
               return CustomMaterialIndicator(
                 onRefresh: () async {
-                  await Future.delayed(const Duration(milliseconds: 750));
-                  ref.refresh(clubMemberProvider);
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  ref.invalidate(clubMemberProvider);
                 },
                 child: CustomLoadingSkeleton(
                   isLoading: isLoading,
                   child: ListView.separated(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    separatorBuilder: (context, index) => const CustomDivider(),
+                    separatorBuilder: (context, index) => const CustomHorizontalDivider(),
                     itemCount: clubMemberList!.length,
                     itemBuilder: (context, index) => ClubMemberListTile(clubMember: clubMemberList[index]),
                   ),

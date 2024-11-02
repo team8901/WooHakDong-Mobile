@@ -1,153 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:woohakdong/model/club_member/club_member.dart';
-import 'package:woohakdong/service/general/general_functions.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
-import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/club_member/club_member_me_provider.dart';
 
-import '../themes/custom_widget/interface/custom_info_box.dart';
-import '../themes/custom_widget/interface/custom_info_content.dart';
-import 'components/club_member_role_box.dart';
+import '../../view_model/club_member/club_member_provider.dart';
+import 'components/club_member_detail_info.dart';
 import 'components/club_member_role_edit_dialog.dart';
 
-class ClubMemberDetailPage extends StatefulWidget {
-  final ClubMember clubMember;
+class ClubMemberDetailPage extends ConsumerWidget {
+  final int clubMemberId;
 
   const ClubMemberDetailPage({
     super.key,
-    required this.clubMember,
+    required this.clubMemberId,
   });
 
   @override
-  State<ClubMemberDetailPage> createState() => _ClubMemberDetailPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final clubMemberMe = ref.watch(clubMemberMeProvider);
 
-class _ClubMemberDetailPageState extends State<ClubMemberDetailPage> {
-  String? _selectedRole;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedRole = widget.clubMember.clubMemberRole;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          if (widget.clubMember.clubMemberRole != 'PRESIDENT')
-            IconButton(
-              onPressed: () => showDialog(
-                context: context,
-                builder: (context) => ClubMemberRoleEditDialog(
-                  clubMemberId: widget.clubMember.clubMemberId!,
-                  selectedRole: _selectedRole,
-                  onRoleSelected: (value) => setState(() {
-                    _selectedRole = value;
-                  }),
-                ),
-              ),
-              icon: const Icon(Symbols.settings_account_box_rounded),
-            ),
-        ],
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            top: defaultPaddingM * 2,
-            left: defaultPaddingM,
-            right: defaultPaddingM,
-            bottom: defaultPaddingM,
-          ),
-          child: Column(
-            children: [
-              Center(
-                child: Column(
-                  children: [
-                    Text(
-                      widget.clubMember.memberName!,
-                      style: context.textTheme.headlineLarge,
-                    ),
-                    const Gap(defaultGapS),
-                    ClubMemberRoleBox(clubMember: widget.clubMember),
-                  ],
-                ),
-              ),
-              const Gap(defaultPaddingM * 2),
-              CustomInfoBox(
-                infoTitle: '기본 정보',
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomInfoContent(
-                      infoContent: GeneralFunctions.formatMemberGender(widget.clubMember.memberGender!),
-                      icon: Icon(
-                        Symbols.wc_rounded,
-                        size: 16,
-                        color: context.colorScheme.outline,
+    return FutureBuilder(
+      future: ref.watch(clubMemberProvider.notifier).getClubMemberById(clubMemberId),
+      builder: (context, clubMemberSnapshot) {
+        if (clubMemberSnapshot.connectionState != ConnectionState.done) {
+          return const Scaffold(body: CustomCircularProgressIndicator());
+        }
+        final clubMember = clubMemberSnapshot.data!;
+        return Scaffold(
+          appBar: AppBar(
+            actions: [
+              if (clubMemberMe.clubMemberRole == 'PRESIDENT' && clubMember.clubMemberRole != 'PRESIDENT')
+                IconButton(
+                  onPressed: () {
+                    showDialog<String>(
+                      context: context,
+                      builder: (context) => ClubMemberRoleEditDialog(
+                        currentClubMember: clubMember,
+                        initialRole: clubMember.clubMemberRole,
                       ),
-                    ),
-                    const Gap(defaultGapM),
-                    CustomInfoContent(
-                      infoContent: GeneralFunctions.formatMemberPhoneNumber(widget.clubMember.memberPhoneNumber!),
-                      icon: Icon(
-                        Symbols.call_rounded,
-                        size: 16,
-                        color: context.colorScheme.outline,
-                      ),
-                    ),
-                    const Gap(defaultGapM),
-                    CustomInfoContent(
-                      infoContent: widget.clubMember.memberEmail!,
-                      icon: Icon(
-                        Symbols.alternate_email_rounded,
-                        size: 16,
-                        color: context.colorScheme.outline,
-                      ),
-                    ),
-                  ],
+                    );
+                  },
+                  icon: const Icon(Symbols.settings_account_box_rounded),
                 ),
-              ),
-              const Gap(defaultPaddingM),
-              CustomInfoBox(
-                infoTitle: '학교 정보',
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomInfoContent(
-                      infoContent: widget.clubMember.memberMajor!,
-                      icon: Icon(
-                        Symbols.book_rounded,
-                        size: 16,
-                        color: context.colorScheme.outline,
-                      ),
-                    ),
-                    const Gap(defaultGapM),
-                    CustomInfoContent(
-                      infoContent: widget.clubMember.memberStudentNumber!,
-                      icon: Icon(
-                        Symbols.id_card_rounded,
-                        size: 16,
-                        color: context.colorScheme.outline,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Gap(defaultPaddingM),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  '가입일: ${widget.clubMember.clubJoinedDate!.year}년 ${widget.clubMember.clubJoinedDate!.month}월 ${widget.clubMember.clubJoinedDate!.day}일',
-                  style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-                ),
-              ),
             ],
           ),
-        ),
-      ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(
+                top: defaultPaddingM * 2,
+                left: defaultPaddingM,
+                right: defaultPaddingM,
+                bottom: defaultPaddingM,
+              ),
+              child: ClubMemberDetailInfo(clubMember: clubMember),
+            ),
+          ),
+        );
+      },
     );
   }
 }

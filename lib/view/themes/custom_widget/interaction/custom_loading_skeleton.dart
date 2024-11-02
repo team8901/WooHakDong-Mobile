@@ -18,7 +18,7 @@ class CustomLoadingSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Skeletonizer(
       enabled: isLoading,
-      enableSwitchAnimation: true,
+      enableSwitchAnimation: false,
       ignoreContainers: ignoreContainers,
       effect: ShimmerEffect(
         baseColor: context.colorScheme.surfaceContainer.withOpacity(0.6),

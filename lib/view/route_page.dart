@@ -7,6 +7,7 @@ import 'package:woohakdong/view_model/club/club_id_provider.dart';
 import 'package:woohakdong/view_model/club/club_provider.dart';
 import 'package:woohakdong/view_model/club/components/club_state.dart';
 import 'package:woohakdong/view_model/club/components/club_state_provider.dart';
+import 'package:woohakdong/view_model/club_member/club_member_me_provider.dart';
 import 'package:woohakdong/view_model/member/components/member_state.dart';
 import 'package:woohakdong/view_model/member/components/member_state_provider.dart';
 import 'package:woohakdong/view_model/member/member_provider.dart';
@@ -38,6 +39,8 @@ class _RoutePageState extends ConsumerState<RoutePage> {
     if (currentClubId == null) {
       ref.read(clubIdProvider.notifier).saveClubId(clubList[0].clubId!);
     }
+
+    await ref.read(clubMemberMeProvider.notifier).getClubMemberMe();
 
     ref.invalidate(s3ImageProvider);
   }

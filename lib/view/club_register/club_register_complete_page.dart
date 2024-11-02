@@ -101,7 +101,7 @@ class ClubRegisterCompletePage extends ConsumerWidget {
             onTap: () async {
               await ref.read(clubIdProvider.notifier).saveClubId(clubInfo.clubId!);
 
-              ref.refresh(clubListProvider);
+              ref.invalidate(clubListProvider);
 
               if (context.mounted) {
                 _pushRoutePage(context);

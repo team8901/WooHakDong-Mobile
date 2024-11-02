@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:woohakdong/model/item/item_history.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
@@ -58,12 +57,10 @@ class ClubItemHistoryListTile extends StatelessWidget {
                 const Gap(defaultGapS / 2),
                 Row(
                   children: [
-                    Skeleton.shade(
-                      child: Icon(
-                        Symbols.output_rounded,
-                        size: 16,
-                        color: context.colorScheme.onSurface,
-                      ),
+                    Icon(
+                      Symbols.output_rounded,
+                      size: 16,
+                      color: context.colorScheme.onSurface,
                     ),
                     const Gap(defaultGapS / 4),
                     Text(
@@ -77,12 +74,10 @@ class ClubItemHistoryListTile extends StatelessWidget {
                 const Gap(defaultGapS / 4),
                 Row(
                   children: [
-                    Skeleton.shade(
-                      child: Icon(
-                        Symbols.input_rounded,
-                        size: 16,
-                        color: context.colorScheme.onSurface,
-                      ),
+                    Icon(
+                      Symbols.input_rounded,
+                      size: 16,
+                      color: context.colorScheme.onSurface,
                     ),
                     const Gap(defaultGapS / 4),
                     Text(

@@ -6,7 +6,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../service/general/general_functions.dart';
 import '../../../view_model/item/item_provider.dart';
-import '../../themes/custom_widget/etc/custom_divider.dart';
+import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../../themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import 'club_item_list_tile.dart';
 
@@ -53,14 +53,14 @@ class ClubItemPageView extends ConsumerWidget {
 
           return CustomMaterialIndicator(
             onRefresh: () async {
-              await Future.delayed(const Duration(milliseconds: 750));
-              ref.refresh(itemProvider);
+              await Future.delayed(const Duration(milliseconds: 500));
+              ref.invalidate(itemProvider);
             },
             child: CustomLoadingSkeleton(
               isLoading: isLoading,
               child: ListView.separated(
                 physics: const AlwaysScrollableScrollPhysics(),
-                separatorBuilder: (context, index) => const CustomDivider(),
+                separatorBuilder: (context, index) => const CustomHorizontalDivider(),
                 itemCount: filteredList!.length,
                 itemBuilder: (context, index) => ClubItemListTile(item: filteredList[index]),
               ),

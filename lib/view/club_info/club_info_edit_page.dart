@@ -277,7 +277,7 @@ class _ClubInfoEditPageState extends ConsumerState<ClubInfoEditPage> {
                   }
                 } catch (e) {
                   ref.read(clubStateProvider.notifier).state = ClubState.clubRegistered;
-                  GeneralFunctions.toastMessage('동아리 정보 수정에 실패했어요');
+                  await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
                 }
               }
             },

@@ -1,22 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-class ClubMemberRoleEditDialog extends StatelessWidget {
-  final int clubMemberId;
-  final String? selectedRole;
-  final ValueChanged<String?> onRoleSelected;
+import '../../../model/club_member/club_member.dart';
+import '../../../view_model/club_member/club_member_provider.dart';
+
+class ClubMemberRoleEditDialog extends ConsumerStatefulWidget {
+  final ClubMember currentClubMember;
+  final String? initialRole;
 
   const ClubMemberRoleEditDialog({
     super.key,
-    required this.clubMemberId,
-    required this.selectedRole,
-    required this.onRoleSelected,
+    required this.currentClubMember,
+    required this.initialRole,
   });
 
   @override
+  ConsumerState<ClubMemberRoleEditDialog> createState() => _RoleSelectionDialogState();
+}
+
+class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> {
+  String? selectedRole;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedRole = widget.initialRole;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final clubNotifier = ref.read(clubMemberProvider.notifier);
+
     return Dialog(
       child: Container(
         padding: const EdgeInsets.all(defaultPaddingS * 2),
@@ -45,9 +63,60 @@ class ClubMemberRoleEditDialog extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  _buildRoleOption(context, 'VICEPRESIDENT', '부회장'),
-                  _buildRoleOption(context, 'SECRETARY', '총무'),
-                  _buildRoleOption(context, 'OFFICER', '기타 임원진'),
+                  Row(
+                    children: [
+                      Radio<String>(
+                        activeColor: context.colorScheme.primary,
+                        value: 'VICEPRESIDENT',
+                        groupValue: selectedRole,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedRole = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '부회장',
+                        style: context.textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio<String>(
+                        activeColor: context.colorScheme.primary,
+                        value: 'SECRETARY',
+                        groupValue: selectedRole,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedRole = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '총무',
+                        style: context.textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio<String>(
+                        activeColor: context.colorScheme.primary,
+                        value: 'OFFICER',
+                        groupValue: selectedRole,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedRole = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '임원진',
+                        style: context.textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -58,7 +127,24 @@ class ClubMemberRoleEditDialog extends StatelessWidget {
                 border: Border.all(color: context.colorScheme.surfaceContainer),
                 borderRadius: BorderRadius.circular(defaultBorderRadiusM),
               ),
-              child: _buildRoleOption(context, 'MEMBER', '회원'),
+              child: Row(
+                children: [
+                  Radio<String>(
+                    activeColor: context.colorScheme.primary,
+                    value: 'MEMBER',
+                    groupValue: selectedRole,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedRole = value;
+                      });
+                    },
+                  ),
+                  Text(
+                    '회원',
+                    style: context.textTheme.bodyMedium,
+                  ),
+                ],
+              ),
             ),
             const Gap(defaultPaddingS * 2),
             Row(
@@ -73,10 +159,18 @@ class ClubMemberRoleEditDialog extends StatelessWidget {
                 ),
                 const Gap(defaultPaddingS * 2),
                 InkWell(
-                  /// TODO 역할 변경 API 연결하기
-                  onTap: () {
-                    Navigator.pop(context);
-                    onRoleSelected(selectedRole);
+                  onTap: () async {
+                    try {
+                      await clubNotifier.updateClubMemberRole(widget.currentClubMember.clubMemberId!, selectedRole!);
+
+                      if (context.mounted) {
+                        GeneralFunctions.toastMessage('${widget.currentClubMember.memberName}님의 역할이 변경되었어요');
+                        ref.invalidate(clubMemberProvider);
+                        Navigator.pop(context);
+                      }
+                    } catch (e) {
+                      await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
+                    }
                   },
                   child: Text(
                     '확인',
@@ -90,22 +184,6 @@ class ClubMemberRoleEditDialog extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildRoleOption(BuildContext context, String roleValue, String roleText) {
-    return Row(
-      children: [
-        Radio<String>(
-          value: roleValue,
-          groupValue: selectedRole,
-          onChanged: (value) => onRoleSelected(value),
-        ),
-        Text(
-          roleText,
-          style: context.textTheme.bodyMedium,
-        ),
-      ],
     );
   }
 }

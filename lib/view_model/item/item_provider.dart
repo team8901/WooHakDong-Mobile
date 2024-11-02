@@ -23,6 +23,8 @@ class ItemNotifier extends StateNotifier<Item> {
   Future<List<Item>> getItemList() async {
     final currentClubId = ref.watch(clubIdProvider);
 
+    await Future.delayed(const Duration(milliseconds: 200));
+
     final List<Item> itemList = await itemRepository.getItemList(
       currentClubId!,
     );

@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:woohakdong/model/club_member/club_member.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../service/general/general_functions.dart';
+import '../../themes/custom_widget/etc/custom_vertical_divider.dart';
 import '../../themes/spacing.dart';
 import '../club_member_detail_page.dart';
 
@@ -21,7 +21,7 @@ class ClubMemberListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => _pushMemberDetailPage(context, clubMember),
+      onTap: () => _pushMemberDetailPage(context, clubMember.clubMemberId!),
       highlightColor: context.colorScheme.surfaceContainer,
       child: Ink(
         child: Padding(
@@ -62,13 +62,7 @@ class ClubMemberListTile extends StatelessWidget {
                           softWrap: true,
                         ),
                         const Gap(defaultGapS),
-                        SizedBox(
-                          height: 8,
-                          child: VerticalDivider(
-                            color: context.colorScheme.outline,
-                            width: 1,
-                          ),
-                        ),
+                        const CustomVerticalDivider(),
                         const Gap(defaultGapS),
                         Text(
                           clubMember.memberStudentNumber!,
@@ -81,11 +75,9 @@ class ClubMemberListTile extends StatelessWidget {
                 ),
               ),
               const Gap(defaultGapS),
-              Skeleton.shade(
-                child: Icon(
-                  Symbols.chevron_right_rounded,
-                  color: context.colorScheme.outline,
-                ),
+              Icon(
+                Symbols.chevron_right_rounded,
+                color: context.colorScheme.outline,
               ),
             ],
           ),
@@ -94,9 +86,12 @@ class ClubMemberListTile extends StatelessWidget {
     );
   }
 
-  void _pushMemberDetailPage(BuildContext context, ClubMember clubMember) {
+  void _pushMemberDetailPage(BuildContext context, int clubMemberId) {
     Navigator.of(context).push(
-      CupertinoPageRoute(builder: (context) => ClubMemberDetailPage(clubMember: clubMember)),
+      CupertinoPageRoute(
+          builder: (context) => ClubMemberDetailPage(
+                clubMemberId: clubMemberId,
+              )),
     );
   }
 }
