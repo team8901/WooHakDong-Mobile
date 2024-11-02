@@ -118,9 +118,8 @@ class ClubRegisterCompletePage extends ConsumerWidget {
 
   Group _generateFakeGroupInfo() {
     return Group(
-      groupId: 0,
       groupName: '우학동',
-      groupJoinLink: 'https://woohakdong.com',
+      groupJoinLink: 'https://www.woohakdong.com/clubs/woohakdong',
     );
   }
 

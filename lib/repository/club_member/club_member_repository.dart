@@ -11,8 +11,7 @@ class ClubMemberRepository {
       logger.i('동아리 회원 목록 조회 시도');
 
       final response = await _dio.get(
-        /// TODO /clubs로 바꾸기
-        '/club/$clubId/members',
+        '/clubs/$clubId/members',
         queryParameters:
             clubMemberAssignedTerm != null ? {'clubMemberAssignedTerm': clubMemberAssignedTerm.toIso8601String()} : {},
       );

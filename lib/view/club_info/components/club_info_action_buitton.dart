@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_info/club_info_detail_page.dart';
 import 'package:woohakdong/view/club_info/club_info_promotion_page.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';

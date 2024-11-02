@@ -34,7 +34,7 @@ class ClubMemberListPage extends ConsumerWidget {
               final termList = snapshot.data ?? [];
 
               return PopupMenuButton<DateTime?>(
-                icon: const Icon(Symbols.filter_list),
+                icon: const Icon(Symbols.reorder_rounded),
                 onSelected: (DateTime? term) {
                   selectedTerm = term;
                   ref.refresh(clubMemberProvider);

@@ -4,11 +4,13 @@ import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 class ClubMemberRoleEditDialog extends StatelessWidget {
+  final int clubMemberId;
   final String? selectedRole;
   final ValueChanged<String?> onRoleSelected;
 
   const ClubMemberRoleEditDialog({
     super.key,
+    required this.clubMemberId,
     required this.selectedRole,
     required this.onRoleSelected,
   });
@@ -43,8 +45,8 @@ class ClubMemberRoleEditDialog extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  _buildRoleOption(context, '', '부회장'),
-                  _buildRoleOption(context, '', '총무'),
+                  _buildRoleOption(context, 'VICEPRESIDENT', '부회장'),
+                  _buildRoleOption(context, 'SECRETARY', '총무'),
                   _buildRoleOption(context, 'OFFICER', '기타 임원진'),
                 ],
               ),

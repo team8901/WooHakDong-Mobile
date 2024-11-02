@@ -61,7 +61,7 @@ class ClubItemHistoryListTile extends StatelessWidget {
                     Skeleton.shade(
                       child: Icon(
                         Symbols.output_rounded,
-                        size: 20,
+                        size: 16,
                         color: context.colorScheme.onSurface,
                       ),
                     ),
@@ -80,7 +80,7 @@ class ClubItemHistoryListTile extends StatelessWidget {
                     Skeleton.shade(
                       child: Icon(
                         Symbols.input_rounded,
-                        size: 20,
+                        size: 16,
                         color: context.colorScheme.onSurface,
                       ),
                     ),

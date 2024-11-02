@@ -34,7 +34,7 @@ class ClubRegisterQrCard extends StatelessWidget {
             child: Text(
               '${groupInfo?.groupName}',
               style: context.textTheme.headlineLarge?.copyWith(
-                fontSize: 28,
+                fontSize: 32,
                 color: context.colorScheme.primary,
               ),
             ),
@@ -65,7 +65,7 @@ class ClubRegisterQrCard extends StatelessWidget {
           const Gap(defaultGapL * 2),
           Text(
             'QR 코드를 스캔하면\n동아리 전용 페이지로 이동해요!',
-            style: context.textTheme.titleSmall,
+            style: context.textTheme.titleMedium,
             textAlign: TextAlign.center,
           ),
           const Gap(defaultGapL * 2),

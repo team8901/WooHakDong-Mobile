@@ -42,6 +42,7 @@ class _ClubMemberDetailPageState extends State<ClubMemberDetailPage> {
               onPressed: () => showDialog(
                 context: context,
                 builder: (context) => ClubMemberRoleEditDialog(
+                  clubMemberId: widget.clubMember.clubMemberId!,
                   selectedRole: _selectedRole,
                   onRoleSelected: (value) => setState(() {
                     _selectedRole = value;
@@ -115,15 +116,6 @@ class _ClubMemberDetailPageState extends State<ClubMemberDetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomInfoContent(
-                      infoContent: widget.clubMember.memberSchool!,
-                      icon: Icon(
-                        Symbols.school_rounded,
-                        size: 16,
-                        color: context.colorScheme.outline,
-                      ),
-                    ),
-                    const Gap(defaultGapM),
                     CustomInfoContent(
                       infoContent: widget.clubMember.memberMajor!,
                       icon: Icon(

@@ -64,6 +64,10 @@ class GeneralFunctions {
     switch (role) {
       case 'PRESIDENT':
         return '회장';
+      case 'VICEPRESIDENT':
+        return '부회장';
+      case 'SECRETARY':
+        return '총무';
       case 'OFFICER':
         return '임원진';
       case 'MEMBER':

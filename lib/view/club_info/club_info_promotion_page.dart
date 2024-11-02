@@ -87,7 +87,7 @@ class ClubInfoPromotionPage extends ConsumerWidget {
   Group _generateFakeGroupInfo() {
     return Group(
       groupName: '우학동',
-      groupJoinLink: 'https://www.woohakdong.com',
+      groupJoinLink: 'https://www.woohakdong.com/clubs/woohakdong',
     );
   }
 }
