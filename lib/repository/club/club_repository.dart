@@ -87,24 +87,4 @@ class ClubRepository {
       return null;
     }
   }
-
-  Future<Club> editClubInfo(Club club, int clubId) async {
-    try {
-      logger.i('동아리 정보 수정 시도');
-
-      final response = await _dio.put(
-        '/clubs/$clubId',
-        data: club.toJson(),
-      );
-
-      if (response.statusCode == 200) {
-        return Club.fromJson(response.data);
-      }
-
-      throw Exception();
-    } catch (e) {
-      logger.e('동아리 정보 수정 실패', error: e);
-      throw Exception();
-    }
-  }
 }

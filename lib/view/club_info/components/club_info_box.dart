@@ -4,20 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:woohakdong/model/club/club.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-class ClubInfoBox extends ConsumerWidget {
-  final Club currentClubInfo;
+import '../../../view_model/club/current_club_info_provider.dart';
 
-  const ClubInfoBox({
-    super.key,
-    required this.currentClubInfo,
-  });
+class ClubInfoBox extends ConsumerWidget {
+  const ClubInfoBox({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentClubInfo = ref.watch(currentClubInfoProvider);
     final imageProvider = CachedNetworkImageProvider(currentClubInfo.clubImage!);
 
     return Row(

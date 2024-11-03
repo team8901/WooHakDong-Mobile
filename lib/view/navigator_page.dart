@@ -9,8 +9,8 @@ import 'package:woohakdong/view/club_member/club_member_list_page.dart';
 import 'package:woohakdong/view/club_schedule/club_calendar_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_pop_scope.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/club/current_club_info_provider.dart';
 
-import '../view_model/club/current_club_provider.dart';
 import 'club_info/club_info_page.dart';
 
 class NavigatorPage extends ConsumerStatefulWidget {
@@ -39,7 +39,7 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String? clubImage = ref.watch(currentClubProvider)?.clubImage;
+    final String? clubImage = ref.watch(currentClubInfoProvider).clubImage;
 
     return Scaffold(
       body: CustomPopScope(

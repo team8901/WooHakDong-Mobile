@@ -6,7 +6,7 @@ import 'package:woohakdong/view/club_info/components/club_info_action_buitton.da
 import 'package:woohakdong/view/club_info/components/club_info_box.dart';
 
 import '../../view_model/auth/auth_provider.dart';
-import '../../view_model/club/current_club_provider.dart';
+import '../../view_model/club/current_club_info_provider.dart';
 import '../themes/spacing.dart';
 import 'components/club_info_bottom_sheet.dart';
 
@@ -15,7 +15,7 @@ class ClubInfoPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentClubInfo = ref.watch(currentClubProvider);
+    final currentClubInfo = ref.watch(currentClubInfoProvider);
     final authNotifier = ref.read(authProvider.notifier);
 
     return Scaffold(
@@ -33,7 +33,7 @@ class ClubInfoPage extends ConsumerWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Flexible(child: Text(currentClubInfo?.clubName ?? '내 동아리', softWrap: false)),
+              Flexible(child: Text(currentClubInfo.clubName!, softWrap: false)),
               const Gap(defaultGapS),
               const Icon(
                 Symbols.keyboard_arrow_down_rounded,
@@ -51,16 +51,16 @@ class ClubInfoPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          padding: const EdgeInsets.all(defaultPaddingM),
+          physics: ClampingScrollPhysics(),
+          padding: EdgeInsets.all(defaultPaddingM),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClubInfoBox(currentClubInfo: currentClubInfo!),
-              const Gap(defaultGapXL),
-              const ClubInfoActionButton(),
+              ClubInfoBox(),
+              Gap(defaultGapXL),
+              ClubInfoActionButton(),
             ],
           ),
         ),

@@ -9,24 +9,22 @@ import 'package:woohakdong/model/group/group.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../model/club/club.dart';
 import '../../repository/group/group_repository.dart';
 import '../../service/general/general_functions.dart';
+import '../../view_model/club/current_club_info_provider.dart';
 import '../club_register/components/club_register_qr_card.dart';
 import '../club_register/components/club_register_url_card.dart';
 import '../themes/spacing.dart';
 
 class ClubInfoPromotionPage extends ConsumerWidget {
   final GlobalKey _widgetToPngKey = GlobalKey();
-  final Club currentClubInfo;
 
-  ClubInfoPromotionPage({
-    super.key,
-    required this.currentClubInfo,
-  });
+  ClubInfoPromotionPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentClubInfoId = ref.watch(currentClubInfoProvider).clubId;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('모집 정보'),
@@ -47,7 +45,7 @@ class ClubInfoPromotionPage extends ConsumerWidget {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(defaultPaddingM),
           child: FutureBuilder(
-            future: GroupRepository().getClubRegisterPageInfo(currentClubInfo.clubId!),
+            future: GroupRepository().getClubRegisterPageInfo(currentClubInfoId!),
             builder: (context, groupInfoSnapshot) {
               final isLoading = groupInfoSnapshot.connectionState == ConnectionState.waiting;
 

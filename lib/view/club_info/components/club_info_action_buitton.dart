@@ -6,17 +6,13 @@ import 'package:woohakdong/view/club_info/club_info_detail_page.dart';
 import 'package:woohakdong/view/club_info/club_info_promotion_page.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../model/club/club.dart';
 import '../../../view/themes/spacing.dart';
-import '../../../view_model/club/current_club_provider.dart';
 
 class ClubInfoActionButton extends ConsumerWidget {
   const ClubInfoActionButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentClubInfo = ref.watch(currentClubProvider);
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -46,7 +42,7 @@ class ClubInfoActionButton extends ConsumerWidget {
         const Gap(defaultGapM),
         Expanded(
           child: InkWell(
-            onTap: () => _pushClubPromotionPage(context, currentClubInfo!),
+            onTap: () => _pushClubPromotionPage(context),
             borderRadius: BorderRadius.circular(defaultBorderRadiusM),
             highlightColor: context.colorScheme.surfaceContainer,
             child: Ink(
@@ -80,11 +76,11 @@ class ClubInfoActionButton extends ConsumerWidget {
     );
   }
 
-  void _pushClubPromotionPage(BuildContext context, Club currentClubInfo) {
+  void _pushClubPromotionPage(BuildContext context) {
     Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (context) => ClubInfoPromotionPage(currentClubInfo: currentClubInfo),
+        builder: (context) => ClubInfoPromotionPage(),
       ),
     );
   }

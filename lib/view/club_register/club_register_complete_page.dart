@@ -12,7 +12,6 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../service/general/general_functions.dart';
 import '../../view_model/club/club_id_provider.dart';
-import '../../view_model/club/club_list_provider.dart';
 import '../../view_model/club/club_provider.dart';
 import '../../view_model/group/group_provider.dart';
 import '../route_page.dart';
@@ -101,7 +100,7 @@ class ClubRegisterCompletePage extends ConsumerWidget {
             onTap: () async {
               await ref.read(clubIdProvider.notifier).saveClubId(clubInfo.clubId!);
 
-              ref.invalidate(clubListProvider);
+              ref.invalidate(clubProvider);
 
               if (context.mounted) {
                 _pushRoutePage(context);

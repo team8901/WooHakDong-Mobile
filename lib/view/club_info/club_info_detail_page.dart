@@ -7,9 +7,8 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../model/club/club.dart';
 import '../../service/general/general_functions.dart';
-import '../../view_model/club/current_club_provider.dart';
+import '../../view_model/club/current_club_info_provider.dart';
 import '../themes/custom_widget/interface/cujstom_photo_view.dart';
 import '../themes/custom_widget/interface/custom_info_box.dart';
 import '../themes/custom_widget/interface/custom_info_content.dart';
@@ -23,15 +22,15 @@ class ClubInfoDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentClubInfo = ref.watch(currentClubProvider);
-    final imageProvider = CachedNetworkImageProvider(currentClubInfo!.clubImage!);
+    final currentClubInfo = ref.watch(currentClubInfoProvider);
+    final imageProvider = CachedNetworkImageProvider(currentClubInfo.clubImage!);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('동아리 정보'),
         actions: [
           IconButton(
-            onPressed: () => _pushClubInfoEditPage(context, currentClubInfo),
+            onPressed: () => _pushClubInfoEditPage(context),
             icon: const Icon(Symbols.border_color_rounded),
           ),
         ],
@@ -223,11 +222,11 @@ class ClubInfoDetailPage extends ConsumerWidget {
     );
   }
 
-  void _pushClubInfoEditPage(BuildContext context, Club currentClubInfo) {
+  void _pushClubInfoEditPage(BuildContext context) {
     Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (context) => ClubInfoEditPage(currentClubInfo: currentClubInfo),
+        builder: (context) => const ClubInfoEditPage(),
       ),
     );
   }

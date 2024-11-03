@@ -6,10 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/club/club_provider.dart';
 
 import '../../../service/general/general_functions.dart';
 import '../../../view_model/club/club_id_provider.dart';
-import '../../../view_model/club/club_list_provider.dart';
 import '../../club_register/club_register_caution_page_.dart';
 import '../../route_page.dart';
 import '../../themes/spacing.dart';
@@ -26,7 +26,7 @@ class ClubInfoBottomSheet extends ConsumerWidget {
     return SizedBox(
       width: double.infinity,
       child: FutureBuilder(
-        future: ref.watch(clubListProvider.future),
+        future: ref.watch(clubProvider.notifier).getClubList(),
         builder: (context, clubListSnapshot) {
           if (clubListSnapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
