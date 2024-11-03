@@ -42,14 +42,12 @@ class GoogleSignInService {
         await _secureStorage.write(key: 'refreshToken', value: refreshToken);
 
         return true;
-      } else {
-        logger.w("구글 액세스 토큰 없음");
-        return false;
       }
+
+      logger.w("구글 액세스 토큰 없음");
+      return false;
     } catch (e) {
       logger.e("구글 로그인 실패", error: e);
-
-      await _secureStorage.deleteAll();
 
       await _firebaseAuth.signOut();
       await _googleSignIn.signOut();
@@ -66,17 +64,17 @@ class GoogleSignInService {
 
       if (refreshToken != null) {
         await _auth.logOut(refreshToken);
-      } else {
-        logger.w("리프레쉬 토큰 없음");
-        return false;
+
+        return true;
       }
 
-      await _secureStorage.deleteAll();
+      logger.w("리프레쉬 토큰 없음");
 
       await _firebaseAuth.signOut();
       await _googleSignIn.signOut();
+      await _secureStorage.deleteAll();
 
-      return true;
+      return false;
     } catch (e) {
       logger.e("로그아웃 실패", error: e);
       return false;

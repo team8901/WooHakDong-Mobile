@@ -16,9 +16,9 @@ import 'package:woohakdong/view_model/club/components/club_name_validation_state
 import '../../view_model/club/club_provider.dart';
 import '../../view_model/club/components/club_name_validation_provider.dart';
 import '../../view_model/util/s3_image_provider.dart';
-import '../themes/custom_widget/custom_bottom_button.dart';
-import '../themes/custom_widget/custom_counter_text_form_field.dart';
-import '../themes/custom_widget/custom_text_form_field.dart';
+import '../themes/custom_widget/button/custom_bottom_button.dart';
+import '../themes/custom_widget/interface/custom_counter_text_form_field.dart';
+import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'components/club_register_image_dialog.dart';
 
@@ -66,7 +66,6 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.all(defaultPaddingM),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../spacing.dart';
+import '../../spacing.dart';
 
-class CustomDivider extends StatelessWidget {
-  const CustomDivider({
+class CustomHorizontalDivider extends StatelessWidget {
+  const CustomHorizontalDivider({
     super.key,
   });
 
@@ -12,7 +12,7 @@ class CustomDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Divider(
       color: context.colorScheme.surfaceContainer,
-      thickness: 0.6,
+      thickness: 0.8,
       height: 0,
       indent: defaultPaddingM,
       endIndent: defaultPaddingM,

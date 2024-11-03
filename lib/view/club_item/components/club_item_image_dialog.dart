@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
@@ -40,7 +38,7 @@ class ClubItemImageDialog extends StatelessWidget {
             InkWell(
               highlightColor: context.colorScheme.surfaceContainer,
               onTap: () {
-                _shootItemImage(context);
+                GeneralFunctions.requestCameraToImage(context, s3ImageNotifier);
                 Navigator.pop(context);
               },
               child: Ink(
@@ -63,7 +61,7 @@ class ClubItemImageDialog extends StatelessWidget {
             InkWell(
               highlightColor: context.colorScheme.surfaceContainer,
               onTap: () {
-                _pickItemImage(context);
+                GeneralFunctions.requestGalleryToImage(context, s3ImageNotifier);
                 Navigator.pop(context);
               },
               child: Ink(
@@ -86,28 +84,5 @@ class ClubItemImageDialog extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> _shootItemImage(BuildContext context) async {
-    final image = await ImagePicker().pickImage(source: ImageSource.camera);
-
-    if (image != null) {
-      final imageFile = File(image.path);
-      await _setImage(imageFile, s3ImageNotifier);
-    }
-  }
-
-  Future<void> _pickItemImage(BuildContext context) async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      final imageFile = File(image.path);
-      await _setImage(imageFile, s3ImageNotifier);
-    }
-  }
-
-  Future<void> _setImage(File imageFile, S3ImageNotifier s3ImageNotifier) async {
-    List<File> pickedImage = [imageFile];
-    await s3ImageNotifier.setImage(pickedImage);
   }
 }

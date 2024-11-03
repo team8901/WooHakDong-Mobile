@@ -18,9 +18,9 @@ class ClubAccountRepository {
 
       if (response.statusCode == 200) {
         return ClubAccount.fromJson(response.data);
-      } else {
-        throw Exception();
       }
+
+      throw Exception();
     } catch (e) {
       logger.e('동아리 계좌 유효성 검증 실패', error: e);
       throw Exception();

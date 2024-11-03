@@ -23,9 +23,9 @@ class WoohakdongAuthRepository {
           'accessToken': response.data['accessToken'],
           'refreshToken': response.data['refreshToken'],
         };
-      } else {
-        throw Exception();
       }
+
+      throw Exception();
     } catch (e) {
       await GeneralFunctions.toastMessage('학교 계정으로 로그인해 주세요');
       logger.e('토큰 발급 실패', error: e);

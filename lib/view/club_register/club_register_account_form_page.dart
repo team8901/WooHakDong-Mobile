@@ -10,10 +10,10 @@ import '../../view_model/club/club_account_provider.dart';
 import '../../view_model/club/club_provider.dart';
 import '../../view_model/club/components/club_account_validation_provider.dart';
 import '../../view_model/club/components/club_account_validation_state.dart';
-import '../themes/custom_widget/custom_bottom_button.dart';
-import '../themes/custom_widget/custom_dropdown_form_field.dart';
-import '../themes/custom_widget/custom_pop_scope.dart';
-import '../themes/custom_widget/custom_text_form_field.dart';
+import '../themes/custom_widget/button/custom_bottom_button.dart';
+import '../themes/custom_widget/interface/custom_dropdown_form_field.dart';
+import '../themes/custom_widget/interaction/custom_pop_scope.dart';
+import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'club_register_complete_page.dart';
 import 'components/club_register_valid_account_box.dart';
@@ -56,7 +56,6 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
         appBar: AppBar(),
         body: SafeArea(
           child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
             padding: const EdgeInsets.all(defaultPaddingM),
             child: Form(
               key: formKey,

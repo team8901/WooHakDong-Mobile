@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../../service/general/general_functions.dart';
+import '../../../../service/general/general_functions.dart';
 
 class CustomPopScope extends StatefulWidget {
   final Widget child;

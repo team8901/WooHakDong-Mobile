@@ -56,7 +56,7 @@ class Item {
       itemRentalMaxDay: json['itemRentalMaxDay'],
       itemAvailable: json['itemAvailable'],
       itemUsing: json['itemUsing'],
-      itemRentalDate: json['itemRentalDate'],
+      itemRentalDate: json['itemRentalDate'] != null ? DateTime.parse(json['itemRentalDate']) : null,
       itemRentalTime: json['itemRentalTime'],
     );
   }

@@ -20,7 +20,7 @@ class CustomInfoContent extends StatelessWidget {
       children: [
         if (icon != null) icon!,
         if (icon != null) const Gap(defaultGapM),
-        Text(infoContent, style: context.textTheme.titleSmall),
+        Expanded(child: Text(infoContent, style: context.textTheme.titleSmall)),
       ],
     );
   }

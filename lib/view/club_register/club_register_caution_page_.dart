@@ -8,7 +8,7 @@ import 'package:woohakdong/view_model/club/components/club_name_validation_provi
 import 'package:woohakdong/view_model/club/components/club_name_validation_state.dart';
 import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 
-import '../themes/custom_widget/custom_bottom_button.dart';
+import '../themes/custom_widget/button/custom_bottom_button.dart';
 import '../themes/spacing.dart';
 import 'components/club_register_caution_introduce.dart';
 
@@ -27,7 +27,6 @@ class ClubRegisterCautionPage extends ConsumerWidget {
         appBar: AppBar(),
         body: const SafeArea(
           child: SingleChildScrollView(
-            physics: ClampingScrollPhysics(),
             padding: EdgeInsets.all(defaultPaddingM),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

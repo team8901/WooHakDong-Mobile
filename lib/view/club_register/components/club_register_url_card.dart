@@ -41,7 +41,7 @@ class ClubRegisterUrlCard extends StatelessWidget {
                 overflow: TextOverflow.visible,
               ),
             ),
-            const Gap(defaultGapL),
+            const Gap(defaultGapM),
             InkWell(
               onTap: () async {
                 Clipboard.setData(ClipboardData(text: '${groupInfo?.groupJoinLink}'));

@@ -1,48 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:flutter/services.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../spacing.dart';
+import '../../spacing.dart';
 
-class CustomDropdownFormField extends StatelessWidget {
+class CustomCounterTextFormField extends StatelessWidget {
   final String labelText;
-  final List<Map<String, String>> items;
-  final ValueChanged<String?>? onChanged;
-  final FormFieldSetter<String>? onSaved;
+  final String? hintText;
+  final bool readOnly;
+  final String? initialValue;
+  final TextInputType keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextInputAction textInputAction;
   final FormFieldValidator<String>? validator;
-  final void Function()? onTap;
-  final double menuMaxHeight;
+  final FormFieldSetter<String>? onSaved;
+  final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
+  final int minLines;
+  final int maxLength;
 
-  const CustomDropdownFormField({
+  const CustomCounterTextFormField({
     super.key,
     required this.labelText,
-    required this.items,
-    this.onChanged,
-    this.onSaved,
+    this.hintText,
+    this.readOnly = false,
+    this.initialValue,
+    this.keyboardType = TextInputType.text,
+    this.inputFormatters,
+    this.textInputAction = TextInputAction.next,
     this.validator,
-    this.onTap,
-    this.menuMaxHeight = 208,
+    this.onSaved,
+    this.onChanged,
+    this.controller,
+    required this.minLines,
+    required this.maxLength,
   });
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      icon: Icon(
-        Symbols.keyboard_arrow_down_rounded,
-        color: context.colorScheme.outline,
-      ),
+    return TextFormField(
+      controller: controller,
       style: context.textTheme.titleSmall,
-      elevation: 0,
-      menuMaxHeight: menuMaxHeight.h,
-      dropdownColor: context.colorScheme.surfaceContainer,
+      textInputAction: textInputAction,
+      initialValue: initialValue,
+      readOnly: readOnly,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
+      minLines: minLines,
+      maxLines: null,
+      maxLength: maxLength,
+      onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: InputDecoration(
+        alignLabelWithHint: true,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: defaultPaddingS,
           vertical: defaultPaddingXS,
         ),
         labelText: labelText,
         labelStyle: context.textTheme.titleSmall?.copyWith(
+          color: context.colorScheme.outline,
+        ),
+        hintText: hintText,
+        hintStyle: context.textTheme.titleSmall?.copyWith(
+          color: context.colorScheme.outline,
+        ),
+        counterStyle: context.textTheme.labelLarge?.copyWith(
           color: context.colorScheme.outline,
         ),
         errorStyle: context.textTheme.labelLarge?.copyWith(
@@ -65,17 +87,10 @@ class CustomDropdownFormField extends StatelessWidget {
           borderSide: BorderSide(color: context.colorScheme.primary),
         ),
       ),
-      items: items.map((item) {
-        return DropdownMenuItem<String>(
-          value: item['value'],
-          child: Text(item['displayText']!, style: context.textTheme.titleSmall),
-        );
-      }).toList(),
-      onChanged: onChanged,
-      onSaved: onSaved,
       validator: validator,
+      onSaved: onSaved,
+      onChanged: onChanged,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      onTap: onTap,
     );
   }
 }

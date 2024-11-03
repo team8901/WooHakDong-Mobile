@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:woohakdong/view/themes/custom_widget/etc/custom_vertical_divider.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/item/item.dart';
@@ -71,13 +71,7 @@ class ClubItemListTile extends StatelessWidget {
                           ),
                         ),
                         const Gap(defaultGapS),
-                        SizedBox(
-                          height: 8,
-                          child: VerticalDivider(
-                            color: context.colorScheme.outline,
-                            width: 1,
-                          ),
-                        ),
+                        const CustomVerticalDivider(),
                         const Gap(defaultGapS),
                         Text(
                           item.itemLocation!,
@@ -98,12 +92,10 @@ class ClubItemListTile extends StatelessWidget {
                             size: 12,
                           )
                         else
-                          Skeleton.shade(
-                            child: Icon(
-                              Symbols.lock_open_rounded,
-                              color: context.colorScheme.onSurface,
-                              size: 12,
-                            ),
+                          Icon(
+                            Symbols.lock_open_rounded,
+                            color: context.colorScheme.onSurface,
+                            size: 12,
                           ),
                         const Gap(defaultGapS / 2),
                         if (item.itemUsing!)
@@ -121,12 +113,10 @@ class ClubItemListTile extends StatelessWidget {
                             ),
                           ),
                         const Gap(defaultGapS),
-                        Skeleton.shade(
-                          child: Icon(
-                            Symbols.history_rounded,
-                            color: context.colorScheme.onSurface,
-                            size: 12,
-                          ),
+                        Icon(
+                          Symbols.history_rounded,
+                          color: context.colorScheme.onSurface,
+                          size: 12,
                         ),
                         const Gap(defaultGapS / 2),
                         Text(

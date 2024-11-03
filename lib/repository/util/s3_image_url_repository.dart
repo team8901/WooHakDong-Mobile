@@ -27,9 +27,9 @@ class S3ImageUrlRepository {
         List<dynamic> urlData = jsonData['result'] as List<dynamic>;
 
         return urlData.map((json) => S3ImageUrl.fromJson(json as Map<String, dynamic>)).toList();
-      } else {
-        throw Exception();
       }
+
+      throw Exception();
     } catch (e) {
       logger.e('S3 이미지 URL 조회 실패', error: e);
       throw Exception();

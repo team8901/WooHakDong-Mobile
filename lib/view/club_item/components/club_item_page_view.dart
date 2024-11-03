@@ -1,13 +1,13 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:woohakdong/model/item/item.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../service/general/general_functions.dart';
 import '../../../view_model/item/item_provider.dart';
-import '../../themes/custom_widget/custom_divider.dart';
+import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
+import '../../themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import 'club_item_list_tile.dart';
 
 class ClubItemPageView extends ConsumerWidget {
@@ -30,7 +30,7 @@ class ClubItemPageView extends ConsumerWidget {
           final itemList = itemListSnapshot.data;
 
           final filteredList = isLoading
-              ? generateFakeItems(10)
+              ? generateFakeItem(10)
               : filterCategory != null
                   ? itemList!.where((item) => item.itemCategory == filterCategory).toList()
                   : itemList;
@@ -53,21 +53,14 @@ class ClubItemPageView extends ConsumerWidget {
 
           return CustomMaterialIndicator(
             onRefresh: () async {
-              await Future.delayed(const Duration(milliseconds: 750));
-              ref.refresh(itemProvider);
+              await Future.delayed(const Duration(milliseconds: 500));
+              ref.invalidate(itemProvider);
             },
-            child: Skeletonizer(
-              enabled: isLoading,
-              enableSwitchAnimation: true,
-              ignoreContainers: true,
-              effect: ShimmerEffect(
-                baseColor: context.colorScheme.surfaceContainer.withOpacity(0.6),
-                highlightColor: context.colorScheme.surfaceContainer.withOpacity(0.3),
-                duration: const Duration(milliseconds: 1000),
-              ),
+            child: CustomLoadingSkeleton(
+              isLoading: isLoading,
               child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                separatorBuilder: (context, index) => const CustomDivider(),
+                physics: const AlwaysScrollableScrollPhysics(),
+                separatorBuilder: (context, index) => const CustomHorizontalDivider(),
                 itemCount: filteredList!.length,
                 itemBuilder: (context, index) => ClubItemListTile(item: filteredList[index]),
               ),
@@ -78,7 +71,7 @@ class ClubItemPageView extends ConsumerWidget {
     );
   }
 
-  List<Item> generateFakeItems(int count) {
+  List<Item> generateFakeItem(int count) {
     return List.generate(count, (index) {
       return Item(
         itemName: '자바의 정석',

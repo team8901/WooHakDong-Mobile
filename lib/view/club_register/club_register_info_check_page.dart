@@ -6,15 +6,15 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_register/club_register_account_form_page.dart';
-import 'package:woohakdong/view/themes/custom_widget/custom_info_box.dart';
-import 'package:woohakdong/view/themes/custom_widget/custom_info_content.dart';
+import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.dart';
+import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_content.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/club/club_provider.dart';
 import '../../view_model/club/components/club_state.dart';
 import '../../view_model/club/components/club_state_provider.dart';
 import '../../view_model/util/s3_image_provider.dart';
-import '../themes/custom_widget/custom_bottom_button.dart';
+import '../themes/custom_widget/button/custom_bottom_button.dart';
 import '../themes/spacing.dart';
 
 class ClubRegisterInfoCheckPage extends ConsumerWidget {
@@ -32,7 +32,6 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.all(defaultPaddingM),
           child: SizedBox(
             width: double.infinity,

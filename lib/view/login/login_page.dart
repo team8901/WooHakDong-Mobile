@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:woohakdong/view/login/components/google_login_button.dart';
 import 'package:woohakdong/view/login/components/login_introduce.dart';
 
-import '../themes/custom_widget/custom_pop_scope.dart';
+import '../themes/custom_widget/interaction/custom_pop_scope.dart';
 import '../themes/spacing.dart';
 import 'components/login_recommend.dart';
 

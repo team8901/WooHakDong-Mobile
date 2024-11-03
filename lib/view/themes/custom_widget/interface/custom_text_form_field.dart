@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../spacing.dart';
-
-class CustomCounterTextFormField extends StatelessWidget {
+class CustomTextFormField extends StatelessWidget {
   final String labelText;
   final String? hintText;
   final bool readOnly;
+  final bool enabled;
+  final bool ignore;
   final String? initialValue;
   final TextInputType keyboardType;
   final List<TextInputFormatter>? inputFormatters;
@@ -16,14 +17,14 @@ class CustomCounterTextFormField extends StatelessWidget {
   final FormFieldSetter<String>? onSaved;
   final ValueChanged<String>? onChanged;
   final TextEditingController? controller;
-  final int minLines;
-  final int maxLength;
 
-  const CustomCounterTextFormField({
+  const CustomTextFormField({
     super.key,
     required this.labelText,
     this.hintText,
     this.readOnly = false,
+    this.enabled = true,
+    this.ignore = false,
     this.initialValue,
     this.keyboardType = TextInputType.text,
     this.inputFormatters,
@@ -32,8 +33,7 @@ class CustomCounterTextFormField extends StatelessWidget {
     this.onSaved,
     this.onChanged,
     this.controller,
-    required this.minLines,
-    required this.maxLength,
+
   });
 
   @override
@@ -44,14 +44,14 @@ class CustomCounterTextFormField extends StatelessWidget {
       textInputAction: textInputAction,
       initialValue: initialValue,
       readOnly: readOnly,
+      enabled: enabled,
+      obscureText: ignore,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
-      minLines: minLines,
+      minLines: 1,
       maxLines: null,
-      maxLength: maxLength,
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: InputDecoration(
-        alignLabelWithHint: true,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: defaultPaddingS,
           vertical: defaultPaddingXS,
@@ -62,9 +62,6 @@ class CustomCounterTextFormField extends StatelessWidget {
         ),
         hintText: hintText,
         hintStyle: context.textTheme.titleSmall?.copyWith(
-          color: context.colorScheme.outline,
-        ),
-        counterStyle: context.textTheme.labelLarge?.copyWith(
           color: context.colorScheme.outline,
         ),
         errorStyle: context.textTheme.labelLarge?.copyWith(
@@ -85,6 +82,10 @@ class CustomCounterTextFormField extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(defaultBorderRadiusM),
           borderSide: BorderSide(color: context.colorScheme.primary),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+          borderSide: BorderSide(color: context.colorScheme.surfaceContainer),
         ),
       ),
       validator: validator,

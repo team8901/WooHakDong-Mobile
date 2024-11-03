@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:woohakdong/view/themes/custom_widget/custom_bottom_button.dart';
-import 'package:woohakdong/view/themes/custom_widget/custom_circular_progress_indicator.dart';
+import 'package:woohakdong/view/themes/custom_widget/button/custom_bottom_button.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/member/member_provider.dart';
-import '../themes/custom_widget/custom_dropdown_form_field.dart';
-import '../themes/custom_widget/custom_text_form_field.dart';
+import '../themes/custom_widget/interface/custom_dropdown_form_field.dart';
+import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'member_register_info_check_page.dart';
 
@@ -34,7 +34,6 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
               final memberInfo = ref.watch(memberProvider);
 
               return SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.all(defaultPaddingM),
                 child: Form(
                   key: formKey,

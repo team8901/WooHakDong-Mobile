@@ -6,13 +6,13 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/item/item.dart';
 import 'package:woohakdong/view/club_item/components/club_item_rental_state_box.dart';
-import 'package:woohakdong/view/themes/custom_widget/custom_info_box.dart';
+import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../themes/custom_widget/custom_info_content.dart';
+import '../themes/custom_widget/interface/custom_info_content.dart';
 import '../themes/spacing.dart';
 import 'club_item_history_page.dart';
-import 'components/club_item_photo_view.dart';
+import '../themes/custom_widget/interface/cujstom_photo_view.dart';
 
 class ClubItemDetailPage extends ConsumerWidget {
   final Item itemInfo;
@@ -36,7 +36,7 @@ class ClubItemDetailPage extends ConsumerWidget {
           /// TODO 물품 편집 추가하기
           IconButton(
             onPressed: () {},
-            icon: const Icon(Symbols.edit_rounded),
+            icon: const Icon(Symbols.border_color_rounded),
           ),
 
           /// TODO 물품 삭제 추가하기
@@ -48,7 +48,6 @@ class ClubItemDetailPage extends ConsumerWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -160,7 +159,7 @@ class ClubItemDetailPage extends ConsumerWidget {
   void _pushItemPhotoView(BuildContext context, CachedNetworkImageProvider itemPhoto) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => ClubItemPhotoView(itemPhoto: itemPhoto),
+        pageBuilder: (context, animation, secondaryAnimation) => CustomPhotoView(image: itemPhoto),
         transitionDuration: const Duration(milliseconds: 150),
         reverseTransitionDuration: const Duration(milliseconds: 150),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
