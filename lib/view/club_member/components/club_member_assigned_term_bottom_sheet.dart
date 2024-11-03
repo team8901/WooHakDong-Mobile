@@ -23,6 +23,7 @@ class ClubMemberAssignedTermBottomSheet extends ConsumerWidget {
 
     return SizedBox(
       width: double.infinity,
+      height: MediaQuery.of(context).size.height * 0.36,
       child: FutureBuilder(
         future: ref.watch(clubMemberTermProvider.notifier).getClubMemberTermList(),
         builder: (context, termListSnapshot) {

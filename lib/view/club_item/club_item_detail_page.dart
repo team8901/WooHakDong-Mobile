@@ -285,6 +285,7 @@ class ClubItemDetailPage extends ConsumerWidget {
   Future<void> _toggleItemRentAvailable(BuildContext context, WidgetRef ref, bool itemAvailable) async {
     try {
       await ref.read(itemProvider.notifier).toggleItemRentAvailable(itemId, !itemAvailable);
+      GeneralFunctions.toastMessage('대여 가능 여부가 변경되었어요');
     } catch (e) {
       GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
     }
