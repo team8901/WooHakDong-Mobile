@@ -199,7 +199,7 @@ class ClubItemAddPage extends ConsumerWidget {
                 }
               }
             },
-            buttonText: '완료',
+            buttonText: '추가',
             buttonColor: Theme.of(context).colorScheme.primary,
             buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
             isLoading: itemState == ItemState.registering,

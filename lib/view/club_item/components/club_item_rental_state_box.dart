@@ -29,7 +29,7 @@ class ClubItemRentalStateBox extends StatelessWidget {
         children: [
           Icon(
             isRented ? Symbols.lock_clock_rounded : Symbols.lock_open_rounded,
-            size: 20,
+            size: 16,
             color: isRented ? context.colorScheme.inversePrimary : context.colorScheme.outline,
           ),
           const Gap(defaultGapS),

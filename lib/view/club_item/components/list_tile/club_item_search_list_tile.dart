@@ -79,48 +79,72 @@ class ClubItemSearchListTile extends StatelessWidget {
               ),
             ),
             const Gap(defaultGapM),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (searchedItem.itemUsing!)
-                  Icon(
-                    Symbols.lock_clock_rounded,
-                    color: context.colorScheme.primary,
-                    size: 12,
-                  )
-                else
-                  Icon(
-                    Symbols.lock_open_rounded,
-                    color: context.colorScheme.onSurface,
-                    size: 12,
+                if (searchedItem.itemAvailable != null && !searchedItem.itemAvailable!)
+                  Row(
+                    children: [
+                      Icon(
+                        Symbols.block_rounded,
+                        color: context.colorScheme.error,
+                        size: 12,
+                      ),
+                      const Gap(defaultGapS / 2),
+                      Text(
+                        '대여 불가',
+                        style: context.textTheme.labelLarge?.copyWith(
+                          color: context.colorScheme.error,
+                        ),
+                      ),
+                    ],
                   ),
-                const Gap(defaultGapS / 2),
-                if (searchedItem.itemUsing!)
-                  Text(
-                    '대여 중',
-                    style: context.textTheme.labelLarge?.copyWith(
-                      color: context.colorScheme.primary,
-                    ),
-                  )
-                else
-                  Text(
-                    '보관 중',
-                    style: context.textTheme.labelLarge?.copyWith(
-                      color: context.colorScheme.onSurface,
-                    ),
-                  ),
-                const Gap(defaultGapS),
-                Icon(
-                  Symbols.history_rounded,
-                  color: context.colorScheme.onSurface,
-                  size: 12,
+                Row(
+                  children: [
+                    if (searchedItem.itemUsing!)
+                      Icon(
+                        Symbols.lock_clock_rounded,
+                        color: context.colorScheme.primary,
+                        size: 12,
+                      )
+                    else
+                      Icon(
+                        Symbols.lock_open_rounded,
+                        color: context.colorScheme.onSurface,
+                        size: 12,
+                      ),
+                    const Gap(defaultGapS / 2),
+                    if (searchedItem.itemUsing!)
+                      Text(
+                        '대여 중',
+                        style: context.textTheme.labelLarge?.copyWith(
+                          color: context.colorScheme.primary,
+                        ),
+                      )
+                    else
+                      Text(
+                        '보관 중',
+                        style: context.textTheme.labelLarge?.copyWith(
+                          color: context.colorScheme.onSurface,
+                        ),
+                      ),
+                  ],
                 ),
-                const Gap(defaultGapS / 2),
-                Text(
-                  searchedItem.itemRentalTime!.toString(),
-                  style: context.textTheme.labelLarge?.copyWith(
-                    color: context.colorScheme.onSurface,
-                  ),
+                Row(
+                  children: [
+                    Icon(
+                      Symbols.history_rounded,
+                      color: context.colorScheme.onSurface,
+                      size: 12,
+                    ),
+                    const Gap(defaultGapS / 2),
+                    Text(
+                      searchedItem.itemRentalTime!.toString(),
+                      style: context.textTheme.labelLarge?.copyWith(
+                        color: context.colorScheme.onSurface,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

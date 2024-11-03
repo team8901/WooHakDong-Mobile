@@ -122,11 +122,10 @@ final ThemeData lightTheme = ThemeData(
   /// 팝업 메뉴 버튼 테마
   popupMenuTheme: PopupMenuThemeData(
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+      borderRadius: BorderRadius.circular(defaultBorderRadiusL),
     ),
-    color: lightGray,
-    labelTextStyle: WidgetStateProperty.all(CustomTextStyle.bodySmall),
-    elevation: 1,
+    color: white,
+    elevation: 3,
     menuPadding: const EdgeInsets.all(defaultPaddingS / 2),
   ),
 

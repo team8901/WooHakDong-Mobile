@@ -135,4 +135,20 @@ class ItemNotifier extends StateNotifier<Item> {
       rethrow;
     }
   }
+
+  Future<void> toggleItemRentAvailable(int itemId, bool itemAvailable) async {
+    try {
+      final currentClubId = ref.watch(clubIdProvider);
+
+      await itemRepository.toggleItemRentAvailable(
+        currentClubId!,
+        itemId,
+        itemAvailable,
+      );
+
+      await ref.refresh(itemProvider.notifier).getItemList(null, null);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -98,4 +98,26 @@ class ItemRepository {
       throw Exception();
     }
   }
+
+  Future<void> toggleItemRentAvailable(int clubId, int itemId, bool itemAvailable) async {
+    try {
+      logger.i('물품 대여 가능 여부 변경 시도');
+
+      final response = await _dio.post(
+        '/clubs/$clubId/items/$itemId/availability',
+        data: {
+          'itemAvailable': itemAvailable,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return;
+      }
+
+      throw Exception();
+    } catch (e) {
+      logger.e('물품 대여 가능 여부 변경 실패', error: e);
+      throw Exception();
+    }
+  }
 }

@@ -43,17 +43,78 @@ class ClubItemDetailPage extends ConsumerWidget {
         return Scaffold(
           appBar: AppBar(
             actions: [
-              IconButton(
-                onPressed: () => _pushItemHistoryPage(context, itemId),
-                icon: const Icon(Symbols.history_rounded),
-              ),
-              IconButton(
-                onPressed: () => _pushItemEditPage(context, itemInfo),
-                icon: const Icon(Symbols.border_color_rounded),
-              ),
-              IconButton(
-                onPressed: () => _deleteItem(context, ref),
-                icon: const Icon(Symbols.delete_rounded),
+              PopupMenuButton<String>(
+                icon: const Icon(Symbols.more_vert_rounded, grade: 600,),
+                onSelected: (value) async {
+                  switch (value) {
+                    case 'available':
+                      await _toggleItemRentAvailable(context, ref, itemInfo.itemAvailable!);
+                      break;
+                    case 'history':
+                      _pushItemHistoryPage(context, itemId);
+                      break;
+                    case 'edit':
+                      _pushItemEditPage(context, itemInfo);
+                      break;
+                    case 'delete':
+                      await _deleteItem(context, ref);
+                      break;
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'available',
+                    child: Row(
+                      children: [
+                        const Icon(Symbols.swap_horiz_rounded, size: 16),
+                        const Gap(defaultGapS),
+                        Text(
+                          '대여 가능 여부 변경',
+                          style: context.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'history',
+                    child: Row(
+                      children: [
+                        const Icon(Symbols.history_rounded, size: 16),
+                        const Gap(defaultGapS),
+                        Text(
+                          '대여 이력',
+                          style: context.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'edit',
+                    child: Row(
+                      children: [
+                        const Icon(Symbols.border_color_rounded, size: 16),
+                        const Gap(defaultGapS),
+                        Text(
+                          '물품 수정',
+                          style: context.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        const Icon(Symbols.delete_rounded, size: 16),
+                        const Gap(defaultGapS),
+                        Text(
+                          '물품 삭제',
+                          style: context.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -100,6 +161,39 @@ class ClubItemDetailPage extends ConsumerWidget {
                         ),
                         const Gap(defaultGapS),
                         ClubItemRentalStateBox(isRented: itemInfo.itemUsing!),
+                        if (itemInfo.itemAvailable != null && !itemInfo.itemAvailable!)
+                          Column(
+                            children: [
+                              const Gap(defaultGapS),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: defaultPaddingS - 8,
+                                  vertical: defaultPaddingXS - 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: context.colorScheme.error,
+                                  borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Symbols.block_rounded,
+                                      size: 16,
+                                      color: context.colorScheme.inversePrimary,
+                                    ),
+                                    const Gap(defaultGapS),
+                                    Text(
+                                      '대여 불가',
+                                      style: context.textTheme.titleSmall?.copyWith(
+                                        color: context.colorScheme.inversePrimary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         const Gap(defaultGapXL * 2),
                         CustomInfoBox(
                           infoTitle: '물품 설명',
@@ -183,6 +277,14 @@ class ClubItemDetailPage extends ConsumerWidget {
           Navigator.pop(context);
         }
       }
+    } catch (e) {
+      GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
+    }
+  }
+
+  Future<void> _toggleItemRentAvailable(BuildContext context, WidgetRef ref, bool itemAvailable) async {
+    try {
+      await ref.read(itemProvider.notifier).toggleItemRentAvailable(itemId, !itemAvailable);
     } catch (e) {
       GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
     }

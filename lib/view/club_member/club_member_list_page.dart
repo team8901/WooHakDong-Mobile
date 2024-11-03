@@ -51,9 +51,7 @@ class ClubMemberListPage extends ConsumerWidget {
               final termList = snapshot.data ?? [];
 
               return PopupMenuButton<ClubMemberTerm>(
-                padding: EdgeInsets.zero,
-                elevation: 0,
-                icon: const Icon(Symbols.reorder_rounded),
+                icon: const Icon(Symbols.menu_rounded),
                 onSelected: (ClubMemberTerm term) {
                   final selectedTerm = DateFormat('yyyy-MM-dd').format(term.clubHistoryUsageDate!);
 
@@ -65,14 +63,10 @@ class ClubMemberListPage extends ConsumerWidget {
                   return [
                     for (final term in termList)
                       PopupMenuItem<ClubMemberTerm>(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPaddingS,
-                          vertical: defaultPaddingXS,
-                        ),
                         value: term,
                         child: Text(
                           GeneralFunctions.formatClubAssignedTerm(term.clubHistoryUsageDate.toString()),
-                          style: context.textTheme.bodyMedium,
+                          style: context.textTheme.bodySmall,
                         ),
                       ),
                   ];
@@ -99,7 +93,7 @@ class ClubMemberListPage extends ConsumerWidget {
               if (!isLoading && (clubMemberList == null || clubMemberList.isEmpty)) {
                 return Center(
                   child: Text(
-                    '아직 등록된 물품이 없어요',
+                    '이 학기에 등록된 회원이 없어요',
                     style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
                   ),
                 );

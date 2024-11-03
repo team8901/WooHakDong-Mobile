@@ -87,6 +87,24 @@ class ClubItemListTile extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        if (item.itemAvailable != null && !item.itemAvailable!)
+                          Row(
+                            children: [
+                              Icon(
+                                Symbols.block_rounded,
+                                color: context.colorScheme.error,
+                                size: 12,
+                              ),
+                              const Gap(defaultGapS / 2),
+                              Text(
+                                '대여 불가',
+                                style: context.textTheme.labelLarge?.copyWith(
+                                  color: context.colorScheme.error,
+                                ),
+                              ),
+                            ],
+                          ),
+                        const Gap(defaultGapS / 2),
                         if (item.itemUsing!)
                           Icon(
                             Symbols.lock_clock_rounded,
