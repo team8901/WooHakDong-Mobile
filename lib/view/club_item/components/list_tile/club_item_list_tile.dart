@@ -7,10 +7,10 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/custom_widget/etc/custom_vertical_divider.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../model/item/item.dart';
-import '../../../service/general/general_functions.dart';
-import '../../themes/spacing.dart';
-import '../club_item_detail_page.dart';
+import '../../../../model/item/item.dart';
+import '../../../../service/general/general_functions.dart';
+import '../../../themes/spacing.dart';
+import '../../club_item_detail_page.dart';
 
 class ClubItemListTile extends StatelessWidget {
   final Item item;
@@ -58,7 +58,6 @@ class ClubItemListTile extends StatelessWidget {
                     Text(
                       item.itemName!,
                       style: context.textTheme.bodyLarge,
-                      softWrap: true,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const Gap(defaultGapS / 4),
@@ -73,10 +72,13 @@ class ClubItemListTile extends StatelessWidget {
                         const Gap(defaultGapS),
                         const CustomVerticalDivider(),
                         const Gap(defaultGapS),
-                        Text(
-                          item.itemLocation!,
-                          style: context.textTheme.bodySmall?.copyWith(
-                            color: context.colorScheme.onSurface,
+                        Flexible(
+                          child: Text(
+                            item.itemLocation!,
+                            style: context.textTheme.bodySmall?.copyWith(
+                              color: context.colorScheme.onSurface,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],

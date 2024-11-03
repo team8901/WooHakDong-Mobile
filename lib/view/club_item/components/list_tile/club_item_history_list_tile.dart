@@ -7,7 +7,7 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:woohakdong/model/item/item_history.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../themes/spacing.dart';
+import '../../../themes/spacing.dart';
 
 class ClubItemHistoryListTile extends StatelessWidget {
   final ItemHistory itemHistory;

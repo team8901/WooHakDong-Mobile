@@ -8,7 +8,7 @@ import '../../../service/general/general_functions.dart';
 import '../../../view_model/item/item_provider.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../../themes/custom_widget/interaction/custom_loading_skeleton.dart';
-import 'club_item_list_tile.dart';
+import 'list_tile/club_item_list_tile.dart';
 
 class ClubItemPageView extends ConsumerWidget {
   final String? filterCategory;

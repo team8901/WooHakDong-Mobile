@@ -162,7 +162,8 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
                       await clubNotifier.updateClubMemberRole(widget.currentClubMember.clubMemberId!, selectedRole!);
 
                       if (context.mounted) {
-                        GeneralFunctions.toastMessage('${widget.currentClubMember.memberName}님의 역할이 변경되었어요');
+                        GeneralFunctions.toastMessage(
+                            '${widget.currentClubMember.memberName}님의 역할이 ${GeneralFunctions.formatClubRole(selectedRole!)}(으)로 변경되었어요');
                         ref.invalidate(clubMemberProvider);
                         Navigator.pop(context);
                       }
