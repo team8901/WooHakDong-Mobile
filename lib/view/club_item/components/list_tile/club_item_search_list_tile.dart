@@ -36,7 +36,7 @@ class ClubItemSearchListTile extends StatelessWidget {
                 child: Icon(
                   Symbols.search_rounded,
                   color: context.colorScheme.onSurface,
-                  size: 20,
+                  size: 16,
                 ),
               ),
             ),

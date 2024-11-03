@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_item/components/club_item_edit_controller.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/item/components/item_state_provider.dart';
@@ -87,20 +88,42 @@ class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
                       context: context,
                       builder: (context) => ClubItemImageDialog(s3ImageNotifier: s3ImageNotifier),
                     ),
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: context.colorScheme.surfaceContainer),
-                        borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                        image: s3ImageState.pickedImages.isEmpty
-                            ? DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              )
-                            : DecorationImage(
-                                image: FileImage(s3ImageState.pickedImages[0]),
-                                fit: BoxFit.cover,
-                              ),
-                      ),
+                    child: Stack(
+                      children: [
+                        Ink(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: context.colorScheme.surfaceContainer),
+                            borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                            image: s3ImageState.pickedImages.isEmpty
+                                ? DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  )
+                                : DecorationImage(
+                                    image: FileImage(s3ImageState.pickedImages[0]),
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            width: 32.r,
+                            height: 32.r,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: context.colorScheme.inverseSurface,
+                            ),
+                            child: Icon(
+                              Symbols.camera_alt_rounded,
+                              color: context.colorScheme.surfaceDim,
+                              size: 16,
+                              fill: 1,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

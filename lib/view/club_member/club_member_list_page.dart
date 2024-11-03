@@ -3,15 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/club_member/club_member.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
+import 'package:woohakdong/view/club_member/components/club_member_assigned_term_bottom_sheet.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
-import 'package:woohakdong/view_model/club_member/club_member_term_provider.dart';
 
-import '../../model/club_member/club_member_term.dart';
 import '../../view_model/club_member/club_member_provider.dart';
 import '../../view_model/club_member/components/club_selected_term_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
@@ -28,51 +26,37 @@ class ClubMemberListPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            const Text('회원'),
-            const Gap(defaultGapS),
-            if (clubHistoryUsageDate!.isNotEmpty)
-              Text(
-                GeneralFunctions.formatClubAssignedTerm(clubHistoryUsageDate),
-                style: context.textTheme.bodyMedium,
+        title: InkWell(
+          onTap: () {
+            showModalBottomSheet(
+              useSafeArea: true,
+              context: context,
+              builder: (context) => const ClubMemberAssignedTermBottomSheet(),
+            );
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('회원'),
+              const Gap(defaultGapS),
+              if (clubHistoryUsageDate!.isNotEmpty)
+                Text(
+                  GeneralFunctions.formatClubAssignedTerm(clubHistoryUsageDate),
+                  style: context.textTheme.bodyMedium,
+                ),
+              const Gap(defaultGapS / 2),
+              const Icon(
+                Symbols.keyboard_arrow_down_rounded,
+                size: 20,
               ),
-          ],
+            ],
+          ),
         ),
         actions: [
           IconButton(
             onPressed: () => _pushMemberSearchPage(context),
             icon: const Icon(Symbols.search_rounded),
-          ),
-          FutureBuilder(
-            future: ref.watch(clubMemberTermProvider.notifier).getClubMemberTermList(),
-            builder: (context, snapshot) {
-              final termList = snapshot.data ?? [];
-
-              return PopupMenuButton<ClubMemberTerm>(
-                icon: const Icon(Symbols.menu_rounded),
-                onSelected: (ClubMemberTerm term) {
-                  final selectedTerm = DateFormat('yyyy-MM-dd').format(term.clubHistoryUsageDate!);
-
-                  ref.read(clubSelectedTermProvider.notifier).state = selectedTerm;
-
-                  ref.invalidate(clubMemberProvider);
-                },
-                itemBuilder: (context) {
-                  return [
-                    for (final term in termList)
-                      PopupMenuItem<ClubMemberTerm>(
-                        value: term,
-                        child: Text(
-                          GeneralFunctions.formatClubAssignedTerm(term.clubHistoryUsageDate.toString()),
-                          style: context.textTheme.bodySmall,
-                        ),
-                      ),
-                  ];
-                },
-              );
-            },
           ),
         ],
       ),
