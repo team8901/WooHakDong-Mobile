@@ -50,9 +50,7 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
             const Gap(defaultGapS / 2),
             Text(
               '변경하려는 역할을 선택해 주세요',
-              style: context.textTheme.bodySmall?.copyWith(
-                color: context.colorScheme.onSurface,
-              ),
+              style: context.textTheme.bodyLarge,
             ),
             const Gap(defaultPaddingS * 2),
             Container(

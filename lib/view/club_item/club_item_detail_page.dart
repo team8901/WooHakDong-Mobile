@@ -5,10 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
+import 'package:woohakdong/view/club_item/club_item_edit_page.dart';
 import 'package:woohakdong/view/club_item/components/club_item_rental_state_box.dart';
 import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../model/item/item.dart';
 import '../../view_model/item/item_provider.dart';
 import '../themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import '../themes/custom_widget/interface/custom_info_content.dart';
@@ -27,9 +29,11 @@ class ClubItemDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder(
-      future: ref.read(itemProvider.notifier).getItemById(itemId),
+      future: ref.watch(itemProvider.notifier).getItemById(itemId),
       builder: (context, itemSnapshot) {
         if (itemSnapshot.connectionState != ConnectionState.done) {
+          return const Scaffold(body: CustomCircularProgressIndicator());
+        } else if (itemSnapshot.hasError || itemSnapshot.data == null) {
           return const Scaffold(body: CustomCircularProgressIndicator());
         }
 
@@ -43,33 +47,12 @@ class ClubItemDetailPage extends ConsumerWidget {
                 onPressed: () => _pushItemHistoryPage(context, itemId),
                 icon: const Icon(Symbols.history_rounded),
               ),
-
-              /// TODO 물품 편집 추가하기
               IconButton(
-                onPressed: () {},
+                onPressed: () => _pushItemEditPage(context, itemInfo),
                 icon: const Icon(Symbols.border_color_rounded),
               ),
-
               IconButton(
-                onPressed: () async {
-                  try {
-                    final bool? isDelete = await showDialog<bool>(
-                      context: context,
-                      builder: (context) => const ClubItemDeleteDialog(),
-                    );
-
-                    if (isDelete == true) {
-                      await ref.read(itemProvider.notifier).deleteItem(itemId);
-
-                      if (context.mounted) {
-                        GeneralFunctions.toastMessage('물품이 삭제되었어요');
-                        Navigator.pop(context);
-                      }
-                    }
-                  } catch (e) {
-                    GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
-                  }
-                },
+                onPressed: () => _deleteItem(context, ref),
                 icon: const Icon(Symbols.delete_rounded),
               ),
             ],
@@ -145,7 +128,7 @@ class ClubItemDetailPage extends ConsumerWidget {
                               ),
                               const Gap(defaultGapM),
                               CustomInfoContent(
-                                infoContent: '${itemInfo.itemRentalMaxDay!.toString()} 일',
+                                infoContent: '${itemInfo.itemRentalMaxDay!.toString()}일 대여 가능',
                                 icon: Icon(
                                   Symbols.hourglass_rounded,
                                   size: 16,
@@ -174,5 +157,34 @@ class ClubItemDetailPage extends ConsumerWidget {
         builder: (context) => ClubItemHistoryPage(itemId: itemId),
       ),
     );
+  }
+
+  void _pushItemEditPage(BuildContext context, Item itemInfo) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => ClubItemEditPage(itemInfo: itemInfo),
+      ),
+    );
+  }
+
+  Future<void> _deleteItem(BuildContext context, WidgetRef ref) async {
+    try {
+      final bool? isDelete = await showDialog<bool>(
+        context: context,
+        builder: (context) => const ClubItemDeleteDialog(),
+      );
+
+      if (isDelete == true) {
+        await ref.read(itemProvider.notifier).deleteItem(itemId);
+
+        if (context.mounted) {
+          GeneralFunctions.toastMessage('물품이 삭제되었어요');
+          Navigator.pop(context);
+        }
+      }
+    } catch (e) {
+      GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
+    }
   }
 }

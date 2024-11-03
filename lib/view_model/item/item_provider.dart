@@ -78,7 +78,7 @@ class ItemNotifier extends StateNotifier<Item> {
         ),
       );
 
-      ref.refresh(itemProvider.notifier).getItemList(null, null);
+      await ref.refresh(itemProvider.notifier).getItemList(null, null);
       ref.read(itemStateProvider.notifier).state = ItemState.registered;
     } catch (e) {
       ref.read(itemStateProvider.notifier).state = ItemState.initial;
@@ -113,7 +113,7 @@ class ItemNotifier extends StateNotifier<Item> {
         ),
       );
 
-      ref.refresh(itemProvider.notifier).getItemList(null, null);
+      await ref.refresh(itemProvider.notifier).getItemList(null, null);
       ref.read(itemStateProvider.notifier).state = ItemState.registered;
     } catch (e) {
       ref.read(itemStateProvider.notifier).state = ItemState.initial;
@@ -130,7 +130,7 @@ class ItemNotifier extends StateNotifier<Item> {
         itemId,
       );
 
-      ref.refresh(itemProvider.notifier).getItemList(null, null);
+      await ref.refresh(itemProvider.notifier).getItemList(null, null);
     } catch (e) {
       rethrow;
     }
