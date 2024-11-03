@@ -27,7 +27,7 @@ class ClubItemListTile extends StatelessWidget {
         : const AssetImage('assets/images/club/club_basic_image.jpg') as ImageProvider;
 
     return InkWell(
-      onTap: () => _pushItemDetailPage(context, item),
+      onTap: () => _pushItemDetailPage(context, item.itemId!),
       highlightColor: context.colorScheme.surfaceContainer,
       child: Ink(
         child: Padding(
@@ -137,11 +137,11 @@ class ClubItemListTile extends StatelessWidget {
     );
   }
 
-  void _pushItemDetailPage(BuildContext context, Item itemInfo) {
+  void _pushItemDetailPage(BuildContext context, int itemId) {
     Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (context) => ClubItemDetailPage(itemInfo: itemInfo),
+        builder: (context) => ClubItemDetailPage(itemId: itemId),
       ),
     );
   }

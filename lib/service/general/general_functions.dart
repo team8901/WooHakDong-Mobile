@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:currency_formatter/currency_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../view/themes/custom_widget/interaction/custom_permission_denied_dialog.dart';
+import '../../view/themes/custom_widget/interface/cujstom_photo_view.dart';
 import '../../view_model/util/s3_image_provider.dart';
 
 class GeneralFunctions {
@@ -183,5 +185,29 @@ class GeneralFunctions {
         GeneralFunctions.toastMessage('앨범 접근 권한이 필요해요');
       }
     }
+  }
+
+  static void pushImageView(BuildContext context, CachedNetworkImageProvider image) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => CustomPhotoView(image: image),
+        transitionDuration: const Duration(milliseconds: 150),
+        reverseTransitionDuration: const Duration(milliseconds: 150),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var curve = CurvedAnimation(
+            parent: animation,
+            curve: Curves.fastOutSlowIn,
+            reverseCurve: Curves.fastOutSlowIn,
+          );
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 1),
+              end: Offset.zero,
+            ).animate(curve),
+            child: child,
+          );
+        },
+      ),
+    );
   }
 }

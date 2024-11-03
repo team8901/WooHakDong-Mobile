@@ -5,7 +5,7 @@ import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../view_model/util/s3_image_provider.dart';
+import '../../../../view_model/util/s3_image_provider.dart';
 
 class ClubItemImageDialog extends StatelessWidget {
   final S3ImageNotifier s3ImageNotifier;

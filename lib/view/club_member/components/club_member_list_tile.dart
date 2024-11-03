@@ -89,9 +89,10 @@ class ClubMemberListTile extends StatelessWidget {
   void _pushMemberDetailPage(BuildContext context, int clubMemberId) {
     Navigator.of(context).push(
       CupertinoPageRoute(
-          builder: (context) => ClubMemberDetailPage(
-                clubMemberId: clubMemberId,
-              )),
+        builder: (context) => ClubMemberDetailPage(
+          clubMemberId: clubMemberId,
+        ),
+      ),
     );
   }
 }

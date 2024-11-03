@@ -23,29 +23,18 @@ class ClubItemPageView extends ConsumerWidget {
     return SizedBox(
       width: double.infinity,
       child: FutureBuilder(
-        future: ref.watch(itemProvider.notifier).getItemList(),
+        future: ref.watch(itemProvider.notifier).getItemList(null, filterCategory),
         builder: (context, itemListSnapshot) {
           final isLoading = itemListSnapshot.connectionState == ConnectionState.waiting;
 
-          final itemList = itemListSnapshot.data;
-
-          final filteredList = isLoading
-              ? generateFakeItem(10)
-              : filterCategory != null
-                  ? itemList!.where((item) => item.itemCategory == filterCategory).toList()
-                  : itemList;
+          final itemList = isLoading ? generateFakeItem(10) : itemListSnapshot.data;
 
           if (!isLoading && (itemList == null || itemList.isEmpty)) {
             return Center(
               child: Text(
-                '아직 등록된 물품이 없어요',
-                style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-              ),
-            );
-          } else if (!isLoading && (filteredList == null || filteredList.isEmpty)) {
-            return Center(
-              child: Text(
-                '${GeneralFunctions.formatItemCategory(filterCategory!)} 카테고리에 등록된 물품이 없어요',
+                (filterCategory == null)
+                    ? '아직 등록된 물품이 없어요'
+                    : '${GeneralFunctions.formatItemCategory(filterCategory!)} 카테고리에 등록된 물품이 없어요',
                 style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
               ),
             );
@@ -61,8 +50,8 @@ class ClubItemPageView extends ConsumerWidget {
               child: ListView.separated(
                 physics: const AlwaysScrollableScrollPhysics(),
                 separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                itemCount: filteredList!.length,
-                itemBuilder: (context, index) => ClubItemListTile(item: filteredList[index]),
+                itemCount: itemList!.length,
+                itemBuilder: (context, index) => ClubItemListTile(item: itemList[index]),
               ),
             ),
           );

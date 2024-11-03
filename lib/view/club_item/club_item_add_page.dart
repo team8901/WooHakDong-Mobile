@@ -21,7 +21,7 @@ import '../themes/custom_widget/interface/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/interface/custom_dropdown_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
-import 'components/club_item_image_dialog.dart';
+import 'components/dialog/club_item_image_dialog.dart';
 
 class ClubItemAddPage extends ConsumerWidget {
   const ClubItemAddPage({super.key});
