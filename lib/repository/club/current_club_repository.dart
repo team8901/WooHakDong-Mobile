@@ -9,7 +9,7 @@ class CurrentClubRepository {
 
   Future<CurrentClub> getCurrentClubInfo(int clubId) async {
     try {
-      logger.i('동아리 정보 조회 시도');
+      logger.i('현재 동아리 정보 조회 시도');
 
       final response = await _dio.get('/clubs/$clubId');
 
@@ -19,14 +19,14 @@ class CurrentClubRepository {
 
       throw Exception();
     } catch (e) {
-      logger.e('동아리 정보 조회 실패', error: e);
+      logger.e('현재 동아리 정보 조회 실패', error: e);
       throw Exception();
     }
   }
 
   Future<CurrentClub> updateCurrentClubInfo(CurrentClub currentClub, int clubId) async {
     try {
-      logger.i('동아리 정보 수정 시도');
+      logger.i('현재 동아리 정보 수정 시도');
 
       final response = await _dio.put(
         '/clubs/$clubId',
@@ -39,7 +39,7 @@ class CurrentClubRepository {
 
       throw Exception();
     } catch (e) {
-      logger.e('동아리 정보 수정 실패', error: e);
+      logger.e('현재 동아리 정보 수정 실패', error: e);
       throw Exception();
     }
   }
