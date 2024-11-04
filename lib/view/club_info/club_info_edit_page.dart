@@ -84,7 +84,6 @@ class _ClubInfoEditPageState extends ConsumerState<ClubInfoEditPage> {
                       ),
                       child: Stack(
                         children: [
-                          // The image background
                           SizedBox.expand(
                             child: Ink(
                               decoration: BoxDecoration(

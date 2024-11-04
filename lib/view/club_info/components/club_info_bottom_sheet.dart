@@ -25,6 +25,7 @@ class ClubInfoBottomSheet extends ConsumerWidget {
 
     return SizedBox(
       width: double.infinity,
+      height: MediaQuery.of(context).size.height * 0.36,
       child: FutureBuilder(
         future: ref.watch(clubProvider.notifier).getClubList(),
         builder: (context, clubListSnapshot) {
@@ -50,6 +51,7 @@ class ClubInfoBottomSheet extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('동아리 목록', style: context.textTheme.titleLarge),
+                        const Gap(defaultGapS / 4),
                         Text(
                           '현재 등록되어 있는 동아리 목록이에요',
                           style: context.textTheme.bodySmall?.copyWith(

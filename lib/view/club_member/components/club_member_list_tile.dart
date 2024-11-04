@@ -37,18 +37,20 @@ class ClubMemberListTile extends StatelessWidget {
                         Text(clubMember.memberName!, style: context.textTheme.bodyLarge),
                         const Gap(defaultGapS / 2),
                         if (clubMember.clubMemberRole != 'MEMBER')
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: defaultPaddingXS / 2,
-                              vertical: defaultPaddingXS / 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: context.colorScheme.primary.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
-                            ),
-                            child: Text(
-                              GeneralFunctions.formatClubRole(clubMember.clubMemberRole!),
-                              style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.primary),
+                          Flexible(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPaddingXS / 2,
+                                vertical: defaultPaddingXS / 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: context.colorScheme.primary.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                              ),
+                              child: Text(
+                                GeneralFunctions.formatClubRole(clubMember.clubMemberRole!),
+                                style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.primary),
+                              ),
                             ),
                           ),
                       ],
@@ -56,25 +58,29 @@ class ClubMemberListTile extends StatelessWidget {
                     const Gap(defaultGapS / 2),
                     Row(
                       children: [
-                        Text(
-                          clubMember.memberMajor!,
-                          style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-                          softWrap: true,
+                        Flexible(
+                          child: Text(
+                            clubMember.memberMajor!,
+                            style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                            softWrap: true,
+                          ),
                         ),
                         const Gap(defaultGapS),
                         const CustomVerticalDivider(),
                         const Gap(defaultGapS),
-                        Text(
-                          clubMember.memberStudentNumber!,
-                          style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-                          softWrap: true,
+                        Flexible(
+                          child: Text(
+                            clubMember.memberStudentNumber!,
+                            style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                            softWrap: true,
+                          ),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              const Gap(defaultGapS),
+              const Gap(defaultGapM),
               Icon(
                 Symbols.chevron_right_rounded,
                 color: context.colorScheme.outline,
@@ -89,9 +95,10 @@ class ClubMemberListTile extends StatelessWidget {
   void _pushMemberDetailPage(BuildContext context, int clubMemberId) {
     Navigator.of(context).push(
       CupertinoPageRoute(
-          builder: (context) => ClubMemberDetailPage(
-                clubMemberId: clubMemberId,
-              )),
+        builder: (context) => ClubMemberDetailPage(
+          clubMemberId: clubMemberId,
+        ),
+      ),
     );
   }
 }

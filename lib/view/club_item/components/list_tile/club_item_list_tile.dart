@@ -7,10 +7,10 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/custom_widget/etc/custom_vertical_divider.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../model/item/item.dart';
-import '../../../service/general/general_functions.dart';
-import '../../themes/spacing.dart';
-import '../club_item_detail_page.dart';
+import '../../../../model/item/item.dart';
+import '../../../../service/general/general_functions.dart';
+import '../../../themes/spacing.dart';
+import '../../club_item_detail_page.dart';
 
 class ClubItemListTile extends StatelessWidget {
   final Item item;
@@ -27,7 +27,7 @@ class ClubItemListTile extends StatelessWidget {
         : const AssetImage('assets/images/club/club_basic_image.jpg') as ImageProvider;
 
     return InkWell(
-      onTap: () => _pushItemDetailPage(context, item),
+      onTap: () => _pushItemDetailPage(context, item.itemId!),
       highlightColor: context.colorScheme.surfaceContainer,
       child: Ink(
         child: Padding(
@@ -58,7 +58,6 @@ class ClubItemListTile extends StatelessWidget {
                     Text(
                       item.itemName!,
                       style: context.textTheme.bodyLarge,
-                      softWrap: true,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const Gap(defaultGapS / 4),
@@ -73,10 +72,13 @@ class ClubItemListTile extends StatelessWidget {
                         const Gap(defaultGapS),
                         const CustomVerticalDivider(),
                         const Gap(defaultGapS),
-                        Text(
-                          item.itemLocation!,
-                          style: context.textTheme.bodySmall?.copyWith(
-                            color: context.colorScheme.onSurface,
+                        Flexible(
+                          child: Text(
+                            item.itemLocation!,
+                            style: context.textTheme.bodySmall?.copyWith(
+                              color: context.colorScheme.onSurface,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -85,6 +87,24 @@ class ClubItemListTile extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        if (item.itemAvailable != null && !item.itemAvailable!)
+                          Row(
+                            children: [
+                              Icon(
+                                Symbols.block_rounded,
+                                color: context.colorScheme.error,
+                                size: 12,
+                              ),
+                              const Gap(defaultGapS / 2),
+                              Text(
+                                '대여 불가',
+                                style: context.textTheme.labelLarge?.copyWith(
+                                  color: context.colorScheme.error,
+                                ),
+                              ),
+                            ],
+                          ),
+                        const Gap(defaultGapS / 2),
                         if (item.itemUsing!)
                           Icon(
                             Symbols.lock_clock_rounded,
@@ -137,11 +157,11 @@ class ClubItemListTile extends StatelessWidget {
     );
   }
 
-  void _pushItemDetailPage(BuildContext context, Item itemInfo) {
+  void _pushItemDetailPage(BuildContext context, int itemId) {
     Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (context) => ClubItemDetailPage(itemInfo: itemInfo),
+        builder: (context) => ClubItemDetailPage(itemId: itemId),
       ),
     );
   }

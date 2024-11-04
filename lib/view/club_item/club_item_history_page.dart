@@ -7,7 +7,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/item/item_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
-import 'components/club_item_history_list_tile.dart';
+import 'components/list_tile/club_item_history_list_tile.dart';
 
 class ClubItemHistoryPage extends ConsumerWidget {
   final int itemId;

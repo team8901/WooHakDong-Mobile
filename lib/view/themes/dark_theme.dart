@@ -122,11 +122,10 @@ final ThemeData darkTheme = ThemeData(
   /// 팝업 메뉴 버튼 테마
   popupMenuTheme: PopupMenuThemeData(
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+      borderRadius: BorderRadius.circular(defaultBorderRadiusL),
     ),
-    color: darkGray,
-    labelTextStyle: WidgetStateProperty.all(CustomTextStyle.bodySmall.copyWith(color: white)),
-    elevation: 1,
+    color: black,
+    elevation: 3,
     menuPadding: const EdgeInsets.all(defaultPaddingS / 2),
   ),
 

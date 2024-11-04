@@ -54,7 +54,7 @@ class ClubRegisterImageDialog extends StatelessWidget {
                       const Gap(defaultGapXL),
                       Text(
                         '사진 촬영',
-                        style: context.textTheme.bodyMedium,
+                        style: context.textTheme.bodyLarge,
                       ),
                     ],
                   ),
@@ -77,7 +77,7 @@ class ClubRegisterImageDialog extends StatelessWidget {
                       const Gap(defaultGapXL),
                       Text(
                         '사진 선택',
-                        style: context.textTheme.bodyMedium,
+                        style: context.textTheme.bodyLarge,
                       ),
                     ],
                   ),
@@ -100,7 +100,7 @@ class ClubRegisterImageDialog extends StatelessWidget {
                       const Gap(defaultGapXL),
                       Text(
                         '기본 이미지 적용',
-                        style: context.textTheme.bodyMedium,
+                        style: context.textTheme.bodyLarge,
                       ),
                     ],
                   ),

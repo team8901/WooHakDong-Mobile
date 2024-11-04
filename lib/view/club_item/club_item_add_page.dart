@@ -21,7 +21,7 @@ import '../themes/custom_widget/interface/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/interface/custom_dropdown_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
-import 'components/club_item_image_dialog.dart';
+import 'components/dialog/club_item_image_dialog.dart';
 
 class ClubItemAddPage extends ConsumerWidget {
   const ClubItemAddPage({super.key});
@@ -102,7 +102,6 @@ class ClubItemAddPage extends ConsumerWidget {
                   const Gap(defaultGapM),
                   CustomTextFormField(
                     labelText: '물품 이름',
-                    keyboardType: TextInputType.text,
                     onSaved: (value) => itemInfo.itemName = value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -136,7 +135,6 @@ class ClubItemAddPage extends ConsumerWidget {
                     hintText: '200자 이내로 입력해 주세요',
                     minLines: 4,
                     maxLength: 200,
-                    keyboardType: TextInputType.text,
                     onSaved: (value) => itemInfo.itemDescription = value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -201,7 +199,7 @@ class ClubItemAddPage extends ConsumerWidget {
                 }
               }
             },
-            buttonText: '완료',
+            buttonText: '추가',
             buttonColor: Theme.of(context).colorScheme.primary,
             buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
             isLoading: itemState == ItemState.registering,

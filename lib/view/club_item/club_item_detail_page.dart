@@ -4,179 +4,246 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/model/item/item.dart';
+import 'package:woohakdong/service/general/general_functions.dart';
+import 'package:woohakdong/view/club_item/club_item_edit_page.dart';
 import 'package:woohakdong/view/club_item/components/club_item_rental_state_box.dart';
 import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../model/item/item.dart';
+import '../../view_model/item/item_provider.dart';
+import '../themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import '../themes/custom_widget/interface/custom_info_content.dart';
 import '../themes/spacing.dart';
 import 'club_item_history_page.dart';
-import '../themes/custom_widget/interface/cujstom_photo_view.dart';
+import 'components/dialog/club_item_delete_dialog.dart';
 
 class ClubItemDetailPage extends ConsumerWidget {
-  final Item itemInfo;
+  final int itemId;
 
   const ClubItemDetailPage({
     super.key,
-    required this.itemInfo,
+    required this.itemId,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final CachedNetworkImageProvider itemPhoto = CachedNetworkImageProvider(itemInfo.itemPhoto!);
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () => _pushItemHistoryPage(context, itemInfo.itemId!),
-            icon: const Icon(Symbols.history_rounded),
-          ),
+    return FutureBuilder(
+      future: ref.watch(itemProvider.notifier).getItemById(itemId),
+      builder: (context, itemSnapshot) {
+        if (itemSnapshot.connectionState != ConnectionState.done) {
+          return const Scaffold(body: CustomCircularProgressIndicator());
+        } else if (itemSnapshot.hasError || itemSnapshot.data == null) {
+          return const Scaffold(body: CustomCircularProgressIndicator());
+        }
 
-          /// TODO 물품 편집 추가하기
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Symbols.border_color_rounded),
-          ),
+        final itemInfo = itemSnapshot.data!;
+        final CachedNetworkImageProvider itemPhoto = CachedNetworkImageProvider(itemInfo.itemPhoto!);
 
-          /// TODO 물품 삭제 추가하기
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Symbols.delete_rounded),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () => _pushItemPhotoView(context, itemPhoto),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: CachedNetworkImage(
-                    imageUrl: itemInfo.itemPhoto!,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) {
-                      return AspectRatio(
-                        aspectRatio: 1,
-                        child: Container(
-                          width: double.infinity,
-                          color: context.colorScheme.surfaceContainer,
+        return Scaffold(
+          appBar: AppBar(
+            actions: [
+              PopupMenuButton<String>(
+                icon: const Icon(
+                  Symbols.more_vert_rounded,
+                  grade: 600,
+                ),
+                onSelected: (value) async {
+                  switch (value) {
+                    case 'available':
+                      await _toggleItemRentAvailable(context, ref, itemInfo.itemAvailable!);
+                      break;
+                    case 'history':
+                      _pushItemHistoryPage(context, itemId);
+                      break;
+                    case 'edit':
+                      _pushItemEditPage(context, itemInfo);
+                      break;
+                    case 'delete':
+                      await _deleteItem(context, ref);
+                      break;
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'available',
+                    child: Row(
+                      children: [
+                        const Icon(Symbols.swap_horiz_rounded, size: 16),
+                        const Gap(defaultGapM),
+                        Text(
+                          '대여 가능 여부 변경',
+                          style: context.textTheme.bodySmall,
                         ),
-                      );
-                    },
+                      ],
+                    ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(defaultPaddingM),
-                child: Column(
-                  children: [
-                    Center(
-                      child: Text(
-                        _translateItemCategory(itemInfo.itemCategory!),
-                        style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface),
-                      ),
-                    ),
-                    const Gap(defaultGapS),
-                    Center(
-                      child: Text(
-                        itemInfo.itemName!,
-                        style: context.textTheme.titleLarge,
-                      ),
-                    ),
-                    const Gap(defaultGapS),
-                    ClubItemRentalStateBox(isRented: itemInfo.itemUsing!),
-                    const Gap(defaultGapXL * 2),
-                    CustomInfoBox(
-                      infoTitle: '물품 설명',
-                      child: CustomInfoContent(
-                        infoContent: itemInfo.itemDescription!,
-                        icon: Icon(
-                          Symbols.info_rounded,
-                          size: 16,
-                          color: context.colorScheme.outline,
+                  PopupMenuItem<String>(
+                    value: 'history',
+                    child: Row(
+                      children: [
+                        const Icon(Symbols.history_rounded, size: 16),
+                        const Gap(defaultGapM),
+                        Text(
+                          '대여 내역',
+                          style: context.textTheme.bodySmall,
                         ),
-                      ),
+                      ],
                     ),
-                    const Gap(defaultGapXL),
-                    CustomInfoBox(
-                      infoTitle: '물품 추가 정보',
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomInfoContent(
-                            infoContent: itemInfo.itemLocation!,
-                            icon: Icon(
-                              Symbols.pin_drop_rounded,
-                              size: 16,
-                              color: context.colorScheme.outline,
-                            ),
-                          ),
-                          const Gap(defaultGapM),
-                          CustomInfoContent(
-                            infoContent: '${itemInfo.itemRentalMaxDay!.toString()} 일',
-                            icon: Icon(
-                              Symbols.hourglass_rounded,
-                              size: 16,
-                              color: context.colorScheme.outline,
-                            ),
-                          ),
-                        ],
-                      ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'edit',
+                    child: Row(
+                      children: [
+                        const Icon(Symbols.border_color_rounded, size: 16),
+                        const Gap(defaultGapM),
+                        Text(
+                          '물품 수정',
+                          style: context.textTheme.bodySmall,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        const Icon(Symbols.delete_rounded, size: 16),
+                        const Gap(defaultGapM),
+                        Text(
+                          '물품 삭제',
+                          style: context.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  String _translateItemCategory(String itemCategory) {
-    switch (itemCategory) {
-      case 'DIGITAL':
-        return '디지털';
-      case 'SPORT':
-        return '스포츠';
-      case 'BOOK':
-        return '도서';
-      case 'CLOTHES':
-        return '의류';
-      case 'STATIONERY':
-        return '문구류';
-      case 'ETC':
-        return '기타';
-      default:
-        return '전체';
-    }
-  }
-
-  void _pushItemPhotoView(BuildContext context, CachedNetworkImageProvider itemPhoto) {
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => CustomPhotoView(image: itemPhoto),
-        transitionDuration: const Duration(milliseconds: 150),
-        reverseTransitionDuration: const Duration(milliseconds: 150),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var curve = CurvedAnimation(
-            parent: animation,
-            curve: Curves.fastOutSlowIn,
-            reverseCurve: Curves.fastOutSlowIn,
-          );
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 1),
-              end: Offset.zero,
-            ).animate(curve),
-            child: child,
-          );
-        },
-      ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () => GeneralFunctions.pushImageView(context, itemPhoto),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: CachedNetworkImage(
+                        imageUrl: itemInfo.itemPhoto!,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) {
+                          return AspectRatio(
+                            aspectRatio: 1,
+                            child: Container(
+                              width: double.infinity,
+                              color: context.colorScheme.surfaceContainer,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(defaultPaddingM),
+                    child: Column(
+                      children: [
+                        Center(
+                          child: Text(
+                            GeneralFunctions.formatItemCategory(itemInfo.itemCategory!),
+                            style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface),
+                          ),
+                        ),
+                        const Gap(defaultGapS),
+                        Center(
+                          child: Text(
+                            itemInfo.itemName!,
+                            style: context.textTheme.titleLarge,
+                          ),
+                        ),
+                        if (itemInfo.itemAvailable != null && !itemInfo.itemAvailable!)
+                          Column(
+                            children: [
+                              const Gap(defaultGapS),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: defaultPaddingS - 8,
+                                  vertical: defaultPaddingXS - 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: context.colorScheme.error.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Symbols.block_rounded,
+                                      size: 16,
+                                      color: context.colorScheme.error,
+                                    ),
+                                    const Gap(defaultGapS),
+                                    Text(
+                                      '대여 불가',
+                                      style: context.textTheme.titleSmall?.copyWith(
+                                        color: context.colorScheme.error,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        const Gap(defaultGapS),
+                        ClubItemRentalStateBox(isRented: itemInfo.itemUsing!),
+                        const Gap(defaultGapXL * 2),
+                        CustomInfoBox(
+                          infoTitle: '물품 설명',
+                          child: CustomInfoContent(
+                            infoContent: itemInfo.itemDescription!,
+                            icon: Icon(
+                              Symbols.info_rounded,
+                              size: 16,
+                              color: context.colorScheme.outline,
+                            ),
+                          ),
+                        ),
+                        const Gap(defaultGapXL),
+                        CustomInfoBox(
+                          infoTitle: '물품 추가 정보',
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomInfoContent(
+                                infoContent: itemInfo.itemLocation!,
+                                icon: Icon(
+                                  Symbols.pin_drop_rounded,
+                                  size: 16,
+                                  color: context.colorScheme.outline,
+                                ),
+                              ),
+                              const Gap(defaultGapM),
+                              CustomInfoContent(
+                                infoContent: '${itemInfo.itemRentalMaxDay!.toString()}일 대여 가능',
+                                icon: Icon(
+                                  Symbols.hourglass_rounded,
+                                  size: 16,
+                                  color: context.colorScheme.outline,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -187,5 +254,43 @@ class ClubItemDetailPage extends ConsumerWidget {
         builder: (context) => ClubItemHistoryPage(itemId: itemId),
       ),
     );
+  }
+
+  void _pushItemEditPage(BuildContext context, Item itemInfo) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => ClubItemEditPage(itemInfo: itemInfo),
+      ),
+    );
+  }
+
+  Future<void> _deleteItem(BuildContext context, WidgetRef ref) async {
+    try {
+      final bool? isDelete = await showDialog<bool>(
+        context: context,
+        builder: (context) => const ClubItemDeleteDialog(),
+      );
+
+      if (isDelete == true) {
+        await ref.read(itemProvider.notifier).deleteItem(itemId);
+
+        if (context.mounted) {
+          GeneralFunctions.toastMessage('물품이 삭제되었어요');
+          Navigator.pop(context);
+        }
+      }
+    } catch (e) {
+      GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
+    }
+  }
+
+  Future<void> _toggleItemRentAvailable(BuildContext context, WidgetRef ref, bool itemAvailable) async {
+    try {
+      await ref.read(itemProvider.notifier).toggleItemRentAvailable(itemId, !itemAvailable);
+      GeneralFunctions.toastMessage('대여 가능 여부가 변경되었어요');
+    } catch (e) {
+      GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
+    }
   }
 }

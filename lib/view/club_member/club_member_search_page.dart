@@ -33,7 +33,7 @@ class _ClubMemberSearchPageState extends State<ClubMemberSearchPage> {
         title: SizedBox(
           height: 40.h,
           child: SearchBar(
-            hintText: '회원 검색',
+            hintText: '회원 이름 검색',
             textInputAction: TextInputAction.search,
             keyboardType: TextInputType.text,
             controller: _searchController,

@@ -7,11 +7,23 @@ import '../../service/dio/dio_service.dart';
 class ItemRepository {
   final Dio _dio = DioService().dio;
 
-  Future<List<Item>> getItemList(int clubId) async {
+  Future<List<Item>> getItemList(int clubId, String? keyword, String? category) async {
     try {
       logger.i('물품 목록 조회 시도');
 
-      final response = await _dio.get('/clubs/$clubId/items');
+      final Map<String, dynamic> queryParams = {};
+
+      if (keyword != null && keyword.isNotEmpty) {
+        queryParams['keyword'] = keyword;
+      }
+      if (category != null && category.isNotEmpty) {
+        queryParams['category'] = category;
+      }
+
+      final response = await _dio.get(
+        '/clubs/$clubId/items',
+        queryParameters: queryParams,
+      );
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = response.data;
@@ -28,7 +40,7 @@ class ItemRepository {
     }
   }
 
-  Future<Map<String, dynamic>> addItem(int clubId, Item item) async {
+  Future<int> addItem(int clubId, Item item) async {
     try {
       logger.i('물품 추가 시도');
 
@@ -38,15 +50,73 @@ class ItemRepository {
       );
 
       if (response.statusCode == 200) {
-        return {
-          'itemId': response.data['itemId'],
-          'itemName': response.data['itemName'],
-        };
+        return response.data['itemId'];
       }
 
       throw Exception();
     } catch (e) {
       logger.e('물품 추가 실패', error: e);
+      throw Exception();
+    }
+  }
+
+  Future<int> updateItem(int clubId, int itemId, Item item) async {
+    try {
+      logger.i('물품 수정 시도');
+
+      final response = await _dio.put(
+        '/clubs/$clubId/items/$itemId',
+        data: item.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        return response.data['itemId'];
+      }
+
+      throw Exception();
+    } catch (e) {
+      logger.e('물품 수정 실패', error: e);
+      throw Exception();
+    }
+  }
+
+  Future<void> deleteItem(int clubId, int itemId) async {
+    try {
+      logger.i('물품 삭제 시도');
+
+      final response = await _dio.delete(
+        '/clubs/$clubId/items/$itemId',
+      );
+
+      if (response.statusCode == 200) {
+        return;
+      }
+
+      throw Exception();
+    } catch (e) {
+      logger.e('물품 삭제 실패', error: e);
+      throw Exception();
+    }
+  }
+
+  Future<void> toggleItemRentAvailable(int clubId, int itemId, bool itemAvailable) async {
+    try {
+      logger.i('물품 대여 가능 여부 변경 시도');
+
+      final response = await _dio.post(
+        '/clubs/$clubId/items/$itemId/availability',
+        data: {
+          'itemAvailable': itemAvailable,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return;
+      }
+
+      throw Exception();
+    } catch (e) {
+      logger.e('물품 대여 가능 여부 변경 실패', error: e);
       throw Exception();
     }
   }

@@ -25,16 +25,14 @@ class ClubInfoPage extends ConsumerWidget {
             showModalBottomSheet(
               useSafeArea: true,
               context: context,
-              builder: (context) {
-                return const ClubInfoBottomSheet();
-              },
+              builder: (context) => const ClubInfoBottomSheet(),
             );
           },
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Flexible(child: Text(currentClubInfo.clubName!, softWrap: false)),
-              const Gap(defaultGapS),
+              const Gap(defaultGapS / 2),
               const Icon(
                 Symbols.keyboard_arrow_down_rounded,
                 size: 20,

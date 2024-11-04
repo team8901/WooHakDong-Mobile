@@ -9,7 +9,6 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../service/general/general_functions.dart';
 import '../../view_model/club/current_club_info_provider.dart';
-import '../themes/custom_widget/interface/cujstom_photo_view.dart';
 import '../themes/custom_widget/interface/custom_info_box.dart';
 import '../themes/custom_widget/interface/custom_info_content.dart';
 import '../themes/spacing.dart';
@@ -49,7 +48,7 @@ class ClubInfoDetailPage extends ConsumerWidget {
                 ),
                 const Gap(defaultGapM),
                 GestureDetector(
-                  onTap: () => _pushItemPhotoView(context, imageProvider),
+                  onTap: () => GeneralFunctions.pushImageView(context, imageProvider),
                   child: Center(
                     child: Container(
                       width: 192.r,
@@ -194,30 +193,6 @@ class ClubInfoDetailPage extends ConsumerWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  void _pushItemPhotoView(BuildContext context, CachedNetworkImageProvider itemPhoto) {
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => CustomPhotoView(image: itemPhoto),
-        transitionDuration: const Duration(milliseconds: 150),
-        reverseTransitionDuration: const Duration(milliseconds: 150),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var curve = CurvedAnimation(
-            parent: animation,
-            curve: Curves.fastOutSlowIn,
-            reverseCurve: Curves.fastOutSlowIn,
-          );
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 1),
-              end: Offset.zero,
-            ).animate(curve),
-            child: child,
-          );
-        },
       ),
     );
   }
