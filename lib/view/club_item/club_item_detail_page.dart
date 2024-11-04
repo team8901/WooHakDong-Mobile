@@ -70,7 +70,7 @@ class ClubItemDetailPage extends ConsumerWidget {
                     child: Row(
                       children: [
                         const Icon(Symbols.swap_horiz_rounded, size: 16),
-                        const Gap(defaultGapS),
+                        const Gap(defaultGapM),
                         Text(
                           '대여 가능 여부 변경',
                           style: context.textTheme.bodySmall,
@@ -83,9 +83,9 @@ class ClubItemDetailPage extends ConsumerWidget {
                     child: Row(
                       children: [
                         const Icon(Symbols.history_rounded, size: 16),
-                        const Gap(defaultGapS),
+                        const Gap(defaultGapM),
                         Text(
-                          '대여 이력',
+                          '대여 내역',
                           style: context.textTheme.bodySmall,
                         ),
                       ],
@@ -96,7 +96,7 @@ class ClubItemDetailPage extends ConsumerWidget {
                     child: Row(
                       children: [
                         const Icon(Symbols.border_color_rounded, size: 16),
-                        const Gap(defaultGapS),
+                        const Gap(defaultGapM),
                         Text(
                           '물품 수정',
                           style: context.textTheme.bodySmall,
@@ -109,7 +109,7 @@ class ClubItemDetailPage extends ConsumerWidget {
                     child: Row(
                       children: [
                         const Icon(Symbols.delete_rounded, size: 16),
-                        const Gap(defaultGapS),
+                        const Gap(defaultGapM),
                         Text(
                           '물품 삭제',
                           style: context.textTheme.bodySmall,
