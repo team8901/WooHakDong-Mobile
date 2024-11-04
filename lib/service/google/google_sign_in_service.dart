@@ -2,18 +2,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../repository/auth/auth.dart';
-import '../../service/logger/logger.dart'; // TokenManage 클래스 경로
+import '../../repository/auth/woohakdong_auth_repository.dart';
+import '../../service/logger/logger.dart';
 
 class GoogleSignInService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final Auth _tokenManage = Auth();
+  final WoohakdongAuthRepository _auth = WoohakdongAuthRepository();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   Future<bool> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
       if (googleUser == null) {
         logger.w("구글 로그인 취소");
         return false;
@@ -29,54 +30,51 @@ class GoogleSignInService {
         idToken: googleIdToken,
       );
 
-      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      await _firebaseAuth.signInWithCredential(credential);
 
       if (googleAccessToken != null) {
-        final tokens = await _tokenManage.logIn(googleAccessToken);
+        final tokens = await _auth.logIn(googleAccessToken);
 
-        if (tokens != null) {
-          final String accessToken = tokens['accessToken']!;
-          final String refreshToken = tokens['refreshToken']!;
+        final String accessToken = tokens['accessToken']!;
+        final String refreshToken = tokens['refreshToken']!;
 
-          await _secureStorage.write(key: 'accessToken', value: accessToken);
-          await _secureStorage.write(key: 'refreshToken', value: refreshToken);
+        await _secureStorage.write(key: 'accessToken', value: accessToken);
+        await _secureStorage.write(key: 'refreshToken', value: refreshToken);
 
-          logger.i("토큰 발급 성공");
-          return true;
-        } else {
-          await _firebaseAuth.signOut();
-          logger.e("서버로부터 토큰 발급에 실패하여 Firebase 로그아웃 처리됨");
-          return false;
-        }
-      } else {
-        logger.e("Google Access Token을 가져오지 못했습니다.");
-        return false;
+        return true;
       }
+
+      logger.w("구글 액세스 토큰 없음");
+      return false;
     } catch (e) {
-      logger.e("구글 로그인 실패: $e");
+      logger.e("구글 로그인 실패", error: e);
+
+      await _firebaseAuth.signOut();
+      await _googleSignIn.signOut();
+
       return false;
     }
   }
 
   Future<bool> signOut() async {
     try {
+      logger.i("로그아웃 시도");
+
       final String? refreshToken = await _secureStorage.read(key: 'refreshToken');
 
       if (refreshToken != null) {
-        await _tokenManage.logOut(refreshToken);
-      } else {
-        logger.e("저장된 Refresh Token이 없습니다.");
-        return false;
+        await _auth.logOut(refreshToken);
+
+        return true;
       }
 
-      await _secureStorage.delete(key: 'accessToken');
-      await _secureStorage.delete(key: 'refreshToken');
+      logger.w("리프레쉬 토큰 없음");
 
       await _firebaseAuth.signOut();
       await _googleSignIn.signOut();
+      await _secureStorage.deleteAll();
 
-      logger.i("로그아웃이 성공적으로 처리되었습니다.");
-      return true;
+      return false;
     } catch (e) {
       logger.e("로그아웃 실패", error: e);
       return false;

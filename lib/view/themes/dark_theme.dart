@@ -1,28 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/text_style.dart';
 
 /// 주요 색상
 const Color primary = Color(0xFF3D63DD);
-const Color secondaryPrimary = Color(0xFF405EB2);
+const Color secondaryPrimary = Color(0xFF1D2E61);
 const Color red = Color(0xFFE53935);
 const Color green = Color(0xFF43A047);
 
 /// 그레이 스케일
 const Color black = Color(0xFF111111);
-const Color darkGray = Color(0xFF292A2E);
-const Color gray = Color(0xFF575960);
-const Color lightGray = Color(0xFF797B86);
+const Color darkGray = Color(0xFF303136);
+const Color gray = Color(0xFF6C6E79);
+const Color lightGray = Color(0xFFB2B3BD);
 const Color white = Color(0xFFEEEEF0);
 
 final ThemeData darkTheme = ThemeData(
+  /// 기본
   brightness: Brightness.dark,
   primaryColor: primary,
   scaffoldBackgroundColor: black,
   applyElevationOverlayColor: false,
-  splashColor: darkGray.withOpacity(0.1),
-  highlightColor: darkGray.withOpacity(0.1),
+  splashColor: Colors.transparent,
+  highlightColor: Colors.transparent,
+
+  extensions: const [SkeletonizerConfigData.dark()],
 
   /// 컬러 스키마
   colorScheme: const ColorScheme.dark(
@@ -35,6 +39,9 @@ final ThemeData darkTheme = ThemeData(
     outline: gray,
     error: red,
     onError: white,
+    tertiary: green,
+    onTertiary: white,
+    surfaceDim: black,
   ),
 
   /// 텍스트 테마
@@ -64,14 +71,14 @@ final ThemeData darkTheme = ThemeData(
   ),
 
   /// 앱바 테마
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     backgroundColor: black,
-    titleSpacing: defaultPaddingM,
     elevation: 0,
     scrolledUnderElevation: 0,
     centerTitle: false,
-    iconTheme: IconThemeData(color: white),
-    actionsIconTheme: IconThemeData(color: white),
+    titleTextStyle: CustomTextStyle.titleLarge.copyWith(color: white),
+    iconTheme: const IconThemeData(color: white),
+    actionsIconTheme: const IconThemeData(color: white),
   ),
 
   /// 아이콘 테마
@@ -82,13 +89,15 @@ final ThemeData darkTheme = ThemeData(
   /// 바텀 네비게이션바 테마
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: black,
-    elevation: 0,
+    elevation: 1,
     selectedItemColor: white,
-    unselectedItemColor: lightGray,
+    unselectedItemColor: white,
     selectedLabelStyle: CustomTextStyle.labelLarge.copyWith(color: white),
-    unselectedLabelStyle: CustomTextStyle.labelLarge.copyWith(color: lightGray),
+    unselectedLabelStyle: CustomTextStyle.labelLarge.copyWith(color: white),
     type: BottomNavigationBarType.fixed,
     enableFeedback: false,
+    selectedIconTheme: const IconThemeData(size: 24),
+    unselectedIconTheme: const IconThemeData(size: 24),
   ),
 
   /// 서치바 태마
@@ -113,23 +122,84 @@ final ThemeData darkTheme = ThemeData(
   /// 팝업 메뉴 버튼 테마
   popupMenuTheme: PopupMenuThemeData(
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+      borderRadius: BorderRadius.circular(defaultBorderRadiusL),
     ),
-    color: darkGray,
-    labelTextStyle: WidgetStateProperty.all(CustomTextStyle.bodySmall.copyWith(color: white)),
-    elevation: 1,
+    color: black,
+    elevation: 3,
     menuPadding: const EdgeInsets.all(defaultPaddingS / 2),
   ),
 
-  /// 다이어로그 테마
-  dialogTheme: DialogTheme(
-    backgroundColor: darkGray,
-    surfaceTintColor: darkGray,
-    elevation: 1,
-    alignment: Alignment.center,
-    insetPadding: const EdgeInsets.symmetric(horizontal: defaultPaddingM * 2),
+  /// 바텀 시트 테마
+  bottomSheetTheme: const BottomSheetThemeData(
+    backgroundColor: black,
+    modalBackgroundColor: black,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(defaultBorderRadiusL),
+        topRight: Radius.circular(defaultBorderRadiusL),
+      ),
+    ),
+    elevation: 1,
+    modalElevation: 1,
+    showDragHandle: true,
+    dragHandleColor: gray,
+  ),
+
+  /// 탭바 테마
+  tabBarTheme: TabBarTheme(
+    indicator: const BoxDecoration(
+      border: Border(
+        bottom: BorderSide(
+          color: white,
+          width: 2,
+        ),
+      ),
+    ),
+    indicatorColor: white,
+    indicatorSize: TabBarIndicatorSize.tab,
+    dividerColor: Colors.transparent,
+    dividerHeight: 0,
+    labelColor: white,
+    labelPadding: const EdgeInsets.symmetric(horizontal: defaultPaddingS),
+    labelStyle: CustomTextStyle.bodyMedium.copyWith(color: white),
+    unselectedLabelColor: white,
+    unselectedLabelStyle: CustomTextStyle.bodySmall.copyWith(color: white),
+    overlayColor: WidgetStateProperty.all(Colors.transparent),
+    tabAlignment: TabAlignment.center,
+  ),
+
+  /// 플로팅 액션 버튼 테마
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: primary,
+    foregroundColor: white,
+    shape: const CircleBorder(),
+    extendedTextStyle: CustomTextStyle.titleSmall.copyWith(color: white),
+  ),
+
+  /// 스크롤바 테마
+  scrollbarTheme: ScrollbarThemeData(
+    thickness: WidgetStateProperty.all(2),
+    radius: const Radius.circular(4),
+    thumbColor: WidgetStateProperty.all(darkGray),
+  ),
+
+  /// 리스트 타일 테마
+  listTileTheme: ListTileThemeData(
+    contentPadding: EdgeInsets.zero,
+    iconColor: white,
+    textColor: white,
+    titleTextStyle: CustomTextStyle.bodyMedium,
+    subtitleTextStyle: CustomTextStyle.labelLarge,
+    selectedTileColor: darkGray,
+  ),
+
+  /// 텍스트 버튼 테마
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      textStyle: WidgetStateProperty.all(CustomTextStyle.bodyMedium),
+      foregroundColor: WidgetStateProperty.all(primary),
+      backgroundColor: WidgetStateProperty.all(Colors.transparent),
+      overlayColor: WidgetStateProperty.all(darkGray),
     ),
   ),
 );
