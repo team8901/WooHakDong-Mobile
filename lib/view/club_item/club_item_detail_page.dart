@@ -44,7 +44,10 @@ class ClubItemDetailPage extends ConsumerWidget {
           appBar: AppBar(
             actions: [
               PopupMenuButton<String>(
-                icon: const Icon(Symbols.more_vert_rounded, grade: 600,),
+                icon: const Icon(
+                  Symbols.more_vert_rounded,
+                  grade: 600,
+                ),
                 onSelected: (value) async {
                   switch (value) {
                     case 'available':
@@ -159,8 +162,6 @@ class ClubItemDetailPage extends ConsumerWidget {
                             style: context.textTheme.titleLarge,
                           ),
                         ),
-                        const Gap(defaultGapS),
-                        ClubItemRentalStateBox(isRented: itemInfo.itemUsing!),
                         if (itemInfo.itemAvailable != null && !itemInfo.itemAvailable!)
                           Column(
                             children: [
@@ -171,7 +172,7 @@ class ClubItemDetailPage extends ConsumerWidget {
                                   vertical: defaultPaddingXS - 8,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: context.colorScheme.error,
+                                  color: context.colorScheme.error.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
                                 ),
                                 child: Row(
@@ -180,13 +181,13 @@ class ClubItemDetailPage extends ConsumerWidget {
                                     Icon(
                                       Symbols.block_rounded,
                                       size: 16,
-                                      color: context.colorScheme.inversePrimary,
+                                      color: context.colorScheme.error,
                                     ),
                                     const Gap(defaultGapS),
                                     Text(
                                       '대여 불가',
                                       style: context.textTheme.titleSmall?.copyWith(
-                                        color: context.colorScheme.inversePrimary,
+                                        color: context.colorScheme.error,
                                       ),
                                     ),
                                   ],
@@ -194,6 +195,8 @@ class ClubItemDetailPage extends ConsumerWidget {
                               ),
                             ],
                           ),
+                        const Gap(defaultGapS),
+                        ClubItemRentalStateBox(isRented: itemInfo.itemUsing!),
                         const Gap(defaultGapXL * 2),
                         CustomInfoBox(
                           infoTitle: '물품 설명',
