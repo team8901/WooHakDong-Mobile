@@ -31,7 +31,7 @@ class ClubInfoPage extends ConsumerWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Flexible(child: Text(currentClubInfo.clubName!, softWrap: false)),
+              Flexible(child: Text(currentClubInfo.clubName ?? '내 동아리', softWrap: false)),
               const Gap(defaultGapS / 2),
               const Icon(
                 Symbols.keyboard_arrow_down_rounded,

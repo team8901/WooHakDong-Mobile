@@ -31,7 +31,7 @@ class ClubItemHistoryPage extends ConsumerWidget {
             builder: (context, itemListSnapshot) {
               final isLoading = itemListSnapshot.connectionState == ConnectionState.waiting;
 
-              final itemHistoryList = isLoading ? generateFakeItemHistory(10) : itemListSnapshot.data;
+              final itemHistoryList = isLoading ? _generateFakeItemHistory(10) : itemListSnapshot.data;
 
               if (itemHistoryList!.isEmpty) {
                 return Center(
@@ -69,7 +69,7 @@ class ClubItemHistoryPage extends ConsumerWidget {
     );
   }
 
-  List<ItemHistory> generateFakeItemHistory(int count) {
+  List<ItemHistory> _generateFakeItemHistory(int count) {
     return List.generate(count, (index) {
       return ItemHistory(
         memberName: '우학동',

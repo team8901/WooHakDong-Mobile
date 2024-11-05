@@ -11,7 +11,6 @@ import 'package:woohakdong/view/themes/custom_widget/interaction/custom_loading_
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../service/general/general_functions.dart';
-import '../../view_model/club/club_id_provider.dart';
 import '../../view_model/club/club_provider.dart';
 import '../../view_model/group/group_provider.dart';
 import '../route_page.dart';
@@ -98,8 +97,6 @@ class ClubRegisterCompletePage extends ConsumerWidget {
         bottomNavigationBar: SafeArea(
           child: CustomBottomButton(
             onTap: () async {
-              await ref.read(clubIdProvider.notifier).saveClubId(clubInfo.clubId!);
-
               ref.invalidate(clubProvider);
 
               if (context.mounted) {

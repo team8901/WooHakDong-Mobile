@@ -27,7 +27,7 @@ class ClubItemPageView extends ConsumerWidget {
         builder: (context, itemListSnapshot) {
           final isLoading = itemListSnapshot.connectionState == ConnectionState.waiting;
 
-          final itemList = isLoading ? generateFakeItem(10) : itemListSnapshot.data;
+          final itemList = isLoading ? _generateFakeItem(10) : itemListSnapshot.data;
 
           if (!isLoading && (itemList == null || itemList.isEmpty)) {
             return Center(
@@ -60,7 +60,7 @@ class ClubItemPageView extends ConsumerWidget {
     );
   }
 
-  List<Item> generateFakeItem(int count) {
+  List<Item> _generateFakeItem(int count) {
     return List.generate(count, (index) {
       return Item(
         itemName: '자바의 정석',

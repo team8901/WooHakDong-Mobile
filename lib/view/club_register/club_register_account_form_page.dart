@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../service/general/general_functions.dart';
 import '../../view_model/club/club_account_provider.dart';
-import '../../view_model/club/club_provider.dart';
 import '../../view_model/club/components/club_account_validation_provider.dart';
 import '../../view_model/club/components/club_account_validation_state.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
-import '../themes/custom_widget/interface/custom_dropdown_form_field.dart';
 import '../themes/custom_widget/interaction/custom_pop_scope.dart';
+import '../themes/custom_widget/interface/custom_dropdown_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'club_register_complete_page.dart';
@@ -33,6 +33,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
   @override
   void initState() {
     super.initState();
+    FlutterNativeSplash.remove();
     clubAccountNumberController = TextEditingController();
   }
 
@@ -44,7 +45,6 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
 
   @override
   Widget build(BuildContext context) {
-    final clubInfo = ref.watch(clubProvider);
     final clubAccountValidationState = ref.watch(clubAccountValidationProvider);
     final clubAccountValidationNotifier = ref.read(clubAccountValidationProvider.notifier);
     final clubAccountInfo = ref.watch(clubAccountProvider);
@@ -94,7 +94,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                       {'value': 'KEB하나은행', 'displayText': 'KEB하나은행'},
                     ],
                     onSaved: (value) => clubAccountBankName = value!,
-                    onChanged: (value) => clubAccountValidationNotifier.state = ClubAccountValidationState.notChecked,
+                    onChanged: (value) => clubAccountValidationNotifier.state = ClubAccountValidationState.accountNotRegistered,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '은행을 선택해 주세요';
@@ -107,7 +107,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                     controller: clubAccountNumberController,
                     labelText: '계좌번호',
                     onSaved: (value) => clubAccountInfo.clubAccountNumber = value!,
-                    onChanged: (value) => clubAccountValidationNotifier.state = ClubAccountValidationState.notChecked,
+                    onChanged: (value) => clubAccountValidationNotifier.state = ClubAccountValidationState.accountNotRegistered,
                     hintText: '계좌번호를 - 없이 입력해 주세요',
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -189,7 +189,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                         formKey.currentState?.save();
 
                         if (clubAccountValidationState == ClubAccountValidationState.valid) {
-                          await clubAccountNotifier.registerClubAccount(clubInfo.clubId);
+                          await clubAccountNotifier.registerClubAccount();
 
                           if (context.mounted) {
                             _pushCompletePage(context);

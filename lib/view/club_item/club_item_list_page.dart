@@ -37,7 +37,6 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
       appBar: AppBar(
         title: const Text('물품'),
         actions: [
-          /// TODO 물품 검색 추가하기
           IconButton(
             onPressed: () => _pushItemSearchPage(context),
             icon: const Icon(Symbols.search_rounded),

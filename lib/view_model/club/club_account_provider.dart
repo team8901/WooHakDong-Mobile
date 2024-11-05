@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/model/club/club_account.dart';
 import 'package:woohakdong/repository/club/club_account_repository.dart';
 
+import 'club_id_provider.dart';
 import 'components/club_account_validation_provider.dart';
 import 'components/club_account_validation_state.dart';
 
@@ -44,9 +45,11 @@ class ClubAccountNotifier extends StateNotifier<ClubAccount> {
     }
   }
 
-  Future<void> registerClubAccount(int? clubId) async {
+  Future<void> registerClubAccount() async {
     try {
-      await clubAccountRepository.clubAccountRegister(clubId!, state);
+      final currentClubId = ref.watch(clubIdProvider);
+
+      await clubAccountRepository.clubAccountRegister(currentClubId!, state);
     } catch (e) {
       rethrow;
     }
