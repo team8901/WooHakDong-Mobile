@@ -73,32 +73,30 @@ class ClubInfoBottomSheet extends ConsumerWidget {
                       onTap: () => _pushClubRegisterCautionPage(context),
                       highlightColor: context.colorScheme.surfaceContainer,
                       child: Ink(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: defaultPaddingM,
-                            vertical: defaultPaddingS / 2,
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 40.r,
-                                height: 40.r,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: context.colorScheme.surfaceContainer,
-                                ),
-                                child: Center(
-                                  child: Icon(Symbols.add_rounded, color: context.colorScheme.onSurface),
-                                ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPaddingM,
+                          vertical: defaultPaddingS / 2,
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 40.r,
+                              height: 40.r,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: context.colorScheme.surfaceContainer,
                               ),
-                              const Gap(defaultGapXL),
-                              Text(
-                                '동아리 추가',
-                                style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface),
+                              child: Center(
+                                child: Icon(Symbols.add_rounded, color: context.colorScheme.onSurface),
                               ),
-                            ],
-                          ),
+                            ),
+                            const Gap(defaultGapXL),
+                            Text(
+                              '동아리 추가',
+                              style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface),
+                            ),
+                          ],
                         ),
                       ),
                     ),

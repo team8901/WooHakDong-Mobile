@@ -4,9 +4,7 @@ import 'package:woohakdong/repository/dues/dues_repository.dart';
 import '../../model/dues/dues.dart';
 import '../club/club_id_provider.dart';
 
-final duesProvider = StateNotifierProvider<DuesNotifier, Dues>(
-  (ref) => DuesNotifier(ref),
-);
+final duesProvider = StateNotifierProvider<DuesNotifier, Dues>((ref) => DuesNotifier(ref));
 
 class DuesNotifier extends StateNotifier<Dues> {
   final Ref ref;

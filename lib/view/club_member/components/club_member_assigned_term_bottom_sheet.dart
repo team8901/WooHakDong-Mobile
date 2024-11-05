@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/main.dart';
+
 import '../../../service/general/general_functions.dart';
 import '../../../view_model/club_member/club_member_provider.dart';
 import '../../../view_model/club_member/club_member_term_provider.dart';
@@ -75,46 +75,44 @@ class ClubMemberAssignedTermBottomSheet extends ConsumerWidget {
                     },
                     highlightColor: context.colorScheme.surfaceContainer,
                     child: Ink(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPaddingM,
-                          vertical: defaultPaddingS / 2,
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 40.r,
-                              height: 40.r,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: context.colorScheme.surfaceContainer,
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Symbols.calendar_month_rounded,
-                                  color: context.colorScheme.onSurface,
-                                ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPaddingM,
+                        vertical: defaultPaddingS / 2,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 40.r,
+                            height: 40.r,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: context.colorScheme.surfaceContainer,
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Symbols.calendar_month_rounded,
+                                color: context.colorScheme.onSurface,
                               ),
                             ),
-                            const Gap(defaultGapXL),
-                            Expanded(
-                              child: Text(
-                                GeneralFunctions.formatClubAssignedTerm(term.clubHistoryUsageDate.toString()),
-                                style: context.textTheme.bodyLarge,
-                                softWrap: true,
-                              ),
+                          ),
+                          const Gap(defaultGapXL),
+                          Expanded(
+                            child: Text(
+                              GeneralFunctions.formatClubAssignedTerm(term.clubHistoryUsageDate.toString()),
+                              style: context.textTheme.bodyLarge,
+                              softWrap: true,
                             ),
-                            const Gap(defaultGapXL),
-                            if (isCurrent)
-                              Icon(
-                                size: 20,
-                                Symbols.check_circle_rounded,
-                                fill: 1,
-                                color: context.colorScheme.primary,
-                              ),
-                          ],
-                        ),
+                          ),
+                          const Gap(defaultGapXL),
+                          if (isCurrent)
+                            Icon(
+                              size: 20,
+                              Symbols.check_circle_rounded,
+                              fill: 1,
+                              color: context.colorScheme.primary,
+                            ),
+                        ],
                       ),
                     ),
                   );

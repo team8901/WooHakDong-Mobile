@@ -12,14 +12,14 @@ import '../../../view_model/dues/dues_provider.dart';
 
 class ClubDuesAccountInfoBox extends ConsumerWidget {
   final CurrentClubAccount currentClubAccount;
-  final DateTime? duesListDate;
-  final Function(BuildContext) onDateSelect;
+  final String? duesInOutType;
+  final Function(String?) onTypeSelect;
 
   const ClubDuesAccountInfoBox({
     super.key,
     required this.currentClubAccount,
-    required this.duesListDate,
-    required this.onDateSelect,
+    required this.duesInOutType,
+    required this.onTypeSelect,
   });
 
   @override
@@ -53,6 +53,7 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
                   fontWeight: FontWeight.w800,
                 ),
               ),
+              const Gap(defaultGapXL),
             ],
           ),
         ),
@@ -62,11 +63,11 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
-                onTap: () => onDateSelect(context),
+                onTap: () => _showFilterModal(context),
                 child: Row(
                   children: [
                     Text(
-                      duesListDate != null ? DateFormat('yyyy년 M월').format(duesListDate!) : '전체',
+                      _getFilterText(duesInOutType),
                       style: context.textTheme.bodySmall?.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
@@ -86,9 +87,8 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
                   onTap: () async {
                     try {
                       await ref.read(duesProvider.notifier).refreshDuesList();
-                      await ref.refresh(duesProvider.notifier).getDuesList(
-                          duesListDate != null ? DateFormat('yyyy-MM-dd').format(duesListDate!) : null);
-                
+                      await ref.refresh(duesProvider.notifier).getDuesList(null);
+
                       await GeneralFunctions.toastMessage('회비 내역을 업데이트 했어요');
                     } catch (e) {
                       await GeneralFunctions.toastMessage('회비 내역 업데이트에 실패했어요');
@@ -122,5 +122,72 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
         ),
       ],
     );
+  }
+
+  void _showFilterModal(BuildContext context) {
+    showModalBottomSheet(
+      useSafeArea: true,
+      context: context,
+      builder: (context) => SizedBox(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.3,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingM,
+                vertical: defaultPaddingS / 2,
+              ),
+              child: Text(
+                '내역 유형 선택',
+                style: context.textTheme.titleLarge,
+              ),
+            ),
+            const Gap(defaultGapS),
+            _buildFilterOption(context, 'ALL', '전체'),
+            const Gap(defaultGapS),
+            _buildFilterOption(context, 'DEPOSIT', '입금'),
+            const Gap(defaultGapS),
+            _buildFilterOption(context, 'WITHDRAW', '출금'),
+            const Gap(defaultGapXL),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterOption(BuildContext context, String value, String label) {
+    return InkWell(
+      onTap: () {
+        onTypeSelect(value);
+        Navigator.pop(context);
+      },
+      highlightColor: context.colorScheme.surfaceContainer,
+      child: Ink(
+        padding: const EdgeInsets.symmetric(
+          horizontal: defaultPaddingM,
+          vertical: defaultPaddingS / 2,
+        ),
+        child: SizedBox(
+          width: double.infinity,
+          child: Text(
+            label,
+            style: context.textTheme.bodyLarge,
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _getFilterText(String? type) {
+    switch (type) {
+      case 'DEPOSIT':
+        return '입금';
+      case 'WITHDRAW':
+        return '출금';
+      default:
+        return '전체';
+    }
   }
 }

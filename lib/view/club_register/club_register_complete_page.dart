@@ -27,8 +27,6 @@ class ClubRegisterCompletePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final clubInfo = ref.watch(clubProvider);
-
     return CustomPopScope(
       child: Scaffold(
         appBar: AppBar(
@@ -122,9 +120,7 @@ class ClubRegisterCompletePage extends ConsumerWidget {
   void _pushRoutePage(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context,
-      CupertinoPageRoute(
-        builder: (context) => const RoutePage(),
-      ),
+      CupertinoPageRoute(builder: (context) => const RoutePage()),
       (route) => false,
     );
   }

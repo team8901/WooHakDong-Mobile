@@ -1,8 +1,6 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:woohakdong/model/club/current_club_account.dart';
 import 'package:woohakdong/view/club_dues/components/club_dues_account_info_box.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
@@ -24,7 +22,7 @@ class ClubDuesPage extends ConsumerStatefulWidget {
 }
 
 class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
-  DateTime? _duesListDate;
+  String? _duesInOutType;
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +35,7 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
           onRefresh: () async {
             try {
               await ref.read(duesProvider.notifier).refreshDuesList();
-              await ref
-                  .refresh(duesProvider.notifier)
-                  .getDuesList(_duesListDate != null ? DateFormat('yyyy-MM-dd').format(_duesListDate!) : null);
+              await ref.refresh(duesProvider.notifier).getDuesList(null);
 
               await GeneralFunctions.toastMessage('회비 내역을 업데이트 했어요');
             } catch (e) {
@@ -75,20 +71,29 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
                       isLoading: isLoading,
                       child: ClubDuesAccountInfoBox(
                         currentClubAccount: currentClubAccount!,
-                        duesListDate: _duesListDate,
-                        onDateSelect: _selectDate,
+                        duesInOutType: _duesInOutType ?? 'ALL',
+                        onTypeSelect: _selectInOutType,
                       ),
                     );
                   },
                 ),
                 FutureBuilder(
-                  future: ref
-                      .watch(duesProvider.notifier)
-                      .getDuesList(_duesListDate != null ? DateFormat('yyyy-MM-dd').format(_duesListDate!) : null),
+                  future: ref.watch(duesProvider.notifier).getDuesList(null),
                   builder: (context, duesListSnapshot) {
                     final bool isLoading = duesListSnapshot.connectionState == ConnectionState.waiting;
 
-                    final duesList = isLoading ? _generateFakeDues(10) : duesListSnapshot.data?.reversed.toList();
+                    List<Dues>? duesList;
+
+                    if (isLoading) {
+                      duesList = _generateFakeDues(10);
+                    } else {
+                      duesList = duesListSnapshot.data?.reversed.toList();
+
+                      if (duesList != null && _duesInOutType != null && _duesInOutType != 'ALL') {
+                        duesList =
+                            duesList.where((dues) => dues.clubAccountHistoryInOutType == _duesInOutType).toList();
+                      }
+                    }
 
                     if (!isLoading && (duesList == null || duesList.isEmpty)) {
                       return SizedBox(
@@ -109,7 +114,7 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
                         physics: const NeverScrollableScrollPhysics(),
                         separatorBuilder: (context, index) => const CustomHorizontalDivider(),
                         itemCount: duesList!.length,
-                        itemBuilder: (context, index) => ClubDuesListTile(dues: duesList[index]),
+                        itemBuilder: (context, index) => ClubDuesListTile(dues: duesList![index]),
                       ),
                     );
                   },
@@ -145,23 +150,11 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
     });
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      locale: const Locale('ko', 'KR'),
-      initialDate: _duesListDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != _duesListDate) {
-      setState(() {
-        _duesListDate = picked;
-      });
+  void _selectInOutType(String? type) {
+    setState(() {
+      _duesInOutType = type;
+    });
 
-      await ref.read(duesProvider.notifier).refreshDuesList();
-      await ref
-          .refresh(duesProvider.notifier)
-          .getDuesList(_duesListDate != null ? DateFormat('yyyy-MM-dd').format(_duesListDate!) : null);
-    }
+    ref.refresh(duesProvider.notifier).getDuesList(null);
   }
 }
