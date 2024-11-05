@@ -37,9 +37,9 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
               await ref.read(duesProvider.notifier).refreshDuesList();
               await ref.refresh(duesProvider.notifier).getDuesList(null);
 
-              await GeneralFunctions.toastMessage('회비 내역을 업데이트 했어요');
+              await GeneralFunctions.toastMessage('회비 내역을 새로 불러왔어요');
             } catch (e) {
-              await GeneralFunctions.toastMessage('회비 내역 업데이트에 실패했어요');
+              await GeneralFunctions.toastMessage('새로운 회비 내역을 불러오지 못했어요');
             }
           },
           child: SingleChildScrollView(
@@ -60,7 +60,7 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
                         padding: const EdgeInsets.all(defaultPaddingM),
                         child: Center(
                           child: Text(
-                            '동아리 계좌 정보를 불러오지 못 했어요',
+                            '동아리 계좌 정보를 불러오지 못했어요',
                             style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
                           ),
                         ),
@@ -87,7 +87,7 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
                     if (isLoading) {
                       duesList = _generateFakeDues(10);
                     } else {
-                      duesList = duesListSnapshot.data?.reversed.toList();
+                      duesList = duesListSnapshot.data;
 
                       if (duesList != null && _duesInOutType != null && _duesInOutType != 'ALL') {
                         duesList =
