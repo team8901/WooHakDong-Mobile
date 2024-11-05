@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/club/current_club_account.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
+import 'package:woohakdong/view/club_dues/components/club_dues_in_out_type_bottom_sheet.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
@@ -63,7 +64,13 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
-                onTap: () => _showFilterModal(context),
+                onTap: () {
+                  showModalBottomSheet(
+                    useSafeArea: true,
+                    context: context,
+                    builder: (context) => ClubDuesInOutTypeBottomSheet(onTypeSelect: onTypeSelect),
+                  );
+                },
                 child: Row(
                   children: [
                     Text(
@@ -121,62 +128,6 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
           ),
         ),
       ],
-    );
-  }
-
-  void _showFilterModal(BuildContext context) {
-    showModalBottomSheet(
-      useSafeArea: true,
-      context: context,
-      builder: (context) => SizedBox(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.3,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: defaultPaddingM,
-                vertical: defaultPaddingS / 2,
-              ),
-              child: Text(
-                '내역 유형 선택',
-                style: context.textTheme.titleLarge,
-              ),
-            ),
-            const Gap(defaultGapS),
-            _buildFilterOption(context, 'ALL', '전체'),
-            const Gap(defaultGapS),
-            _buildFilterOption(context, 'DEPOSIT', '입금'),
-            const Gap(defaultGapS),
-            _buildFilterOption(context, 'WITHDRAW', '출금'),
-            const Gap(defaultGapXL),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilterOption(BuildContext context, String value, String label) {
-    return InkWell(
-      onTap: () {
-        onTypeSelect(value);
-        Navigator.pop(context);
-      },
-      highlightColor: context.colorScheme.surfaceContainer,
-      child: Ink(
-        padding: const EdgeInsets.symmetric(
-          horizontal: defaultPaddingM,
-          vertical: defaultPaddingS / 2,
-        ),
-        child: SizedBox(
-          width: double.infinity,
-          child: Text(
-            label,
-            style: context.textTheme.bodyLarge,
-          ),
-        ),
-      ),
     );
   }
 

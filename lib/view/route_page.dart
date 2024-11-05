@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
@@ -6,6 +7,7 @@ import 'package:woohakdong/view/club_register/club_register_account_form_page.da
 import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/member_register/member_register_page.dart';
 import 'package:woohakdong/view/navigator_page.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view_model/club/club_id_provider.dart';
 import 'package:woohakdong/view_model/club/club_provider.dart';
 import 'package:woohakdong/view_model/club/components/club_account_validation_provider.dart';
@@ -80,19 +82,22 @@ class _RoutePageState extends ConsumerState<RoutePage> {
       future: _initialization,
       builder: (context, infoSnapshot) {
         if (infoSnapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold();
+          return const Scaffold(body: SafeArea(child: CustomCircularProgressIndicator()));
         }
 
         if (memberState == MemberState.memberNotRegistered) {
+          FlutterNativeSplash.remove();
           return const MemberRegisterPage();
         }
 
         if (clubState == ClubState.clubNotRegistered) {
+          FlutterNativeSplash.remove();
           return const ClubRegisterPage();
         }
 
         if (clubAccountValidationState != ClubAccountValidationState.accountRegistered) {
-          GeneralFunctions.toastMessage('동아리 회비 계좌를 등록해 주세요');
+          FlutterNativeSplash.remove();
+          GeneralFunctions.toastMessage('동아리 회비 계좌를 등록하지 않으면\n우학동을 이용할 수 없어요');
           return const ClubRegisterAccountFormPage();
         }
 

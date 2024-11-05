@@ -104,7 +104,7 @@ class ClubItemListTile extends StatelessWidget {
                               ),
                             ],
                           ),
-                        const Gap(defaultGapS / 2),
+                        const Gap(defaultGapS),
                         if (item.itemUsing!)
                           Icon(
                             Symbols.lock_clock_rounded,

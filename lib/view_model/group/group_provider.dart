@@ -3,7 +3,6 @@ import 'package:woohakdong/model/group/group.dart';
 import 'package:woohakdong/view_model/club/club_id_provider.dart';
 
 import '../../repository/group/group_repository.dart';
-import '../club/club_provider.dart';
 
 final groupProvider = StateNotifierProvider<GroupNotifier, Group?>((ref) {
   return GroupNotifier(ref);
