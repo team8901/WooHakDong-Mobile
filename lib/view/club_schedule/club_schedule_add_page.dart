@@ -1,7 +1,7 @@
+import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:woohakdong/view/club_schedule/components/club_schedule_color_picker.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/schedule/components/schedule_state_provider.dart';
@@ -99,34 +99,38 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
                       width: double.infinity,
                       child: InkWell(
                         onTap: () async {
-                          final DateTime? scheduleDate = await showOmniDateTimePicker(
+                          await showBoardDateTimePicker(
                             context: context,
+                            pickerType: DateTimePickerType.datetime,
                             initialDate: _selectedDate ?? DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2099),
-                            is24HourMode: true,
-                            isShowSeconds: false,
-                            isForce2Digits: false,
-                            borderRadius: const BorderRadius.all(Radius.circular(defaultBorderRadiusL)),
-                            padding: const EdgeInsets.all(defaultPaddingS * 2),
-                            insetPadding: const EdgeInsets.all(defaultPaddingM),
-                            separator: Divider(
-                              color: context.colorScheme.surfaceContainer,
-                              thickness: 0.8,
-                              height: 0,
-                            ),
-                            theme: ThemeData().copyWith(
-                              colorScheme: context.colorScheme,
-                              textTheme: context.textTheme,
+                            minimumDate: DateTime(2000),
+                            maximumDate: DateTime(2099),
+                            onChanged: (scheduleDate) {
+                              setState(
+                                () => _selectedDate = scheduleDate,
+                              );
+                            },
+                            useSafeArea: true,
+                            enableDrag: false,
+                            showDragHandle: true,
+                            options: BoardDateTimeOptions(
+                              backgroundDecoration: BoxDecoration(
+                                color: context.colorScheme.surfaceDim,
+                                borderRadius: BorderRadius.circular(defaultBorderRadiusL),
+                              ),
+                              weekend: BoardPickerWeekendOptions(
+                                saturdayColor: context.colorScheme.onSurface,
+                                sundayColor: context.colorScheme.onSurface,
+                              ),
+                              languages: const BoardPickerLanguages(locale: 'ko_KR', today: '오늘', tomorrow: '내일'),
+                              textColor: context.colorScheme.inverseSurface,
+                              backgroundColor: context.colorScheme.surfaceDim,
+                              foregroundColor: context.colorScheme.surfaceContainer,
+                              activeColor: context.colorScheme.primary,
+                              activeTextColor: context.colorScheme.inversePrimary,
+                              inputable: false,
                             ),
                           );
-
-                          if (scheduleDate != null) {
-                            setState(
-                              () => _selectedDate = scheduleDate,
-                            );
-                            scheduleInfo.scheduleDateTime = scheduleDate;
-                          }
                         },
                         borderRadius: BorderRadius.circular(defaultBorderRadiusM),
                         highlightColor: context.colorScheme.surfaceContainer,
@@ -200,13 +204,14 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
 
             if (_formKey.currentState?.validate() == true && isDateTimeValid) {
               _formKey.currentState?.save();
+              scheduleInfo.scheduleDateTime = _selectedDate;
               scheduleInfo.scheduleColor = _pickerColor.value.toRadixString(16).toUpperCase();
               try {
                 await _addScheduleToServer(scheduleInfo, scheduleNotifier);
 
                 if (context.mounted) {
-                  Navigator.pop(context);
                   GeneralFunctions.toastMessage('일정이 추가되었어요');
+                  Navigator.pop(context);
                 }
               } catch (e) {
                 await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');

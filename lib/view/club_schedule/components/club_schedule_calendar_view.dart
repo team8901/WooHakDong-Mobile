@@ -10,6 +10,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 import '../../../model/schedule/schedule.dart';
 import '../../../view_model/schedule/schedule_list_provider.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
+import '../club_schedule_add_page.dart';
 import 'club_schedule_list_tile.dart';
 
 class ClubScheduleCalendarView extends ConsumerStatefulWidget {
@@ -22,6 +23,7 @@ class ClubScheduleCalendarView extends ConsumerStatefulWidget {
 class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarView> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  DateTime? _lastSelectedDate;
 
   @override
   void initState() {
@@ -40,12 +42,24 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
           firstDay: DateTime(2000),
           lastDay: DateTime(2099),
           availableGestures: AvailableGestures.horizontalSwipe,
+          pageAnimationCurve: Curves.easeOutQuad,
+          pageAnimationDuration: const Duration(milliseconds: 400),
           focusedDay: _focusedDay,
           selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
           onDaySelected: (selectedDay, focusedDay) {
+            if (_selectedDay != null &&
+                isSameDay(_selectedDay, selectedDay) &&
+                _lastSelectedDate != null &&
+                DateTime.now().difference(_lastSelectedDate!) < const Duration(milliseconds: 300)) {
+              _pushScheduleAddPage(context, selectedDay);
+              _lastSelectedDate = null;
+              return;
+            }
+
             setState(() {
               _selectedDay = selectedDay;
               _focusedDay = focusedDay;
+              _lastSelectedDate = DateTime.now();
             });
           },
           onPageChanged: (focusedDay) {
@@ -59,7 +73,6 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
             leftChevronVisible: false,
             rightChevronVisible: false,
             titleTextStyle: context.textTheme.titleLarge!,
-            headerPadding: const EdgeInsets.only(left: defaultPaddingS, bottom: defaultPaddingM),
           ),
           daysOfWeekStyle: DaysOfWeekStyle(
             weekdayStyle: context.textTheme.labelLarge!,
@@ -82,12 +95,56 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
             ),
           ),
           calendarBuilders: CalendarBuilders(
+            headerTitleBuilder: (context, day) {
+              return Padding(
+                padding: const EdgeInsets.only(
+                  left: defaultPaddingS,
+                  right: defaultPaddingS,
+                  bottom: defaultPaddingM,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        DateFormat('yyyy년 MM월').format(day),
+                        style: context.textTheme.titleLarge,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _focusedDay = DateTime.now();
+                          _selectedDay = _focusedDay;
+                        });
+                      },
+                      child: Text(
+                        '오늘',
+                        style: context.textTheme.bodyMedium!,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
             todayBuilder: (context, date, _) {
               return Center(
-                child: Text(
-                  DateFormat('d').format(date),
-                  style: context.textTheme.titleSmall!.copyWith(
-                    color: context.colorScheme.primary,
+                child: Container(
+                  width: 32.r,
+                  height: 32.r,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: context.colorScheme.primary,
+                      width: 1,
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      DateFormat('d').format(date),
+                      style: context.textTheme.titleSmall!.copyWith(
+                        color: context.colorScheme.primary,
+                      ),
+                    ),
                   ),
                 ),
               );
@@ -147,7 +204,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: defaultPaddingM),
           child: Text(
-            DateFormat('d일').format(_selectedDay!),
+            DateFormat('d일 EEEE', 'ko_KR').format(_selectedDay!),
             style: context.textTheme.titleMedium,
           ),
         ),
@@ -161,7 +218,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
               }).toList()
                 ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
 
-              if (scheduleListData.isEmpty) {
+              if (filteredSchedules.isEmpty) {
                 return Center(
                   child: Text(
                     '등록된 일정이 없어요',
@@ -197,5 +254,39 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
     return schedules.where((schedule) {
       return isSameDay(schedule.scheduleDateTime, day);
     }).toList();
+  }
+
+  void _pushScheduleAddPage(BuildContext context, DateTime? selectedDate) {
+    final DateTime initialDateTime = DateTime(
+      selectedDate?.year ?? DateTime.now().year,
+      selectedDate?.month ?? DateTime.now().month,
+      selectedDate?.day ?? DateTime.now().day,
+      9,
+      0,
+    );
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => ClubScheduleAddPage(
+          initialScheduleDateTime: initialDateTime,
+        ),
+        transitionDuration: const Duration(milliseconds: 350),
+        reverseTransitionDuration: const Duration(milliseconds: 350),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var curve = CurvedAnimation(
+            parent: animation,
+            curve: Curves.fastOutSlowIn,
+            reverseCurve: Curves.fastOutSlowIn,
+          );
+          return SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 1),
+              end: Offset.zero,
+            ).animate(curve),
+            child: child,
+          );
+        },
+      ),
+    );
   }
 }
