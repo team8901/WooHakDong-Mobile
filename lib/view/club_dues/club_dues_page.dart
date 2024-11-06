@@ -10,6 +10,7 @@ import 'package:woohakdong/view_model/dues/dues_provider.dart';
 
 import '../../model/dues/dues.dart';
 import '../../service/general/general_functions.dart';
+import '../../view_model/club_member/club_member_me_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import 'components/club_dues_list_tile.dart';
@@ -26,6 +27,8 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final clubMemberMe = ref.watch(clubMemberMeProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('회비'),
@@ -33,6 +36,11 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
       body: SafeArea(
         child: CustomMaterialIndicator(
           onRefresh: () async {
+            if (clubMemberMe.clubMemberRole != 'PRESIDENT') {
+              await GeneralFunctions.toastMessage('동아리 회장만 회비 내역을 업데이트할 수 있어요');
+              return;
+            }
+
             try {
               await ref.read(duesProvider.notifier).refreshDuesList();
               await ref.refresh(duesProvider.notifier).getDuesList(null);

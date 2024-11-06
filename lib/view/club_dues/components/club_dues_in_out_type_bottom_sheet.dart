@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 class ClubDuesInOutTypeBottomSheet extends StatelessWidget {
   final Function(String?) onTypeSelect;
+  final String duesInOutType;
 
   const ClubDuesInOutTypeBottomSheet({
     super.key,
     required this.onTypeSelect,
+    required this.duesInOutType,
   });
 
   @override
@@ -41,12 +44,21 @@ class ClubDuesInOutTypeBottomSheet extends StatelessWidget {
                 horizontal: defaultPaddingM,
                 vertical: defaultPaddingS / 2,
               ),
-              child: SizedBox(
-                width: double.infinity,
-                child: Text(
-                  '전체',
-                  style: context.textTheme.bodyLarge,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '전체',
+                    style: context.textTheme.bodyLarge,
+                  ),
+                  if (duesInOutType == 'ALL')
+                    Icon(
+                      size: 20,
+                      Symbols.check_circle_rounded,
+                      fill: 1,
+                      color: context.colorScheme.primary,
+                    ),
+                ],
               ),
             ),
           ),
@@ -62,12 +74,21 @@ class ClubDuesInOutTypeBottomSheet extends StatelessWidget {
                 horizontal: defaultPaddingM,
                 vertical: defaultPaddingS / 2,
               ),
-              child: SizedBox(
-                width: double.infinity,
-                child: Text(
-                  '입금',
-                  style: context.textTheme.bodyLarge,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '입금',
+                    style: context.textTheme.bodyLarge,
+                  ),
+                  if (duesInOutType == 'DEPOSIT')
+                    Icon(
+                      size: 20,
+                      Symbols.check_circle_rounded,
+                      fill: 1,
+                      color: context.colorScheme.primary,
+                    ),
+                ],
               ),
             ),
           ),
@@ -83,12 +104,21 @@ class ClubDuesInOutTypeBottomSheet extends StatelessWidget {
                 horizontal: defaultPaddingM,
                 vertical: defaultPaddingS / 2,
               ),
-              child: SizedBox(
-                width: double.infinity,
-                child: Text(
-                  '출금',
-                  style: context.textTheme.bodyLarge,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '출금',
+                    style: context.textTheme.bodyLarge,
+                  ),
+                  if (duesInOutType == 'WITHDRAW')
+                    Icon(
+                      size: 20,
+                      Symbols.check_circle_rounded,
+                      fill: 1,
+                      color: context.colorScheme.primary,
+                    ),
+                ],
               ),
             ),
           ),

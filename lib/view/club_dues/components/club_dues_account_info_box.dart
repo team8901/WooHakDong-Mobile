@@ -9,6 +9,7 @@ import 'package:woohakdong/view/club_dues/components/club_dues_in_out_type_botto
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../../view_model/club_member/club_member_me_provider.dart';
 import '../../../view_model/dues/dues_provider.dart';
 
 class ClubDuesAccountInfoBox extends ConsumerWidget {
@@ -25,6 +26,8 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final clubMemberMe = ref.watch(clubMemberMeProvider);
+
     return Column(
       children: [
         Container(
@@ -68,7 +71,10 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
                   showModalBottomSheet(
                     useSafeArea: true,
                     context: context,
-                    builder: (context) => ClubDuesInOutTypeBottomSheet(onTypeSelect: onTypeSelect),
+                    builder: (context) => ClubDuesInOutTypeBottomSheet(
+                      onTypeSelect: onTypeSelect,
+                      duesInOutType: duesInOutType!,
+                    ),
                   );
                 },
                 child: Row(
@@ -92,6 +98,11 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
               Flexible(
                 child: InkWell(
                   onTap: () async {
+                    if (clubMemberMe.clubMemberRole != 'PRESIDENT') {
+                      await GeneralFunctions.toastMessage('동아리 회장만 회비 내역을 업데이트할 수 있어요');
+                      return;
+                    }
+
                     try {
                       await ref.read(duesProvider.notifier).refreshDuesList();
                       await ref.refresh(duesProvider.notifier).getDuesList(null);
