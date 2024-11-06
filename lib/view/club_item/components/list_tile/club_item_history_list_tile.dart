@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:woohakdong/model/item/item_history.dart';
+import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../themes/spacing.dart';
@@ -64,7 +64,7 @@ class ClubItemHistoryListTile extends StatelessWidget {
                     ),
                     const Gap(defaultGapS / 4),
                     Text(
-                      _formatRentalDate(itemHistory.itemRentalDate),
+                      GeneralFunctions.formatDateTime(itemHistory.itemRentalDate),
                       style: context.textTheme.bodySmall?.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
@@ -83,7 +83,7 @@ class ClubItemHistoryListTile extends StatelessWidget {
                     Text(
                       (itemHistory.itemReturnDate == null)
                           ? '아직 반납하지 않았어요'
-                          : _formatRentalDate(itemHistory.itemReturnDate),
+                          : GeneralFunctions.formatDateTime(itemHistory.itemReturnDate),
                       style: context.textTheme.bodySmall?.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
@@ -96,15 +96,5 @@ class ClubItemHistoryListTile extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatRentalDate(DateTime? itemRentalDate) {
-    String dateString = itemRentalDate.toString();
-    DateTime dateTime = DateTime.parse(dateString).toLocal();
-    int currentYear = DateTime.now().year;
-    bool isCurrentYear = dateTime.year == currentYear;
-    String dateFormat = isCurrentYear ? 'M월 d일, H:mm a' : 'yyyy년 M월 d일, H:mm a';
-
-    return DateFormat(dateFormat).format(dateTime);
   }
 }

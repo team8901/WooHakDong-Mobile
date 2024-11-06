@@ -5,6 +5,7 @@ import 'package:currency_formatter/currency_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../view/themes/custom_widget/interaction/custom_permission_denied_dialog.dart';
@@ -214,5 +215,16 @@ class GeneralFunctions {
         },
       ),
     );
+  }
+
+  /// 시간 관련 함수
+  static String formatDateTime(DateTime? itemRentalDate) {
+    String dateString = itemRentalDate.toString();
+    DateTime dateTime = DateTime.parse(dateString).toLocal();
+    int currentYear = DateTime.now().year;
+    bool isCurrentYear = dateTime.year == currentYear;
+    String dateFormat = isCurrentYear ? 'M월 d일 H:mm' : 'yyyy년 M월 d일 H:mm';
+
+    return DateFormat(dateFormat).format(dateTime);
   }
 }

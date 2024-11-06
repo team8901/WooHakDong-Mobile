@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -89,19 +90,28 @@ class _MyAppState extends ConsumerState<MyApp> {
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.system,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('ko', 'KR'),
+            Locale('en', 'US'),
+          ],
           home: FutureBuilder(
             future: _initialization,
             builder: (context, infoSnapshot) {
               if (infoSnapshot.connectionState == ConnectionState.waiting) {
                 return const Scaffold(body: SafeArea(child: CustomCircularProgressIndicator()));
-              } else {
-                if (authState == AuthState.authenticated) {
-                  return const RoutePage();
-                } else {
-                  FlutterNativeSplash.remove();
-                  return const LoginPage();
-                }
               }
+
+              if (authState == AuthState.authenticated) {
+                return const RoutePage();
+              }
+
+              FlutterNativeSplash.remove();
+              return const LoginPage();
             },
           ),
         );

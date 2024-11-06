@@ -19,6 +19,8 @@ class ClubMemberNotifier extends StateNotifier<ClubMember> {
     final currentClubId = ref.watch(clubIdProvider);
     final clubMemberAssignedTerm = ref.watch(clubSelectedTermProvider);
 
+    await Future.delayed(const Duration(milliseconds: 200));
+
     final List<ClubMember> clubMemberList = await clubMemberRepository.getClubMemberList(
       currentClubId!,
       clubMemberAssignedTerm,

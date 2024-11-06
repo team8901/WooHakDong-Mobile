@@ -68,7 +68,7 @@ class ClubMemberListPage extends ConsumerWidget {
             builder: (context, clubMemberSnapshot) {
               final isLoading = clubMemberSnapshot.connectionState == ConnectionState.waiting;
 
-              final clubMemberList = isLoading ? generateFakeClubMember(10) : clubMemberSnapshot.data;
+              final clubMemberList = isLoading ? _generateFakeClubMember(10) : clubMemberSnapshot.data;
 
               if (clubMemberList != null && clubMemberList.isNotEmpty) {
                 clubMemberList.sort((a, b) => a.memberName!.compareTo(b.memberName!));
@@ -105,7 +105,7 @@ class ClubMemberListPage extends ConsumerWidget {
     );
   }
 
-  List<ClubMember> generateFakeClubMember(int count) {
+  List<ClubMember> _generateFakeClubMember(int count) {
     return List.generate(count, (index) {
       return ClubMember(
         memberName: '강동우',

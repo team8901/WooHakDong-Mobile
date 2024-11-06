@@ -67,9 +67,7 @@ class ClubNotifier extends StateNotifier<Club> {
       await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
       final clubId = await clubRepository.registerClubInfo(state.copyWith(clubImage: clubImageForServer));
 
-      state = state.copyWith(clubId: clubId);
-
-      await ref.read(clubIdProvider.notifier).saveClubId(state.clubId!);
+      await ref.read(clubIdProvider.notifier).saveClubId(clubId!);
     } catch (e) {
       ref.read(clubStateProvider.notifier).state = ClubState.clubNotRegistered;
       rethrow;
