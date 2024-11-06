@@ -24,69 +24,67 @@ class ClubMemberListTile extends StatelessWidget {
       onTap: () => _pushMemberDetailPage(context, clubMember.clubMemberId!),
       highlightColor: context.colorScheme.surfaceContainer,
       child: Ink(
-        child: Padding(
-          padding: const EdgeInsets.all(defaultPaddingM),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(clubMember.memberName!, style: context.textTheme.bodyLarge),
-                        const Gap(defaultGapS / 2),
-                        if (clubMember.clubMemberRole != 'MEMBER')
-                          Flexible(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: defaultPaddingXS / 2,
-                                vertical: defaultPaddingXS / 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: context.colorScheme.primary.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
-                              ),
-                              child: Text(
-                                GeneralFunctions.formatClubRole(clubMember.clubMemberRole!),
-                                style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.primary),
-                              ),
+        padding: const EdgeInsets.all(defaultPaddingM),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(clubMember.memberName!, style: context.textTheme.bodyLarge),
+                      const Gap(defaultGapS / 2),
+                      if (clubMember.clubMemberRole != 'MEMBER')
+                        Flexible(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPaddingXS / 2,
+                              vertical: defaultPaddingXS / 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: context.colorScheme.primary.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                            ),
+                            child: Text(
+                              GeneralFunctions.formatClubRole(clubMember.clubMemberRole!),
+                              style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.primary),
                             ),
                           ),
-                      ],
-                    ),
-                    const Gap(defaultGapS / 2),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            clubMember.memberMajor!,
-                            style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-                            softWrap: true,
-                          ),
                         ),
-                        const Gap(defaultGapS),
-                        const CustomVerticalDivider(),
-                        const Gap(defaultGapS),
-                        Flexible(
-                          child: Text(
-                            clubMember.memberStudentNumber!,
-                            style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-                            softWrap: true,
-                          ),
+                    ],
+                  ),
+                  const Gap(defaultGapS / 2),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          clubMember.memberMajor!,
+                          style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                          softWrap: true,
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      const Gap(defaultGapS),
+                      const CustomVerticalDivider(),
+                      const Gap(defaultGapS),
+                      Flexible(
+                        child: Text(
+                          clubMember.memberStudentNumber!,
+                          style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                          softWrap: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              const Gap(defaultGapM),
-              Icon(
-                Symbols.chevron_right_rounded,
-                color: context.colorScheme.outline,
-              ),
-            ],
-          ),
+            ),
+            const Gap(defaultGapM),
+            Icon(
+              Symbols.chevron_right_rounded,
+              color: context.colorScheme.outline,
+            ),
+          ],
         ),
       ),
     );

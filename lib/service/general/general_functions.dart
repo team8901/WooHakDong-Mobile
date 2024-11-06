@@ -218,13 +218,13 @@ class GeneralFunctions {
   }
 
   /// 시간 관련 함수
-  static String formatDateTime(DateTime? itemRentalDate) {
-    String dateString = itemRentalDate.toString();
+  static String formatDateTime(DateTime? date) {
+    String dateString = date.toString();
     DateTime dateTime = DateTime.parse(dateString).toLocal();
     int currentYear = DateTime.now().year;
     bool isCurrentYear = dateTime.year == currentYear;
-    String dateFormat = isCurrentYear ? 'M월 d일 H:mm' : 'yyyy년 M월 d일 H:mm';
+    String dateFormat = isCurrentYear ? 'M월 d일 (E) H:mm' : 'yyyy년 M월 d일 (E) H:mm';
 
-    return DateFormat(dateFormat).format(dateTime);
+    return DateFormat(dateFormat, 'ko_KR').format(dateTime);
   }
 }

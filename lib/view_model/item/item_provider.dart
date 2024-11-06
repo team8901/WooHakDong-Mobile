@@ -62,7 +62,7 @@ class ItemNotifier extends StateNotifier<Item> {
     int itemRentalMaxDay,
   ) async {
     try {
-      ref.read(itemStateProvider.notifier).state = ItemState.registering;
+      ref.read(itemStateProvider.notifier).state = ItemState.adding;
 
       final currentClubId = ref.watch(clubIdProvider);
 
@@ -81,7 +81,7 @@ class ItemNotifier extends StateNotifier<Item> {
       );
 
       await ref.refresh(itemProvider.notifier).getItemList(null, null);
-      ref.read(itemStateProvider.notifier).state = ItemState.registered;
+      ref.read(itemStateProvider.notifier).state = ItemState.added;
     } catch (e) {
       ref.read(itemStateProvider.notifier).state = ItemState.initial;
       rethrow;
@@ -98,7 +98,7 @@ class ItemNotifier extends StateNotifier<Item> {
     int itemRentalMaxDay,
   ) async {
     try {
-      ref.read(itemStateProvider.notifier).state = ItemState.registering;
+      ref.read(itemStateProvider.notifier).state = ItemState.adding;
 
       final currentClubId = ref.watch(clubIdProvider);
 
@@ -116,7 +116,7 @@ class ItemNotifier extends StateNotifier<Item> {
       );
 
       await ref.refresh(itemProvider.notifier).getItemList(null, null);
-      ref.read(itemStateProvider.notifier).state = ItemState.registered;
+      ref.read(itemStateProvider.notifier).state = ItemState.added;
     } catch (e) {
       ref.read(itemStateProvider.notifier).state = ItemState.initial;
       rethrow;

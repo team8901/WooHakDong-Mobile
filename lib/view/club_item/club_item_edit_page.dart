@@ -225,7 +225,7 @@ class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
             _formKey.currentState!.save();
 
             try {
-              itemStateNotifier.state = ItemState.registering;
+              itemStateNotifier.state = ItemState.adding;
 
               final itemImage = await _getUpdatedItemImage(widget.itemInfo.itemPhoto!, s3ImageNotifier, s3ImageState);
 
@@ -234,18 +234,18 @@ class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
               if (context.mounted) {
                 ref.invalidate(s3ImageProvider);
                 GeneralFunctions.toastMessage('물품 정보가 수정되었어요');
-                itemStateNotifier.state = ItemState.registered;
+                itemStateNotifier.state = ItemState.added;
                 Navigator.pop(context);
               }
             } catch (e) {
-              itemStateNotifier.state = ItemState.registered;
+              itemStateNotifier.state = ItemState.added;
               GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
             }
           },
           buttonText: '저장',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
-          isLoading: itemState == ItemState.registering,
+          isLoading: itemState == ItemState.adding,
         ),
       ),
     );

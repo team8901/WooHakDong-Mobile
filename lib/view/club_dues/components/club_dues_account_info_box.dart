@@ -117,7 +117,7 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          DateFormat('yyyy년 M월 dd일 H:MM 기준').format(
+                          DateFormat('yyyy년 M월 dd일 (E) H:MM 기준', 'ko_KR').format(
                             currentClubAccount.clubAccountLastUpdateDate!,
                           ),
                           style: context.textTheme.bodySmall?.copyWith(

@@ -6,7 +6,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_dues/club_dues_page.dart';
 import 'package:woohakdong/view/club_item/club_item_list_page.dart';
 import 'package:woohakdong/view/club_member/club_member_list_page.dart';
-import 'package:woohakdong/view/club_schedule/club_calendar_page.dart';
+import 'package:woohakdong/view/club_schedule/club_schedule_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_pop_scope.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/club/current_club_info_provider.dart';

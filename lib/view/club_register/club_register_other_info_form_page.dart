@@ -51,7 +51,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                 ),
                 const Gap(defaultGapM),
                 CustomTextFormField(
-                  labelText: '동아리 회비',
+                  labelText: '회비',
                   keyboardType: TextInputType.number,
                   inputFormatters: [
                     CurrencyTextInputFormatter.currency(

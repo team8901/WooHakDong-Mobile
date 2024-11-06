@@ -21,7 +21,7 @@ class Dues {
       clubAccountHistoryInOutType: json['clubAccountHistoryInOutType'],
       clubAccountHistoryTranDate: json['clubAccountHistoryTranDate'] != null
           ? DateTime.parse(json['clubAccountHistoryTranDate'])
-          : DateTime.now(),
+          : null,
       clubAccountHistoryBalanceAmount: json['clubAccountHistoryBalanceAmount'],
       clubAccountHistoryTranAmount: json['clubAccountHistoryTranAmount'],
       clubAccountHistoryContent: json['clubAccountHistoryContent'],
