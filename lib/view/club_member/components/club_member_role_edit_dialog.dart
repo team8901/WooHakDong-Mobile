@@ -110,7 +110,7 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
                         },
                       ),
                       Text(
-                        '임원진',
+                        '임원',
                         style: context.textTheme.bodyMedium,
                       ),
                     ],

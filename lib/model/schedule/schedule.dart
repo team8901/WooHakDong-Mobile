@@ -14,14 +14,12 @@ class Schedule {
   });
 
   Schedule copyWith({
-    int? scheduleId,
     String? scheduleTitle,
     String? scheduleContent,
     DateTime? scheduleDateTime,
     String? scheduleColor,
   }) {
     return Schedule(
-      scheduleId: scheduleId ?? this.scheduleId,
       scheduleTitle: scheduleTitle ?? this.scheduleTitle,
       scheduleContent: scheduleContent ?? this.scheduleContent,
       scheduleDateTime: scheduleDateTime ?? this.scheduleDateTime,

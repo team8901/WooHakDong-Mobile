@@ -2,58 +2,62 @@ import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:woohakdong/view/club_schedule/components/club_schedule_color_picker.dart';
+import 'package:woohakdong/view/club_schedule/components/club_schedule_edit_controller.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
-import 'package:woohakdong/view_model/schedule/components/schedule_state_provider.dart';
 
 import '../../model/schedule/schedule.dart';
 import '../../service/general/general_functions.dart';
 import '../../view_model/schedule/components/schedule_state.dart';
+import '../../view_model/schedule/components/schedule_state_provider.dart';
 import '../../view_model/schedule/schedule_provider.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
 import '../themes/custom_widget/interface/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
+import 'components/club_schedule_color_picker.dart';
 
-class ClubScheduleAddPage extends ConsumerStatefulWidget {
-  final DateTime? initialScheduleDateTime;
+class ClubScheduleEditPage extends ConsumerStatefulWidget {
+  final Schedule scheduleInfo;
 
-  const ClubScheduleAddPage({
+  const ClubScheduleEditPage({
     super.key,
-    this.initialScheduleDateTime,
+    required this.scheduleInfo,
   });
 
   @override
-  ConsumerState<ClubScheduleAddPage> createState() => _ClubScheduleAddPageState();
+  ConsumerState<ClubScheduleEditPage> createState() => _ClubScheduleEditPageState();
 }
 
-class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
+class _ClubScheduleEditPageState extends ConsumerState<ClubScheduleEditPage> {
   final _formKey = GlobalKey<FormState>();
+  late final ClubScheduleEditController _clubScheduleEditController;
   DateTime? _selectedDate;
-  Color _pickerColor = const Color(0xFFC5C6C7);
-  String? _dateErrorText;
+  Color? _pickerColor;
 
   @override
   void initState() {
     super.initState();
-    _selectedDate = widget.initialScheduleDateTime;
+    _clubScheduleEditController = ClubScheduleEditController();
+    _selectedDate = widget.scheduleInfo.scheduleDateTime;
+    _pickerColor = Color(int.parse('0x${widget.scheduleInfo.scheduleColor!}'));
   }
 
   @override
   void dispose() {
+    _clubScheduleEditController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final scheduleInfo = ref.watch(scheduleProvider);
+    _clubScheduleEditController.updateFromClubScheduleInfo(widget.scheduleInfo);
     final scheduleState = ref.watch(scheduleStateProvider);
     final scheduleNotifier = ref.read(scheduleProvider.notifier);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text('일정 추가'),
+        title: const Text('일정 수정'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -74,8 +78,8 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
                   children: [
                     Expanded(
                       child: CustomTextFormField(
+                        controller: _clubScheduleEditController.title,
                         labelText: '제목',
-                        onSaved: (value) => scheduleInfo.scheduleTitle = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return '일정 제목을 입력해 주세요';
@@ -86,7 +90,7 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
                     ),
                     const Gap(defaultGapM),
                     ClubScheduleColorPicker(
-                      pickerColor: _pickerColor,
+                      pickerColor: _pickerColor!,
                       onColorChanged: (Color color) => setState(() => _pickerColor = color),
                     ),
                   ],
@@ -102,7 +106,7 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
                           await showBoardDateTimePicker(
                             context: context,
                             pickerType: DateTimePickerType.datetime,
-                            initialDate: _selectedDate ?? DateTime.now(),
+                            initialDate: _selectedDate!,
                             minimumDate: DateTime(2000),
                             maximumDate: DateTime(2099),
                             onChanged: (scheduleDate) => setState(() => _selectedDate = scheduleDate),
@@ -137,9 +141,7 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
                           ),
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: _dateErrorText != null
-                                  ? context.colorScheme.error
-                                  : context.colorScheme.surfaceContainer,
+                              color: context.colorScheme.surfaceContainer,
                             ),
                             borderRadius: BorderRadius.circular(defaultBorderRadiusM),
                           ),
@@ -154,26 +156,16 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
                         ),
                       ),
                     ),
-                    if (_dateErrorText != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: defaultPaddingS / 4, left: defaultPaddingS),
-                        child: Text(
-                          _dateErrorText!,
-                          style: context.textTheme.labelLarge?.copyWith(
-                            color: context.colorScheme.error,
-                          ),
-                        ),
-                      ),
                   ],
                 ),
                 const Gap(defaultGapM),
                 CustomCounterTextFormField(
+                  controller: _clubScheduleEditController.content,
                   labelText: '내용',
                   hintText: '200자 이내로 입력해 주세요',
                   minLines: 4,
                   maxLength: 200,
                   textInputAction: TextInputAction.done,
-                  onSaved: (value) => scheduleInfo.scheduleContent = value,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '일정 내용을 입력해 주세요';
@@ -189,32 +181,23 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
           onTap: () async {
-            setState(() => _dateErrorText = null);
+            try {
+              await _editSchedule(
+                scheduleNotifier,
+                widget.scheduleInfo.scheduleId!,
+                _selectedDate!,
+                _pickerColor!.value.toRadixString(16).toUpperCase(),
+              );
 
-            bool isDateTimeValid = true;
-
-            if (_selectedDate == null) {
-              setState(() => _dateErrorText = '날짜 및 시각을 선택해 주세요');
-              isDateTimeValid = false;
-            }
-
-            if (_formKey.currentState?.validate() == true && isDateTimeValid) {
-              _formKey.currentState?.save();
-              scheduleInfo.scheduleDateTime = _selectedDate;
-              scheduleInfo.scheduleColor = _pickerColor.value.toRadixString(16).toUpperCase();
-              try {
-                await _addSchedule(scheduleInfo, scheduleNotifier);
-
-                if (context.mounted) {
-                  GeneralFunctions.toastMessage('일정이 추가되었어요');
-                  Navigator.pop(context);
-                }
-              } catch (e) {
-                await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
+              if (context.mounted) {
+                GeneralFunctions.toastMessage('일정이 수정되었어요');
+                Navigator.pop(context);
               }
+            } catch (e) {
+              await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
             }
           },
-          buttonText: '추가',
+          buttonText: '저장',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
           isLoading: scheduleState == ScheduleState.adding,
@@ -223,16 +206,19 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
     );
   }
 
-  Future<void> _addSchedule(
-    Schedule scheduleInfo,
+  Future<void> _editSchedule(
     ScheduleNotifier scheduleNotifier,
+    int scheduleId,
+    DateTime scheduleDateTime,
+    String scheduleColor,
   ) async {
     try {
-      await scheduleNotifier.addSchedule(
-        scheduleInfo.scheduleTitle!,
-        scheduleInfo.scheduleContent!,
-        scheduleInfo.scheduleDateTime!,
-        scheduleInfo.scheduleColor!,
+      await scheduleNotifier.updateSchedule(
+        scheduleId,
+        _clubScheduleEditController.title.text,
+        _clubScheduleEditController.content.text,
+        scheduleDateTime,
+        scheduleColor,
       );
     } catch (e) {
       rethrow;

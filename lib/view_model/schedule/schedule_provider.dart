@@ -17,12 +17,12 @@ class ScheduleNotifier extends StateNotifier<Schedule> {
 
   ScheduleNotifier(this.ref) : super(Schedule());
 
-  Future<Schedule> getScheduleInfo(int scheduleId) async {
+  Future<void> getScheduleInfo(int scheduleId) async {
     final currentClubId = ref.watch(clubIdProvider);
 
-    final Schedule scheduleInfo = await scheduleRepository.getScheduleInfo(currentClubId!, scheduleId);
+    final scheduleInfo = await scheduleRepository.getScheduleInfo(currentClubId!, scheduleId);
 
-    return scheduleInfo;
+    state = scheduleInfo;
   }
 
   Future<void> addSchedule(
@@ -69,7 +69,7 @@ class ScheduleNotifier extends StateNotifier<Schedule> {
       await scheduleRepository.updateSchedule(
         currentClubId!,
         scheduleId,
-        Schedule(
+        state.copyWith(
           scheduleTitle: scheduleTitle,
           scheduleContent: scheduleContent,
           scheduleDateTime: scheduleDateTime,
@@ -78,6 +78,7 @@ class ScheduleNotifier extends StateNotifier<Schedule> {
       );
 
       await ref.read(scheduleListProvider.notifier).getScheduleList(null);
+      await getScheduleInfo(scheduleId);
       ref.read(scheduleStateProvider.notifier).state = ScheduleState.added;
     } catch (e) {
       ref.read(scheduleStateProvider.notifier).state = ScheduleState.initial;

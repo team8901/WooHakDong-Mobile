@@ -1,3 +1,4 @@
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,27 +47,9 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
           pageAnimationDuration: const Duration(milliseconds: 400),
           focusedDay: _focusedDay,
           selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-          onDaySelected: (selectedDay, focusedDay) {
-            if (_selectedDay != null &&
-                isSameDay(_selectedDay, selectedDay) &&
-                _lastSelectedDate != null &&
-                DateTime.now().difference(_lastSelectedDate!) < const Duration(milliseconds: 300)) {
-              _pushScheduleAddPage(context, selectedDay);
-              _lastSelectedDate = null;
-              return;
-            }
-
-            setState(() {
-              _selectedDay = selectedDay;
-              _focusedDay = focusedDay;
-              _lastSelectedDate = DateTime.now();
-            });
-          },
-          onPageChanged: (focusedDay) {
-            _focusedDay = focusedDay;
-            _loadMonthlySchedules(focusedDay);
-          },
-          eventLoader: _getEventsForDay,
+          onDaySelected: _onDaySelected,
+          onPageChanged: _onPageChanged,
+          eventLoader: _eventLoader,
           headerStyle: HeaderStyle(
             formatButtonVisible: false,
             formatButtonShowsNext: false,
@@ -172,7 +155,6 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
             markerBuilder: (context, date, events) {
               if (events.isNotEmpty) {
                 final limitedEvents = (events as List<Schedule>).take(3).toList();
-
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: limitedEvents.map((schedule) {
@@ -212,7 +194,6 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
           child: Consumer(
             builder: (context, ref, child) {
               final scheduleListData = ref.watch(scheduleListProvider);
-
               final filteredSchedules = scheduleListData.where((schedule) {
                 return isSameDay(schedule.scheduleDateTime, _selectedDay);
               }).toList()
@@ -229,13 +210,20 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
                 );
               }
 
-              return ListView.separated(
-                separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                itemCount: filteredSchedules.length,
-                itemBuilder: (context, index) {
-                  final schedule = filteredSchedules[index];
-                  return ClubScheduleListTile(schedule: schedule);
+              return CustomMaterialIndicator(
+                onRefresh: () async {
+                  await ref.read(scheduleListProvider.notifier).getScheduleList(
+                    DateFormat('yyyy-MM-dd').format(_focusedDay),
+                  );
                 },
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                  itemCount: filteredSchedules.length,
+                  itemBuilder: (context, index) {
+                    final schedule = filteredSchedules[index];
+                    return ClubScheduleListTile(schedule: schedule);
+                  },
+                ),
               );
             },
           ),
@@ -249,11 +237,47 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
     await ref.read(scheduleListProvider.notifier).getScheduleList(formattedMonth);
   }
 
-  List<Schedule> _getEventsForDay(DateTime day) {
+  List<Schedule> _eventLoader(DateTime day) {
     final schedules = ref.watch(scheduleListProvider);
     return schedules.where((schedule) {
       return isSameDay(schedule.scheduleDateTime, day);
     }).toList();
+  }
+
+  void _onPageChanged(DateTime focusedDay) {
+    final now = DateTime.now();
+
+    if (focusedDay.year == now.year && focusedDay.month == now.month) {
+      setState(() {
+        _focusedDay = now;
+        _selectedDay = now;
+      });
+    } else {
+      final firstDayOfMonth = DateTime(focusedDay.year, focusedDay.month, 1);
+      setState(() {
+        _focusedDay = firstDayOfMonth;
+        _selectedDay = firstDayOfMonth;
+      });
+    }
+
+    _loadMonthlySchedules(_focusedDay);
+  }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (_selectedDay != null &&
+        isSameDay(_selectedDay, selectedDay) &&
+        _lastSelectedDate != null &&
+        DateTime.now().difference(_lastSelectedDate!) < const Duration(milliseconds: 300)) {
+      _pushScheduleAddPage(context, selectedDay);
+      _lastSelectedDate = null;
+      return;
+    }
+
+    setState(() {
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+      _lastSelectedDate = DateTime.now();
+    });
   }
 
   void _pushScheduleAddPage(BuildContext context, DateTime? selectedDate) {

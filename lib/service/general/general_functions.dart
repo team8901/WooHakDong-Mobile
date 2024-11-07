@@ -72,7 +72,7 @@ class GeneralFunctions {
       case 'SECRETARY':
         return '총무';
       case 'OFFICER':
-        return '임원진';
+        return '임원';
       case 'MEMBER':
         return '회원';
       default:

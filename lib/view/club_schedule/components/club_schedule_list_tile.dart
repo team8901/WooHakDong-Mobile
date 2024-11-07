@@ -1,24 +1,32 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/schedule/schedule.dart';
+import '../../../view_model/schedule/schedule_provider.dart';
 import '../../themes/spacing.dart';
+import '../club_schedule_detail_page.dart';
 
-class ClubScheduleListTile extends StatelessWidget {
+class ClubScheduleListTile extends ConsumerWidget {
+  final Schedule schedule;
+
   const ClubScheduleListTile({
     super.key,
     required this.schedule,
   });
 
-  final Schedule schedule;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        await ref.read(scheduleProvider.notifier).getScheduleInfo(schedule.scheduleId!);
+
+        context.mounted ? _pushScheduleDetailPage(context) : null;
+      },
       highlightColor: context.colorScheme.surfaceContainer,
       child: Ink(
         padding: const EdgeInsets.all(defaultPaddingM),
@@ -54,6 +62,12 @@ class ClubScheduleListTile extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _pushScheduleDetailPage(BuildContext context) {
+    Navigator.of(context).push(
+      CupertinoPageRoute(builder: (context) => const ClubScheduleDetailPage()),
     );
   }
 }

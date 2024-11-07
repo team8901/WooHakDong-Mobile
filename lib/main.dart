@@ -22,6 +22,7 @@ import 'package:woohakdong/view_model/auth/components/auth_state_provider.dart';
 import 'package:woohakdong/view_model/club/club_id_provider.dart';
 
 import 'firebase_options.dart';
+import 'my_http_overrides.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -72,11 +73,6 @@ class _MyAppState extends ConsumerState<MyApp> {
     _initialization = _initializeApp();
   }
 
-  Future<void> _initializeApp() async {
-    await ref.read(authProvider.notifier).checkLoginStatus();
-    ref.watch(clubIdProvider);
-  }
-
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
@@ -118,12 +114,9 @@ class _MyAppState extends ConsumerState<MyApp> {
       },
     );
   }
-}
 
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  Future<void> _initializeApp() async {
+    await ref.read(authProvider.notifier).checkLoginStatus();
+    ref.watch(clubIdProvider);
   }
 }
