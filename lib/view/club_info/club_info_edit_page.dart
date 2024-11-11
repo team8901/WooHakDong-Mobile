@@ -278,6 +278,5 @@ class _ClubInfoEditPageState extends ConsumerState<ClubInfoEditPage> {
       _clubInfoEditController.chatLink.text,
       _clubInfoEditController.chatPassword.text,
     );
-    await currentClubInfoNotifier.getCurrentClubInfo();
   }
 }

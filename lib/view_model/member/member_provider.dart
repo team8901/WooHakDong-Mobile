@@ -31,9 +31,14 @@ class MemberNotifier extends StateNotifier<Member?> {
   }
 
   Future<void> registerMember() async {
+
+    ref.read(memberStateProvider.notifier).state = MemberState.memberRegistering;
     try {
       await MemberRepository().registerMemberInfo(state!);
+
+      ref.read(memberStateProvider.notifier).state = MemberState.memberRegistered;
     } catch (e) {
+      ref.read(memberStateProvider.notifier).state = MemberState.memberNotRegistered;
       rethrow;
     }
   }

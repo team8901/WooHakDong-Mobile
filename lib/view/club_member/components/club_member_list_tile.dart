@@ -1,16 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/club_member/club_member.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../service/general/general_functions.dart';
+import '../../../view_model/club_member/club_member_provider.dart';
 import '../../themes/custom_widget/etc/custom_vertical_divider.dart';
 import '../../themes/spacing.dart';
 import '../club_member_detail_page.dart';
 
-class ClubMemberListTile extends StatelessWidget {
+class ClubMemberListTile extends ConsumerWidget {
   final ClubMember clubMember;
 
   const ClubMemberListTile({
@@ -19,9 +21,15 @@ class ClubMemberListTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
-      onTap: () => _pushMemberDetailPage(context, clubMember.clubMemberId!),
+      onTap: () async {
+        await ref.read(clubMemberProvider.notifier).getClubMemberInfo(clubMember.clubMemberId!);
+
+        if (context.mounted) {
+          _pushMemberDetailPage(context);
+        }
+      },
       highlightColor: context.colorScheme.surfaceContainer,
       child: Ink(
         padding: const EdgeInsets.all(defaultPaddingM),
@@ -90,12 +98,10 @@ class ClubMemberListTile extends StatelessWidget {
     );
   }
 
-  void _pushMemberDetailPage(BuildContext context, int clubMemberId) {
+  void _pushMemberDetailPage(BuildContext context) {
     Navigator.of(context).push(
       CupertinoPageRoute(
-        builder: (context) => ClubMemberDetailPage(
-          clubMemberId: clubMemberId,
-        ),
+        builder: (context) => const ClubMemberDetailPage(),
       ),
     );
   }

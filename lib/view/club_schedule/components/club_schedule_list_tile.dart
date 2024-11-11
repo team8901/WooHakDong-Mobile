@@ -25,7 +25,9 @@ class ClubScheduleListTile extends ConsumerWidget {
       onTap: () async {
         await ref.read(scheduleProvider.notifier).getScheduleInfo(schedule.scheduleId!);
 
-        context.mounted ? _pushScheduleDetailPage(context) : null;
+        if (context.mounted) {
+          _pushScheduleDetailPage(context);
+        }
       },
       highlightColor: context.colorScheme.surfaceContainer,
       child: Ink(

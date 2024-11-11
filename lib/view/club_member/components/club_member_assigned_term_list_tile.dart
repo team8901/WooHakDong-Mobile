@@ -6,7 +6,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../service/general/general_functions.dart';
-import '../../../view_model/club_member/club_member_provider.dart';
+import '../../../view_model/club_member/club_member_list_provider.dart';
 import '../../../view_model/club_member/components/club_selected_term_provider.dart';
 import '../../themes/spacing.dart';
 
@@ -27,7 +27,7 @@ class ClubMemberAssignedTermListTile extends ConsumerWidget {
     return InkWell(
       onTap: () {
         ref.read(clubSelectedTermProvider.notifier).state = termDate;
-        ref.invalidate(clubMemberProvider);
+        ref.read(clubMemberListProvider.notifier).getClubMemberList();
 
         if (context.mounted) {
           Navigator.pop(context);

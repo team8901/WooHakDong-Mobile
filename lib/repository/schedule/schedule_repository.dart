@@ -60,14 +60,20 @@ class ScheduleRepository {
     }
   }
 
-  Future<void> updateSchedule(int clubId, int scheduleId, Schedule updatedScheduleInfo) async {
+  Future<int> updateSchedule(int clubId, int scheduleId, Schedule updatedScheduleInfo) async {
     try {
       logger.i('일정 수정 시도');
 
-      await _dio.put(
+      final response = await _dio.put(
         '/clubs/$clubId/schedules/$scheduleId',
         data: updatedScheduleInfo.toJson(),
       );
+
+      if (response.statusCode == 200) {
+        return response.data['scheduleId'];
+      }
+
+      throw Exception();
     } catch (e) {
       logger.e('일정 수정 실패', error: e);
       throw Exception();

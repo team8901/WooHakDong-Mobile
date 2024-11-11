@@ -25,6 +25,10 @@ class ClubMember {
     this.clubMemberAssignedTerm,
   });
 
+  ClubMember copyWith({String? clubMemberRole}) {
+    return ClubMember(clubMemberRole: clubMemberRole ?? this.clubMemberRole);
+  }
+
   factory ClubMember.fromJson(Map<String, dynamic> json) {
     return ClubMember(
       memberId: json['memberId'] as int?,

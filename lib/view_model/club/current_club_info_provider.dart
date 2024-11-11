@@ -47,5 +47,7 @@ class CurrentClubInfoNotifier extends StateNotifier<CurrentClub> {
     );
 
     state = updatedCurrentClub;
+
+    await getCurrentClubInfo();
   }
 }

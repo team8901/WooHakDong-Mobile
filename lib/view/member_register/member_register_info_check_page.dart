@@ -8,6 +8,8 @@ import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.d
 import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_content.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../view_model/member/components/member_state.dart';
+import '../../view_model/member/components/member_state_provider.dart';
 import '../../view_model/member/member_provider.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
 import '../themes/spacing.dart';
@@ -20,6 +22,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final memberInfo = ref.watch(memberProvider)!;
     final memberNotifier = ref.read(memberProvider.notifier);
+    final memberState = ref.watch(memberStateProvider);
 
     return Scaffold(
       appBar: AppBar(),
@@ -132,6 +135,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
           buttonText: '맞아요',
           buttonColor: Theme.of(context).colorScheme.primary,
           buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+          isLoading: memberState == MemberState.memberRegistering,
         ),
       ),
     );

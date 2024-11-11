@@ -1,18 +1,19 @@
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:woohakdong/view/themes/spacing.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/schedule/schedule.dart';
 import '../../../view_model/schedule/schedule_list_provider.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
+import '../../themes/spacing.dart';
 import '../club_schedule_add_page.dart';
 import 'club_schedule_list_tile.dart';
+import 'club_schedule_table_calendar.dart';
 
 class ClubScheduleCalendarView extends ConsumerStatefulWidget {
   const ClubScheduleCalendarView({super.key});
@@ -38,143 +39,13 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TableCalendar(
-          locale: 'ko_KR',
-          firstDay: DateTime(2000),
-          lastDay: DateTime(2099),
-          availableGestures: AvailableGestures.horizontalSwipe,
-          pageAnimationCurve: Curves.easeOutQuad,
-          pageAnimationDuration: const Duration(milliseconds: 400),
+        ClubScheduleTableCalendar(
           focusedDay: _focusedDay,
-          selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+          selectedDay: _selectedDay,
           onDaySelected: _onDaySelected,
           onPageChanged: _onPageChanged,
           eventLoader: _eventLoader,
-          headerStyle: HeaderStyle(
-            formatButtonVisible: false,
-            formatButtonShowsNext: false,
-            leftChevronVisible: false,
-            rightChevronVisible: false,
-            titleTextStyle: context.textTheme.titleLarge!,
-          ),
-          daysOfWeekStyle: DaysOfWeekStyle(
-            weekdayStyle: context.textTheme.labelLarge!,
-            weekendStyle: context.textTheme.labelLarge!.copyWith(
-              color: context.colorScheme.onSurface,
-            ),
-          ),
-          calendarStyle: CalendarStyle(
-            selectedDecoration: BoxDecoration(
-              color: context.colorScheme.primary,
-              shape: BoxShape.circle,
-            ),
-            outsideDaysVisible: false,
-            weekendTextStyle: context.textTheme.titleSmall!.copyWith(
-              color: context.colorScheme.onSurface,
-            ),
-            defaultTextStyle: context.textTheme.titleSmall!,
-            selectedTextStyle: context.textTheme.titleSmall!.copyWith(
-              color: context.colorScheme.onPrimary,
-            ),
-          ),
-          calendarBuilders: CalendarBuilders(
-            headerTitleBuilder: (context, day) {
-              return Padding(
-                padding: const EdgeInsets.only(
-                  left: defaultPaddingS,
-                  right: defaultPaddingS,
-                  bottom: defaultPaddingM,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        DateFormat('yyyy년 MM월').format(day),
-                        style: context.textTheme.titleLarge,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _focusedDay = DateTime.now();
-                          _selectedDay = _focusedDay;
-                        });
-                      },
-                      child: Text(
-                        '오늘',
-                        style: context.textTheme.bodyMedium!,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-            todayBuilder: (context, date, _) {
-              return Center(
-                child: Container(
-                  width: 32.r,
-                  height: 32.r,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: context.colorScheme.primary,
-                      width: 1,
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      DateFormat('d').format(date),
-                      style: context.textTheme.titleSmall!.copyWith(
-                        color: context.colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-            selectedBuilder: (context, date, _) {
-              return Center(
-                child: Container(
-                  width: 32.r,
-                  height: 32.r,
-                  decoration: BoxDecoration(
-                    color: context.colorScheme.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      DateFormat('d').format(date),
-                      style: context.textTheme.titleSmall!.copyWith(
-                        color: context.colorScheme.inversePrimary,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-            markerBuilder: (context, date, events) {
-              if (events.isNotEmpty) {
-                final limitedEvents = (events as List<Schedule>).take(3).toList();
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: limitedEvents.map((schedule) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                      child: Container(
-                        width: 6.r,
-                        height: 6.r,
-                        decoration: BoxDecoration(
-                          color: Color(int.parse('0x${schedule.scheduleColor!}')),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                );
-              }
-              return const SizedBox();
-            },
-          ),
+          onTodayButtonPressed: _onTodayButtonPressed,
         ),
         const Gap(defaultGapM),
         Divider(
@@ -194,35 +65,68 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
           child: Consumer(
             builder: (context, ref, child) {
               final scheduleListData = ref.watch(scheduleListProvider);
-              final filteredSchedules = scheduleListData.where((schedule) {
-                return isSameDay(schedule.scheduleDateTime, _selectedDay);
-              }).toList()
-                ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
 
-              if (filteredSchedules.isEmpty) {
-                return Center(
-                  child: Text(
-                    '등록된 일정이 없어요',
-                    style: context.textTheme.bodySmall?.copyWith(
-                      color: context.colorScheme.onSurface,
+              return scheduleListData.when(
+                data: (scheduleList) {
+                  final filteredScheduleList = scheduleList.where((schedule) {
+                    return isSameDay(schedule.scheduleDateTime, _selectedDay);
+                  }).toList()
+                    ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
+
+                  if (filteredScheduleList.isEmpty) {
+                    return Center(
+                      child: Text(
+                        '등록된 일정이 없어요',
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.colorScheme.onSurface,
+                        ),
+                      ),
+                    );
+                  }
+
+                  return CustomMaterialIndicator(
+                    onRefresh: () async {
+                      await Future.delayed(const Duration(milliseconds: 500));
+                      await ref.read(scheduleListProvider.notifier).getScheduleList(
+                            DateFormat('yyyy-MM-dd').format(_focusedDay),
+                          );
+                    },
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                      itemCount: filteredScheduleList.length,
+                      itemBuilder: (context, index) {
+                        return ClubScheduleListTile(schedule: filteredScheduleList[index]);
+                      },
                     ),
-                  ),
-                );
-              }
-
-              return CustomMaterialIndicator(
-                onRefresh: () async {
-                  await ref.read(scheduleListProvider.notifier).getScheduleList(
-                    DateFormat('yyyy-MM-dd').format(_focusedDay),
                   );
                 },
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                  itemCount: filteredSchedules.length,
-                  itemBuilder: (context, index) {
-                    final schedule = filteredSchedules[index];
-                    return ClubScheduleListTile(schedule: schedule);
-                  },
+                loading: () {
+                  return CustomLoadingSkeleton(
+                    isLoading: true,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return ClubScheduleListTile(
+                          schedule: Schedule(
+                            scheduleId: index,
+                            scheduleTitle: '일정 제목',
+                            scheduleDateTime: DateTime.now(),
+                            scheduleColor: 'FF000000',
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+                error: (error, stack) => Center(
+                  child: Text(
+                    '일정을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
+                    style: context.textTheme.bodySmall?.copyWith(
+                      color: context.colorScheme.error,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               );
             },
@@ -238,10 +142,16 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
   }
 
   List<Schedule> _eventLoader(DateTime day) {
-    final schedules = ref.watch(scheduleListProvider);
-    return schedules.where((schedule) {
-      return isSameDay(schedule.scheduleDateTime, day);
-    }).toList();
+    final scheduleListData = ref.watch(scheduleListProvider);
+
+    return scheduleListData.maybeWhen(
+      data: (scheduleList) {
+        return scheduleList.where((schedule) {
+          return isSameDay(schedule.scheduleDateTime, day);
+        }).toList();
+      },
+      orElse: () => [],
+    );
   }
 
   void _onPageChanged(DateTime focusedDay) {
@@ -277,6 +187,13 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
       _selectedDay = selectedDay;
       _focusedDay = focusedDay;
       _lastSelectedDate = DateTime.now();
+    });
+  }
+
+  void _onTodayButtonPressed() {
+    setState(() {
+      _focusedDay = DateTime.now();
+      _selectedDay = _focusedDay;
     });
   }
 
