@@ -15,11 +15,16 @@ class ScheduleListNotifier extends StateNotifier<AsyncValue<List<Schedule>>> {
   ScheduleListNotifier(this.ref) : super(const AsyncValue.loading());
 
   Future<void> getScheduleList(String? date) async {
-    final currentClubId = ref.read(clubIdProvider);
-
     try {
+      final currentClubId = ref.read(clubIdProvider);
+
       state = const AsyncValue.loading();
-      final scheduleList = await scheduleRepository.getSchedule(currentClubId!, date);
+
+      final scheduleList = await scheduleRepository.getSchedule(
+        currentClubId!,
+        date,
+      );
+
       state = AsyncValue.data(scheduleList);
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);

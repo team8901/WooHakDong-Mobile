@@ -40,6 +40,27 @@ class ItemRepository {
     }
   }
 
+  Future<Item> getItemInfo(int clubId, int itemId) async {
+    try {
+      logger.i('물품 상세 정보 조회 시도');
+
+      final response = await _dio.get(
+        '/clubs/$clubId/items/$itemId',
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonData = response.data;
+
+        return Item.fromJson(jsonData);
+      }
+
+      throw Exception();
+    } catch (e) {
+      logger.e('물품 상세 정보 조회 실패', error: e);
+      throw Exception();
+    }
+  }
+
   Future<int> addItem(int clubId, Item item) async {
     try {
       logger.i('물품 추가 시도');

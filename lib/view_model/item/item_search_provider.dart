@@ -1,10 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/item/item.dart';
-import 'item_provider.dart';
+import '../../repository/item/item_repository.dart';
+import '../club/club_id_provider.dart';
 
-final itemSearchProvider = FutureProvider.autoDispose.family<List<Item>, String>((ref, keyword) {
+final itemSearchProvider = FutureProvider.autoDispose.family<List<Item>, String>((ref, keyword) async {
   if (keyword.isEmpty) return [];
-  final itemNotifier = ref.watch(itemProvider.notifier);
-  return itemNotifier.getItemList(keyword, null);
+
+  final currentClubId = ref.read(clubIdProvider);
+  final itemRepository = ItemRepository();
+
+  final itemList = await itemRepository.getItemList(
+    currentClubId!,
+    keyword,
+    null,
+  );
+
+  return itemList;
 });

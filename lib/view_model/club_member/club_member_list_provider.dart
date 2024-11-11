@@ -18,11 +18,12 @@ class ClubMemberListNotifier extends StateNotifier<AsyncValue<List<ClubMember>>>
   }
 
   Future<void> getClubMemberList() async {
-    final currentClubId = ref.read(clubIdProvider);
-    final clubMemberAssignedTerm = ref.read(clubSelectedTermProvider);
-
     try {
+      final currentClubId = ref.read(clubIdProvider);
+      final clubMemberAssignedTerm = ref.read(clubSelectedTermProvider);
+
       state = const AsyncValue.loading();
+
       final clubMemberList = await clubMemberRepository.getClubMemberList(
         currentClubId!,
         clubMemberAssignedTerm,

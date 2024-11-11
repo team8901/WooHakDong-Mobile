@@ -1,18 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/custom_widget/etc/custom_vertical_divider.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/item/item_provider.dart';
 
 import '../../../../model/item/item.dart';
 import '../../../../service/general/general_functions.dart';
 import '../../../themes/spacing.dart';
 import '../../club_item_detail_page.dart';
 
-class ClubItemListTile extends StatelessWidget {
+class ClubItemListTile extends ConsumerWidget {
   final Item item;
 
   const ClubItemListTile({
@@ -21,13 +23,19 @@ class ClubItemListTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final imageProvider = (item.itemPhoto != null && item.itemPhoto!.isNotEmpty)
         ? CachedNetworkImageProvider(item.itemPhoto!)
         : const AssetImage('assets/images/club/club_basic_image.jpg') as ImageProvider;
 
     return InkWell(
-      onTap: () => _pushItemDetailPage(context, item.itemId!),
+      onTap: () async {
+        await ref.read(itemProvider.notifier).getItemInfo(item.itemId!);
+
+        if (context.mounted) {
+          _pushItemDetailPage(context);
+        }
+      },
       highlightColor: context.colorScheme.surfaceContainer,
       child: Ink(
         child: Padding(
@@ -157,11 +165,11 @@ class ClubItemListTile extends StatelessWidget {
     );
   }
 
-  void _pushItemDetailPage(BuildContext context, int itemId) {
+  void _pushItemDetailPage(BuildContext context) {
     Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (context) => ClubItemDetailPage(itemId: itemId),
+        builder: (context) => const ClubItemDetailPage(),
       ),
     );
   }

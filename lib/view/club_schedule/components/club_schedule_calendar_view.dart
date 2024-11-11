@@ -36,6 +36,8 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
 
   @override
   Widget build(BuildContext context) {
+    final scheduleListData = ref.watch(scheduleListProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -62,74 +64,66 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
           ),
         ),
         Expanded(
-          child: Consumer(
-            builder: (context, ref, child) {
-              final scheduleListData = ref.watch(scheduleListProvider);
+          child: scheduleListData.when(
+            data: (scheduleList) {
+              final filteredScheduleList = scheduleList.where((schedule) {
+                return isSameDay(schedule.scheduleDateTime, _selectedDay);
+              }).toList()
+                ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
 
-              return scheduleListData.when(
-                data: (scheduleList) {
-                  final filteredScheduleList = scheduleList.where((schedule) {
-                    return isSameDay(schedule.scheduleDateTime, _selectedDay);
-                  }).toList()
-                    ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
-
-                  if (filteredScheduleList.isEmpty) {
-                    return Center(
-                      child: Text(
-                        '등록된 일정이 없어요',
-                        style: context.textTheme.bodySmall?.copyWith(
-                          color: context.colorScheme.onSurface,
-                        ),
-                      ),
-                    );
-                  }
-
-                  return CustomMaterialIndicator(
-                    onRefresh: () async {
-                      await Future.delayed(const Duration(milliseconds: 500));
-                      await ref.read(scheduleListProvider.notifier).getScheduleList(
-                            DateFormat('yyyy-MM-dd').format(_focusedDay),
-                          );
-                    },
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                      itemCount: filteredScheduleList.length,
-                      itemBuilder: (context, index) {
-                        return ClubScheduleListTile(schedule: filteredScheduleList[index]);
-                      },
-                    ),
-                  );
-                },
-                loading: () {
-                  return CustomLoadingSkeleton(
-                    isLoading: true,
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return ClubScheduleListTile(
-                          schedule: Schedule(
-                            scheduleId: index,
-                            scheduleTitle: '일정 제목',
-                            scheduleDateTime: DateTime.now(),
-                            scheduleColor: 'FF000000',
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-                error: (error, stack) => Center(
+              if (filteredScheduleList.isEmpty) {
+                return Center(
                   child: Text(
-                    '일정을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
+                    '등록된 일정이 없어요',
                     style: context.textTheme.bodySmall?.copyWith(
-                      color: context.colorScheme.error,
+                      color: context.colorScheme.onSurface,
                     ),
-                    textAlign: TextAlign.center,
                   ),
+                );
+              }
+
+              return CustomMaterialIndicator(
+                onRefresh: () async {
+                  await Future.delayed(const Duration(milliseconds: 500));
+                  await ref.read(scheduleListProvider.notifier).getScheduleList(
+                        DateFormat('yyyy-MM-dd').format(_focusedDay),
+                      );
+                },
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                  itemCount: filteredScheduleList.length,
+                  itemBuilder: (context, index) {
+                    return ClubScheduleListTile(schedule: filteredScheduleList[index]);
+                  },
                 ),
               );
             },
+            loading: () => CustomLoadingSkeleton(
+              isLoading: true,
+              child: ListView.separated(
+                separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return ClubScheduleListTile(
+                    schedule: Schedule(
+                      scheduleId: index,
+                      scheduleTitle: '일정 제목',
+                      scheduleDateTime: DateTime.now(),
+                      scheduleColor: 'FF000000',
+                    ),
+                  );
+                },
+              ),
+            ),
+            error: (error, stack) => Center(
+              child: Text(
+                '일정을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
+                style: context.textTheme.bodySmall?.copyWith(
+                  color: context.colorScheme.error,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ),
         ),
       ],

@@ -18,11 +18,15 @@ class ScheduleNotifier extends StateNotifier<Schedule> {
   ScheduleNotifier(this.ref) : super(Schedule());
 
   Future<void> getScheduleInfo(int scheduleId) async {
-    final currentClubId = ref.read(clubIdProvider);
+    try {
+      final currentClubId = ref.read(clubIdProvider);
 
-    final scheduleInfo = await scheduleRepository.getScheduleInfo(currentClubId!, scheduleId);
+      final scheduleInfo = await scheduleRepository.getScheduleInfo(currentClubId!, scheduleId);
 
-    state = scheduleInfo;
+      state = scheduleInfo;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> addSchedule(
