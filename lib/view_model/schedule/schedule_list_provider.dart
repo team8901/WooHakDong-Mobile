@@ -32,7 +32,7 @@ class ScheduleListNotifier extends StateNotifier<AsyncValue<List<Schedule>>> {
         formattedMonth,
       );
 
-      await Future.delayed(const Duration(milliseconds: 250));
+      await Future.delayed(const Duration(milliseconds: 100));
 
       state = AsyncValue.data(scheduleList);
     } catch (e, stackTrace) {

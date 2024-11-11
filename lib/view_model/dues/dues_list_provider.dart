@@ -25,7 +25,7 @@ class DuesListNotifier extends StateNotifier<AsyncValue<List<Dues>>> {
 
       final duesList = await duesRepository.getDuesList(currentClubId!, date);
 
-      await Future.delayed(const Duration(milliseconds: 250));
+      await Future.delayed(const Duration(milliseconds: 200));
 
       state = AsyncValue.data(duesList);
     } catch (e, stackTrace) {

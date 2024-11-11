@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/club/club.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/dues/dues_list_provider.dart';
 
 import '../../../model/club_member/club_member_me.dart';
 import '../../../repository/club_member/club_member_me_repository.dart';
@@ -48,6 +49,7 @@ class ClubInfoListListTile extends ConsumerWidget {
 
         ref.invalidate(clubMemberListProvider);
         ref.invalidate(itemListProvider(null));
+        ref.invalidate(duesListProvider(null));
         ref.invalidate(scheduleListProvider);
         ref.invalidate(s3ImageProvider);
 
