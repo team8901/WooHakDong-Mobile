@@ -1,20 +1,27 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../model/schedule/schedule.dart';
 import '../../repository/schedule/schedule_repository.dart';
 import '../club/club_id_provider.dart';
 
-final scheduleListProvider = StateNotifierProvider<ScheduleListNotifier, AsyncValue<List<Schedule>>>((ref) {
-  return ScheduleListNotifier(ref);
+final scheduleListProvider =
+    StateNotifierProvider.family<ScheduleListNotifier, AsyncValue<List<Schedule>>, DateTime>((ref, scheduleMonth) {
+  return ScheduleListNotifier(ref, scheduleMonth);
 });
 
 class ScheduleListNotifier extends StateNotifier<AsyncValue<List<Schedule>>> {
   final Ref ref;
+  final DateTime scheduleMonth;
   final ScheduleRepository scheduleRepository = ScheduleRepository();
 
-  ScheduleListNotifier(this.ref) : super(const AsyncValue.loading());
+  ScheduleListNotifier(this.ref, this.scheduleMonth) : super(const AsyncValue.loading()) {
+    getScheduleList();
+  }
 
-  Future<void> getScheduleList(String? date) async {
+  Future<void> getScheduleList() async {
+    final formattedMonth = DateFormat('yyyy-MM-dd').format(scheduleMonth);
+
     try {
       final currentClubId = ref.read(clubIdProvider);
 
@@ -22,8 +29,10 @@ class ScheduleListNotifier extends StateNotifier<AsyncValue<List<Schedule>>> {
 
       final scheduleList = await scheduleRepository.getSchedule(
         currentClubId!,
-        date,
+        formattedMonth,
       );
+
+      await Future.delayed(const Duration(milliseconds: 250));
 
       state = AsyncValue.data(scheduleList);
     } catch (e, stackTrace) {

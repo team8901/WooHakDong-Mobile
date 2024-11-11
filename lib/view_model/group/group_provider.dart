@@ -14,7 +14,7 @@ class GroupNotifier extends StateNotifier<Group?> {
   GroupNotifier(this.ref) : super(null);
 
   Future<Group> getClubRegisterPageInfo() async {
-    final currentClubId = ref.watch(clubIdProvider);
+    final currentClubId = ref.read(clubIdProvider);
 
     final groupInfo = await GroupRepository().getClubRegisterPageInfo(currentClubId!);
 

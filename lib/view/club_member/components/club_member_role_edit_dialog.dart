@@ -32,8 +32,6 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
 
   @override
   Widget build(BuildContext context) {
-    final clubMemberInfo = ref.watch(clubMemberProvider);
-
     return Dialog(
       child: Container(
         padding: const EdgeInsets.all(defaultPaddingS * 2),

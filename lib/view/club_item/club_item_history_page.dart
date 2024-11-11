@@ -41,10 +41,12 @@ class ClubItemHistoryPage extends ConsumerWidget {
                 );
               }
 
+              itemHistoryList.reversed.toList();
+
               return CustomMaterialIndicator(
                 onRefresh: () async {
                   await Future.delayed(const Duration(milliseconds: 500));
-                  ref.refresh(itemHistoryListProvider(itemId));
+                  ref.invalidate(itemHistoryListProvider(itemId));
                 },
                 child: ListView.separated(
                   physics: const AlwaysScrollableScrollPhysics(),

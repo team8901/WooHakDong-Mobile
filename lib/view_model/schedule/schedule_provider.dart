@@ -50,7 +50,7 @@ class ScheduleNotifier extends StateNotifier<Schedule> {
         ),
       );
 
-      await ref.read(scheduleListProvider.notifier).getScheduleList(null);
+      ref.invalidate(scheduleListProvider);
       ref.read(scheduleStateProvider.notifier).state = ScheduleState.added;
     } catch (e) {
       ref.read(scheduleStateProvider.notifier).state = ScheduleState.initial;
@@ -81,7 +81,7 @@ class ScheduleNotifier extends StateNotifier<Schedule> {
         ),
       );
 
-      await ref.read(scheduleListProvider.notifier).getScheduleList(null);
+      ref.invalidate(scheduleListProvider);
       await getScheduleInfo(updatedScheduleId);
       ref.read(scheduleStateProvider.notifier).state = ScheduleState.added;
     } catch (e) {
@@ -99,7 +99,7 @@ class ScheduleNotifier extends StateNotifier<Schedule> {
         scheduleId,
       );
 
-      await ref.read(scheduleListProvider.notifier).getScheduleList(null);
+      ref.invalidate(scheduleListProvider);
     } catch (e) {
       rethrow;
     }

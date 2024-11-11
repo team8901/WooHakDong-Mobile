@@ -31,12 +31,11 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
-    _loadMonthlySchedules(_focusedDay);
   }
 
   @override
   Widget build(BuildContext context) {
-    final scheduleListData = ref.watch(scheduleListProvider);
+    final scheduleListData = ref.watch(scheduleListProvider(_focusedDay));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,9 +84,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
               return CustomMaterialIndicator(
                 onRefresh: () async {
                   await Future.delayed(const Duration(milliseconds: 500));
-                  await ref.read(scheduleListProvider.notifier).getScheduleList(
-                        DateFormat('yyyy-MM-dd').format(_focusedDay),
-                      );
+                  ref.invalidate(scheduleListProvider(_focusedDay));
                 },
                 child: ListView.separated(
                   separatorBuilder: (context, index) => const CustomHorizontalDivider(),
@@ -130,13 +127,8 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
     );
   }
 
-  void _loadMonthlySchedules(DateTime month) async {
-    final formattedMonth = DateFormat('yyyy-MM-dd').format(month);
-    await ref.read(scheduleListProvider.notifier).getScheduleList(formattedMonth);
-  }
-
   List<Schedule> _eventLoader(DateTime day) {
-    final scheduleListData = ref.watch(scheduleListProvider);
+    final scheduleListData = ref.watch(scheduleListProvider(_focusedDay));
 
     return scheduleListData.maybeWhen(
       data: (scheduleList) {
@@ -164,7 +156,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
       });
     }
 
-    _loadMonthlySchedules(_focusedDay);
+    ref.invalidate(scheduleListProvider(_focusedDay));
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -179,7 +171,6 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
 
     setState(() {
       _selectedDay = selectedDay;
-      _focusedDay = focusedDay;
       _lastSelectedDate = DateTime.now();
     });
   }

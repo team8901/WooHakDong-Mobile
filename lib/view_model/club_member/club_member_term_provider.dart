@@ -15,7 +15,7 @@ class ClubMemberTermNotifier extends StateNotifier<ClubMemberTerm> {
   ClubMemberTermNotifier(this.ref) : super(ClubMemberTerm());
 
   Future<List<ClubMemberTerm>> getClubMemberTermList() async {
-    final currentClubId = ref.read(clubIdProvider);
+    final currentClubId = ref.watch(clubIdProvider);
 
     final List<ClubMemberTerm> clubMemberTermList = await clubMemberRepository.getClubMemberTermList(currentClubId!);
 

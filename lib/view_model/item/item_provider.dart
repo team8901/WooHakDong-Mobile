@@ -59,7 +59,7 @@ class ItemNotifier extends StateNotifier<Item> {
         ),
       );
 
-      ref.refresh(itemListProvider(null));
+      ref.invalidate(itemListProvider(null));
       ref.read(itemStateProvider.notifier).state = ItemState.added;
     } catch (e) {
       ref.read(itemStateProvider.notifier).state = ItemState.initial;
@@ -94,7 +94,7 @@ class ItemNotifier extends StateNotifier<Item> {
         ),
       );
 
-      ref.refresh(itemListProvider(null));
+      ref.invalidate(itemListProvider(null));
       await getItemInfo(updatedItemId);
       ref.read(itemStateProvider.notifier).state = ItemState.added;
     } catch (e) {
@@ -112,7 +112,7 @@ class ItemNotifier extends StateNotifier<Item> {
         itemId,
       );
 
-      ref.refresh(itemListProvider(null));
+      ref.invalidate(itemListProvider(null));
     } catch (e) {
       rethrow;
     }
@@ -128,7 +128,7 @@ class ItemNotifier extends StateNotifier<Item> {
         itemAvailable,
       );
 
-      ref.refresh(itemListProvider(null));
+      ref.invalidate(itemListProvider(null));
       await getItemInfo(itemId);
     } catch (e) {
       rethrow;

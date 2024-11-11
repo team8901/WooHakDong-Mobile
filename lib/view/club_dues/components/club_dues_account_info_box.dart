@@ -9,8 +9,9 @@ import 'package:woohakdong/view/club_dues/components/club_dues_in_out_type_botto
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../../view_model/club/current_club_account_info_provider.dart';
 import '../../../view_model/club_member/club_member_me_provider.dart';
-import '../../../view_model/dues/dues_provider.dart';
+import '../../../view_model/dues/dues_list_provider.dart';
 
 class ClubDuesAccountInfoBox extends ConsumerWidget {
   final CurrentClubAccount currentClubAccount;
@@ -104,8 +105,8 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
                     }
 
                     try {
-                      await ref.read(duesProvider.notifier).refreshDuesList();
-                      await ref.refresh(duesProvider.notifier).getDuesList(null);
+                      await ref.read(duesListProvider(null).notifier).refreshDuesList();
+                      await ref.read(currentClubAccountInfoProvider.notifier).getCurrentClubAccountInfo();
 
                       await GeneralFunctions.toastMessage('회비 내역을 업데이트 했어요');
                     } catch (e) {

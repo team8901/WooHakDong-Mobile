@@ -41,7 +41,7 @@ class ClubMemberNotifier extends StateNotifier<ClubMember> {
         clubMemberRole,
       );
 
-      await ref.read(clubMemberListProvider.notifier).getClubMemberList();
+      ref.invalidate(clubMemberListProvider);
       await getClubMemberInfo(clubMemberId);
 
       ref.read(clubMemberStateProvider.notifier).state = ClubMemberState.edited;

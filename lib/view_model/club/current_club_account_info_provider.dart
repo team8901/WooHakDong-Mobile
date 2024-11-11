@@ -16,19 +16,19 @@ class CurrentClubAccountInfoNotifier extends StateNotifier<CurrentClubAccount> {
 
   CurrentClubAccountInfoNotifier(this.ref) : super(CurrentClubAccount());
 
-  Future<CurrentClubAccount> getCurrentClubAccountInfo() async {
+  Future<void> getCurrentClubAccountInfo() async {
     try {
       final currentClubId = ref.watch(clubIdProvider);
-      await Future.delayed(const Duration(milliseconds: 200));
 
       final currentClubAccount = await currentClubAccountRepository.getCurrentClubAccount(currentClubId!);
 
+      state = currentClubAccount;
+
       ref.read(clubAccountValidationProvider.notifier).state = ClubAccountValidationState.accountRegistered;
-      return currentClubAccount;
     } catch (e) {
       ref.read(clubAccountValidationProvider.notifier).state = ClubAccountValidationState.accountNotRegistered;
 
-      return state;
+      rethrow;
     }
   }
 }

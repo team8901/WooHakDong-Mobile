@@ -12,7 +12,7 @@ import '../../themes/custom_widget/etc/custom_vertical_divider.dart';
 import '../../themes/spacing.dart';
 import '../club_member_detail_page.dart';
 
-class ClubMemberListTile extends ConsumerWidget {
+class ClubMemberListTile extends ConsumerStatefulWidget {
   final ClubMember clubMember;
 
   const ClubMemberListTile({
@@ -21,15 +21,28 @@ class ClubMemberListTile extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return InkWell(
-      onTap: () async {
-        await ref.read(clubMemberProvider.notifier).getClubMemberInfo(clubMember.clubMemberId!);
+  ConsumerState<ClubMemberListTile> createState() => _ClubMemberListTileState();
+}
 
-        if (context.mounted) {
-          _pushMemberDetailPage(context);
-        }
-      },
+class _ClubMemberListTileState extends ConsumerState<ClubMemberListTile> {
+  bool _isProcessing = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: _isProcessing
+          ? null
+          : () async {
+              setState(() {
+                _isProcessing = true;
+              });
+
+              await _pushMemberDetailPage(context);
+
+              setState(() {
+                _isProcessing = false;
+              });
+            },
       highlightColor: context.colorScheme.surfaceContainer,
       child: Ink(
         padding: const EdgeInsets.all(defaultPaddingM),
@@ -41,9 +54,9 @@ class ClubMemberListTile extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      Text(clubMember.memberName!, style: context.textTheme.bodyLarge),
+                      Text(widget.clubMember.memberName!, style: context.textTheme.bodyLarge),
                       const Gap(defaultGapS / 2),
-                      if (clubMember.clubMemberRole != 'MEMBER')
+                      if (widget.clubMember.clubMemberRole != 'MEMBER')
                         Flexible(
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -55,7 +68,7 @@ class ClubMemberListTile extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
                             ),
                             child: Text(
-                              GeneralFunctions.formatClubRole(clubMember.clubMemberRole!),
+                              GeneralFunctions.formatClubRole(widget.clubMember.clubMemberRole!),
                               style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.primary),
                             ),
                           ),
@@ -67,7 +80,7 @@ class ClubMemberListTile extends ConsumerWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          clubMember.memberMajor!,
+                          widget.clubMember.memberMajor!,
                           style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
                           softWrap: true,
                         ),
@@ -77,7 +90,7 @@ class ClubMemberListTile extends ConsumerWidget {
                       const Gap(defaultGapS),
                       Flexible(
                         child: Text(
-                          clubMember.memberStudentNumber!,
+                          widget.clubMember.memberStudentNumber!,
                           style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
                           softWrap: true,
                         ),
@@ -98,7 +111,9 @@ class ClubMemberListTile extends ConsumerWidget {
     );
   }
 
-  void _pushMemberDetailPage(BuildContext context) {
+  Future<void> _pushMemberDetailPage(BuildContext context) async {
+    await ref.read(clubMemberProvider.notifier).getClubMemberInfo(widget.clubMember.clubMemberId!);
+
     Navigator.of(context).push(
       CupertinoPageRoute(
         builder: (context) => const ClubMemberDetailPage(),

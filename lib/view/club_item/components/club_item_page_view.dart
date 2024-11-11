@@ -40,7 +40,7 @@ class ClubItemPageView extends ConsumerWidget {
           return CustomMaterialIndicator(
             onRefresh: () async {
               await Future.delayed(const Duration(milliseconds: 500));
-              ref.refresh(itemListProvider(filterCategory));
+              ref.invalidate(itemListProvider(filterCategory));
             },
             child: ListView.separated(
               physics: const AlwaysScrollableScrollPhysics(),

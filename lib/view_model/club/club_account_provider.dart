@@ -47,7 +47,7 @@ class ClubAccountNotifier extends StateNotifier<ClubAccount> {
 
   Future<void> registerClubAccount() async {
     try {
-      final currentClubId = ref.watch(clubIdProvider);
+      final currentClubId = ref.read(clubIdProvider);
 
       await clubAccountRepository.clubAccountRegister(currentClubId!, state);
     } catch (e) {
