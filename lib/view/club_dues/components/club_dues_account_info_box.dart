@@ -98,13 +98,14 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
               Flexible(
                 child: InkWell(
                   onTap: () async {
-                    if (clubMemberMe.clubMemberRole != 'PRESIDENT' || clubMemberMe.clubMemberRole != 'SECRETARY') {
+                    if (clubMemberMe.clubMemberRole != 'PRESIDENT' && clubMemberMe.clubMemberRole != 'SECRETARY') {
                       await GeneralFunctions.toastMessage('회장 및 총무만 회비 내역을 업데이트할 수 있어요');
                       return;
                     }
 
                     try {
                       await ref.read(duesListProvider(null).notifier).refreshDuesList();
+                      ref.invalidate(duesListProvider(null));
                       await ref.read(currentClubAccountInfoProvider.notifier).getCurrentClubAccountInfo();
 
                       await GeneralFunctions.toastMessage('회비 내역을 업데이트 했어요');

@@ -70,6 +70,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
         }
 
         if (clubAccountValidationState != ClubAccountValidationState.accountRegistered) {
+          FlutterNativeSplash.remove();
           return const ClubRegisterAccountFormPageWhenNoAccount();
         }
 

@@ -1,4 +1,3 @@
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -11,6 +10,7 @@ import 'package:woohakdong/view_model/schedule/components/schedule_selected_day_
 import '../../../model/schedule/schedule.dart';
 import '../../../view_model/schedule/schedule_list_provider.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
+import '../../themes/custom_widget/interaction/custom_refresh_indicator.dart';
 import '../../themes/spacing.dart';
 import '../club_schedule_add_page.dart';
 import 'club_schedule_list_tile.dart';
@@ -83,7 +83,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
                 );
               }
 
-              return CustomMaterialIndicator(
+              return CustomRefreshIndicator(
                 onRefresh: () async {
                   await Future.delayed(const Duration(milliseconds: 500));
                   ref.invalidate(scheduleListProvider(_focusedDay));

@@ -71,7 +71,7 @@ class ClubMemberDetailInfo extends StatelessWidget {
               const Gap(defaultGapM),
               GestureDetector(
                 onTap: () => GeneralFunctions.clipboardCopy(clubMember.memberPhoneNumber!, '휴대폰 번호를 복사했어요'),
-                onLongPress: () async => await launchUrl(Uri.parse('tel:${clubMember.memberPhoneNumber!}')),
+                onLongPress: () => _makePhoneCall(clubMember.memberPhoneNumber!),
                 child: CustomInfoContent(
                   isUnderline: true,
                   infoContent: GeneralFunctions.formatMemberPhoneNumber(clubMember.memberPhoneNumber!),
@@ -85,7 +85,7 @@ class ClubMemberDetailInfo extends StatelessWidget {
               const Gap(defaultGapM),
               GestureDetector(
                 onTap: () => GeneralFunctions.clipboardCopy(clubMember.memberEmail!, '이메일을 복사했어요'),
-                onLongPress: () async => await launchUrl(Uri.parse('mailto:${clubMember.memberEmail!}')),
+                onLongPress: () => _sendEmail(clubMember.memberEmail!),
                 child: CustomInfoContent(
                   isUnderline: true,
                   infoContent: clubMember.memberEmail!,
@@ -135,5 +135,25 @@ class ClubMemberDetailInfo extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _makePhoneCall(String phoneNumber) async {
+    final Uri telUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    if (await canLaunchUrl(telUri)) {
+      await launchUrl(telUri);
+    }
+  }
+
+  void _sendEmail(String email) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: email,
+    );
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
+    }
   }
 }

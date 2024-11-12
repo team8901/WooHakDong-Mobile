@@ -1,4 +1,3 @@
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/view/club_dues/components/club_dues_account_info_box.dart';
@@ -11,6 +10,7 @@ import '../../service/general/general_functions.dart';
 import '../../view_model/club_member/club_member_me_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../themes/custom_widget/interaction/custom_loading_skeleton.dart';
+import '../themes/custom_widget/interaction/custom_refresh_indicator.dart';
 import 'components/club_dues_list_tile.dart';
 
 class ClubDuesPage extends ConsumerStatefulWidget {
@@ -34,15 +34,16 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
         title: const Text('회비'),
       ),
       body: SafeArea(
-        child: CustomMaterialIndicator(
+        child: CustomRefreshIndicator(
           onRefresh: () async {
-            if (clubMemberMe.clubMemberRole != 'PRESIDENT') {
-              await GeneralFunctions.toastMessage('동아리 회장만 회비 내역을 업데이트할 수 있어요');
+            if (clubMemberMe.clubMemberRole != 'PRESIDENT' && clubMemberMe.clubMemberRole != 'SECRETARY') {
+              await GeneralFunctions.toastMessage('회장 및 총무만 회비 내역을 업데이트할 수 있어요');
               return;
             }
 
             try {
               await ref.read(duesListProvider(null).notifier).refreshDuesList();
+              ref.invalidate(duesListProvider(null));
               await ref.read(currentClubAccountInfoProvider.notifier).getCurrentClubAccountInfo();
 
               await GeneralFunctions.toastMessage('회비 내역을 새로 불러왔어요');

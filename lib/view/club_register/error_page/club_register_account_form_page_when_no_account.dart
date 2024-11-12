@@ -10,6 +10,8 @@ import '../../../service/general/general_functions.dart';
 import '../../../view_model/club/club_account_provider.dart';
 import '../../../view_model/club/components/club_account_validation_provider.dart';
 import '../../../view_model/club/components/club_account_validation_state.dart';
+import '../../../view_model/club/current_club_info_provider.dart';
+import '../../../view_model/group/group_provider.dart';
 import '../../club_info/components/club_info_bottom_sheet.dart';
 import '../../themes/custom_widget/button/custom_bottom_button.dart';
 import '../../themes/custom_widget/interaction/custom_pop_scope.dart';
@@ -46,6 +48,7 @@ class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubR
 
   @override
   Widget build(BuildContext context) {
+    final currentClubInfo = ref.watch(currentClubInfoProvider);
     final clubAccountValidationState = ref.watch(clubAccountValidationProvider);
     final clubAccountValidationNotifier = ref.read(clubAccountValidationProvider.notifier);
     final clubAccountInfo = ref.watch(clubAccountProvider);
@@ -75,10 +78,14 @@ class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubR
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '아직 계좌를 등록하지 않았어요',
+                    currentClubInfo.clubName!,
+                    style: context.textTheme.headlineSmall?.copyWith(color: context.colorScheme.primary),
+                  ),
+                  Text(
+                    '동아리 회비 계좌를 등록해 주세요',
                     style: context.textTheme.headlineSmall,
                   ),
-                  const Gap(defaultGapXL * 2),
+                  const Gap(defaultGapXL),
                   Text(
                     '동아리 회비 계좌',
                     style: context.textTheme.labelLarge,
@@ -206,7 +213,7 @@ class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubR
                           await clubAccountNotifier.registerClubAccount();
 
                           if (context.mounted) {
-                            _pushCompletePage(context);
+                            _pushCompletePage(ref, context);
                           }
                         } else if (clubAccountValidationState == ClubAccountValidationState.invalid ||
                             clubAccountValidationState == ClubAccountValidationState.notChecked) {
@@ -227,13 +234,17 @@ class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubR
     );
   }
 
-  void _pushCompletePage(BuildContext context) {
-    Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => ClubRegisterCompletePage(),
-      ),
-      (route) => false,
-    );
+  Future<void> _pushCompletePage(WidgetRef ref, BuildContext context) async {
+    await ref.read(groupProvider.notifier).getClubRegisterPageInfo();
+
+    if (context.mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => ClubRegisterCompletePage(),
+        ),
+        (route) => false,
+      );
+    }
   }
 }

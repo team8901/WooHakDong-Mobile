@@ -42,6 +42,7 @@ final ThemeData darkTheme = ThemeData(
     tertiary: green,
     onTertiary: white,
     surfaceDim: black,
+    surfaceBright: darkGray,
   ),
 
   /// 텍스트 테마
@@ -124,7 +125,7 @@ final ThemeData darkTheme = ThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(defaultBorderRadiusL),
     ),
-    color: black,
+    color: darkGray,
     elevation: 3,
     menuPadding: const EdgeInsets.all(defaultPaddingS / 2),
   ),

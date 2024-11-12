@@ -1,4 +1,3 @@
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +13,7 @@ import '../../model/club_member/club_member.dart';
 import '../../view_model/club_member/club_member_list_provider.dart';
 import '../../view_model/club_member/components/club_selected_term_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
+import '../themes/custom_widget/interaction/custom_refresh_indicator.dart';
 import 'club_member_search_page.dart';
 import 'components/club_member_list_tile.dart';
 
@@ -82,7 +82,7 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
 
               clubMemberList.sort((a, b) => a.memberName!.compareTo(b.memberName!));
 
-              return CustomMaterialIndicator(
+              return CustomRefreshIndicator(
                 onRefresh: () async {
                   await Future.delayed(const Duration(milliseconds: 500));
                   await ref.read(clubMemberListProvider.notifier).getClubMemberList();

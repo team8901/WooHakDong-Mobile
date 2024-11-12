@@ -165,6 +165,11 @@ class _ClubInfoEditPageState extends ConsumerState<ClubInfoEditPage> {
                   },
                 ),
                 const Gap(defaultGapXL),
+                Text(
+                  '동아리 추가 정보',
+                  style: context.textTheme.labelLarge,
+                ),
+                const Gap(defaultGapM),
                 CustomTextFormField(
                   controller: _clubInfoEditController.generation,
                   labelText: '현재 기수',
@@ -197,6 +202,11 @@ class _ClubInfoEditPageState extends ConsumerState<ClubInfoEditPage> {
                   hintText: '비워놔도 돼요',
                 ),
                 const Gap(defaultGapXL),
+                Text(
+                  '카카오톡 채팅방',
+                  style: context.textTheme.labelLarge,
+                ),
+                const Gap(defaultGapM),
                 CustomTextFormField(
                   controller: _clubInfoEditController.chatLink,
                   labelText: '카카오톡 채팅방 링크',

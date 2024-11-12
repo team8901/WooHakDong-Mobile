@@ -4,20 +4,25 @@ import 'package:woohakdong/view_model/club/club_id_provider.dart';
 
 import '../../repository/group/group_repository.dart';
 
-final groupProvider = StateNotifierProvider<GroupNotifier, Group?>((ref) {
+final groupProvider = StateNotifierProvider<GroupNotifier, Group>((ref) {
   return GroupNotifier(ref);
 });
 
-class GroupNotifier extends StateNotifier<Group?> {
+class GroupNotifier extends StateNotifier<Group> {
   final Ref ref;
+  final GroupRepository groupRepository = GroupRepository();
 
-  GroupNotifier(this.ref) : super(null);
+  GroupNotifier(this.ref) : super(Group());
 
-  Future<Group> getClubRegisterPageInfo() async {
-    final currentClubId = ref.read(clubIdProvider);
+  Future<void> getClubRegisterPageInfo() async {
+    try {
+      final currentClubId = ref.read(clubIdProvider);
 
-    final groupInfo = await GroupRepository().getClubRegisterPageInfo(currentClubId!);
+      final groupInfo = await groupRepository.getClubRegisterPageInfo(currentClubId!);
 
-    return groupInfo;
+      state = groupInfo;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
