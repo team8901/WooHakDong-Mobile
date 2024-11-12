@@ -65,14 +65,12 @@ class GoogleSignInService {
       if (refreshToken != null) {
         await _auth.logOut(refreshToken);
 
+        await _firebaseAuth.signOut();
+        await _googleSignIn.signOut();
+        await _secureStorage.deleteAll();
+
         return true;
       }
-
-      logger.w("리프레쉬 토큰 없음");
-
-      await _firebaseAuth.signOut();
-      await _googleSignIn.signOut();
-      await _secureStorage.deleteAll();
 
       return false;
     } catch (e) {

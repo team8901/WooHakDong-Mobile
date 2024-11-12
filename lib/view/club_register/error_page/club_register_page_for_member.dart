@@ -4,10 +4,10 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_register/club_register_caution_page_.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../club_info/components/club_info_bottom_sheet.dart';
-import '../themes/custom_widget/button/custom_bottom_button.dart';
-import '../themes/custom_widget/interaction/custom_pop_scope.dart';
-import '../themes/spacing.dart';
+import '../../club_info/components/club_info_bottom_sheet.dart';
+import '../../themes/custom_widget/button/custom_bottom_button.dart';
+import '../../themes/custom_widget/interaction/custom_pop_scope.dart';
+import '../../themes/spacing.dart';
 
 class ClubRegisterPageForMember extends StatelessWidget {
   const ClubRegisterPageForMember({super.key});

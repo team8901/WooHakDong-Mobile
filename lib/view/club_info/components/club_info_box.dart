@@ -45,20 +45,16 @@ class ClubInfoBox extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Flexible(
-                    child: Text(
-                      currentClubInfo.clubName!,
-                      style: context.textTheme.titleSmall,
-                    ),
-                  ),
-                  const Gap(defaultGapS / 2),
-                  Text(
-                    currentClubInfo.clubEnglishName!,
-                    style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-                  ),
-                ],
+              Text(
+                currentClubInfo.clubName!,
+                style: context.textTheme.titleSmall,
+                maxLines: 1,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                currentClubInfo.clubEnglishName!,
+                style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
               ),
               const Gap(defaultGapS / 4),
               Row(
@@ -67,14 +63,14 @@ class ClubInfoBox extends ConsumerWidget {
                   const Gap(defaultGapS / 2),
                   Text(
                     clubMemberCount.toString(),
-                    style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                    style: context.textTheme.bodySmall,
                   ),
                   const Gap(defaultGapS),
                   const Icon(Symbols.list_alt_rounded, size: 16),
                   const Gap(defaultGapS / 2),
                   Text(
                     itemCount.toString(),
-                    style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                    style: context.textTheme.bodySmall,
                   ),
                 ],
               ),
