@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:currency_formatter/currency_formatter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +24,12 @@ class GeneralFunctions {
       backgroundColor: const Color(0xFF6C6E75).withOpacity(0.8),
       textColor: const Color(0xFFFCFCFC),
     );
+  }
+
+  /// 클립보드 함수
+  static void clipboardCopy(String content, String toastMsg) async {
+    await Clipboard.setData(ClipboardData(text: content));
+    await toastMessage(toastMsg);
   }
 
   /// 회원 정보 관련 함수
