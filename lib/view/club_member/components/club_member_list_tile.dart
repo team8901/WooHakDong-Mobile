@@ -114,10 +114,12 @@ class _ClubMemberListTileState extends ConsumerState<ClubMemberListTile> {
   Future<void> _pushMemberDetailPage(BuildContext context) async {
     await ref.read(clubMemberProvider.notifier).getClubMemberInfo(widget.clubMember.clubMemberId!);
 
-    Navigator.of(context).push(
-      CupertinoPageRoute(
-        builder: (context) => const ClubMemberDetailPage(),
-      ),
-    );
+    if (context.mounted) {
+      Navigator.of(context).push(
+        CupertinoPageRoute(
+          builder: (context) => const ClubMemberDetailPage(),
+        ),
+      );
+    }
   }
 }

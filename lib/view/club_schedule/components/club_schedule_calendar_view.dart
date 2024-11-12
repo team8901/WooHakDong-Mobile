@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/schedule/components/schedule_selected_day_provider.dart';
 
 import '../../../model/schedule/schedule.dart';
 import '../../../view_model/schedule/schedule_list_provider.dart';
@@ -31,6 +32,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
   void initState() {
     super.initState();
     _selectedDay = _focusedDay;
+    _setSelectedDay(_selectedDay!);
   }
 
   @override
@@ -127,6 +129,10 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
     );
   }
 
+  void _setSelectedDay(DateTime selectedDay) async {
+    ref.read(scheduleSelectedDayProvider.notifier).state = _selectedDay;
+  }
+
   List<Schedule> _eventLoader(DateTime day) {
     final scheduleListData = ref.watch(scheduleListProvider(_focusedDay));
 
@@ -173,6 +179,8 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
       _selectedDay = selectedDay;
       _lastSelectedDate = DateTime.now();
     });
+
+    _setSelectedDay(selectedDay);
   }
 
   void _onTodayButtonPressed() {
@@ -182,11 +190,11 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
     });
   }
 
-  void _pushScheduleAddPage(BuildContext context, DateTime? selectedDate) {
-    final DateTime initialDateTime = DateTime(
-      selectedDate?.year ?? DateTime.now().year,
-      selectedDate?.month ?? DateTime.now().month,
-      selectedDate?.day ?? DateTime.now().day,
+  void _pushScheduleAddPage(BuildContext context, DateTime? selectedDay) {
+    final DateTime initialScheduleDateTime = DateTime(
+      selectedDay?.year ?? DateTime.now().year,
+      selectedDay?.month ?? DateTime.now().month,
+      selectedDay?.day ?? DateTime.now().day,
       9,
       0,
     );
@@ -194,7 +202,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
     Navigator.of(context).push(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) => ClubScheduleAddPage(
-          initialScheduleDateTime: initialDateTime,
+          initialScheduleDateTime: initialScheduleDateTime,
         ),
         transitionDuration: const Duration(milliseconds: 350),
         reverseTransitionDuration: const Duration(milliseconds: 350),

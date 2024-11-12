@@ -230,7 +230,7 @@ class GeneralFunctions {
     DateTime dateTime = DateTime.parse(dateString).toLocal();
     int currentYear = DateTime.now().year;
     bool isCurrentYear = dateTime.year == currentYear;
-    String dateFormat = isCurrentYear ? 'M월 d일 (E) H:mm' : 'yyyy년 M월 d일 (E) H:mm';
+    String dateFormat = isCurrentYear ? 'M월 d일 (E) a h:mm' : 'yyyy년 M월 d일 (E) a h:mm';
 
     return DateFormat(dateFormat, 'ko_KR').format(dateTime);
   }

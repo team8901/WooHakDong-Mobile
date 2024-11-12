@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/club/current_club_account.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
@@ -99,8 +98,8 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
               Flexible(
                 child: InkWell(
                   onTap: () async {
-                    if (clubMemberMe.clubMemberRole != 'PRESIDENT') {
-                      await GeneralFunctions.toastMessage('동아리 회장만 회비 내역을 업데이트할 수 있어요');
+                    if (clubMemberMe.clubMemberRole != 'PRESIDENT' || clubMemberMe.clubMemberRole != 'SECRETARY') {
+                      await GeneralFunctions.toastMessage('회장 및 총무만 회비 내역을 업데이트할 수 있어요');
                       return;
                     }
 
@@ -118,9 +117,7 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          DateFormat('yyyy년 M월 dd일 (E) H:MM 기준', 'ko_KR').format(
-                            currentClubAccount.clubAccountLastUpdateDate!,
-                          ),
+                          '${GeneralFunctions.formatDateTime(currentClubAccount.clubAccountLastUpdateDate!)} 기준',
                           style: context.textTheme.bodySmall?.copyWith(
                             color: context.colorScheme.onSurface,
                           ),

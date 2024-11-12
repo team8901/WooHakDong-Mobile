@@ -5,6 +5,8 @@ import 'package:woohakdong/view/club_schedule/club_schedule_add_page.dart';
 import 'package:woohakdong/view/club_schedule/components/club_schedule_calendar_view.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../view_model/schedule/components/schedule_selected_day_provider.dart';
+
 class ClubSchedulePage extends ConsumerStatefulWidget {
   const ClubSchedulePage({super.key});
 
@@ -15,12 +17,14 @@ class ClubSchedulePage extends ConsumerStatefulWidget {
 class _ClubSchedulePageState extends ConsumerState<ClubSchedulePage> {
   @override
   Widget build(BuildContext context) {
+    final selectedDay = ref.watch(scheduleSelectedDayProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('일정'),
         actions: [
           IconButton(
-            onPressed: () => _pushScheduleAddPage(context),
+            onPressed: () => _pushScheduleAddPage(context, selectedDay),
             icon: Icon(
               Symbols.add_rounded,
               color: context.colorScheme.primary,
@@ -32,10 +36,20 @@ class _ClubSchedulePageState extends ConsumerState<ClubSchedulePage> {
     );
   }
 
-  void _pushScheduleAddPage(BuildContext context) {
+  void _pushScheduleAddPage(BuildContext context, DateTime? selectedDay) {
+    final DateTime initialScheduleDateTime = DateTime(
+      selectedDay?.year ?? DateTime.now().year,
+      selectedDay?.month ?? DateTime.now().month,
+      selectedDay?.day ?? DateTime.now().day,
+      9,
+      0,
+    );
+
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const ClubScheduleAddPage(),
+        pageBuilder: (context, animation, secondaryAnimation) => ClubScheduleAddPage(
+          initialScheduleDateTime: initialScheduleDateTime,
+        ),
         transitionDuration: const Duration(milliseconds: 350),
         reverseTransitionDuration: const Duration(milliseconds: 350),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {

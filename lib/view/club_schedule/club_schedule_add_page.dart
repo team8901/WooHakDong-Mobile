@@ -30,8 +30,7 @@ class ClubScheduleAddPage extends ConsumerStatefulWidget {
 class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
   final _formKey = GlobalKey<FormState>();
   DateTime? _selectedDate;
-  Color _pickerColor = const Color(0xFFC5C6C7);
-  String? _dateErrorText;
+  Color _pickerColor = const Color(0xFFB8BEC0);
 
   @override
   void initState() {
@@ -92,79 +91,60 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
                   ],
                 ),
                 const Gap(defaultGapM),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: InkWell(
-                        onTap: () async {
-                          await showBoardDateTimePicker(
-                            context: context,
-                            pickerType: DateTimePickerType.datetime,
-                            initialDate: _selectedDate ?? DateTime.now(),
-                            minimumDate: DateTime(2000),
-                            maximumDate: DateTime(2099),
-                            onChanged: (scheduleDate) => setState(() => _selectedDate = scheduleDate),
-                            useSafeArea: true,
-                            enableDrag: false,
-                            showDragHandle: true,
-                            options: BoardDateTimeOptions(
-                              backgroundDecoration: BoxDecoration(
-                                color: context.colorScheme.surfaceDim,
-                                borderRadius: BorderRadius.circular(defaultBorderRadiusL),
-                              ),
-                              weekend: BoardPickerWeekendOptions(
-                                saturdayColor: context.colorScheme.onSurface,
-                                sundayColor: context.colorScheme.onSurface,
-                              ),
-                              languages: const BoardPickerLanguages(locale: 'ko_KR', today: '오늘', tomorrow: '내일'),
-                              textColor: context.colorScheme.inverseSurface,
-                              backgroundColor: context.colorScheme.surfaceDim,
-                              foregroundColor: context.colorScheme.surfaceContainer,
-                              activeColor: context.colorScheme.primary,
-                              activeTextColor: context.colorScheme.inversePrimary,
-                              inputable: false,
-                            ),
-                          );
-                        },
+                SizedBox(
+                  width: double.infinity,
+                  child: InkWell(
+                    onTap: () async {
+                      await showBoardDateTimePicker(
+                        context: context,
+                        pickerType: DateTimePickerType.datetime,
+                        initialDate: _selectedDate ?? DateTime.now(),
+                        minimumDate: DateTime(2000),
+                        maximumDate: DateTime(2099),
+                        onChanged: (scheduleDate) => setState(() => _selectedDate = scheduleDate),
+                        useSafeArea: true,
+                        enableDrag: false,
+                        showDragHandle: true,
+                        options: BoardDateTimeOptions(
+                          backgroundDecoration: BoxDecoration(
+                            color: context.colorScheme.surfaceDim,
+                            borderRadius: BorderRadius.circular(defaultBorderRadiusL),
+                          ),
+                          weekend: BoardPickerWeekendOptions(
+                            saturdayColor: context.colorScheme.onSurface,
+                            sundayColor: context.colorScheme.onSurface,
+                          ),
+                          languages: const BoardPickerLanguages(locale: 'ko_KR', today: '오늘', tomorrow: '내일'),
+                          textColor: context.colorScheme.inverseSurface,
+                          backgroundColor: context.colorScheme.surfaceDim,
+                          foregroundColor: context.colorScheme.surfaceContainer,
+                          activeColor: context.colorScheme.primary,
+                          activeTextColor: context.colorScheme.inversePrimary,
+                          inputable: false,
+                        ),
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                    highlightColor: context.colorScheme.surfaceContainer,
+                    child: Ink(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPaddingS,
+                        vertical: defaultPaddingXS,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: context.colorScheme.surfaceContainer,
+                        ),
                         borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                        highlightColor: context.colorScheme.surfaceContainer,
-                        child: Ink(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: defaultPaddingS,
-                            vertical: defaultPaddingXS,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: _dateErrorText != null
-                                  ? context.colorScheme.error
-                                  : context.colorScheme.surfaceContainer,
-                            ),
-                            borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                          ),
-                          child: Text(
-                            (_selectedDate == null) ? '날짜 및 시각' : GeneralFunctions.formatDateTime(_selectedDate),
-                            style: context.textTheme.titleSmall?.copyWith(
-                              color: (_selectedDate == null)
-                                  ? context.colorScheme.outline
-                                  : context.colorScheme.inverseSurface,
-                            ),
-                          ),
+                      ),
+                      child: Text(
+                        GeneralFunctions.formatDateTime(_selectedDate),
+                        style: context.textTheme.titleSmall?.copyWith(
+                          color: context.colorScheme.inverseSurface,
                         ),
                       ),
                     ),
-                    if (_dateErrorText != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: defaultPaddingS / 4, left: defaultPaddingS),
-                        child: Text(
-                          _dateErrorText!,
-                          style: context.textTheme.labelLarge?.copyWith(
-                            color: context.colorScheme.error,
-                          ),
-                        ),
-                      ),
-                  ],
+                  ),
                 ),
                 const Gap(defaultGapM),
                 CustomCounterTextFormField(
@@ -189,19 +169,11 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
           onTap: () async {
-            setState(() => _dateErrorText = null);
-
-            bool isDateTimeValid = true;
-
-            if (_selectedDate == null) {
-              setState(() => _dateErrorText = '날짜 및 시각을 선택해 주세요');
-              isDateTimeValid = false;
-            }
-
-            if (_formKey.currentState?.validate() == true && isDateTimeValid) {
+            if (_formKey.currentState?.validate() == true) {
               _formKey.currentState?.save();
               scheduleInfo.scheduleDateTime = _selectedDate;
               scheduleInfo.scheduleColor = _pickerColor.value.toRadixString(16).toUpperCase();
+
               try {
                 await _addSchedule(scheduleInfo, scheduleNotifier);
 

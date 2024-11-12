@@ -27,7 +27,7 @@ class CustomInfoBox extends StatelessWidget {
               infoTitle,
               style: context.textTheme.labelLarge,
             ),
-            const Gap(defaultGapS),
+            const Gap(defaultGapS / 2),
             if (infoTitleIcon != null) infoTitleIcon!,
           ],
         ),

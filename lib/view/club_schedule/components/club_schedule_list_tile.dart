@@ -49,10 +49,13 @@ class ClubScheduleListTile extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(schedule.scheduleTitle!, style: context.textTheme.bodyLarge),
+                    Text(
+                      schedule.scheduleTitle!,
+                      style: context.textTheme.bodyLarge,
+                    ),
                     const Gap(defaultGapS / 4),
                     Text(
-                      DateFormat('H:mm').format(schedule.scheduleDateTime!),
+                      DateFormat('a h:mm', 'ko_KR').format(schedule.scheduleDateTime!),
                       style: context.textTheme.bodySmall?.copyWith(
                         color: context.colorScheme.onSurface,
                       ),

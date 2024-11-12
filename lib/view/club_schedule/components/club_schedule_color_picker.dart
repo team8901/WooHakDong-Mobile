@@ -4,14 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../themes/spacing.dart';
 
 const List<Color> _defaultColors = [
-  Color(0xFFC5C6C7),
-  Color(0xFFD77A77),
-  Color(0xFFE9A77B),
-  Color(0xFFF2E394),
-  Color(0xFFA8C686),
-  Color(0xFFA3B7D9),
-  Color(0xFF6B7A8F),
-  Color(0xFFB49AC6),
+  Color(0xFFB8BEC0),
+  Color(0xFFE28A88),
+  Color(0xFFF2B084),
+  Color(0xFFF7E4A3),
+  Color(0xFFB4D69A),
+  Color(0xFFA2C4E4),
+  Color(0xFF8596AF),
+  Color(0xFFCC9BD9),
 ];
 
 class ClubScheduleColorPicker extends StatelessWidget {
