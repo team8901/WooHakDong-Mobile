@@ -42,6 +42,7 @@ final ThemeData lightTheme = ThemeData(
     tertiary: green,
     onTertiary: white,
     surfaceDim: white,
+    surfaceBright: white,
   ),
 
   /// 텍스트 테마

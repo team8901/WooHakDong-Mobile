@@ -129,7 +129,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                   children: [
                     CustomTextFormField(
                       controller: clubNameController,
-                      labelText: '동아리 이름',
+                      labelText: '이름',
                       keyboardType: TextInputType.name,
                       onChanged: (value) => clubNameValidationNotifier.state = ClubNameValidationState.notChecked,
                       validator: (value) {
@@ -142,7 +142,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                     const Gap(defaultGapM),
                     CustomTextFormField(
                       controller: clubEnglishNameController,
-                      labelText: '동아리 영문 이름',
+                      labelText: '영문 이름',
                       hintText: '소문자와 숫자만 입력해 주세요',
                       keyboardType: TextInputType.name,
                       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))],
@@ -212,7 +212,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 key: descriptionFormKey,
                 child: CustomCounterTextFormField(
                   controller: clubDescriptionController,
-                  labelText: '동아리 설명',
+                  labelText: '설명',
                   hintText: '500자 이내로 입력해 주세요',
                   minLines: 5,
                   maxLength: 300,

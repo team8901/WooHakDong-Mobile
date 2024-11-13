@@ -75,7 +75,10 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                         labelText: '휴대폰 번호',
                         hintText: '휴대폰 번호를 - 없이 입력해 주세요',
                         keyboardType: TextInputType.phone,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(11),
+                        ],
                         onSaved: (value) => memberInfo?.memberPhoneNumber = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {

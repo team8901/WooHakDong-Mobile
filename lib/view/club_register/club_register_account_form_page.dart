@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/group/group_provider.dart';
 
 import '../../service/general/general_functions.dart';
 import '../../view_model/club/club_account_provider.dart';
@@ -192,7 +193,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                           await clubAccountNotifier.registerClubAccount();
 
                           if (context.mounted) {
-                            _pushCompletePage(context);
+                            _pushCompletePage(ref, context);
                           }
                         } else if (clubAccountValidationState == ClubAccountValidationState.invalid ||
                             clubAccountValidationState == ClubAccountValidationState.notChecked) {
@@ -213,13 +214,17 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
     );
   }
 
-  void _pushCompletePage(BuildContext context) {
-    Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => ClubRegisterCompletePage(),
-      ),
-      (route) => false,
-    );
+  Future<void> _pushCompletePage(WidgetRef ref, BuildContext context) async {
+    await ref.read(groupProvider.notifier).getClubRegisterPageInfo();
+
+    if (context.mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => ClubRegisterCompletePage(),
+        ),
+        (route) => false,
+      );
+    }
   }
 }

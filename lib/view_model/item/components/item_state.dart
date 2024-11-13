@@ -1,5 +1,5 @@
 enum ItemState {
   initial,
-  registering,
-  registered,
+  adding,
+  added,
 }

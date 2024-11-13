@@ -101,7 +101,7 @@ class ClubItemAddPage extends ConsumerWidget {
                   ),
                   const Gap(defaultGapM),
                   CustomTextFormField(
-                    labelText: '물품 이름',
+                    labelText: '이름',
                     onSaved: (value) => itemInfo.itemName = value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -131,7 +131,7 @@ class ClubItemAddPage extends ConsumerWidget {
                   ),
                   const Gap(defaultGapM),
                   CustomCounterTextFormField(
-                    labelText: '물품 설명',
+                    labelText: '설명',
                     hintText: '200자 이내로 입력해 주세요',
                     minLines: 4,
                     maxLength: 200,
@@ -152,7 +152,7 @@ class ClubItemAddPage extends ConsumerWidget {
                   ),
                   const Gap(defaultGapM),
                   CustomTextFormField(
-                    labelText: '물품 위치',
+                    labelText: '위치',
                     keyboardType: TextInputType.text,
                     onSaved: (value) => itemInfo.itemLocation = value,
                     validator: (value) {
@@ -165,7 +165,7 @@ class ClubItemAddPage extends ConsumerWidget {
                   const Gap(defaultGapM),
                   CustomTextFormField(
                     labelText: '최대 대여 가능 기간',
-                    hintText: '숫자만 입력해 주세요',
+                    hintText: '일 단위로 입력해 주세요',
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -202,7 +202,7 @@ class ClubItemAddPage extends ConsumerWidget {
             buttonText: '추가',
             buttonColor: Theme.of(context).colorScheme.primary,
             buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
-            isLoading: itemState == ItemState.registering,
+            isLoading: itemState == ItemState.adding,
           ),
         ),
       ),

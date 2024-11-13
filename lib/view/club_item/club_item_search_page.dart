@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +9,6 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/item/item_search_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
-import 'club_item_detail_page.dart';
 import 'components/list_tile/club_item_search_list_tile.dart';
 
 class ClubItemSearchPage extends ConsumerStatefulWidget {
@@ -92,37 +90,27 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   separatorBuilder: (context, index) => const CustomHorizontalDivider(),
                   itemCount: searchedItem.length,
-                  itemBuilder: (context, index) => InkWell(
-                    onTap: () => _pushItemDetailPage(context, searchedItem[index].itemId!),
-                    highlightColor: context.colorScheme.surfaceContainer,
-                    child: ClubItemSearchListTile(searchedItem: searchedItem[index]),
-                  ),
+                  itemBuilder: (context, index) => ClubItemSearchListTile(searchedItem: searchedItem[index]),
                 );
               },
+              loading: () => const CustomCircularProgressIndicator(),
               error: (err, stack) => Center(
                 child: Text(
-                  '검색 중 오류가 발생했어요',
-                  style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                  '검색 중 오류가 발생했어요\n다시 시도해 주세요',
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: context.colorScheme.error,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
-              loading: () => const CustomCircularProgressIndicator(),
             ),
     );
   }
 
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 100), () {
+    _debounce = Timer(const Duration(milliseconds: 150), () {
       setState(() {});
     });
-  }
-
-  void _pushItemDetailPage(BuildContext context, int itemId) {
-    Navigator.push(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => ClubItemDetailPage(itemId: itemId),
-      ),
-    );
   }
 }

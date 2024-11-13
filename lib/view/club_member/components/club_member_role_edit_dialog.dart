@@ -5,16 +5,15 @@ import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../model/club_member/club_member.dart';
 import '../../../view_model/club_member/club_member_provider.dart';
 
 class ClubMemberRoleEditDialog extends ConsumerStatefulWidget {
-  final ClubMember currentClubMember;
+  final int clubMemberId;
   final String? initialRole;
 
   const ClubMemberRoleEditDialog({
     super.key,
-    required this.currentClubMember,
+    required this.clubMemberId,
     required this.initialRole,
   });
 
@@ -33,8 +32,6 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
 
   @override
   Widget build(BuildContext context) {
-    final clubNotifier = ref.read(clubMemberProvider.notifier);
-
     return Dialog(
       child: Container(
         padding: const EdgeInsets.all(defaultPaddingS * 2),
@@ -110,7 +107,7 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
                         },
                       ),
                       Text(
-                        '임원진',
+                        '임원',
                         style: context.textTheme.bodyMedium,
                       ),
                     ],
@@ -157,20 +154,7 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
                 ),
                 const Gap(defaultPaddingS * 2),
                 InkWell(
-                  onTap: () async {
-                    try {
-                      await clubNotifier.updateClubMemberRole(widget.currentClubMember.clubMemberId!, selectedRole!);
-
-                      if (context.mounted) {
-                        GeneralFunctions.toastMessage(
-                            '${widget.currentClubMember.memberName}님의 역할이 ${GeneralFunctions.formatClubRole(selectedRole!)}(으)로 변경되었어요');
-                        ref.invalidate(clubMemberProvider);
-                        Navigator.pop(context);
-                      }
-                    } catch (e) {
-                      await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
-                    }
-                  },
+                  onTap: () => _updateRole(context, widget.clubMemberId),
                   child: Text(
                     '확인',
                     style: context.textTheme.titleSmall?.copyWith(
@@ -184,5 +168,24 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
         ),
       ),
     );
+  }
+
+  Future<void> _updateRole(context, int clubMemberId) async {
+    try {
+      final clubNotifier = ref.read(clubMemberProvider.notifier);
+
+      await clubNotifier.updateClubMemberRole(
+        clubMemberId,
+        selectedRole!,
+      );
+
+      if (context.mounted) {
+        GeneralFunctions.toastMessage('역할이 변경되었어요');
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
+      Navigator.pop(context);
+    }
   }
 }

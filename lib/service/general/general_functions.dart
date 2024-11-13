@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:currency_formatter/currency_formatter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +24,12 @@ class GeneralFunctions {
       backgroundColor: const Color(0xFF6C6E75).withOpacity(0.8),
       textColor: const Color(0xFFFCFCFC),
     );
+  }
+
+  /// 클립보드 함수
+  static void clipboardCopy(String content, String toastMsg) async {
+    await Clipboard.setData(ClipboardData(text: content));
+    await toastMessage(toastMsg);
   }
 
   /// 회원 정보 관련 함수
@@ -72,7 +79,7 @@ class GeneralFunctions {
       case 'SECRETARY':
         return '총무';
       case 'OFFICER':
-        return '임원진';
+        return '임원';
       case 'MEMBER':
         return '회원';
       default:
@@ -218,13 +225,13 @@ class GeneralFunctions {
   }
 
   /// 시간 관련 함수
-  static String formatDateTime(DateTime? itemRentalDate) {
-    String dateString = itemRentalDate.toString();
+  static String formatDateTime(DateTime? date) {
+    String dateString = date.toString();
     DateTime dateTime = DateTime.parse(dateString).toLocal();
     int currentYear = DateTime.now().year;
     bool isCurrentYear = dateTime.year == currentYear;
-    String dateFormat = isCurrentYear ? 'M월 d일 H:mm' : 'yyyy년 M월 d일 H:mm';
+    String dateFormat = isCurrentYear ? 'M월 d일 (E) a h:mm' : 'yyyy년 M월 d일 (E) a h:mm';
 
-    return DateFormat(dateFormat).format(dateTime);
+    return DateFormat(dateFormat, 'ko_KR').format(dateTime);
   }
 }

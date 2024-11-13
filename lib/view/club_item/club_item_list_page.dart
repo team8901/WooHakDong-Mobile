@@ -79,8 +79,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _pushItemAddPage(context),
-        tooltip: '동아리 물품을 추가해 보세요',
-        child: const Icon(Symbols.add_rounded, weight: 600, size: 32),
+        child: const Icon(Symbols.add_2_rounded, weight: 600, size: 28),
       ),
     );
   }

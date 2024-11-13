@@ -15,7 +15,7 @@ class ClubMemberMeNotifier extends StateNotifier<ClubMemberMe> {
   ClubMemberMeNotifier(this.ref) : super(ClubMemberMe());
 
   Future<void> getClubMemberMe() async {
-    final currentClubId = ref.watch(clubIdProvider);
+    final currentClubId = ref.read(clubIdProvider);
 
     final ClubMemberMe clubMemberMe = await clubMemberMeRepository.getClubMemberMe(currentClubId!);
 

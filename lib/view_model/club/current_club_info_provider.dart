@@ -15,7 +15,7 @@ class CurrentClubInfoNotifier extends StateNotifier<CurrentClub> {
   CurrentClubInfoNotifier(this.ref) : super(CurrentClub());
 
   Future<void> getCurrentClubInfo() async {
-    final currentClubId = ref.watch(clubIdProvider);
+    final currentClubId = ref.read(clubIdProvider);
 
     final CurrentClub currentClub = await currentClubRepository.getCurrentClubInfo(currentClubId!);
 
@@ -31,7 +31,7 @@ class CurrentClubInfoNotifier extends StateNotifier<CurrentClub> {
     String clubGroupChatLink,
     String clubGroupChatPassword,
   ) async {
-    final currentClubId = ref.watch(clubIdProvider);
+    final currentClubId = ref.read(clubIdProvider);
 
     final CurrentClub updatedCurrentClub = await currentClubRepository.updateCurrentClubInfo(
       state.copyWith(
@@ -47,5 +47,7 @@ class CurrentClubInfoNotifier extends StateNotifier<CurrentClub> {
     );
 
     state = updatedCurrentClub;
+
+    await getCurrentClubInfo();
   }
 }

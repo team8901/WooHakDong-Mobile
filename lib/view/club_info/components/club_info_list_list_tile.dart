@@ -6,9 +6,16 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/club/club.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/dues/dues_list_provider.dart';
 
+import '../../../model/club_member/club_member_me.dart';
+import '../../../repository/club_member/club_member_me_repository.dart';
 import '../../../service/general/general_functions.dart';
 import '../../../view_model/club/club_id_provider.dart';
+import '../../../view_model/club_member/club_member_list_provider.dart';
+import '../../../view_model/item/item_list_provider.dart';
+import '../../../view_model/schedule/schedule_list_provider.dart';
+import '../../../view_model/util/s3_image_provider.dart';
 import '../../route_page.dart';
 import '../../themes/spacing.dart';
 
@@ -27,13 +34,29 @@ class ClubInfoListListTile extends ConsumerWidget {
     final imageProvider = (club.clubImage != null && club.clubImage!.isNotEmpty)
         ? CachedNetworkImageProvider(club.clubImage!)
         : const AssetImage('assets/images/club/club_basic_image.jpg') as ImageProvider;
+    final ClubMemberMeRepository clubMemberMeRepository = ClubMemberMeRepository();
 
     return InkWell(
       onTap: () async {
+        final ClubMemberMe clubMemberMe = await clubMemberMeRepository.getClubMemberMe(club.clubId!);
+
+        if (clubMemberMe.clubMemberRole == 'MEMBER') {
+          await GeneralFunctions.toastMessage('동아리 임원진만 이용할 수 있어요');
+          return;
+        }
+
         await ref.read(clubIdProvider.notifier).saveClubId(club.clubId!);
+
+        ref.invalidate(clubMemberListProvider);
+        ref.invalidate(itemListProvider(null));
+        ref.invalidate(duesListProvider(null));
+        ref.invalidate(scheduleListProvider);
+        ref.invalidate(s3ImageProvider);
 
         if (context.mounted) {
           _pushRoutePage(context, club.clubName!);
+
+          await GeneralFunctions.toastMessage('${club.clubName} 동아리로 전환되었어요');
         }
       },
       highlightColor: context.colorScheme.surfaceContainer,
@@ -83,7 +106,7 @@ class ClubInfoListListTile extends ConsumerWidget {
     );
   }
 
-  void _pushRoutePage(BuildContext context, String clubName) {
+  void _pushRoutePage(BuildContext context, String clubName) async {
     Navigator.of(context).pop();
 
     Navigator.pushAndRemoveUntil(
@@ -100,7 +123,5 @@ class ClubInfoListListTile extends ConsumerWidget {
       ),
       (route) => false,
     );
-
-    GeneralFunctions.toastMessage('$clubName 동아리로 전환되었어요');
   }
 }

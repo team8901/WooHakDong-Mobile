@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:woohakdong/model/item/item_history.dart';
 import 'package:woohakdong/repository/item/item_history_repository.dart';
 import 'package:woohakdong/repository/item/item_repository.dart';
+import 'package:woohakdong/view_model/item/item_list_provider.dart';
 
 import '../../model/item/item.dart';
 import '../club/club_id_provider.dart';
@@ -20,37 +20,16 @@ class ItemNotifier extends StateNotifier<Item> {
 
   ItemNotifier(this.ref) : super(Item());
 
-  Future<List<Item>> getItemList(String? keyword, String? category) async {
-    final currentClubId = ref.watch(clubIdProvider);
+  Future<void> getItemInfo(int itemId) async {
+    try {
+      final currentClubId = ref.read(clubIdProvider);
 
-    await Future.delayed(const Duration(milliseconds: 200));
+      final itemInfo = await itemRepository.getItemInfo(currentClubId!, itemId);
 
-    final List<Item> itemList = await itemRepository.getItemList(
-      currentClubId!,
-      keyword,
-      category,
-    );
-
-    return itemList;
-  }
-
-  Future<Item> getItemById(int itemId) async {
-    final List<Item> itemList = await getItemList(null, null);
-
-    final item = itemList.firstWhere((item) => item.itemId == itemId);
-
-    return item;
-  }
-
-  Future<List<ItemHistory>> getItemHistoryList(int itemId) async {
-    final currentClubId = ref.watch(clubIdProvider);
-
-    final List<ItemHistory> itemHistoryList = await itemHistoryRepository.getItemHistoryList(
-      currentClubId!,
-      itemId,
-    );
-
-    return itemHistoryList;
+      state = itemInfo;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> addItem(
@@ -62,15 +41,15 @@ class ItemNotifier extends StateNotifier<Item> {
     int itemRentalMaxDay,
   ) async {
     try {
-      ref.read(itemStateProvider.notifier).state = ItemState.registering;
+      ref.read(itemStateProvider.notifier).state = ItemState.adding;
 
-      final currentClubId = ref.watch(clubIdProvider);
+      final currentClubId = ref.read(clubIdProvider);
 
       await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
 
       await itemRepository.addItem(
         currentClubId!,
-        state.copyWith(
+        Item(
           itemName: itemName,
           itemPhoto: itemPhoto,
           itemDescription: itemDescription,
@@ -80,8 +59,8 @@ class ItemNotifier extends StateNotifier<Item> {
         ),
       );
 
-      await ref.refresh(itemProvider.notifier).getItemList(null, null);
-      ref.read(itemStateProvider.notifier).state = ItemState.registered;
+      ref.invalidate(itemListProvider(null));
+      ref.read(itemStateProvider.notifier).state = ItemState.added;
     } catch (e) {
       ref.read(itemStateProvider.notifier).state = ItemState.initial;
       rethrow;
@@ -98,11 +77,11 @@ class ItemNotifier extends StateNotifier<Item> {
     int itemRentalMaxDay,
   ) async {
     try {
-      ref.read(itemStateProvider.notifier).state = ItemState.registering;
+      ref.read(itemStateProvider.notifier).state = ItemState.adding;
 
-      final currentClubId = ref.watch(clubIdProvider);
+      final currentClubId = ref.read(clubIdProvider);
 
-      await itemRepository.updateItem(
+      final updatedItemId = await itemRepository.updateItem(
         currentClubId!,
         itemId,
         state.copyWith(
@@ -115,8 +94,9 @@ class ItemNotifier extends StateNotifier<Item> {
         ),
       );
 
-      await ref.refresh(itemProvider.notifier).getItemList(null, null);
-      ref.read(itemStateProvider.notifier).state = ItemState.registered;
+      ref.invalidate(itemListProvider(null));
+      await getItemInfo(updatedItemId);
+      ref.read(itemStateProvider.notifier).state = ItemState.added;
     } catch (e) {
       ref.read(itemStateProvider.notifier).state = ItemState.initial;
       rethrow;
@@ -132,7 +112,7 @@ class ItemNotifier extends StateNotifier<Item> {
         itemId,
       );
 
-      await ref.refresh(itemProvider.notifier).getItemList(null, null);
+      ref.invalidate(itemListProvider(null));
     } catch (e) {
       rethrow;
     }
@@ -148,7 +128,8 @@ class ItemNotifier extends StateNotifier<Item> {
         itemAvailable,
       );
 
-      await ref.refresh(itemProvider.notifier).getItemList(null, null);
+      ref.invalidate(itemListProvider(null));
+      await getItemInfo(itemId);
     } catch (e) {
       rethrow;
     }

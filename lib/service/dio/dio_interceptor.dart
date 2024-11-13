@@ -20,8 +20,6 @@ class DioInterceptor extends InterceptorsWrapper {
 
   @override
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    logger.t("[${options.method}] [${options.uri}]");
-
     String? accessToken = await _secureStorage.read(key: 'accessToken');
 
     if (!options.uri.path.contains('/auth/login/social')) {

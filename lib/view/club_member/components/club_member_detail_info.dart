@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/club_member/club_member.dart';
@@ -37,6 +38,25 @@ class ClubMemberDetailInfo extends StatelessWidget {
         const Gap(defaultPaddingM * 2),
         CustomInfoBox(
           infoTitle: '기본 정보',
+          infoTitleIcon: Tooltip(
+            triggerMode: TooltipTriggerMode.tap,
+            message: '휴대폰 번호와 이메일을 한 번 누르면 복사,\n꾹 누르면 바로 연결돼요',
+            textStyle: context.textTheme.bodyMedium?.copyWith(
+              color: const Color(0xFFFCFCFC),
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: defaultPaddingS,
+              vertical: defaultPaddingXS,
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFF6C6E75).withOpacity(0.8),
+              borderRadius: BorderRadius.circular(defaultBorderRadiusL),
+            ),
+            child: const Icon(
+              Symbols.info_rounded,
+              size: 14,
+            ),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -49,21 +69,31 @@ class ClubMemberDetailInfo extends StatelessWidget {
                 ),
               ),
               const Gap(defaultGapM),
-              CustomInfoContent(
-                infoContent: GeneralFunctions.formatMemberPhoneNumber(clubMember.memberPhoneNumber!),
-                icon: Icon(
-                  Symbols.call_rounded,
-                  size: 16,
-                  color: context.colorScheme.outline,
+              GestureDetector(
+                onTap: () => GeneralFunctions.clipboardCopy(clubMember.memberPhoneNumber!, '휴대폰 번호를 복사했어요'),
+                onLongPress: () => _makePhoneCall(clubMember.memberPhoneNumber!),
+                child: CustomInfoContent(
+                  isUnderline: true,
+                  infoContent: GeneralFunctions.formatMemberPhoneNumber(clubMember.memberPhoneNumber!),
+                  icon: Icon(
+                    Symbols.call_rounded,
+                    size: 16,
+                    color: context.colorScheme.outline,
+                  ),
                 ),
               ),
               const Gap(defaultGapM),
-              CustomInfoContent(
-                infoContent: clubMember.memberEmail!,
-                icon: Icon(
-                  Symbols.alternate_email_rounded,
-                  size: 16,
-                  color: context.colorScheme.outline,
+              GestureDetector(
+                onTap: () => GeneralFunctions.clipboardCopy(clubMember.memberEmail!, '이메일을 복사했어요'),
+                onLongPress: () => _sendEmail(clubMember.memberEmail!),
+                child: CustomInfoContent(
+                  isUnderline: true,
+                  infoContent: clubMember.memberEmail!,
+                  icon: Icon(
+                    Symbols.alternate_email_rounded,
+                    size: 16,
+                    color: context.colorScheme.outline,
+                  ),
                 ),
               ),
             ],
@@ -105,5 +135,25 @@ class ClubMemberDetailInfo extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _makePhoneCall(String phoneNumber) async {
+    final Uri telUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    if (await canLaunchUrl(telUri)) {
+      await launchUrl(telUri);
+    }
+  }
+
+  void _sendEmail(String email) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: email,
+    );
+    if (await canLaunchUrl(emailUri)) {
+      await launchUrl(emailUri);
+    }
   }
 }

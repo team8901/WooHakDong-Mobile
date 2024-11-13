@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/club/current_club_account.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
@@ -9,8 +8,9 @@ import 'package:woohakdong/view/club_dues/components/club_dues_in_out_type_botto
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../../view_model/club/current_club_account_info_provider.dart';
 import '../../../view_model/club_member/club_member_me_provider.dart';
-import '../../../view_model/dues/dues_provider.dart';
+import '../../../view_model/dues/dues_list_provider.dart';
 
 class ClubDuesAccountInfoBox extends ConsumerWidget {
   final CurrentClubAccount currentClubAccount;
@@ -98,14 +98,15 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
               Flexible(
                 child: InkWell(
                   onTap: () async {
-                    if (clubMemberMe.clubMemberRole != 'PRESIDENT') {
-                      await GeneralFunctions.toastMessage('동아리 회장만 회비 내역을 업데이트할 수 있어요');
+                    if (clubMemberMe.clubMemberRole != 'PRESIDENT' && clubMemberMe.clubMemberRole != 'SECRETARY') {
+                      await GeneralFunctions.toastMessage('회장 및 총무만 회비 내역을 업데이트할 수 있어요');
                       return;
                     }
 
                     try {
-                      await ref.read(duesProvider.notifier).refreshDuesList();
-                      await ref.refresh(duesProvider.notifier).getDuesList(null);
+                      await ref.read(duesListProvider(null).notifier).refreshDuesList();
+                      ref.invalidate(duesListProvider(null));
+                      await ref.read(currentClubAccountInfoProvider.notifier).getCurrentClubAccountInfo();
 
                       await GeneralFunctions.toastMessage('회비 내역을 업데이트 했어요');
                     } catch (e) {
@@ -117,9 +118,7 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          DateFormat('yyyy년 M월 dd일 H:MM 기준').format(
-                            currentClubAccount.clubAccountLastUpdateDate!,
-                          ),
+                          '${GeneralFunctions.formatDateTime(currentClubAccount.clubAccountLastUpdateDate!)} 기준',
                           style: context.textTheme.bodySmall?.copyWith(
                             color: context.colorScheme.onSurface,
                           ),

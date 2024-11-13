@@ -1,11 +1,11 @@
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/model/item/item_history.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_loading_skeleton.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_refresh_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/item/item_history_list_provider.dart';
 
-import '../../view_model/item/item_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import 'components/list_tile/club_item_history_list_tile.dart';
 
@@ -19,6 +19,8 @@ class ClubItemHistoryPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final itemHistoryListData = ref.watch(itemHistoryListProvider(itemId));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('대여 내역'),
@@ -26,56 +28,61 @@ class ClubItemHistoryPage extends ConsumerWidget {
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
-          child: FutureBuilder(
-            future: ref.watch(itemProvider.notifier).getItemHistoryList(itemId),
-            builder: (context, itemListSnapshot) {
-              final isLoading = itemListSnapshot.connectionState == ConnectionState.waiting;
-
-              final itemHistoryList = isLoading ? _generateFakeItemHistory(10) : itemListSnapshot.data;
-
-              if (itemHistoryList!.isEmpty) {
+          child: itemHistoryListData.when(
+            data: (itemHistoryList) {
+              if (itemHistoryList.isEmpty) {
                 return Center(
                   child: Text(
                     '아직 대여한 내역이 없어요',
-                    style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                    style: context.textTheme.bodySmall?.copyWith(
+                      color: context.colorScheme.onSurface,
+                    ),
                   ),
                 );
               }
 
-              return CustomMaterialIndicator(
+              itemHistoryList.reversed.toList();
+
+              return CustomRefreshIndicator(
                 onRefresh: () async {
                   await Future.delayed(const Duration(milliseconds: 500));
-
-                  ref.invalidate(itemProvider);
+                  ref.invalidate(itemHistoryListProvider(itemId));
                 },
-                child: CustomLoadingSkeleton(
-                  isLoading: isLoading,
-                  child: ListView.separated(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                    itemCount: itemHistoryList.length,
-                    itemBuilder: (context, index) {
-                      final reversedItemHistoryList = itemHistoryList[itemHistoryList.length - 1 - index];
-
-                      return ClubItemHistoryListTile(itemHistory: reversedItemHistoryList);
-                    },
-                  ),
+                child: ListView.separated(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                  itemCount: itemHistoryList.length,
+                  itemBuilder: (context, index) => ClubItemHistoryListTile(itemHistory: itemHistoryList[index]),
                 ),
               );
             },
+            loading: () => CustomLoadingSkeleton(
+              isLoading: true,
+              child: ListView.separated(
+                physics: const AlwaysScrollableScrollPhysics(),
+                separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                itemCount: 10,
+                itemBuilder: (context, index) => ClubItemHistoryListTile(
+                  itemHistory: ItemHistory(
+                    memberName: '우학동',
+                    itemRentalDate: DateTime.now(),
+                    itemReturnDate: DateTime.now(),
+                  ),
+                ),
+              ),
+            ),
+            error: (error, stack) => Center(
+              child: Text(
+                '대여 목록을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
+                style: context.textTheme.bodySmall?.copyWith(
+                  color: context.colorScheme.error,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ),
         ),
       ),
     );
-  }
-
-  List<ItemHistory> _generateFakeItemHistory(int count) {
-    return List.generate(count, (index) {
-      return ItemHistory(
-        memberName: '우학동',
-        itemRentalDate: DateTime.now(),
-        itemReturnDate: DateTime.now(),
-      );
-    });
   }
 }
