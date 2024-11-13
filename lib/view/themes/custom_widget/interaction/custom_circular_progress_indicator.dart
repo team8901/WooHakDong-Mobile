@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 class CustomCircularProgressIndicator extends StatelessWidget {
@@ -9,11 +9,8 @@ class CustomCircularProgressIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: CircularProgressIndicator(
-        color: context.colorScheme.primary,
-        backgroundColor: context.colorScheme.surfaceDim,
-        strokeAlign: BorderSide.strokeAlignInside,
-        strokeCap: StrokeCap.round,
+      child: CupertinoActivityIndicator(
+        color: context.colorScheme.onSurface,
       ),
     );
   }

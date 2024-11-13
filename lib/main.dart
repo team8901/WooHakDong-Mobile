@@ -20,6 +20,8 @@ import 'package:woohakdong/view_model/auth/auth_provider.dart';
 import 'package:woohakdong/view_model/auth/components/auth_state.dart';
 import 'package:woohakdong/view_model/auth/components/auth_state_provider.dart';
 import 'package:woohakdong/view_model/club/club_id_provider.dart';
+import 'package:woohakdong/view_model/setting/components/setting_theme_mode.dart';
+import 'package:woohakdong/view_model/setting/setting_theme_provider.dart';
 
 import 'firebase_options.dart';
 import 'my_http_overrides.dart';
@@ -76,6 +78,21 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
+    final appThemeMode = ref.watch(settingThemeProvider);
+
+    ThemeMode themeMode;
+
+    switch (appThemeMode) {
+      case SettingThemeMode.light:
+        themeMode = ThemeMode.light;
+        break;
+      case SettingThemeMode.dark:
+        themeMode = ThemeMode.dark;
+        break;
+      case SettingThemeMode.system:
+      default:
+        themeMode = ThemeMode.system;
+    }
 
     return ScreenUtilInit(
       designSize: const Size(375, 812),
@@ -85,7 +102,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           debugShowCheckedModeBanner: false,
           theme: lightTheme,
           darkTheme: darkTheme,
-          themeMode: ThemeMode.system,
+          themeMode: themeMode,
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,

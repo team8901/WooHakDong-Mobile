@@ -4,14 +4,18 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../themes/spacing.dart';
 
-class CustomDeleteDialog extends StatelessWidget {
+class CustomInteractionDialog extends StatelessWidget {
   final String dialogTitle;
   final String dialogContent;
+  final String dialogButtonText;
+  final Color? dialogButtonColor;
 
-  const CustomDeleteDialog({
+  const CustomInteractionDialog({
     super.key,
     required this.dialogTitle,
     required this.dialogContent,
+    this.dialogButtonText = '삭제',
+    this.dialogButtonColor,
   });
 
   @override
@@ -48,9 +52,9 @@ class CustomDeleteDialog extends StatelessWidget {
                 InkWell(
                   onTap: () => Navigator.pop(context, true),
                   child: Text(
-                    '삭제',
+                    dialogButtonText,
                     style: context.textTheme.titleSmall?.copyWith(
-                      color: context.colorScheme.error,
+                      color: dialogButtonColor ?? context.colorScheme.error,
                     ),
                   ),
                 ),

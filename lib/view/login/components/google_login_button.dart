@@ -28,32 +28,32 @@ class GoogleLoginButton extends ConsumerWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(defaultBorderRadiusM),
         onTap: authState == AuthState.loading ? null : () => authNotifier.signIn(),
+        highlightColor: context.colorScheme.outline,
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(defaultBorderRadiusM),
             color: context.colorScheme.surfaceContainer,
           ),
-          child: (authState == AuthState.loading)
-              ? const CustomCircularProgressIndicator()
-              : Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/logos/google.png',
-                        width: 20,
-                        height: 20,
-                      ),
-                      const Gap(defaultGapM),
-                      Text(
-                        'Google로 시작하기',
-                        style: context.textTheme.bodyMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/logos/google.png',
+                  width: 18,
+                  height: 18,
                 ),
+                const Gap(defaultGapM),
+                (authState == AuthState.loading)
+                    ? const CustomCircularProgressIndicator()
+                    : Text(
+                        'Google계정으로 로그인',
+                        style: context.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+                      ),
+              ],
+            ),
+          ),
         ),
       ),
     );

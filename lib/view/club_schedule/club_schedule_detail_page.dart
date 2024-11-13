@@ -175,7 +175,7 @@ class ClubScheduleDetailPage extends ConsumerWidget {
     try {
       final bool? isDelete = await showDialog<bool>(
         context: context,
-        builder: (context) => const CustomDeleteDialog(
+        builder: (context) => const CustomInteractionDialog(
           dialogTitle: '일정 삭제',
           dialogContent: '일정을 삭제하면 다시 되돌릴 수 없어요. 그래도 삭제할까요?',
         ),

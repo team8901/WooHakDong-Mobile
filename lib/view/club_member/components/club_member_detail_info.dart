@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:woohakdong/view/themes/custom_widget/button/custom_info_tooltip.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/club_member/club_member.dart';
@@ -38,25 +39,7 @@ class ClubMemberDetailInfo extends StatelessWidget {
         const Gap(defaultPaddingM * 2),
         CustomInfoBox(
           infoTitle: '기본 정보',
-          infoTitleIcon: Tooltip(
-            triggerMode: TooltipTriggerMode.tap,
-            message: '휴대폰 번호와 이메일을 한 번 누르면 복사,\n꾹 누르면 바로 연결돼요',
-            textStyle: context.textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFFFCFCFC),
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: defaultPaddingS,
-              vertical: defaultPaddingXS,
-            ),
-            decoration: BoxDecoration(
-              color: const Color(0xFF6C6E75).withOpacity(0.8),
-              borderRadius: BorderRadius.circular(defaultBorderRadiusL),
-            ),
-            child: const Icon(
-              Symbols.info_rounded,
-              size: 14,
-            ),
-          ),
+          infoTitleIcon: const CustomInfoTooltip(tooltipMessage: '휴대폰 번호와 이메일을 한 번 누르면 복사,\n꾹 누르면 바로 연결돼요'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -70,7 +53,10 @@ class ClubMemberDetailInfo extends StatelessWidget {
               ),
               const Gap(defaultGapM),
               GestureDetector(
-                onTap: () => GeneralFunctions.clipboardCopy(clubMember.memberPhoneNumber!, '휴대폰 번호를 복사했어요'),
+                onTap: () => GeneralFunctions.clipboardCopy(
+                  clubMember.memberPhoneNumber!,
+                  '휴대폰 번호를 복사했어요',
+                ),
                 onLongPress: () => _makePhoneCall(clubMember.memberPhoneNumber!),
                 child: CustomInfoContent(
                   isUnderline: true,
@@ -84,7 +70,10 @@ class ClubMemberDetailInfo extends StatelessWidget {
               ),
               const Gap(defaultGapM),
               GestureDetector(
-                onTap: () => GeneralFunctions.clipboardCopy(clubMember.memberEmail!, '이메일을 복사했어요'),
+                onTap: () => GeneralFunctions.clipboardCopy(
+                  clubMember.memberEmail!,
+                  '이메일을 복사했어요',
+                ),
                 onLongPress: () => _sendEmail(clubMember.memberEmail!),
                 child: CustomInfoContent(
                   isUnderline: true,

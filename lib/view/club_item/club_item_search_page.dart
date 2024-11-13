@@ -80,7 +80,7 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
                 if (searchedItem.isEmpty) {
                   return Center(
                     child: Text(
-                      '검색 결과가 없어요',
+                      '물품 검색 결과가 없어요',
                       style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
                     ),
                   );
@@ -109,7 +109,7 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
 
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 150), () {
+    _debounce = Timer(const Duration(milliseconds: 200), () {
       setState(() {});
     });
   }

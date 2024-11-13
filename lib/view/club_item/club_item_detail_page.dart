@@ -254,7 +254,7 @@ class ClubItemDetailPage extends ConsumerWidget {
     try {
       final bool? isDelete = await showDialog<bool>(
         context: context,
-        builder: (context) => const CustomDeleteDialog(
+        builder: (context) => const CustomInteractionDialog(
           dialogTitle: '물품 삭제',
           dialogContent: '물품을 삭제하면 다시 되돌릴 수 없어요. 그래도 삭제할까요?',
         ),

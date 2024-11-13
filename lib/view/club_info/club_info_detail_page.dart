@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:woohakdong/view/themes/custom_widget/button/custom_info_tooltip.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../service/general/general_functions.dart';
@@ -37,133 +38,140 @@ class ClubInfoDetailPage extends ConsumerWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(defaultPaddingM),
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '동아리 로고 및 대표 사진',
-                  style: context.textTheme.labelLarge,
-                ),
-                const Gap(defaultGapM),
-                GestureDetector(
-                  onTap: () => GeneralFunctions.pushImageView(context, imageProvider),
-                  child: Center(
-                    child: Container(
-                      width: 192.r,
-                      height: 192.r,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: context.colorScheme.surfaceContainer),
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                        ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '동아리 로고 및 대표 사진',
+                style: context.textTheme.labelLarge,
+              ),
+              const Gap(defaultGapM),
+              GestureDetector(
+                onTap: () => GeneralFunctions.pushImageView(context, imageProvider),
+                child: Center(
+                  child: Container(
+                    width: 192.r,
+                    height: 192.r,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: context.colorScheme.surfaceContainer),
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
                 ),
-                const Gap(defaultGapXL),
-                CustomInfoBox(
-                  infoTitle: '동아리 기본 정보',
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomInfoContent(
-                        infoContent: currentClubInfo.clubName!,
-                        icon: Icon(
-                          Symbols.account_balance_rounded,
-                          size: 16,
-                          color: context.colorScheme.outline,
-                        ),
+              ),
+              const Gap(defaultGapXL),
+              CustomInfoBox(
+                infoTitle: '동아리 기본 정보',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomInfoContent(
+                      infoContent: currentClubInfo.clubName!,
+                      icon: Icon(
+                        Symbols.account_balance_rounded,
+                        size: 16,
+                        color: context.colorScheme.outline,
                       ),
-                      const Gap(defaultGapM),
-                      CustomInfoContent(
-                        infoContent: currentClubInfo.clubEnglishName!,
-                        icon: Icon(
-                          Symbols.signature_rounded,
-                          size: 16,
-                          color: context.colorScheme.outline,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Gap(defaultGapM),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: context.colorScheme.surfaceContainer),
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: defaultPaddingS,
-                    vertical: defaultPaddingXS,
-                  ),
-                  child: CustomInfoContent(
-                    infoContent: currentClubInfo.clubDescription!,
-                    icon: Icon(
-                      Symbols.info_rounded,
-                      size: 16,
-                      color: context.colorScheme.outline,
                     ),
-                  ),
-                ),
-                const Gap(defaultGapXL),
-                CustomInfoBox(
-                  infoTitle: '동아리 추가 정보',
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      (currentClubInfo.clubGeneration != '')
-                          ? Column(
-                              children: [
-                                CustomInfoContent(
-                                  infoContent: GeneralFunctions.formatClubGeneration(currentClubInfo.clubGeneration!),
-                                  icon: Icon(
-                                    Symbols.numbers_rounded,
-                                    size: 16,
-                                    color: context.colorScheme.outline,
-                                  ),
-                                ),
-                                const Gap(defaultGapM),
-                              ],
-                            )
-                          : const SizedBox(),
-                      CustomInfoContent(
-                        infoContent: GeneralFunctions.formatClubDues(currentClubInfo.clubDues!),
-                        icon: Icon(
-                          Symbols.payment_rounded,
-                          size: 16,
-                          color: context.colorScheme.outline,
-                        ),
+                    const Gap(defaultGapM),
+                    CustomInfoContent(
+                      infoContent: currentClubInfo.clubEnglishName!,
+                      icon: Icon(
+                        Symbols.signature_rounded,
+                        size: 16,
+                        color: context.colorScheme.outline,
                       ),
-                      (currentClubInfo.clubRoom != '')
-                          ? Column(
-                              children: [
-                                const Gap(defaultGapM),
-                                CustomInfoContent(
-                                  infoContent: currentClubInfo.clubRoom!,
-                                  icon: Icon(
-                                    Symbols.location_on_rounded,
-                                    size: 16,
-                                    color: context.colorScheme.outline,
-                                  ),
-                                ),
-                              ],
-                            )
-                          : const SizedBox(),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              const Gap(defaultGapM),
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(color: context.colorScheme.surfaceContainer),
+                  borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: defaultPaddingS,
+                  vertical: defaultPaddingXS,
+                ),
+                child: CustomInfoContent(
+                  infoContent: currentClubInfo.clubDescription!,
+                  icon: Icon(
+                    Symbols.info_rounded,
+                    size: 16,
+                    color: context.colorScheme.outline,
                   ),
                 ),
-                const Gap(defaultGapXL),
-                CustomInfoBox(
-                  infoTitle: '카카오톡 채팅방',
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomInfoContent(
+              ),
+              const Gap(defaultGapXL),
+              CustomInfoBox(
+                infoTitle: '동아리 추가 정보',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    (currentClubInfo.clubGeneration != '')
+                        ? Column(
+                            children: [
+                              CustomInfoContent(
+                                infoContent: GeneralFunctions.formatClubGeneration(currentClubInfo.clubGeneration!),
+                                icon: Icon(
+                                  Symbols.numbers_rounded,
+                                  size: 16,
+                                  color: context.colorScheme.outline,
+                                ),
+                              ),
+                              const Gap(defaultGapM),
+                            ],
+                          )
+                        : const SizedBox(),
+                    CustomInfoContent(
+                      infoContent: GeneralFunctions.formatClubDues(currentClubInfo.clubDues!),
+                      icon: Icon(
+                        Symbols.payment_rounded,
+                        size: 16,
+                        color: context.colorScheme.outline,
+                      ),
+                    ),
+                    (currentClubInfo.clubRoom != '')
+                        ? Column(
+                            children: [
+                              const Gap(defaultGapM),
+                              CustomInfoContent(
+                                infoContent: currentClubInfo.clubRoom!,
+                                icon: Icon(
+                                  Symbols.location_on_rounded,
+                                  size: 16,
+                                  color: context.colorScheme.outline,
+                                ),
+                              ),
+                            ],
+                          )
+                        : const SizedBox(),
+                  ],
+                ),
+              ),
+              const Gap(defaultGapXL),
+              CustomInfoBox(
+                infoTitle: '카카오톡 채팅방',
+                infoTitleIcon: const CustomInfoTooltip(
+                  tooltipMessage: '카카오톡 채팅방 링크를 누르면 복사돼요',
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () => GeneralFunctions.clipboardCopy(
+                        currentClubInfo.clubGroupChatLink!,
+                        '카카오톡 채팅방 링크가 복사되었어요',
+                      ),
+                      child: CustomInfoContent(
+                        isUnderline: true,
                         infoContent: currentClubInfo.clubGroupChatLink!,
                         icon: Icon(
                           Symbols.forum_rounded,
@@ -171,26 +179,26 @@ class ClubInfoDetailPage extends ConsumerWidget {
                           color: context.colorScheme.outline,
                         ),
                       ),
-                      (currentClubInfo.clubGroupChatPassword != '')
-                          ? Column(
-                              children: [
-                                const Gap(defaultGapXL),
-                                CustomInfoContent(
-                                  infoContent: currentClubInfo.clubGroupChatPassword!,
-                                  icon: Icon(
-                                    Symbols.key_rounded,
-                                    size: 16,
-                                    color: context.colorScheme.outline,
-                                  ),
+                    ),
+                    (currentClubInfo.clubGroupChatPassword != '')
+                        ? Column(
+                            children: [
+                              const Gap(defaultGapXL),
+                              CustomInfoContent(
+                                infoContent: currentClubInfo.clubGroupChatPassword!,
+                                icon: Icon(
+                                  Symbols.key_rounded,
+                                  size: 16,
+                                  color: context.colorScheme.outline,
                                 ),
-                              ],
-                            )
-                          : const SizedBox(),
-                    ],
-                  ),
+                              ),
+                            ],
+                          )
+                        : const SizedBox(),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

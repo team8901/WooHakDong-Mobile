@@ -67,59 +67,56 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
         ],
       ),
       body: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          child: clubMemberListData.when(
-            data: (clubMemberList) {
-              if (clubMemberList.isEmpty) {
-                return Center(
-                  child: Text(
-                    '이 학기에 등록된 회원이 없어요',
-                    style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-                  ),
-                );
-              }
-
-              clubMemberList.sort((a, b) => a.memberName!.compareTo(b.memberName!));
-
-              return CustomRefreshIndicator(
-                onRefresh: () async {
-                  await Future.delayed(const Duration(milliseconds: 500));
-                  await ref.read(clubMemberListProvider.notifier).getClubMemberList();
-                },
-                child: ListView.separated(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                  itemCount: clubMemberList.length,
-                  itemBuilder: (context, index) => ClubMemberListTile(clubMember: clubMemberList[index]),
+        child: clubMemberListData.when(
+          data: (clubMemberList) {
+            if (clubMemberList.isEmpty) {
+              return Center(
+                child: Text(
+                  '이 학기에 등록된 회원이 없어요',
+                  style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
                 ),
               );
-            },
-            loading: () => CustomLoadingSkeleton(
-              isLoading: true,
+            }
+
+            clubMemberList.sort((a, b) => a.memberName!.compareTo(b.memberName!));
+
+            return CustomRefreshIndicator(
+              onRefresh: () async {
+                await Future.delayed(const Duration(milliseconds: 500));
+                await ref.read(clubMemberListProvider.notifier).getClubMemberList();
+              },
               child: ListView.separated(
+                physics: const AlwaysScrollableScrollPhysics(),
                 separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return ClubMemberListTile(
-                    clubMember: ClubMember(
-                      memberName: '우학동',
-                      memberMajor: '소프트웨어학과',
-                      memberStudentNumber: '202411111',
-                      clubMemberRole: 'MEMBER',
-                    ),
-                  );
-                },
+                itemCount: clubMemberList.length,
+                itemBuilder: (context, index) => ClubMemberListTile(clubMember: clubMemberList[index]),
               ),
+            );
+          },
+          loading: () => CustomLoadingSkeleton(
+            isLoading: true,
+            child: ListView.separated(
+              separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return ClubMemberListTile(
+                  clubMember: ClubMember(
+                    memberName: '우학동',
+                    memberMajor: '소프트웨어학과',
+                    memberStudentNumber: '202411111',
+                    clubMemberRole: 'MEMBER',
+                  ),
+                );
+              },
             ),
-            error: (error, stack) => Center(
-              child: Text(
-                '회원 목록을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: context.colorScheme.error,
-                ),
-                textAlign: TextAlign.center,
+          ),
+          error: (error, stack) => Center(
+            child: Text(
+              '회원 목록을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
+              style: context.textTheme.bodySmall?.copyWith(
+                color: context.colorScheme.error,
               ),
+              textAlign: TextAlign.center,
             ),
           ),
         ),

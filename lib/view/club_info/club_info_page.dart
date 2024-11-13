@@ -1,11 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_info/components/club_info_action_buitton.dart';
 import 'package:woohakdong/view/club_info/components/club_info_box.dart';
+import 'package:woohakdong/view/setting/setting_page.dart';
 
-import '../../view_model/auth/auth_provider.dart';
 import '../../view_model/club/current_club_info_provider.dart';
 import '../themes/spacing.dart';
 import 'components/club_info_bottom_sheet.dart';
@@ -16,7 +17,6 @@ class ClubInfoPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentClubInfo = ref.watch(currentClubInfoProvider);
-    final authNotifier = ref.read(authProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -42,9 +42,7 @@ class ClubInfoPage extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              authNotifier.signOut();
-            },
+            onPressed: () => _pushSettingPage(context),
             icon: const Icon(Symbols.settings_rounded),
           ),
         ],
@@ -62,6 +60,15 @@ class ClubInfoPage extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _pushSettingPage(BuildContext context) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => const SettingPage(),
       ),
     );
   }
