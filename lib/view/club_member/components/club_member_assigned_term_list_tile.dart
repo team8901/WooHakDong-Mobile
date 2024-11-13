@@ -33,7 +33,7 @@ class ClubMemberAssignedTermListTile extends ConsumerWidget {
           Navigator.pop(context);
         }
       },
-      highlightColor: context.colorScheme.surfaceContainer,
+      highlightColor: context.colorScheme.onInverseSurface,
       child: Ink(
         padding: const EdgeInsets.symmetric(
           horizontal: defaultPaddingM,
@@ -47,7 +47,7 @@ class ClubMemberAssignedTermListTile extends ConsumerWidget {
               height: 40.r,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: context.colorScheme.surfaceContainer,
+                color: context.colorScheme.onInverseSurface,
               ),
               child: Center(
                 child: Icon(

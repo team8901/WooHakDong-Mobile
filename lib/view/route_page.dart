@@ -7,6 +7,7 @@ import 'package:woohakdong/view/club_register/error_page/club_register_account_f
 import 'package:woohakdong/view/member_register/member_register_page.dart';
 import 'package:woohakdong/view/navigator_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
+import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/club/club_id_provider.dart';
 import 'package:woohakdong/view_model/club/components/club_account_validation_provider.dart';
 import 'package:woohakdong/view_model/club/components/club_state.dart';
@@ -19,6 +20,7 @@ import 'package:woohakdong/view_model/item/item_list_provider.dart';
 import 'package:woohakdong/view_model/member/components/member_state.dart';
 import 'package:woohakdong/view_model/member/components/member_state_provider.dart';
 import 'package:woohakdong/view_model/member/member_provider.dart';
+import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 
 import '../view_model/club/club_list_provider.dart';
 import '../view_model/club/components/club_account_validation_state.dart';
@@ -53,7 +55,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
       future: _initialization,
       builder: (context, infoSnapshot) {
         if (infoSnapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(body: CustomCircularProgressIndicator());
+          return Scaffold(body: CustomCircularProgressIndicator(indicatorColor: context.colorScheme.outline));
         }
 
         if (memberState == MemberState.memberNotRegistered) {
@@ -104,6 +106,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
         ref.read(clubSelectedTermProvider.notifier).state = selectedTerm;
       }
 
+      ref.invalidate(s3ImageProvider);
       ref.watch(clubMemberListProvider.notifier);
       ref.watch(itemListProvider(null).notifier);
     }

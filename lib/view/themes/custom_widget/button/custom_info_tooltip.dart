@@ -26,7 +26,7 @@ class CustomInfoTooltip extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: const Color(0xFF6C6E75).withOpacity(0.8),
-        borderRadius: BorderRadius.circular(defaultBorderRadiusL),
+        borderRadius: BorderRadius.circular(defaultBorderRadiusM),
       ),
       child: const Icon(
         Symbols.info_rounded,

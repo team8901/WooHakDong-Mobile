@@ -7,7 +7,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_item/club_item_edit_page.dart';
 import 'package:woohakdong/view/club_item/components/club_item_rental_state_box.dart';
-import 'package:woohakdong/view/themes/custom_widget/dialog/custom_delete_dialog.dart';
+import 'package:woohakdong/view/themes/custom_widget/dialog/custom_interaction_dialog.dart';
 import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
@@ -256,7 +256,7 @@ class ClubItemDetailPage extends ConsumerWidget {
         context: context,
         builder: (context) => const CustomInteractionDialog(
           dialogTitle: '물품 삭제',
-          dialogContent: '물품을 삭제하면 다시 되돌릴 수 없어요. 그래도 삭제할까요?',
+          dialogContent: '물품을 삭제하면 되돌릴 수 없어요.',
         ),
       );
 

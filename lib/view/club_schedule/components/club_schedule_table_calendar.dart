@@ -50,7 +50,7 @@ class ClubScheduleTableCalendar extends ConsumerWidget {
       daysOfWeekStyle: DaysOfWeekStyle(
         weekdayStyle: context.textTheme.labelLarge!,
         weekendStyle: context.textTheme.labelLarge!.copyWith(
-          color: context.colorScheme.onSurface,
+          color: context.colorScheme.outline,
         ),
       ),
       calendarStyle: CalendarStyle(
@@ -60,7 +60,7 @@ class ClubScheduleTableCalendar extends ConsumerWidget {
         ),
         outsideDaysVisible: false,
         weekendTextStyle: context.textTheme.titleSmall!.copyWith(
-          color: context.colorScheme.onSurface,
+          color: context.colorScheme.outline,
         ),
         defaultTextStyle: context.textTheme.titleSmall!,
         selectedTextStyle: context.textTheme.titleSmall!.copyWith(

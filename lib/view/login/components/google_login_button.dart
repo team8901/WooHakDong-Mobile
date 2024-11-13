@@ -46,7 +46,9 @@ class GoogleLoginButton extends ConsumerWidget {
                 ),
                 const Gap(defaultGapM),
                 (authState == AuthState.loading)
-                    ? const CustomCircularProgressIndicator()
+                    ? CustomCircularProgressIndicator(
+                        indicatorColor: context.colorScheme.primary,
+                      )
                     : Text(
                         'Google계정으로 로그인',
                         style: context.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),

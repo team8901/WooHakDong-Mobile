@@ -43,6 +43,7 @@ final ThemeData darkTheme = ThemeData(
     onTertiary: white,
     surfaceDim: black,
     surfaceBright: darkGray,
+    onInverseSurface: gray,
   ),
 
   /// 텍스트 테마
@@ -132,8 +133,8 @@ final ThemeData darkTheme = ThemeData(
 
   /// 바텀 시트 테마
   bottomSheetTheme: const BottomSheetThemeData(
-    backgroundColor: black,
-    modalBackgroundColor: black,
+    backgroundColor: darkGray,
+    modalBackgroundColor: darkGray,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(defaultBorderRadiusL),

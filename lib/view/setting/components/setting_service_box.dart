@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/view/login/login_page.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
 
 import '../../../service/general/general_functions.dart';
-import '../../themes/custom_widget/dialog/custom_delete_dialog.dart';
+import '../../themes/custom_widget/dialog/custom_interaction_dialog.dart';
 import '../../themes/spacing.dart';
 
 class SettingServiceBox extends ConsumerWidget {
@@ -84,7 +84,7 @@ class SettingServiceBox extends ConsumerWidget {
         context: context,
         builder: (context) => CustomInteractionDialog(
           dialogTitle: '로그아웃',
-          dialogContent: '로그아웃해도 다실 로그인할 수 있어요. 로그아웃 할까요?',
+          dialogContent: '로그아웃해도 다시 로그인할 수 있어요.',
           dialogButtonText: '확인',
           dialogButtonColor: context.colorScheme.primary,
         ),
@@ -94,20 +94,7 @@ class SettingServiceBox extends ConsumerWidget {
         await ref.read(authProvider.notifier).signOut();
 
         if (context.mounted) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            PageRouteBuilder(
-              transitionDuration: Duration.zero,
-              reverseTransitionDuration: Duration.zero,
-              pageBuilder: (
-                context,
-                Animation<double> animation1,
-                Animation<double> animation2,
-              ) =>
-                  const LoginPage(),
-            ),
-            (route) => false,
-          );
+          await Phoenix.rebirth(context);
         }
       }
     } catch (e) {
@@ -121,7 +108,7 @@ class SettingServiceBox extends ConsumerWidget {
         context: context,
         builder: (context) => const CustomInteractionDialog(
           dialogTitle: '회원 탈퇴',
-          dialogContent: '회원 탈퇴를 하면 다시 되돌릴 수 없어요. 그래도 탈퇴 할까요?',
+          dialogContent: '회원 탈퇴를 하면 되돌릴 수 없어요.',
           dialogButtonText: '탈퇴',
         ),
       );

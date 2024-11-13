@@ -25,7 +25,7 @@ class CustomInteractionDialog extends StatelessWidget {
         padding: const EdgeInsets.all(defaultPaddingS * 2),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(defaultBorderRadiusL),
-          color: context.colorScheme.surfaceDim,
+          color: context.colorScheme.surfaceBright,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

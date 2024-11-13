@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -40,7 +41,7 @@ Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
 
   if (!kDebugMode) {
-    runApp(const ProviderScope(child: MyApp()));
+    runApp(Phoenix(child: const ProviderScope(child: MyApp())));
   } else {
     await SentryFlutter.init(
       (options) {
@@ -54,7 +55,7 @@ Future<void> main() async {
           return null;
         };
       },
-      appRunner: () => runApp(const ProviderScope(child: MyApp())),
+      appRunner: () => runApp(Phoenix(child: const ProviderScope(child: MyApp()))),
     );
   }
 }

@@ -60,7 +60,7 @@ class ClubInfoBottomSheet extends ConsumerWidget {
               children: [
                 InkWell(
                   onTap: () => _pushClubRegisterCautionPage(context),
-                  highlightColor: context.colorScheme.surfaceContainer,
+                  highlightColor: context.colorScheme.onInverseSurface,
                   child: Ink(
                     padding: const EdgeInsets.symmetric(
                       horizontal: defaultPaddingM,
@@ -74,7 +74,7 @@ class ClubInfoBottomSheet extends ConsumerWidget {
                           height: 40.r,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: context.colorScheme.surfaceContainer,
+                            color: context.colorScheme.onInverseSurface,
                           ),
                           child: Center(
                             child: Icon(Symbols.add_rounded, color: context.colorScheme.onSurface),

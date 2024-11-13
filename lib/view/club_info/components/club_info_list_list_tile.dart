@@ -1,21 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/club/club.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
-import 'package:woohakdong/view_model/dues/dues_list_provider.dart';
 
 import '../../../model/club_member/club_member_me.dart';
 import '../../../repository/club_member/club_member_me_repository.dart';
 import '../../../service/general/general_functions.dart';
 import '../../../view_model/club/club_id_provider.dart';
-import '../../../view_model/club_member/club_member_list_provider.dart';
-import '../../../view_model/item/item_list_provider.dart';
-import '../../../view_model/schedule/schedule_list_provider.dart';
-import '../../../view_model/util/s3_image_provider.dart';
 import '../../route_page.dart';
 import '../../themes/spacing.dart';
 
@@ -47,19 +43,13 @@ class ClubInfoListListTile extends ConsumerWidget {
 
         await ref.read(clubIdProvider.notifier).saveClubId(club.clubId!);
 
-        ref.invalidate(clubMemberListProvider);
-        ref.invalidate(itemListProvider(null));
-        ref.invalidate(duesListProvider(null));
-        ref.invalidate(scheduleListProvider);
-        ref.invalidate(s3ImageProvider);
-
         if (context.mounted) {
-          _pushRoutePage(context, club.clubName!);
-
+          Navigator.of(context).pop();
+          await Phoenix.rebirth(context);
           await GeneralFunctions.toastMessage('${club.clubName} 동아리로 전환되었어요');
         }
       },
-      highlightColor: context.colorScheme.surfaceContainer,
+      highlightColor: context.colorScheme.onInverseSurface,
       child: Ink(
         child: Padding(
           padding: const EdgeInsets.symmetric(
@@ -75,7 +65,7 @@ class ClubInfoListListTile extends ConsumerWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: context.colorScheme.surfaceContainer,
+                    color: context.colorScheme.onInverseSurface,
                   ),
                   image: DecorationImage(
                     image: imageProvider,

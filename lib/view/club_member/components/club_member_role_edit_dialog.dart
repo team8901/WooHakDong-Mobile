@@ -37,7 +37,7 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
         padding: const EdgeInsets.all(defaultPaddingS * 2),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(defaultBorderRadiusL),
-          color: context.colorScheme.surfaceDim,
+          color: context.colorScheme.surfaceBright,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

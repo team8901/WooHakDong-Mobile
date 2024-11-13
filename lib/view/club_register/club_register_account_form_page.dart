@@ -205,8 +205,8 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                     }
                   },
             buttonText: '완료',
-            buttonColor: Theme.of(context).colorScheme.primary,
-            buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+            buttonColor: context.colorScheme.primary,
+            buttonTextColor: context.colorScheme.inversePrimary,
             isLoading: clubAccountValidationState == ClubAccountValidationState.loading,
           ),
         ),

@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
-import 'package:woohakdong/view/themes/custom_widget/dialog/custom_delete_dialog.dart';
+import 'package:woohakdong/view/themes/custom_widget/dialog/custom_interaction_dialog.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../model/schedule/schedule.dart';
