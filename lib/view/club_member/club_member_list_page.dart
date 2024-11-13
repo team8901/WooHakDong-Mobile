@@ -8,6 +8,7 @@ import 'package:woohakdong/view/club_member/components/club_member_assigned_term
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/club_member/club_member_term_list_provider.dart';
 
 import '../../model/club_member/club_member.dart';
 import '../../view_model/club_member/club_member_list_provider.dart';
@@ -33,12 +34,16 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
     return Scaffold(
       appBar: AppBar(
         title: InkWell(
-          onTap: () {
-            showModalBottomSheet(
-              useSafeArea: true,
-              context: context,
-              builder: (context) => const ClubMemberAssignedTermBottomSheet(),
-            );
+          onTap: () async {
+            await ref.read(clubMemberTermListProvider.notifier).getClubMemberTermList();
+
+            if (context.mounted) {
+              showModalBottomSheet(
+                useSafeArea: true,
+                context: context,
+                builder: (context) => const ClubMemberAssignedTermBottomSheet(),
+              );
+            }
           },
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,

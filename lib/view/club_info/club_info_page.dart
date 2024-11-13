@@ -6,6 +6,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_info/components/club_info_action_buitton.dart';
 import 'package:woohakdong/view/club_info/components/club_info_box.dart';
 import 'package:woohakdong/view/setting/setting_page.dart';
+import 'package:woohakdong/view_model/club/club_list_provider.dart';
 
 import '../../view_model/club/current_club_info_provider.dart';
 import '../themes/spacing.dart';
@@ -21,12 +22,16 @@ class ClubInfoPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: InkWell(
-          onTap: () {
-            showModalBottomSheet(
-              useSafeArea: true,
-              context: context,
-              builder: (context) => const ClubInfoBottomSheet(),
-            );
+          onTap: () async {
+            await ref.read(clubListProvider.notifier).getClubList();
+
+            if (context.mounted) {
+              showModalBottomSheet(
+                useSafeArea: true,
+                context: context,
+                builder: (context) => const ClubInfoBottomSheet(),
+              );
+            }
           },
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -49,7 +54,7 @@ class ClubInfoPage extends ConsumerWidget {
       ),
       body: const SafeArea(
         child: SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
+          physics: AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.all(defaultPaddingM),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
