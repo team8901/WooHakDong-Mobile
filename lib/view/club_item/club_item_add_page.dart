@@ -8,6 +8,7 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:woohakdong/model/item/item.dart';
+import 'package:woohakdong/view/themes/custom_widget/button/custom_info_tooltip.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/item/components/item_state.dart';
 import 'package:woohakdong/view_model/item/components/item_state_provider.dart';
@@ -54,11 +55,17 @@ class ClubItemAddPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '물품 사진',
-                    style: context.textTheme.labelLarge?.copyWith(
-                      color: context.colorScheme.onSurface,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        '물품 사진',
+                        style: context.textTheme.labelLarge?.copyWith(
+                          color: context.colorScheme.onSurface,
+                        ),
+                      ),
+                      const Gap(defaultGapS / 2),
+                      const CustomInfoTooltip(tooltipMessage: '10MB 이하의 사진만 업로드 가능해요'),
+                    ],
                   ),
                   const Gap(defaultGapM),
                   SizedBox(

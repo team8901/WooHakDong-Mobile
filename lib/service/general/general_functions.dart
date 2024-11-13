@@ -196,9 +196,19 @@ class GeneralFunctions {
     if (image == null) return;
 
     final imageFile = File(image.path);
+    int imageSize = await imageFile.length();
+
+    int maxSizeInBytes = 10 * 1024 * 1024;
+
+    if (imageSize > maxSizeInBytes) {
+      GeneralFunctions.toastMessage('10MB 이하의 이미지만 업로드 가능해요');
+      return;
+    }
+
     List<File> pickedImage = [imageFile];
     await s3ImageNotifier.setImage(pickedImage);
   }
+
 
   static void pushImageView(BuildContext context, CachedNetworkImageProvider image) {
     Navigator.of(context).push(

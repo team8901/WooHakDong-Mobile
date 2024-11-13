@@ -16,6 +16,7 @@ import '../../view_model/item/item_provider.dart';
 import '../../view_model/util/components/s3_image_state.dart';
 import '../../view_model/util/s3_image_provider.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
+import '../themes/custom_widget/button/custom_info_tooltip.dart';
 import '../themes/custom_widget/interface/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/interface/custom_dropdown_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
@@ -72,11 +73,17 @@ class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '물품 사진',
-                  style: context.textTheme.labelLarge?.copyWith(
-                    color: context.colorScheme.onSurface,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      '물품 사진',
+                      style: context.textTheme.labelLarge?.copyWith(
+                        color: context.colorScheme.onSurface,
+                      ),
+                    ),
+                    const Gap(defaultGapS / 2),
+                    const CustomInfoTooltip(tooltipMessage: '10MB 이하의 사진만 업로드 가능해요'),
+                  ],
                 ),
                 const Gap(defaultGapM),
                 SizedBox(

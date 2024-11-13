@@ -17,6 +17,7 @@ import '../../view_model/club/club_provider.dart';
 import '../../view_model/club/components/club_name_validation_provider.dart';
 import '../../view_model/util/s3_image_provider.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
+import '../themes/custom_widget/button/custom_info_tooltip.dart';
 import '../themes/custom_widget/interface/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
@@ -81,9 +82,15 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 ),
               ),
               const Gap(defaultGapXL),
-              Text(
-                '동아리 로고 및 대표 사진',
-                style: context.textTheme.labelLarge,
+              Row(
+                children: [
+                  Text(
+                    '동아리 로고 및 대표 사진',
+                    style: context.textTheme.labelLarge,
+                  ),
+                  const Gap(defaultGapS / 2),
+                  const CustomInfoTooltip(tooltipMessage: '10MB 이하의 사진만 업로드 가능해요'),
+                ],
               ),
               const Gap(defaultGapM),
               SizedBox(
