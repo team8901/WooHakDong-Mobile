@@ -41,13 +41,15 @@ class SettingPage extends ConsumerWidget {
               ),
               const Gap(defaultGapXL),
               SettingInfoBox(
-                onTermsOfUseTap: _launchTermsOfUseUri,
-                onPrivacyPolicyTap: _launchPrivacyPolicyUri,
+                onTermsOfUseTap: () => _launchUri('https://jjunhub.notion.site/956afbccfda44b87bf0c23dd7662b115?pvs=4'),
+                onPrivacyPolicyTap: () =>
+                    _launchUri('https://jjunhub.notion.site/cc5e593f28234357ad49544a9a56d8bc?pvs=4'),
                 onOssLicenseTap: () => _pushOssLicenseListPage(context),
               ),
               const Gap(defaultGapXL),
               SettingServiceBox(
-                onUserSupportTap: _launchUserSupportUri,
+                onUserSupportTap: () =>
+                    _launchUri('https://jjunhub.notion.site/22fc31aa9871443cb9fb61fd4d9eeb02?pvs=4'),
                 onLogOut: () async => await _serviceLogOut(context, ref),
                 onSecede: () async => await _serviceSecede(context, ref),
               ),
@@ -73,19 +75,11 @@ class SettingPage extends ConsumerWidget {
     }
   }
 
-  Future<void> _launchTermsOfUseUri() async {
-    final Uri termsOfUseUri = Uri.parse('https://jjunhub.notion.site/956afbccfda44b87bf0c23dd7662b115?pvs=4');
+  Future<void> _launchUri(String httpUri) async {
+    final Uri termsOfUseUri = Uri.parse(httpUri);
 
     if (await canLaunchUrl(termsOfUseUri)) {
       await launchUrl(termsOfUseUri);
-    }
-  }
-
-  Future<void> _launchPrivacyPolicyUri() async {
-    final Uri privacyPolicyUri = Uri.parse('https://jjunhub.notion.site/cc5e593f28234357ad49544a9a56d8bc?pvs=4');
-
-    if (await canLaunchUrl(privacyPolicyUri)) {
-      await launchUrl(privacyPolicyUri);
     }
   }
 
@@ -96,14 +90,6 @@ class SettingPage extends ConsumerWidget {
         builder: (context) => const OssLicenseListPage(),
       ),
     );
-  }
-
-  Future<void> _launchUserSupportUri() async {
-    final Uri userSupportUri = Uri.parse('https://jjunhub.notion.site/22fc31aa9871443cb9fb61fd4d9eeb02?pvs=4');
-
-    if (await canLaunchUrl(userSupportUri)) {
-      await launchUrl(userSupportUri);
-    }
   }
 
   Future<void> _serviceLogOut(BuildContext context, WidgetRef ref) async {
@@ -142,7 +128,7 @@ class SettingPage extends ConsumerWidget {
       );
 
       if (isSecede == true) {
-        /// TODO 회원 탈퇴 기능 추가
+        GeneralFunctions.toastMessage('기능 구현 예정');
       }
     } catch (e) {
       GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');

@@ -57,7 +57,8 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                     CurrencyTextInputFormatter.currency(
                       symbol: '',
                       locale: 'ko_KR',
-                    )
+                    ),
+                    LengthLimitingTextInputFormatter(8),
                   ],
                   onSaved: (value) => clubInfo.clubDues = int.parse(value!.replaceAll(',', '')),
                   validator: (value) {

@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/view/club_info/components/club_info_list_list_tile.dart';
+import 'package:woohakdong/view/club_info/components/club_info_list_tile.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/club/club.dart';
@@ -13,7 +13,6 @@ import '../../../model/club_member/club_member_me.dart';
 import '../../../repository/club_member/club_member_me_repository.dart';
 import '../../../service/general/general_functions.dart';
 import '../../../view_model/club/club_id_provider.dart';
-import '../../../view_model/club/club_list_provider.dart';
 import '../../club_register/club_register_caution_page_.dart';
 import '../../themes/spacing.dart';
 
@@ -29,7 +28,6 @@ class ClubInfoBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return SizedBox(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.36,
@@ -62,7 +60,7 @@ class ClubInfoBottomSheet extends ConsumerWidget {
             final club = clubList[index - 1];
             final isCurrent = club.clubId == currentClubId;
 
-            return ClubInfoListListTile(
+            return ClubInfoListTile(
               club: club,
               isCurrent: isCurrent,
               onTap: () => _changeClub(club, ref, context),

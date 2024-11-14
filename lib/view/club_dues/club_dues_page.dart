@@ -63,9 +63,7 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
                   data: (duesList) {
                     final filteredDuesList = _filterDuesList(duesList, _duesInOutType);
 
-                    filteredDuesList.sort(
-                      (a, b) => b.clubAccountHistoryTranDate!.compareTo(a.clubAccountHistoryTranDate!),
-                    );
+                    /// TODO 회비 내역 나중에 날짜 순 의엽이가 추가해줄 것
 
                     if (filteredDuesList.isEmpty) {
                       return SizedBox(

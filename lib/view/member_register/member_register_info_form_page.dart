@@ -53,6 +53,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                       CustomTextFormField(
                         labelText: '이름',
                         initialValue: memberInfo?.memberName,
+                        enabled: false,
                         readOnly: true,
                       ),
                       const Gap(defaultGapM),
@@ -91,6 +92,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                       CustomTextFormField(
                         labelText: '이메일 주소',
                         initialValue: memberInfo?.memberEmail,
+                        enabled: false,
                         readOnly: true,
                       ),
                       const Gap(defaultGapXL),
@@ -102,6 +104,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                       CustomTextFormField(
                         labelText: '학교',
                         initialValue: memberInfo?.memberSchool,
+                        enabled: false,
                         readOnly: true,
                       ),
                       const Gap(defaultGapM),

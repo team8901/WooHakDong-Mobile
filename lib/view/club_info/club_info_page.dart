@@ -65,7 +65,7 @@ class ClubInfoPage extends ConsumerWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(defaultPaddingM),
+          padding: const EdgeInsets.symmetric(vertical: defaultPaddingM),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -79,7 +79,7 @@ class ClubInfoPage extends ConsumerWidget {
                 onTapDetail: () => _pushClubInfoDetailPage(context),
                 onTapPromotion: () => _pushClubPromotionPage(ref, context),
               ),
-              const Gap(defaultGapXL),
+              const Gap(defaultGapXL * 2),
 
               /// TODO 회장 역할 위임 버튼 만들기 (회장만 보이게)
             ],

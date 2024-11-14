@@ -220,7 +220,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 child: CustomCounterTextFormField(
                   controller: clubDescriptionController,
                   labelText: '설명',
-                  hintText: '500자 이내로 입력해 주세요',
+                  hintText: '300자 이내로 입력해 주세요',
                   minLines: 5,
                   maxLength: 300,
                   keyboardType: TextInputType.text,

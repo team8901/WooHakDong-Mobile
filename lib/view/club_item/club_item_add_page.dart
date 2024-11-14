@@ -158,9 +158,11 @@ class ClubItemAddPage extends ConsumerWidget {
                     ),
                   ),
                   const Gap(defaultGapM),
-                  CustomTextFormField(
+                  CustomCounterTextFormField(
                     labelText: '위치',
-                    keyboardType: TextInputType.text,
+                    hintText: '50자 이내로 입력해 주세요',
+                    minLines: 1,
+                    maxLength: 50,
                     onSaved: (value) => itemInfo.itemLocation = value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -175,11 +177,19 @@ class ClubItemAddPage extends ConsumerWidget {
                     hintText: '일 단위로 입력해 주세요',
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(3),
+                    ],
                     onSaved: (value) => itemInfo.itemRentalMaxDay = int.parse(value!),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return '최대 대여 가능 기간를 입력해 주세요';
+                        return '최대 대여 가능 기간을 입력해 주세요';
+                      }
+                      final intValue = int.tryParse(value);
+
+                      if (intValue == null || intValue < 1 || intValue > 365) {
+                        return '1일에서 365일 사이로 입력해 주세요';
                       }
                       return null;
                     },

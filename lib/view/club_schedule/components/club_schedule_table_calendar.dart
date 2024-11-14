@@ -139,23 +139,37 @@ class ClubScheduleTableCalendar extends ConsumerWidget {
         },
         markerBuilder: (context, date, events) {
           if (events.isNotEmpty) {
-            final limitedEvents = (events as List<Schedule>).take(3).toList();
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: limitedEvents.map((schedule) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                  child: Container(
-                    width: 6.r,
-                    height: 6.r,
-                    decoration: BoxDecoration(
-                      color: Color(int.parse('0x${schedule.scheduleColor!}')),
-                      shape: BoxShape.circle,
+            final sortedEvents = (events as List<Schedule>).where((event) => event.scheduleDateTime != null).toList()
+              ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
+
+            if (sortedEvents.length >= 4) {
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 1),
+                decoration: BoxDecoration(
+                  color: context.colorScheme.primary,
+                  borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                ),
+                width: 22,
+                height: 6,
+              );
+            } else {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: sortedEvents.map((schedule) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 1),
+                    child: Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: Color(int.parse('0x${schedule.scheduleColor!}')),
+                        shape: BoxShape.circle,
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
-            );
+                  );
+                }).toList(),
+              );
+            }
           }
           return const SizedBox();
         },

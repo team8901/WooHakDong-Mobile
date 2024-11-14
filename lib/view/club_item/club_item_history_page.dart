@@ -41,7 +41,7 @@ class ClubItemHistoryPage extends ConsumerWidget {
                 );
               }
 
-              itemHistoryList.reversed.toList();
+              /// TODO 물품 대여 나중에 반납한게 위로 오도록 의엽이가 추가해줄 것
 
               return CustomRefreshIndicator(
                 onRefresh: () async {

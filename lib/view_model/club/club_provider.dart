@@ -29,7 +29,11 @@ class ClubNotifier extends StateNotifier<Club> {
     }
   }
 
-  void saveClubInfo(String clubName, String clubEnglishName, String clubDescription) {
+  void saveClubInfo(
+    String clubName,
+    String clubEnglishName,
+    String clubDescription,
+  ) {
     state = state.copyWith(
       clubName: clubName,
       clubEnglishName: clubEnglishName,
@@ -38,7 +42,12 @@ class ClubNotifier extends StateNotifier<Club> {
   }
 
   void saveClubOtherInfo(
-      String clubGeneration, int clubDues, String clubRoom, String clubGroupChatLink, String clubGroupChatPassword) {
+    String clubGeneration,
+    int clubDues,
+    String clubRoom,
+    String clubGroupChatLink,
+    String clubGroupChatPassword,
+  ) {
     state = state.copyWith(
       clubGeneration: clubGeneration,
       clubDues: clubDues,

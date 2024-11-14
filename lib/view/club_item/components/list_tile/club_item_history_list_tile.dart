@@ -28,18 +28,24 @@ class ClubItemHistoryListTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            width: 72.r,
-            height: 72.r,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-              image: DecorationImage(
-                image: imageProvider,
-                fit: BoxFit.cover,
-              ),
-              border: Border.all(
-                color: context.colorScheme.surfaceContainer,
-                width: 1,
+          GestureDetector(
+            onTap: () {
+              CachedNetworkImageProvider itemReturnImage = CachedNetworkImageProvider(itemHistory.itemReturnImage!);
+              GeneralFunctions.pushImageView(context, itemReturnImage);
+            },
+            child: Container(
+              width: 72.r,
+              height: 72.r,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+                border: Border.all(
+                  color: context.colorScheme.surfaceContainer,
+                  width: 1,
+                ),
               ),
             ),
           ),
@@ -82,7 +88,7 @@ class ClubItemHistoryListTile extends StatelessWidget {
                     const Gap(defaultGapS / 4),
                     Text(
                       (itemHistory.itemReturnDate == null)
-                          ? '아직 반납하지 않았어요'
+                          ? '대여 중'
                           : GeneralFunctions.formatDateTime(itemHistory.itemReturnDate),
                       style: context.textTheme.bodySmall?.copyWith(
                         color: context.colorScheme.onSurface,

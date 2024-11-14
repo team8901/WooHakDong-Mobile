@@ -23,62 +23,65 @@ class ClubInfoBox extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          width: 72.r,
-          height: 72.r,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: CachedNetworkImageProvider(currentClubInfo.clubImage!),
-              fit: BoxFit.cover,
-            ),
-            border: Border.all(
-              color: context.colorScheme.surfaceContainer,
-              width: 1,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: defaultPaddingM),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 72.r,
+            height: 72.r,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: CachedNetworkImageProvider(currentClubInfo.clubImage!),
+                fit: BoxFit.cover,
+              ),
+              border: Border.all(
+                color: context.colorScheme.surfaceContainer,
+                width: 1,
+              ),
             ),
           ),
-        ),
-        const Gap(defaultGapM),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                currentClubInfo.clubName!,
-                style: context.textTheme.titleSmall,
-                maxLines: 1,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Text(
-                currentClubInfo.clubEnglishName!,
-                style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-              ),
-              const Gap(defaultGapS / 4),
-              Row(
-                children: [
-                  const Icon(Symbols.group_rounded, size: 16),
-                  const Gap(defaultGapS / 2),
-                  Text(
-                    clubMemberCount.toString(),
-                    style: context.textTheme.bodySmall,
-                  ),
-                  const Gap(defaultGapS),
-                  const Icon(Symbols.list_alt_rounded, size: 16),
-                  const Gap(defaultGapS / 2),
-                  Text(
-                    itemCount.toString(),
-                    style: context.textTheme.bodySmall,
-                  ),
-                ],
-              ),
-            ],
+          const Gap(defaultGapM),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  currentClubInfo.clubName!,
+                  style: context.textTheme.titleSmall,
+                  maxLines: 1,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  currentClubInfo.clubEnglishName!,
+                  style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                ),
+                const Gap(defaultGapS / 4),
+                Row(
+                  children: [
+                    const Icon(Symbols.group_rounded, size: 16),
+                    const Gap(defaultGapS / 2),
+                    Text(
+                      clubMemberCount.toString(),
+                      style: context.textTheme.bodySmall,
+                    ),
+                    const Gap(defaultGapS),
+                    const Icon(Symbols.list_alt_rounded, size: 16),
+                    const Gap(defaultGapS / 2),
+                    Text(
+                      itemCount.toString(),
+                      style: context.textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

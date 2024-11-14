@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -9,9 +9,7 @@ import 'package:widgets_to_png/widgets_to_png.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../service/general/general_functions.dart';
-import '../../view_model/club/club_provider.dart';
 import '../../view_model/group/group_provider.dart';
-import '../route_page.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
 import '../themes/custom_widget/interaction/custom_pop_scope.dart';
 import '../themes/spacing.dart';
@@ -86,24 +84,13 @@ class ClubRegisterCompletePage extends ConsumerWidget {
         ),
         bottomNavigationBar: SafeArea(
           child: CustomBottomButton(
-            onTap: () {
-              ref.invalidate(clubProvider);
-              _pushRoutePage(context);
-            },
+            onTap: () async => await Phoenix.rebirth(context),
             buttonText: '내 동아리 확인하기',
             buttonColor: Theme.of(context).colorScheme.primary,
             buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
           ),
         ),
       ),
-    );
-  }
-
-  void _pushRoutePage(BuildContext context) {
-    Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute(builder: (context) => const RoutePage()),
-      (route) => false,
     );
   }
 }

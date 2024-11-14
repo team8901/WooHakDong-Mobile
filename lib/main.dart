@@ -17,6 +17,7 @@ import 'package:woohakdong/view/route_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view/themes/dark_theme.dart';
 import 'package:woohakdong/view/themes/light_theme.dart';
+import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
 import 'package:woohakdong/view_model/auth/components/auth_state.dart';
 import 'package:woohakdong/view_model/auth/components/auth_state_provider.dart';
@@ -117,7 +118,9 @@ class _MyAppState extends ConsumerState<MyApp> {
             future: _initialization,
             builder: (context, infoSnapshot) {
               if (infoSnapshot.connectionState == ConnectionState.waiting) {
-                return const Scaffold(body: SafeArea(child: CustomCircularProgressIndicator()));
+                return Scaffold(
+                  body: CustomCircularProgressIndicator(indicatorColor: context.colorScheme.surfaceContainer),
+                );
               }
 
               if (authState == AuthState.authenticated) {

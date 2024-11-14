@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,9 +7,7 @@ import 'package:woohakdong/view/themes/custom_widget/interaction/custom_tap_debo
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/schedule/schedule.dart';
-import '../../../view_model/schedule/schedule_provider.dart';
 import '../../themes/spacing.dart';
-import '../club_schedule_detail_page.dart';
 
 class ClubScheduleListTile extends ConsumerWidget {
   final Schedule schedule;

@@ -23,6 +23,7 @@ class _ClubSchedulePageState extends ConsumerState<ClubSchedulePage> {
       appBar: AppBar(
         title: const Text('일정'),
         actions: [
+          /// 캘린더 뷰 말고 한 달 전체 일정 볼 수 있게 추가
           IconButton(
             onPressed: () => _pushScheduleAddPage(context, selectedDay),
             icon: Icon(

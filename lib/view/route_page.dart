@@ -55,7 +55,9 @@ class _RoutePageState extends ConsumerState<RoutePage> {
       future: _initialization,
       builder: (context, infoSnapshot) {
         if (infoSnapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(body: CustomCircularProgressIndicator(indicatorColor: context.colorScheme.surfaceContainer));
+          return Scaffold(
+            body: CustomCircularProgressIndicator(indicatorColor: context.colorScheme.surfaceContainer),
+          );
         }
 
         if (memberState == MemberState.memberNotRegistered) {
