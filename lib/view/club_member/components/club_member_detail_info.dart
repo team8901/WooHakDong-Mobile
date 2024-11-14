@@ -36,7 +36,7 @@ class ClubMemberDetailInfo extends StatelessWidget {
             ],
           ),
         ),
-        const Gap(defaultPaddingM * 2),
+        const Gap(defaultGapXL * 2),
         CustomInfoBox(
           infoTitle: '기본 정보',
           infoTitleIcon: const CustomInfoTooltip(tooltipMessage: '휴대폰 번호와 이메일을 한 번 누르면 복사,\n꾹 누르면 바로 연결돼요'),
@@ -88,7 +88,7 @@ class ClubMemberDetailInfo extends StatelessWidget {
             ],
           ),
         ),
-        const Gap(defaultPaddingM),
+        const Gap(defaultGapXL),
         CustomInfoBox(
           infoTitle: '학교 정보',
           child: Column(
@@ -112,14 +112,6 @@ class ClubMemberDetailInfo extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-        ),
-        const Gap(defaultPaddingM),
-        Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            '가입일: ${clubMember.clubJoinedDate!.year}년 ${clubMember.clubJoinedDate!.month}월 ${clubMember.clubJoinedDate!.day}일',
-            style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
           ),
         ),
       ],

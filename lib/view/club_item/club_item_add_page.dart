@@ -37,6 +37,7 @@ class ClubItemAddPage extends ConsumerWidget {
     final itemNotifier = ref.read(itemProvider.notifier);
 
     return PopScope(
+      canPop: itemState != ItemState.adding,
       onPopInvokedWithResult: (didPop, dynamic) {
         if (didPop) {
           ref.invalidate(s3ImageProvider);

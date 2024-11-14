@@ -49,147 +49,150 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
     final scheduleState = ref.watch(scheduleStateProvider);
     final scheduleNotifier = ref.read(scheduleProvider.notifier);
 
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: const Text('일정 추가'),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(defaultPaddingM),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '일정 정보',
-                  style: context.textTheme.labelLarge?.copyWith(
-                    color: context.colorScheme.onSurface,
+    return PopScope(
+      canPop: scheduleState != ScheduleState.adding,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          title: const Text('일정 추가'),
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(defaultPaddingM),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '일정 정보',
+                    style: context.textTheme.labelLarge?.copyWith(
+                      color: context.colorScheme.onSurface,
+                    ),
                   ),
-                ),
-                const Gap(defaultGapM),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomTextFormField(
-                        labelText: '제목',
-                        onSaved: (value) => scheduleInfo.scheduleTitle = value,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '일정 제목을 입력해 주세요';
-                          }
-                          return null;
-                        },
+                  const Gap(defaultGapM),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextFormField(
+                          labelText: '제목',
+                          onSaved: (value) => scheduleInfo.scheduleTitle = value,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return '일정 제목을 입력해 주세요';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      const Gap(defaultGapM),
+                      ClubScheduleColorPicker(
+                        pickerColor: _pickerColor,
+                        onColorChanged: (Color color) => setState(() => _pickerColor = color),
+                      ),
+                    ],
+                  ),
+                  const Gap(defaultGapM),
+                  SizedBox(
+                    width: double.infinity,
+                    child: InkWell(
+                      onTap: () async {
+                        await showBoardDateTimePicker(
+                          context: context,
+                          pickerType: DateTimePickerType.datetime,
+                          initialDate: _selectedDate ?? DateTime.now(),
+                          minimumDate: DateTime(2000),
+                          maximumDate: DateTime(2099),
+                          onChanged: (scheduleDate) => setState(() => _selectedDate = scheduleDate),
+                          useSafeArea: true,
+                          enableDrag: false,
+                          showDragHandle: true,
+                          options: BoardDateTimeOptions(
+                            backgroundDecoration: BoxDecoration(
+                              color: context.colorScheme.surfaceDim,
+                              borderRadius: BorderRadius.circular(defaultBorderRadiusL),
+                            ),
+                            weekend: BoardPickerWeekendOptions(
+                              saturdayColor: context.colorScheme.onSurface,
+                              sundayColor: context.colorScheme.onSurface,
+                            ),
+                            languages: const BoardPickerLanguages(locale: 'ko_KR', today: '오늘', tomorrow: '내일'),
+                            textColor: context.colorScheme.inverseSurface,
+                            backgroundColor: context.colorScheme.surfaceDim,
+                            foregroundColor: context.colorScheme.surfaceContainer,
+                            activeColor: context.colorScheme.primary,
+                            activeTextColor: context.colorScheme.inversePrimary,
+                            inputable: false,
+                          ),
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                      highlightColor: context.colorScheme.surfaceContainer,
+                      child: Ink(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPaddingS,
+                          vertical: defaultPaddingXS,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: context.colorScheme.surfaceContainer,
+                          ),
+                          borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                        ),
+                        child: Text(
+                          GeneralFunctions.formatDateTime(_selectedDate),
+                          style: context.textTheme.titleSmall?.copyWith(
+                            color: context.colorScheme.inverseSurface,
+                          ),
+                        ),
                       ),
                     ),
-                    const Gap(defaultGapM),
-                    ClubScheduleColorPicker(
-                      pickerColor: _pickerColor,
-                      onColorChanged: (Color color) => setState(() => _pickerColor = color),
-                    ),
-                  ],
-                ),
-                const Gap(defaultGapM),
-                SizedBox(
-                  width: double.infinity,
-                  child: InkWell(
-                    onTap: () async {
-                      await showBoardDateTimePicker(
-                        context: context,
-                        pickerType: DateTimePickerType.datetime,
-                        initialDate: _selectedDate ?? DateTime.now(),
-                        minimumDate: DateTime(2000),
-                        maximumDate: DateTime(2099),
-                        onChanged: (scheduleDate) => setState(() => _selectedDate = scheduleDate),
-                        useSafeArea: true,
-                        enableDrag: false,
-                        showDragHandle: true,
-                        options: BoardDateTimeOptions(
-                          backgroundDecoration: BoxDecoration(
-                            color: context.colorScheme.surfaceDim,
-                            borderRadius: BorderRadius.circular(defaultBorderRadiusL),
-                          ),
-                          weekend: BoardPickerWeekendOptions(
-                            saturdayColor: context.colorScheme.onSurface,
-                            sundayColor: context.colorScheme.onSurface,
-                          ),
-                          languages: const BoardPickerLanguages(locale: 'ko_KR', today: '오늘', tomorrow: '내일'),
-                          textColor: context.colorScheme.inverseSurface,
-                          backgroundColor: context.colorScheme.surfaceDim,
-                          foregroundColor: context.colorScheme.surfaceContainer,
-                          activeColor: context.colorScheme.primary,
-                          activeTextColor: context.colorScheme.inversePrimary,
-                          inputable: false,
-                        ),
-                      );
+                  ),
+                  const Gap(defaultGapM),
+                  CustomCounterTextFormField(
+                    labelText: '내용',
+                    hintText: '200자 이내로 입력해 주세요',
+                    minLines: 4,
+                    maxLength: 200,
+                    textInputAction: TextInputAction.done,
+                    onSaved: (value) => scheduleInfo.scheduleContent = value,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '일정 내용을 입력해 주세요';
+                      }
+                      return null;
                     },
-                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                    highlightColor: context.colorScheme.surfaceContainer,
-                    child: Ink(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPaddingS,
-                        vertical: defaultPaddingXS,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: context.colorScheme.surfaceContainer,
-                        ),
-                        borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-                      ),
-                      child: Text(
-                        GeneralFunctions.formatDateTime(_selectedDate),
-                        style: context.textTheme.titleSmall?.copyWith(
-                          color: context.colorScheme.inverseSurface,
-                        ),
-                      ),
-                    ),
                   ),
-                ),
-                const Gap(defaultGapM),
-                CustomCounterTextFormField(
-                  labelText: '내용',
-                  hintText: '200자 이내로 입력해 주세요',
-                  minLines: 4,
-                  maxLength: 200,
-                  textInputAction: TextInputAction.done,
-                  onSaved: (value) => scheduleInfo.scheduleContent = value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '일정 내용을 입력해 주세요';
-                    }
-                    return null;
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: CustomBottomButton(
-          onTap: () async {
-            if (_formKey.currentState?.validate() == true) {
-              _formKey.currentState?.save();
-              scheduleInfo.scheduleDateTime = _selectedDate;
-              scheduleInfo.scheduleColor = _pickerColor.value.toRadixString(16).toUpperCase();
+        bottomNavigationBar: SafeArea(
+          child: CustomBottomButton(
+            onTap: () async {
+              if (_formKey.currentState?.validate() == true) {
+                _formKey.currentState?.save();
+                scheduleInfo.scheduleDateTime = _selectedDate;
+                scheduleInfo.scheduleColor = _pickerColor.value.toRadixString(16).toUpperCase();
 
-              try {
-                await _addSchedule(scheduleInfo, scheduleNotifier);
+                try {
+                  await _addSchedule(scheduleInfo, scheduleNotifier);
 
-                if (context.mounted) {
-                  GeneralFunctions.toastMessage('일정이 추가되었어요');
-                  Navigator.pop(context);
+                  if (context.mounted) {
+                    GeneralFunctions.toastMessage('일정이 추가되었어요');
+                    Navigator.pop(context);
+                  }
+                } catch (e) {
+                  await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
                 }
-              } catch (e) {
-                await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
               }
-            }
-          },
-          buttonText: '추가',
-          buttonColor: Theme.of(context).colorScheme.primary,
-          buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
-          isLoading: scheduleState == ScheduleState.adding,
+            },
+            buttonText: '추가',
+            buttonColor: Theme.of(context).colorScheme.primary,
+            buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+            isLoading: scheduleState == ScheduleState.adding,
+          ),
         ),
       ),
     );

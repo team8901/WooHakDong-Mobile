@@ -14,9 +14,7 @@ class ItemHistoryListNotifier extends StateNotifier<AsyncValue<List<ItemHistory>
   final int? itemId;
   final ItemHistoryRepository itemHistoryRepository = ItemHistoryRepository();
 
-  ItemHistoryListNotifier(this.ref, this.itemId) : super(const AsyncValue.loading()) {
-    getItemHistoryList(itemId);
-  }
+  ItemHistoryListNotifier(this.ref, this.itemId) : super(const AsyncValue.loading());
 
   Future<void> getItemHistoryList(int? itemId) async {
     try {

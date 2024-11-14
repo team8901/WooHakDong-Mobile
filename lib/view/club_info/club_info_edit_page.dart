@@ -57,215 +57,218 @@ class _ClubInfoEditPageState extends ConsumerState<ClubInfoEditPage> {
     final clubStateNotifier = ref.read(clubStateProvider.notifier);
     final clubState = ref.watch(clubStateProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('정보 수정'),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(defaultPaddingM),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      '동아리 로고 및 대표 사진',
-                      style: context.textTheme.labelLarge,
-                    ),
-                    const Gap(defaultGapS / 2),
-                    const CustomInfoTooltip(tooltipMessage: '10MB 이하의 사진만 업로드 가능해요'),
-                  ],
-                ),
-                const Gap(defaultGapM),
-                Center(
-                  child: SizedBox(
-                    width: 192.r,
-                    height: 192.r,
-                    child: InkWell(
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) => ClubRegisterImageDialog(s3ImageNotifier: s3ImageNotifier),
+    return PopScope(
+      canPop: clubState != ClubState.loading,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('정보 수정'),
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(defaultPaddingM),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        '동아리 로고 및 대표 사진',
+                        style: context.textTheme.labelLarge,
                       ),
-                      child: Stack(
-                        children: [
-                          SizedBox.expand(
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(color: context.colorScheme.surfaceContainer),
-                                image: s3ImageState.pickedImages.isEmpty
-                                    ? DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : DecorationImage(
-                                        image: FileImage(s3ImageState.pickedImages[0]),
-                                        fit: BoxFit.cover,
-                                      ),
+                      const Gap(defaultGapS / 2),
+                      const CustomInfoTooltip(tooltipMessage: '10MB 이하의 사진만 업로드 가능해요'),
+                    ],
+                  ),
+                  const Gap(defaultGapM),
+                  Center(
+                    child: SizedBox(
+                      width: 192.r,
+                      height: 192.r,
+                      child: InkWell(
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => ClubRegisterImageDialog(s3ImageNotifier: s3ImageNotifier),
+                        ),
+                        child: Stack(
+                          children: [
+                            SizedBox.expand(
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: context.colorScheme.surfaceContainer),
+                                  image: s3ImageState.pickedImages.isEmpty
+                                      ? DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : DecorationImage(
+                                          image: FileImage(s3ImageState.pickedImages[0]),
+                                          fit: BoxFit.cover,
+                                        ),
+                                ),
                               ),
                             ),
-                          ),
-                          Positioned(
-                            bottom: 12.r,
-                            right: 12.r,
-                            child: Container(
-                              width: 36.r,
-                              height: 36.r,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: context.colorScheme.inverseSurface,
-                              ),
-                              child: Icon(
-                                Symbols.camera_alt_rounded,
-                                color: context.colorScheme.surfaceDim,
-                                size: 20,
-                                fill: 1,
+                            Positioned(
+                              bottom: 12.r,
+                              right: 12.r,
+                              child: Container(
+                                width: 36.r,
+                                height: 36.r,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: context.colorScheme.inverseSurface,
+                                ),
+                                child: Icon(
+                                  Symbols.camera_alt_rounded,
+                                  color: context.colorScheme.surfaceDim,
+                                  size: 20,
+                                  fill: 1,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const Gap(defaultGapXL),
-                Text(
-                  '동아리 기본 정보',
-                  style: context.textTheme.labelLarge,
-                ),
-                const Gap(defaultGapM),
-                GestureDetector(
-                  onTap: () => GeneralFunctions.toastMessage('동아리 이름은 수정할 수 없어요'),
-                  child: CustomTextFormField(
-                    labelText: '동아리 이름',
-                    initialValue: currentClubInfo.clubName,
-                    readOnly: true,
-                    enabled: false,
+                  const Gap(defaultGapXL),
+                  Text(
+                    '동아리 기본 정보',
+                    style: context.textTheme.labelLarge,
                   ),
-                ),
-                const Gap(defaultGapM),
-                GestureDetector(
-                  onTap: () => GeneralFunctions.toastMessage('동아리 영문 이름은 수정할 수 없어요'),
-                  child: CustomTextFormField(
-                    labelText: '동아리 영문 이름',
-                    initialValue: currentClubInfo.clubEnglishName,
-                    readOnly: true,
-                    enabled: false,
+                  const Gap(defaultGapM),
+                  GestureDetector(
+                    onTap: () => GeneralFunctions.toastMessage('동아리 이름은 수정할 수 없어요'),
+                    child: CustomTextFormField(
+                      labelText: '동아리 이름',
+                      initialValue: currentClubInfo.clubName,
+                      readOnly: true,
+                      enabled: false,
+                    ),
                   ),
-                ),
-                const Gap(defaultGapM),
-                CustomCounterTextFormField(
-                  controller: _clubInfoEditController.description,
-                  labelText: '동아리 설명',
-                  hintText: '500자 이내로 입력해 주세요',
-                  minLines: 1,
-                  maxLength: 300,
-                  keyboardType: TextInputType.text,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '동아리 설명을 입력해 주세요';
-                    }
-                    return null;
-                  },
-                ),
-                const Gap(defaultGapXL),
-                Text(
-                  '동아리 추가 정보',
-                  style: context.textTheme.labelLarge,
-                ),
-                const Gap(defaultGapM),
-                CustomTextFormField(
-                  controller: _clubInfoEditController.generation,
-                  labelText: '현재 기수',
-                  hintText: '비워놔도 돼요',
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                ),
-                const Gap(defaultGapM),
-                CustomTextFormField(
-                  controller: _clubInfoEditController.dues,
-                  labelText: '동아리 회비',
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    CurrencyTextInputFormatter.currency(
-                      symbol: '',
-                      locale: 'ko_KR',
-                    )
-                  ],
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '동아리 회비를 입력해 주세요';
-                    }
-                    return null;
-                  },
-                ),
-                const Gap(defaultGapM),
-                CustomTextFormField(
-                  controller: _clubInfoEditController.room,
-                  labelText: '동아리 방',
-                  hintText: '비워놔도 돼요',
-                ),
-                const Gap(defaultGapXL),
-                Text(
-                  '카카오톡 채팅방',
-                  style: context.textTheme.labelLarge,
-                ),
-                const Gap(defaultGapM),
-                CustomTextFormField(
-                  controller: _clubInfoEditController.chatLink,
-                  labelText: '카카오톡 채팅방 링크',
-                  keyboardType: TextInputType.text,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '카카오톡 채팅방 링크를 입력해 주세요';
-                    }
-                    return null;
-                  },
-                ),
-                const Gap(defaultGapM),
-                CustomTextFormField(
-                  controller: _clubInfoEditController.chatPassword,
-                  labelText: '카카오톡 채팅방 비밀번호',
-                  hintText: '비워놔도 돼요',
-                  textInputAction: TextInputAction.done,
-                ),
-              ],
+                  const Gap(defaultGapM),
+                  GestureDetector(
+                    onTap: () => GeneralFunctions.toastMessage('동아리 영문 이름은 수정할 수 없어요'),
+                    child: CustomTextFormField(
+                      labelText: '동아리 영문 이름',
+                      initialValue: currentClubInfo.clubEnglishName,
+                      readOnly: true,
+                      enabled: false,
+                    ),
+                  ),
+                  const Gap(defaultGapM),
+                  CustomCounterTextFormField(
+                    controller: _clubInfoEditController.description,
+                    labelText: '동아리 설명',
+                    hintText: '500자 이내로 입력해 주세요',
+                    minLines: 1,
+                    maxLength: 300,
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '동아리 설명을 입력해 주세요';
+                      }
+                      return null;
+                    },
+                  ),
+                  const Gap(defaultGapXL),
+                  Text(
+                    '동아리 추가 정보',
+                    style: context.textTheme.labelLarge,
+                  ),
+                  const Gap(defaultGapM),
+                  CustomTextFormField(
+                    controller: _clubInfoEditController.generation,
+                    labelText: '현재 기수',
+                    hintText: '비워놔도 돼요',
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  ),
+                  const Gap(defaultGapM),
+                  CustomTextFormField(
+                    controller: _clubInfoEditController.dues,
+                    labelText: '동아리 회비',
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      CurrencyTextInputFormatter.currency(
+                        symbol: '',
+                        locale: 'ko_KR',
+                      )
+                    ],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '동아리 회비를 입력해 주세요';
+                      }
+                      return null;
+                    },
+                  ),
+                  const Gap(defaultGapM),
+                  CustomTextFormField(
+                    controller: _clubInfoEditController.room,
+                    labelText: '동아리 방',
+                    hintText: '비워놔도 돼요',
+                  ),
+                  const Gap(defaultGapXL),
+                  Text(
+                    '카카오톡 채팅방',
+                    style: context.textTheme.labelLarge,
+                  ),
+                  const Gap(defaultGapM),
+                  CustomTextFormField(
+                    controller: _clubInfoEditController.chatLink,
+                    labelText: '카카오톡 채팅방 링크',
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '카카오톡 채팅방 링크를 입력해 주세요';
+                      }
+                      return null;
+                    },
+                  ),
+                  const Gap(defaultGapM),
+                  CustomTextFormField(
+                    controller: _clubInfoEditController.chatPassword,
+                    labelText: '카카오톡 채팅방 비밀번호',
+                    hintText: '비워놔도 돼요',
+                    textInputAction: TextInputAction.done,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: CustomBottomButton(
-          onTap: () async {
-            if (!_formKey.currentState!.validate()) return;
+        bottomNavigationBar: SafeArea(
+          child: CustomBottomButton(
+            onTap: () async {
+              if (!_formKey.currentState!.validate()) return;
 
-            _formKey.currentState!.save();
+              _formKey.currentState!.save();
 
-            try {
-              clubStateNotifier.state = ClubState.loading;
+              try {
+                clubStateNotifier.state = ClubState.loading;
 
-              final clubImage = await _getUpdatedClubImage(s3ImageNotifier, s3ImageState);
+                final clubImage = await _getUpdatedClubImage(s3ImageNotifier, s3ImageState);
 
-              await _updateClubInfo(clubImage);
+                await _updateClubInfo(clubImage);
 
-              if (context.mounted) {
-                ref.invalidate(s3ImageProvider);
-                GeneralFunctions.toastMessage('동아리 정보가 수정되었어요');
+                if (context.mounted) {
+                  ref.invalidate(s3ImageProvider);
+                  GeneralFunctions.toastMessage('동아리 정보가 수정되었어요');
+                  clubStateNotifier.state = ClubState.clubRegistered;
+                  Navigator.pop(context);
+                }
+              } catch (e) {
                 clubStateNotifier.state = ClubState.clubRegistered;
-                Navigator.pop(context);
+                GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
               }
-            } catch (e) {
-              clubStateNotifier.state = ClubState.clubRegistered;
-              GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
-            }
-          },
-          buttonText: '저장',
-          buttonColor: Theme.of(context).colorScheme.primary,
-          buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
-          isLoading: clubState == ClubState.loading,
+            },
+            buttonText: '저장',
+            buttonColor: Theme.of(context).colorScheme.primary,
+            buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+            isLoading: clubState == ClubState.loading,
+          ),
         ),
       ),
     );

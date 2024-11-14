@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
+import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/club_member/club_member_me_provider.dart';
 
 import '../../view_model/club_member/club_member_provider.dart';
 import 'components/club_member_detail_info.dart';
+import 'components/club_member_item_history_panel.dart';
 import 'components/club_member_role_edit_dialog.dart';
 
 class ClubMemberDetailPage extends ConsumerWidget {
@@ -42,7 +45,30 @@ class ClubMemberDetailPage extends ConsumerWidget {
             right: defaultPaddingM,
             bottom: defaultPaddingM,
           ),
-          child: ClubMemberDetailInfo(clubMember: clubMemberInfo),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClubMemberDetailInfo(clubMember: clubMemberInfo),
+              const Gap(defaultGapXL),
+              Text(
+                '대여 내역',
+                style: context.textTheme.labelLarge,
+              ),
+              const Gap(defaultGapM),
+              ClubMemberItemHistoryPanel(
+                clubMemberName: clubMemberInfo.memberName!,
+                clubMemberId: clubMemberInfo.clubMemberId!,
+              ),
+              const Gap(defaultGapXL),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  '가입일: ${clubMemberInfo.clubJoinedDate!.year}년 ${clubMemberInfo.clubJoinedDate!.month}월 ${clubMemberInfo.clubJoinedDate!.day}일',
+                  style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
