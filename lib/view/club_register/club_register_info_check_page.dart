@@ -132,7 +132,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                       CustomInfoContent(
                         infoContent: GeneralFunctions.formatClubDues(clubInfo.clubDues!),
                         icon: Icon(
-                          Symbols.payment_rounded,
+                          Symbols.attach_money_rounded,
                           size: 16,
                           color: context.colorScheme.outline,
                         ),

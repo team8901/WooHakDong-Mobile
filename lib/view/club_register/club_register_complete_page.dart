@@ -69,9 +69,16 @@ class ClubRegisterCompletePage extends ConsumerWidget {
                 const Gap(defaultGapM),
                 ClubRegisterUrlCard(groupInfo: groupInfo),
                 const Gap(defaultGapM),
-                WidgetToPng(
-                  keyToCapture: _widgetToPngKey,
-                  child: ClubRegisterQrCard(groupInfo: groupInfo),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                    border: Border.all(color: context.colorScheme.surfaceContainer),
+                  ),
+                  padding: const EdgeInsets.all(defaultPaddingS / 2),
+                  child: WidgetToPng(
+                    keyToCapture: _widgetToPngKey,
+                    child: ClubRegisterQrCard(groupInfo: groupInfo),
+                  ),
                 ),
               ],
             ),

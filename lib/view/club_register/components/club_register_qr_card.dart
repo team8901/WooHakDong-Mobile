@@ -18,19 +18,15 @@ class ClubRegisterQrCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: context.colorScheme.surfaceDim,
-        borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-        border: Border.all(color: context.colorScheme.surfaceContainer),
-      ),
+      color: context.colorScheme.surfaceDim,
       padding: const EdgeInsets.symmetric(
-        vertical: defaultPaddingS * 2,
+        vertical: defaultPaddingS * 2 - (defaultPaddingS / 2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: defaultPaddingS * 2),
+            margin: const EdgeInsets.symmetric(horizontal: defaultPaddingS * 2 - (defaultPaddingS / 2)),
             child: Text(
               '${groupInfo?.groupName}',
               style: context.textTheme.headlineLarge?.copyWith(

@@ -62,6 +62,8 @@ class ClubInfoPage extends ConsumerWidget {
               ClubInfoBox(),
               Gap(defaultGapXL),
               ClubInfoActionButton(),
+              Gap(defaultGapXL),
+              /// TODO 회장 역할 위임 버튼 만들기 (회장만 보이게)
             ],
           ),
         ),

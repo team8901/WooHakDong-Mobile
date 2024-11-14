@@ -12,7 +12,6 @@ import '../../../model/club_member/club_member_me.dart';
 import '../../../repository/club_member/club_member_me_repository.dart';
 import '../../../service/general/general_functions.dart';
 import '../../../view_model/club/club_id_provider.dart';
-import '../../route_page.dart';
 import '../../themes/spacing.dart';
 
 class ClubInfoListListTile extends ConsumerWidget {
@@ -93,25 +92,6 @@ class ClubInfoListListTile extends ConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-
-  void _pushRoutePage(BuildContext context, String clubName) async {
-    Navigator.of(context).pop();
-
-    Navigator.pushAndRemoveUntil(
-      context,
-      PageRouteBuilder(
-        transitionDuration: Duration.zero,
-        reverseTransitionDuration: Duration.zero,
-        pageBuilder: (
-          context,
-          Animation<double> animation1,
-          Animation<double> animation2,
-        ) =>
-            const RoutePage(),
-      ),
-      (route) => false,
     );
   }
 }

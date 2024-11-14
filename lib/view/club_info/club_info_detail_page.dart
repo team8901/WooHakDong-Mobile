@@ -133,7 +133,7 @@ class ClubInfoDetailPage extends ConsumerWidget {
                     CustomInfoContent(
                       infoContent: GeneralFunctions.formatClubDues(currentClubInfo.clubDues!),
                       icon: Icon(
-                        Symbols.payment_rounded,
+                        Symbols.attach_money_rounded,
                         size: 16,
                         color: context.colorScheme.outline,
                       ),

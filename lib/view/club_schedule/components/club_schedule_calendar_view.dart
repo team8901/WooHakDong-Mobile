@@ -106,7 +106,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
                   return ClubScheduleListTile(
                     schedule: Schedule(
                       scheduleId: index,
-                      scheduleTitle: '일정 제목',
+                      scheduleTitle: '일정 제목입니다',
                       scheduleDateTime: DateTime.now(),
                       scheduleColor: 'FF000000',
                     ),

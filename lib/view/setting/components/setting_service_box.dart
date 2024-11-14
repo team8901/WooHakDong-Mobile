@@ -3,6 +3,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
 
@@ -26,6 +27,30 @@ class SettingServiceBox extends ConsumerWidget {
           ),
         ),
         const Gap(defaultGapM),
+        InkWell(
+          onTap: () => _launchUserSupportUri(),
+          highlightColor: context.colorScheme.surfaceContainer,
+          child: Ink(
+            padding: const EdgeInsets.symmetric(
+              horizontal: defaultPaddingM,
+              vertical: defaultPaddingXS,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '사용자 지원',
+                  style: context.textTheme.titleSmall,
+                ),
+                Icon(
+                  Symbols.chevron_right_rounded,
+                  color: context.colorScheme.outline,
+                  size: 20,
+                ),
+              ],
+            ),
+          ),
+        ),
         InkWell(
           onTap: () => _serviceLogOut(context, ref),
           highlightColor: context.colorScheme.surfaceContainer,
@@ -76,6 +101,14 @@ class SettingServiceBox extends ConsumerWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _launchUserSupportUri() async {
+    final Uri userSupportUri = Uri.parse('https://jjunhub.notion.site/22fc31aa9871443cb9fb61fd4d9eeb02?pvs=4');
+
+    if (await canLaunchUrl(userSupportUri)) {
+      await launchUrl(userSupportUri);
+    }
   }
 
   Future<void> _serviceLogOut(BuildContext context, WidgetRef ref) async {

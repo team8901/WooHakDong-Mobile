@@ -57,7 +57,7 @@ class ClubMemberDetailInfo extends StatelessWidget {
                   clubMember.memberPhoneNumber!,
                   '휴대폰 번호를 복사했어요',
                 ),
-                onLongPress: () => _makePhoneCall(clubMember.memberPhoneNumber!),
+                onLongPress: () async => await _makePhoneCall(clubMember.memberPhoneNumber!),
                 child: CustomInfoContent(
                   isUnderline: true,
                   infoContent: GeneralFunctions.formatMemberPhoneNumber(clubMember.memberPhoneNumber!),
@@ -74,7 +74,7 @@ class ClubMemberDetailInfo extends StatelessWidget {
                   clubMember.memberEmail!,
                   '이메일을 복사했어요',
                 ),
-                onLongPress: () => _sendEmail(clubMember.memberEmail!),
+                onLongPress: () async => await _sendEmail(clubMember.memberEmail!),
                 child: CustomInfoContent(
                   isUnderline: true,
                   infoContent: clubMember.memberEmail!,
@@ -126,7 +126,7 @@ class ClubMemberDetailInfo extends StatelessWidget {
     );
   }
 
-  void _makePhoneCall(String phoneNumber) async {
+  Future<void> _makePhoneCall(String phoneNumber) async {
     final Uri telUri = Uri(
       scheme: 'tel',
       path: phoneNumber,
@@ -136,7 +136,7 @@ class ClubMemberDetailInfo extends StatelessWidget {
     }
   }
 
-  void _sendEmail(String email) async {
+  Future<void> _sendEmail(String email) async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: email,
