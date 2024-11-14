@@ -12,9 +12,11 @@ import 'package:woohakdong/view_model/club_member/club_member_term_list_provider
 
 import '../../model/club_member/club_member.dart';
 import '../../view_model/club_member/club_member_list_provider.dart';
+import '../../view_model/club_member/club_member_provider.dart';
 import '../../view_model/club_member/components/club_selected_term_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../themes/custom_widget/interaction/custom_refresh_indicator.dart';
+import 'club_member_detail_page.dart';
 import 'club_member_search_page.dart';
 import 'components/club_member_list_tile.dart';
 
@@ -94,7 +96,10 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
                 physics: const AlwaysScrollableScrollPhysics(),
                 separatorBuilder: (context, index) => const CustomHorizontalDivider(),
                 itemCount: clubMemberList.length,
-                itemBuilder: (context, index) => ClubMemberListTile(clubMember: clubMemberList[index]),
+                itemBuilder: (context, index) => ClubMemberListTile(
+                  clubMember: clubMemberList[index],
+                  onTap: () => _pushMemberDetailPage(ref, context, clubMemberList[index].clubMemberId!),
+                ),
               ),
             );
           },
@@ -127,6 +132,18 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _pushMemberDetailPage(WidgetRef ref, BuildContext context, int clubMemberId) async {
+    await ref.read(clubMemberProvider.notifier).getClubMemberInfo(clubMemberId);
+
+    if (context.mounted) {
+      Navigator.of(context).push(
+        CupertinoPageRoute(
+          builder: (context) => const ClubMemberDetailPage(),
+        ),
+      );
+    }
   }
 
   void _pushMemberSearchPage(BuildContext context) {

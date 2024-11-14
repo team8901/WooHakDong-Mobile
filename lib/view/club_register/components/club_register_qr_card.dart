@@ -7,12 +7,12 @@ import '../../../model/group/group.dart';
 import '../../themes/spacing.dart';
 
 class ClubRegisterQrCard extends StatelessWidget {
+  final Group? groupInfo;
+
   const ClubRegisterQrCard({
     super.key,
     required this.groupInfo,
   });
-
-  final Group? groupInfo;
 
   @override
   Widget build(BuildContext context) {

@@ -177,7 +177,7 @@ class ClubScheduleDetailPage extends ConsumerWidget {
         context: context,
         builder: (context) => const CustomInteractionDialog(
           dialogTitle: '일정 삭제',
-          dialogContent: '일정을 삭제하면 다시 되돌릴 수 없어요. 그래도 삭제할까요?',
+          dialogContent: '일정을 삭제하면 되돌릴 수 없어요.',
         ),
       );
 

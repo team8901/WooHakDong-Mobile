@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -9,10 +10,12 @@ import 'package:woohakdong/view_model/schedule/components/schedule_selected_day_
 
 import '../../../model/schedule/schedule.dart';
 import '../../../view_model/schedule/schedule_list_provider.dart';
+import '../../../view_model/schedule/schedule_provider.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../../themes/custom_widget/interaction/custom_refresh_indicator.dart';
 import '../../themes/spacing.dart';
 import '../club_schedule_add_page.dart';
+import '../club_schedule_detail_page.dart';
 import 'club_schedule_list_tile.dart';
 import 'club_schedule_table_calendar.dart';
 
@@ -92,7 +95,10 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
                   separatorBuilder: (context, index) => const CustomHorizontalDivider(),
                   itemCount: filteredScheduleList.length,
                   itemBuilder: (context, index) {
-                    return ClubScheduleListTile(schedule: filteredScheduleList[index]);
+                    return ClubScheduleListTile(
+                      schedule: filteredScheduleList[index],
+                      onTap: () => _pushScheduleDetailPage(ref, context, filteredScheduleList[index].scheduleId!),
+                    );
                   },
                 ),
               );
@@ -188,6 +194,18 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
       _focusedDay = DateTime.now();
       _selectedDay = _focusedDay;
     });
+  }
+
+  Future<void> _pushScheduleDetailPage(WidgetRef ref, BuildContext context, int scheduleId) async {
+    await ref.read(scheduleProvider.notifier).getScheduleInfo(scheduleId);
+
+    if (context.mounted) {
+      Navigator.of(context).push(
+        CupertinoPageRoute(
+          builder: (context) => const ClubScheduleDetailPage(),
+        ),
+      );
+    }
   }
 
   void _pushScheduleAddPage(BuildContext context, DateTime? selectedDay) {

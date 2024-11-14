@@ -1,17 +1,23 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../themes/spacing.dart';
-import '../oss_license_list_page.dart';
 
 class SettingInfoBox extends StatefulWidget {
-  const SettingInfoBox({super.key});
+  final Future<void> Function() onTermsOfUseTap;
+  final Future<void> Function() onPrivacyPolicyTap;
+  final VoidCallback onOssLicenseTap;
+
+  const SettingInfoBox({
+    super.key,
+    required this.onTermsOfUseTap,
+    required this.onPrivacyPolicyTap,
+    required this.onOssLicenseTap,
+  });
 
   @override
   State<SettingInfoBox> createState() => _SettingInfoBoxState();
@@ -70,7 +76,7 @@ class _SettingInfoBoxState extends State<SettingInfoBox> {
           ),
         ),
         InkWell(
-          onTap: () async => await _launchTermsOfUseUri(),
+          onTap: widget.onTermsOfUseTap,
           highlightColor: context.colorScheme.surfaceContainer,
           child: Ink(
             padding: const EdgeInsets.symmetric(
@@ -94,7 +100,7 @@ class _SettingInfoBoxState extends State<SettingInfoBox> {
           ),
         ),
         InkWell(
-          onTap: () async => await _launchPrivacyPolicyUri(),
+          onTap: widget.onPrivacyPolicyTap,
           highlightColor: context.colorScheme.surfaceContainer,
           child: Ink(
             padding: const EdgeInsets.symmetric(
@@ -118,7 +124,7 @@ class _SettingInfoBoxState extends State<SettingInfoBox> {
           ),
         ),
         InkWell(
-          onTap: () => _pushOssLicenseListPage(context),
+          onTap: widget.onOssLicenseTap,
           highlightColor: context.colorScheme.surfaceContainer,
           child: Ink(
             padding: const EdgeInsets.symmetric(
@@ -148,30 +154,5 @@ class _SettingInfoBoxState extends State<SettingInfoBox> {
   Future<void> _initPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
     setState(() => _packageInfo = info);
-  }
-
-  Future<void> _launchTermsOfUseUri() async {
-    final Uri termsOfUseUri = Uri.parse('https://jjunhub.notion.site/956afbccfda44b87bf0c23dd7662b115?pvs=4');
-
-    if (await canLaunchUrl(termsOfUseUri)) {
-      await launchUrl(termsOfUseUri);
-    }
-  }
-
-  Future<void> _launchPrivacyPolicyUri() async {
-    final Uri privacyPolicyUri = Uri.parse('https://jjunhub.notion.site/cc5e593f28234357ad49544a9a56d8bc?pvs=4');
-
-    if (await canLaunchUrl(privacyPolicyUri)) {
-      await launchUrl(privacyPolicyUri);
-    }
-  }
-
-  void _pushOssLicenseListPage(BuildContext context) {
-    Navigator.push(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => const OssLicenseListPage(),
-      ),
-    );
   }
 }

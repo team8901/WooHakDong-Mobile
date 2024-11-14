@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -11,7 +10,15 @@ import 'package:woohakdong/view_model/group/group_provider.dart';
 import '../../../view/themes/spacing.dart';
 
 class ClubInfoActionButton extends ConsumerWidget {
-  const ClubInfoActionButton({super.key});
+  final VoidCallback onTapDetail;
+  final Future<void> Function() onTapPromotion;
+
+
+  const ClubInfoActionButton({
+    super.key,
+    required this.onTapDetail,
+    required this.onTapPromotion,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +27,7 @@ class ClubInfoActionButton extends ConsumerWidget {
       children: [
         Expanded(
           child: InkWell(
-            onTap: () => _pushClubInfoDetailPage(context),
+            onTap: onTapDetail,
             borderRadius: BorderRadius.circular(defaultBorderRadiusM),
             highlightColor: context.colorScheme.surfaceContainer,
             child: Ink(
@@ -43,7 +50,7 @@ class ClubInfoActionButton extends ConsumerWidget {
         ),
         const Gap(defaultGapM),
         CustomTapDebouncer(
-          onTap: () async => _pushClubPromotionPage(ref, context),
+          onTap: onTapPromotion,
           builder: (context, onTap) {
             return Expanded(
               child: InkWell(
@@ -74,25 +81,5 @@ class ClubInfoActionButton extends ConsumerWidget {
     );
   }
 
-  void _pushClubInfoDetailPage(BuildContext context) {
-    Navigator.push(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => const ClubInfoDetailPage(),
-      ),
-    );
-  }
 
-  Future<void> _pushClubPromotionPage(WidgetRef ref, BuildContext context) async {
-    await ref.read(groupProvider.notifier).getClubRegisterPageInfo();
-
-    if (context.mounted) {
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => ClubInfoPromotionPage(),
-        ),
-      );
-    }
-  }
 }

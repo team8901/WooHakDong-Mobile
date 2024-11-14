@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,20 +6,20 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/custom_widget/etc/custom_vertical_divider.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
-import 'package:woohakdong/view_model/item/item_provider.dart';
 
 import '../../../../model/item/item.dart';
 import '../../../../service/general/general_functions.dart';
 import '../../../themes/custom_widget/interaction/custom_tap_debouncer.dart';
 import '../../../themes/spacing.dart';
-import '../../club_item_detail_page.dart';
 
 class ClubItemListTile extends ConsumerWidget {
   final Item item;
+  final Future<void> Function()? onTap;
 
   const ClubItemListTile({
     super.key,
     required this.item,
+    this.onTap,
   });
 
   @override
@@ -30,7 +29,7 @@ class ClubItemListTile extends ConsumerWidget {
         : const AssetImage('assets/images/club/club_basic_image.jpg') as ImageProvider;
 
     return CustomTapDebouncer(
-      onTap: () async => await _pushItemDetailPage(ref, context),
+      onTap: onTap,
       builder: (context, onTap) {
         return InkWell(
           onTap: onTap,
@@ -163,18 +162,5 @@ class ClubItemListTile extends ConsumerWidget {
         );
       },
     );
-  }
-
-  Future<void> _pushItemDetailPage(WidgetRef ref, BuildContext context) async {
-    await ref.read(itemProvider.notifier).getItemInfo(item.itemId!);
-
-    if (context.mounted) {
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => const ClubItemDetailPage(),
-        ),
-      );
-    }
   }
 }

@@ -12,7 +12,7 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
   final ClubMemberMe clubMemberMe;
   final CurrentClubAccount currentClubAccount;
   final String? duesInOutType;
-  final VoidCallback onRefresh;
+  final Function(ClubMemberMe) onRefresh;
   final VoidCallback onTap;
 
   const ClubDuesAccountInfoBox({
@@ -86,13 +86,7 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
               const Gap(defaultGapM),
               Flexible(
                 child: InkWell(
-                  onTap: () async {
-                    if (clubMemberMe.clubMemberRole != 'PRESIDENT' && clubMemberMe.clubMemberRole != 'SECRETARY') {
-                      await GeneralFunctions.toastMessage('회장 및 총무만 회비 내역을 업데이트할 수 있어요');
-                      return;
-                    }
-                    onRefresh();
-                  },
+                  onTap: () => onRefresh(clubMemberMe),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

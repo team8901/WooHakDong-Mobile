@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,8 +8,10 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../view_model/item/item_provider.dart';
 import '../../view_model/item/item_search_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
+import 'club_item_detail_page.dart';
 import 'components/list_tile/club_item_search_list_tile.dart';
 
 class ClubItemSearchPage extends ConsumerStatefulWidget {
@@ -90,7 +93,10 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   separatorBuilder: (context, index) => const CustomHorizontalDivider(),
                   itemCount: searchedItem.length,
-                  itemBuilder: (context, index) => ClubItemSearchListTile(searchedItem: searchedItem[index]),
+                  itemBuilder: (context, index) => ClubItemSearchListTile(
+                    searchedItem: searchedItem[index],
+                    onTap: () async => await _pushItemDetailPage(ref, context, searchedItem[index].itemId!),
+                  ),
                 );
               },
               loading: () => const CustomCircularProgressIndicator(),
@@ -112,5 +118,18 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
     _debounce = Timer(const Duration(milliseconds: 200), () {
       setState(() {});
     });
+  }
+
+  Future<void> _pushItemDetailPage(WidgetRef ref, BuildContext context, int itemId) async {
+    await ref.read(itemProvider.notifier).getItemInfo(itemId);
+
+    if (context.mounted) {
+      Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => const ClubItemDetailPage(),
+        ),
+      );
+    }
   }
 }

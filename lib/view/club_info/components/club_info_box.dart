@@ -5,23 +5,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:woohakdong/model/club/current_club.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
-import 'package:woohakdong/view_model/club_member/club_member_count_provider.dart';
-import 'package:woohakdong/view_model/item/item_count_provider.dart';
-
-import '../../../view_model/club/current_club_info_provider.dart';
 
 class ClubInfoBox extends ConsumerWidget {
-  const ClubInfoBox({super.key});
+  final CurrentClub currentClubInfo;
+  final int clubMemberCount;
+  final int itemCount;
+
+  const ClubInfoBox({
+    super.key,
+    required this.currentClubInfo,
+    required this.clubMemberCount,
+    required this.itemCount,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentClubInfo = ref.watch(currentClubInfoProvider);
-    final imageProvider = CachedNetworkImageProvider(currentClubInfo.clubImage!);
-    final clubMemberCount = ref.watch(clubMemberCountProvider);
-    final itemCount = ref.watch(itemCountProvider);
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -31,7 +32,7 @@ class ClubInfoBox extends ConsumerWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-              image: imageProvider,
+              image: CachedNetworkImageProvider(currentClubInfo.clubImage!),
               fit: BoxFit.cover,
             ),
             border: Border.all(

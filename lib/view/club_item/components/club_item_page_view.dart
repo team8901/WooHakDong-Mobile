@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/model/item/item.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_refresh_indicator.dart';
@@ -6,8 +6,10 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../service/general/general_functions.dart';
 import '../../../view_model/item/item_list_provider.dart';
+import '../../../view_model/item/item_provider.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../../themes/custom_widget/interaction/custom_loading_skeleton.dart';
+import '../club_item_detail_page.dart';
 import 'list_tile/club_item_list_tile.dart';
 
 class ClubItemPageView extends ConsumerWidget {
@@ -46,7 +48,10 @@ class ClubItemPageView extends ConsumerWidget {
               physics: const AlwaysScrollableScrollPhysics(),
               separatorBuilder: (context, index) => const CustomHorizontalDivider(),
               itemCount: itemList.length,
-              itemBuilder: (context, index) => ClubItemListTile(item: itemList[index]),
+              itemBuilder: (context, index) => ClubItemListTile(
+                item: itemList[index],
+                onTap: () async => await _pushItemDetailPage(ref, context, itemList[index].itemId!),
+              ),
             ),
           );
         },
@@ -78,5 +83,18 @@ class ClubItemPageView extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _pushItemDetailPage(WidgetRef ref, BuildContext context, int itemId) async {
+    await ref.read(itemProvider.notifier).getItemInfo(itemId);
+
+    if (context.mounted) {
+      Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => const ClubItemDetailPage(),
+        ),
+      );
+    }
   }
 }

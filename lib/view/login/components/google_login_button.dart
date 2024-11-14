@@ -3,20 +3,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
-import 'package:woohakdong/view_model/auth/components/auth_state_provider.dart';
 
 import '../../../view_model/auth/components/auth_state.dart';
 import '../../themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import '../../themes/spacing.dart';
 
 class GoogleLoginButton extends ConsumerWidget {
-  const GoogleLoginButton({super.key});
+  final AuthState authState;
+  final AuthNotifier authNotifier;
+
+  const GoogleLoginButton({
+    super.key,
+    required this.authState,
+    required this.authNotifier,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateProvider);
-    final authNotifier = ref.read(authProvider.notifier);
-
     return Container(
       margin: const EdgeInsets.only(
         left: defaultPaddingM,

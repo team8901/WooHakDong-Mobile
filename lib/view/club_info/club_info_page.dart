@@ -9,7 +9,12 @@ import 'package:woohakdong/view/setting/setting_page.dart';
 import 'package:woohakdong/view_model/club/club_list_provider.dart';
 
 import '../../view_model/club/current_club_info_provider.dart';
+import '../../view_model/club_member/club_member_count_provider.dart';
+import '../../view_model/group/group_provider.dart';
+import '../../view_model/item/item_count_provider.dart';
 import '../themes/spacing.dart';
+import 'club_info_detail_page.dart';
+import 'club_info_promotion_page.dart';
 import 'components/club_info_bottom_sheet.dart';
 
 class ClubInfoPage extends ConsumerWidget {
@@ -18,6 +23,8 @@ class ClubInfoPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentClubInfo = ref.watch(currentClubInfoProvider);
+    final clubMemberCount = ref.watch(clubMemberCountProvider);
+    final itemCount = ref.watch(itemCountProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -29,7 +36,10 @@ class ClubInfoPage extends ConsumerWidget {
               showModalBottomSheet(
                 useSafeArea: true,
                 context: context,
-                builder: (context) => const ClubInfoBottomSheet(),
+                builder: (context) => ClubInfoBottomSheet(
+                  currentClubId: currentClubInfo.clubId!,
+                  clubList: ref.watch(clubListProvider),
+                ),
               );
             }
           },
@@ -52,17 +62,25 @@ class ClubInfoPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.all(defaultPaddingM),
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(defaultPaddingM),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClubInfoBox(),
-              Gap(defaultGapXL),
-              ClubInfoActionButton(),
-              Gap(defaultGapXL),
+              ClubInfoBox(
+                currentClubInfo: currentClubInfo,
+                clubMemberCount: clubMemberCount,
+                itemCount: itemCount,
+              ),
+              const Gap(defaultGapXL),
+              ClubInfoActionButton(
+                onTapDetail: () => _pushClubInfoDetailPage(context),
+                onTapPromotion: () => _pushClubPromotionPage(ref, context),
+              ),
+              const Gap(defaultGapXL),
+
               /// TODO 회장 역할 위임 버튼 만들기 (회장만 보이게)
             ],
           ),
@@ -78,5 +96,27 @@ class ClubInfoPage extends ConsumerWidget {
         builder: (context) => const SettingPage(),
       ),
     );
+  }
+
+  void _pushClubInfoDetailPage(BuildContext context) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => const ClubInfoDetailPage(),
+      ),
+    );
+  }
+
+  Future<void> _pushClubPromotionPage(WidgetRef ref, BuildContext context) async {
+    await ref.read(groupProvider.notifier).getClubRegisterPageInfo();
+
+    if (context.mounted) {
+      Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => ClubInfoPromotionPage(),
+        ),
+      );
+    }
   }
 }

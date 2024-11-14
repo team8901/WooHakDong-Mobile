@@ -5,6 +5,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/club/current_club_account_info_provider.dart';
 import 'package:woohakdong/view_model/dues/dues_list_provider.dart';
 
+import '../../model/club_member/club_member_me.dart';
 import '../../model/dues/dues.dart';
 import '../../service/general/general_functions.dart';
 import '../../view_model/club_member/club_member_me_provider.dart';
@@ -36,13 +37,7 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
       ),
       body: SafeArea(
         child: CustomRefreshIndicator(
-          onRefresh: () async {
-            if (clubMemberMe.clubMemberRole != 'PRESIDENT' && clubMemberMe.clubMemberRole != 'SECRETARY') {
-              await GeneralFunctions.toastMessage('회장 및 총무만 회비 내역을 업데이트할 수 있어요');
-              return;
-            }
-            await _refreshDuesList();
-          },
+          onRefresh: () async => await _refreshDuesList(clubMemberMe),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
@@ -129,7 +124,12 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
     );
   }
 
-  Future<void> _refreshDuesList() async {
+  Future<void> _refreshDuesList(ClubMemberMe clubMemberMe) async {
+    if (clubMemberMe.clubMemberRole != 'PRESIDENT' && clubMemberMe.clubMemberRole != 'SECRETARY') {
+      await GeneralFunctions.toastMessage('회장 및 총무만 회비 내역을 업데이트할 수 있어요');
+      return;
+    }
+
     try {
       await ref.read(duesListProvider(null).notifier).refreshDuesList();
       ref.invalidate(duesListProvider(null));

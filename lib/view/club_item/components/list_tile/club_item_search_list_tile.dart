@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,23 +8,23 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../../model/item/item.dart';
 import '../../../../service/general/general_functions.dart';
-import '../../../../view_model/item/item_provider.dart';
 import '../../../themes/custom_widget/etc/custom_vertical_divider.dart';
 import '../../../themes/spacing.dart';
-import '../../club_item_detail_page.dart';
 
 class ClubItemSearchListTile extends ConsumerWidget {
   final Item searchedItem;
+  final Future<void> Function()? onTap;
 
   const ClubItemSearchListTile({
     super.key,
     required this.searchedItem,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomTapDebouncer(
-      onTap: () async => await _pushItemDetailPage(ref, context),
+      onTap: onTap,
       builder: (context, onTap) {
         return InkWell(
           onTap: onTap,
@@ -166,18 +165,5 @@ class ClubItemSearchListTile extends ConsumerWidget {
         );
       },
     );
-  }
-
-  Future<void> _pushItemDetailPage(WidgetRef ref, BuildContext context) async {
-    await ref.read(itemProvider.notifier).getItemInfo(searchedItem.itemId!);
-
-    if (context.mounted) {
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => const ClubItemDetailPage(),
-        ),
-      );
-    }
   }
 }

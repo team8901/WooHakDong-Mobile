@@ -14,16 +14,18 @@ import '../club_schedule_detail_page.dart';
 
 class ClubScheduleListTile extends ConsumerWidget {
   final Schedule schedule;
+  final Future<void> Function()? onTap;
 
   const ClubScheduleListTile({
     super.key,
     required this.schedule,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomTapDebouncer(
-      onTap: () async => await _pushScheduleDetailPage(ref, context),
+      onTap: onTap,
       builder: (context, onTap) {
         return InkWell(
           onTap: onTap,
@@ -68,17 +70,5 @@ class ClubScheduleListTile extends ConsumerWidget {
         );
       },
     );
-  }
-
-  Future<void> _pushScheduleDetailPage(WidgetRef ref, BuildContext context) async {
-    await ref.read(scheduleProvider.notifier).getScheduleInfo(schedule.scheduleId!);
-
-    if (context.mounted) {
-      Navigator.of(context).push(
-        CupertinoPageRoute(
-          builder: (context) => const ClubScheduleDetailPage(),
-        ),
-      );
-    }
   }
 }

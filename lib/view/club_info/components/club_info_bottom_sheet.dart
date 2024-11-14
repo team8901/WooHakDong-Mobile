@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -7,20 +8,27 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_info/components/club_info_list_list_tile.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../../model/club/club.dart';
+import '../../../model/club_member/club_member_me.dart';
+import '../../../repository/club_member/club_member_me_repository.dart';
+import '../../../service/general/general_functions.dart';
 import '../../../view_model/club/club_id_provider.dart';
 import '../../../view_model/club/club_list_provider.dart';
 import '../../club_register/club_register_caution_page_.dart';
 import '../../themes/spacing.dart';
 
 class ClubInfoBottomSheet extends ConsumerWidget {
+  final int currentClubId;
+  final List<Club> clubList;
+
   const ClubInfoBottomSheet({
     super.key,
+    required this.currentClubId,
+    required this.clubList,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentClubId = ref.watch(clubIdProvider);
-    final clubList = ref.watch(clubListProvider);
 
     return SizedBox(
       width: double.infinity,
@@ -54,7 +62,11 @@ class ClubInfoBottomSheet extends ConsumerWidget {
             final club = clubList[index - 1];
             final isCurrent = club.clubId == currentClubId;
 
-            return ClubInfoListListTile(club: club, isCurrent: isCurrent);
+            return ClubInfoListListTile(
+              club: club,
+              isCurrent: isCurrent,
+              onTap: () => _changeClub(club, ref, context),
+            );
           } else {
             return Column(
               children: [
@@ -95,6 +107,23 @@ class ClubInfoBottomSheet extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  Future<void> _changeClub(Club club, WidgetRef ref, BuildContext context) async {
+    final ClubMemberMe clubMemberMe = await ClubMemberMeRepository().getClubMemberMe(club.clubId!);
+
+    if (clubMemberMe.clubMemberRole == 'MEMBER') {
+      await GeneralFunctions.toastMessage('동아리 임원진만 이용할 수 있어요');
+      return;
+    }
+
+    await ref.read(clubIdProvider.notifier).saveClubId(club.clubId!);
+
+    if (context.mounted) {
+      Navigator.of(context).pop();
+      await Phoenix.rebirth(context);
+      await GeneralFunctions.toastMessage('${club.clubName} 동아리로 전환되었어요');
+    }
   }
 
   void _pushClubRegisterCautionPage(BuildContext context) {
