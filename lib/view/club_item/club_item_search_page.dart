@@ -40,7 +40,7 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    final searchResults = ref.watch(itemSearchProvider(_searchController.text));
+    final itemSearchedResults = ref.watch(itemSearchProvider(_searchController.text));
 
     return Scaffold(
       appBar: AppBar(
@@ -78,7 +78,7 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
       ),
       body: _searchController.text.isEmpty
           ? const SizedBox()
-          : searchResults.when(
+          : itemSearchedResults.when(
               data: (searchedItem) {
                 if (searchedItem.isEmpty) {
                   return Center(
@@ -99,7 +99,7 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
                   ),
                 );
               },
-              loading: () => const CustomCircularProgressIndicator(),
+              loading: () => CustomCircularProgressIndicator(indicatorColor: context.colorScheme.surfaceContainer),
               error: (err, stack) => Center(
                 child: Text(
                   '검색 중 오류가 발생했어요\n다시 시도해 주세요',

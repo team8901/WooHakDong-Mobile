@@ -6,13 +6,22 @@ import 'package:woohakdong/service/logger/logger.dart';
 class ClubMemberRepository {
   final Dio _dio = DioService().dio;
 
-  Future<List<ClubMember>> getClubMemberList(int clubId, String? clubMemberAssignedTerm) async {
+  Future<List<ClubMember>> getClubMemberList(int clubId, String? clubMemberAssignedTerm, String? name) async {
     try {
       logger.i('동아리 회원 목록 조회 시도');
 
+      final Map<String, dynamic> queryParams = {};
+
+      if (clubMemberAssignedTerm != null && clubMemberAssignedTerm.isNotEmpty) {
+        queryParams['clubMemberAssignedTerm'] = clubMemberAssignedTerm;
+      }
+      if (name != null && name.isNotEmpty) {
+        queryParams['name'] = name;
+      }
+
       final response = await _dio.get(
         '/clubs/$clubId/members',
-        queryParameters: clubMemberAssignedTerm != null ? {'clubMemberAssignedTerm': clubMemberAssignedTerm} : {},
+        queryParameters: queryParams,
       );
 
       if (response.statusCode == 200) {

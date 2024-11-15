@@ -30,8 +30,7 @@ class _ClubItemHistoryPanelState extends ConsumerState<ClubItemHistoryPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final itemHistoryData =
-        _isExpanded ? ref.watch(itemHistoryListProvider(widget.itemId)) : const AsyncValue.data(<ItemHistory>[]);
+    final itemHistoryData = ref.watch(itemHistoryListProvider(widget.itemId));
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: defaultPaddingM),
@@ -76,11 +75,14 @@ class _ClubItemHistoryPanelState extends ConsumerState<ClubItemHistoryPanel> {
             body: itemHistoryData.when(
               data: (itemHistoryList) {
                 if (itemHistoryList.isEmpty) {
-                  return Center(
-                    child: Text(
-                      '아직 대여 내역이 없어요',
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: context.colorScheme.onSurface,
+                  return Padding(
+                    padding: const EdgeInsets.all(defaultPaddingM),
+                    child: Center(
+                      child: Text(
+                        '아직 대여 내역이 없어요',
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.colorScheme.onSurface,
+                        ),
                       ),
                     ),
                   );

@@ -28,6 +28,7 @@ class ClubMemberListNotifier extends StateNotifier<AsyncValue<List<ClubMember>>>
       final clubMemberList = await clubMemberRepository.getClubMemberList(
         currentClubId!,
         clubMemberAssignedTerm,
+        null,
       );
 
       await Future.delayed(const Duration(milliseconds: 250));

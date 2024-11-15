@@ -30,9 +30,7 @@ class _ClubMemberItemHistoryPanelState extends ConsumerState<ClubMemberItemHisto
 
   @override
   Widget build(BuildContext context) {
-    final itemHistoryDataByMember = _isExpanded
-        ? ref.watch(itemHistoryListByMemberProvider(widget.clubMemberId))
-        : const AsyncValue.data(<ItemHistory>[]);
+    final itemHistoryDataByMember = ref.watch(itemHistoryListByMemberProvider(widget.clubMemberId));
 
     return Container(
       decoration: BoxDecoration(
@@ -76,15 +74,20 @@ class _ClubMemberItemHistoryPanelState extends ConsumerState<ClubMemberItemHisto
             body: itemHistoryDataByMember.when(
               data: (itemHistoryList) {
                 if (itemHistoryList.isEmpty) {
-                  return Center(
-                    child: Text(
-                      '아직 대여한 내역이 없어요',
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: context.colorScheme.onSurface,
+                  return Padding(
+                    padding: const EdgeInsets.all(defaultPaddingM),
+                    child: Center(
+                      child: Text(
+                        '아직 대여한 내역이 없어요',
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.colorScheme.onSurface,
+                        ),
                       ),
                     ),
                   );
                 }
+
+                /// TODO API 만들어지면 리스트 타일 수정
 
                 return ListView.separated(
                   shrinkWrap: true,
@@ -133,6 +136,7 @@ class _ClubMemberItemHistoryPanelState extends ConsumerState<ClubMemberItemHisto
     setState(
       () {
         _isExpanded = isExpanded;
+
         if (isExpanded) {
           ref
               .read(itemHistoryListByMemberProvider(widget.clubMemberId).notifier)
