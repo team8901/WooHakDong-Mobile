@@ -18,9 +18,9 @@ class SettingThemeNotifier extends StateNotifier<SettingThemeMode> {
     state = SettingThemeMode.values[themeIndex];
   }
 
-  void setThemeMode(SettingThemeMode mode) async {
-    state = mode;
+  void setThemeMode(SettingThemeMode themeMode) async {
+    state = themeMode;
     final prefs = await SharedPreferences.getInstance();
-    prefs.setInt('theme_mode', mode.index);
+    prefs.setInt('theme_mode', themeMode.index);
   }
 }

@@ -3,12 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../model/schedule/schedule.dart';
-import '../../themes/spacing.dart';
-import '../../themes/theme_context.dart';
+import '../../../../model/schedule/schedule.dart';
+import '../../../themes/spacing.dart';
 
-class ClubScheduleTableCalendar extends ConsumerWidget {
+
+class ClubScheduleTableCalendarDay extends ConsumerWidget {
   final DateTime focusedDay;
   final DateTime? selectedDay;
   final Function(DateTime, DateTime) onDaySelected;
@@ -16,7 +17,7 @@ class ClubScheduleTableCalendar extends ConsumerWidget {
   final List<Schedule> Function(DateTime) eventLoader;
   final VoidCallback onTodayButtonPressed;
 
-  const ClubScheduleTableCalendar({
+  const ClubScheduleTableCalendarDay({
     super.key,
     required this.focusedDay,
     required this.selectedDay,
@@ -73,7 +74,6 @@ class ClubScheduleTableCalendar extends ConsumerWidget {
             padding: const EdgeInsets.only(
               left: defaultPaddingS,
               right: defaultPaddingS,
-              bottom: defaultPaddingM,
             ),
             child: Row(
               children: [

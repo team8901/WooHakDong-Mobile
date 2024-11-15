@@ -4,29 +4,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:woohakdong/view/club_schedule/components/calendar/club_schedule_table_calendar_day.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/schedule/components/schedule_selected_day_provider.dart';
 
-import '../../../model/schedule/schedule.dart';
-import '../../../view_model/schedule/schedule_list_provider.dart';
-import '../../../view_model/schedule/schedule_provider.dart';
-import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
-import '../../themes/custom_widget/interaction/custom_refresh_indicator.dart';
-import '../../themes/spacing.dart';
-import '../club_schedule_add_page.dart';
-import '../club_schedule_detail_page.dart';
-import 'club_schedule_list_tile.dart';
-import 'club_schedule_table_calendar.dart';
+import '../../../../model/schedule/schedule.dart';
+import '../../../../view_model/schedule/schedule_list_provider.dart';
+import '../../../../view_model/schedule/schedule_provider.dart';
+import '../../../themes/custom_widget/etc/custom_horizontal_divider.dart';
+import '../../../themes/custom_widget/interaction/custom_refresh_indicator.dart';
+import '../../../themes/spacing.dart';
+import '../../club_schedule_add_page.dart';
+import '../../club_schedule_detail_page.dart';
+import '../club_schedule_list_tile.dart';
 
-class ClubScheduleCalendarView extends ConsumerStatefulWidget {
-  const ClubScheduleCalendarView({super.key});
+class ClubScheduleCalendarDayView extends ConsumerStatefulWidget {
+  const ClubScheduleCalendarDayView({super.key});
 
   @override
-  ConsumerState<ClubScheduleCalendarView> createState() => _ClubScheduleCalendarViewState();
+  ConsumerState<ClubScheduleCalendarDayView> createState() => _ClubScheduleCalendarViewState();
 }
 
-class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarView> {
+class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarDayView> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _lastSelectedDate;
@@ -45,7 +45,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ClubScheduleTableCalendar(
+        ClubScheduleTableCalendarDay(
           focusedDay: _focusedDay,
           selectedDay: _selectedDay,
           onDaySelected: _onDaySelected,
@@ -168,14 +168,12 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarV
       });
     }
 
+    _setSelectedDay(_selectedDay!);
     ref.invalidate(scheduleListProvider(_focusedDay));
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (_selectedDay != null &&
-        isSameDay(_selectedDay, selectedDay) &&
-        _lastSelectedDate != null &&
-        DateTime.now().difference(_lastSelectedDate!) < const Duration(milliseconds: 300)) {
+    if (_selectedDay != null && isSameDay(_selectedDay, selectedDay) && _lastSelectedDate != null) {
       _pushScheduleAddPage(context, selectedDay);
       _lastSelectedDate = null;
       return;
