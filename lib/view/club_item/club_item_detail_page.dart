@@ -25,65 +25,23 @@ class ClubItemDetailPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          PopupMenuButton<String>(
-            icon: const Icon(
-              Symbols.more_vert_rounded,
-              grade: 600,
+          IconButton(
+            onPressed: () async => await _toggleItemRentAvailable(
+              context,
+              ref,
+              itemInfo.itemId!,
+              itemInfo.itemAvailable!,
             ),
-            onSelected: (value) async {
-              switch (value) {
-                case 'available':
-                  await _toggleItemRentAvailable(context, ref, itemInfo.itemId!, itemInfo.itemAvailable!);
-                  break;
-                case 'edit':
-                  _pushItemEditPage(context, itemInfo);
-                  break;
-                case 'delete':
-                  await _deleteItem(context, ref, itemInfo.itemId!);
-                  break;
-              }
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: 'available',
-                child: Row(
-                  children: [
-                    const Icon(Symbols.swap_horiz_rounded, size: 16),
-                    const Gap(defaultGapM),
-                    Text(
-                      '대여 가능 여부 변경',
-                      style: context.textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-              ),
-              PopupMenuItem<String>(
-                value: 'edit',
-                child: Row(
-                  children: [
-                    const Icon(Symbols.border_color_rounded, size: 16),
-                    const Gap(defaultGapM),
-                    Text(
-                      '물품 수정',
-                      style: context.textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-              ),
-              PopupMenuItem<String>(
-                value: 'delete',
-                child: Row(
-                  children: [
-                    const Icon(Symbols.delete_rounded, size: 16),
-                    const Gap(defaultGapM),
-                    Text(
-                      '물품 삭제',
-                      style: context.textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-              ),
-            ],
+            icon:
+                itemInfo.itemAvailable! ? const Icon(Symbols.block_rounded) : const Icon(Symbols.check_circle_rounded),
+          ),
+          IconButton(
+            onPressed: () => _pushItemEditPage(context, itemInfo),
+            icon: const Icon(Symbols.edit_rounded),
+          ),
+          IconButton(
+            onPressed: () async => await _deleteItem(context, ref, itemInfo),
+            icon: const Icon(Symbols.delete_rounded),
           ),
         ],
       ),
@@ -139,6 +97,18 @@ class ClubItemDetailPage extends ConsumerWidget {
 
   Future<void> _toggleItemRentAvailable(BuildContext context, WidgetRef ref, int itemId, bool itemAvailable) async {
     try {
+      final bool? isAvailable = await showDialog<bool>(
+        context: context,
+        builder: (context) => CustomInteractionDialog(
+          dialogTitle: '대여 가능 여부 변경',
+          dialogContent: itemAvailable ? '다음 대여부터 대여 불가로 변경할게요.' : '대여 가능으로 변경할게요.',
+          dialogButtonText: '변경',
+          dialogButtonColor: context.colorScheme.primary,
+        ),
+      );
+
+      if (isAvailable != true) return;
+
       await ref.read(itemProvider.notifier).toggleItemRentAvailable(itemId, !itemAvailable);
       GeneralFunctions.toastMessage('대여 가능 여부가 변경되었어요');
     } catch (e) {
@@ -155,8 +125,13 @@ class ClubItemDetailPage extends ConsumerWidget {
     );
   }
 
-  Future<void> _deleteItem(BuildContext context, WidgetRef ref, int itemId) async {
+  Future<void> _deleteItem(BuildContext context, WidgetRef ref, Item item) async {
     try {
+      if (item.itemUsing!) {
+        GeneralFunctions.toastMessage('현재 대여 중인 물품은 삭제할 수 없어요');
+        return;
+      }
+
       final bool? isDelete = await showDialog<bool>(
         context: context,
         builder: (context) => const CustomInteractionDialog(
@@ -165,14 +140,13 @@ class ClubItemDetailPage extends ConsumerWidget {
         ),
       );
 
-      if (isDelete == true) {
-        await ref.read(itemProvider.notifier).deleteItem(itemId);
+      if (isDelete != true) return;
 
-        if (context.mounted) {
-          GeneralFunctions.toastMessage('물품이 삭제되었어요');
-          Navigator.pop(context);
-        }
-      }
+      await ref.read(itemProvider.notifier).deleteItem(item.itemId!);
+      GeneralFunctions.toastMessage('물품이 삭제되었어요');
+
+      if (!context.mounted) return;
+      Navigator.pop(context);
     } catch (e) {
       GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
     }

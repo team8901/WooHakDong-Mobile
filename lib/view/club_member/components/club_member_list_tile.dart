@@ -48,7 +48,7 @@ class ClubMemberListTile extends ConsumerWidget {
                                   vertical: defaultPaddingXS / 6,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: context.colorScheme.primary.withOpacity(0.1),
+                                  color: context.colorScheme.primary.withOpacity(0.2),
                                   borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
                                 ),
                                 child: Text(

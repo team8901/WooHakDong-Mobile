@@ -55,7 +55,7 @@ class ClubScheduleColorPicker extends StatelessWidget {
                   onColorChanged(_defaultColors[index]);
                   Navigator.of(context).pop();
                 },
-                child: Container(
+                child: Ink(
                   padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
@@ -67,7 +67,7 @@ class ClubScheduleColorPicker extends StatelessWidget {
                           )
                         : null,
                   ),
-                  child: Container(
+                  child: Ink(
                     decoration: BoxDecoration(
                       color: _defaultColors[index],
                       borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2 - 2),
@@ -79,7 +79,7 @@ class ClubScheduleColorPicker extends StatelessWidget {
           ),
         ),
       ],
-      child: Container(
+      child: Ink(
         width: 24.r,
         height: 24.r,
         decoration: BoxDecoration(

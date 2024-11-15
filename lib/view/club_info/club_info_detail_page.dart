@@ -5,11 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:woohakdong/repository/notification/notification_repository.dart';
 import 'package:woohakdong/view/themes/custom_widget/button/custom_info_tooltip.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../service/general/general_functions.dart';
 import '../../view_model/club/current_club_info_provider.dart';
+import '../themes/custom_widget/dialog/custom_interaction_dialog.dart';
 import '../themes/custom_widget/interface/custom_info_box.dart';
 import '../themes/custom_widget/interface/custom_info_content.dart';
 import '../themes/spacing.dart';
@@ -30,8 +32,12 @@ class ClubInfoDetailPage extends ConsumerWidget {
         title: const Text('동아리 정보'),
         actions: [
           IconButton(
+            onPressed: () async => await _sendClubInfoNotification(context, currentClubInfo.clubId!),
+            icon: const Icon(Symbols.forward_to_inbox_rounded),
+          ),
+          IconButton(
             onPressed: () => _pushClubInfoEditPage(context),
-            icon: const Icon(Symbols.border_color_rounded),
+            icon: const Icon(Symbols.edit_rounded),
           ),
         ],
       ),
@@ -203,6 +209,29 @@ class ClubInfoDetailPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _sendClubInfoNotification(BuildContext context, int clubId) async {
+    final NotificationRepository notificationRepository = NotificationRepository();
+
+    try {
+      final bool? isSend = await showDialog<bool>(
+        context: context,
+        builder: (context) => CustomInteractionDialog(
+          dialogTitle: '동아리 정보 메일 전송',
+          dialogContent: '현재 동아리 정보나 변경된 동아리 정보를 회원들에게 메일로 전송할 수 있어요.',
+          dialogButtonText: '전송',
+          dialogButtonColor: context.colorScheme.primary,
+        ),
+      );
+
+      if (isSend != true) return;
+
+      await notificationRepository.sendClubInfoNotification(clubId);
+      GeneralFunctions.toastMessage('동아리 정보를 회원들에게 메일로 전송했어요');
+    } catch (e) {
+      GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
+    }
   }
 
   void _pushClubInfoEditPage(BuildContext context) {

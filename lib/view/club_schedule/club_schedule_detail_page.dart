@@ -7,8 +7,10 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/custom_widget/dialog/custom_interaction_dialog.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/club/club_id_provider.dart';
 
 import '../../model/schedule/schedule.dart';
+import '../../repository/notification/notification_repository.dart';
 import '../../view_model/schedule/schedule_provider.dart';
 import '../themes/custom_widget/interface/custom_info_content.dart';
 import '../themes/spacing.dart';
@@ -19,54 +21,23 @@ class ClubScheduleDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentClubId = ref.watch(clubIdProvider);
     final scheduleInfo = ref.watch(scheduleProvider);
 
     return Scaffold(
       appBar: AppBar(
         actions: [
-          PopupMenuButton<String>(
-            icon: const Icon(
-              Symbols.more_vert_rounded,
-              grade: 600,
-            ),
-            onSelected: (value) async {
-              switch (value) {
-                case 'edit':
-                  _pushItemEditPage(context, scheduleInfo);
-                  break;
-                case 'delete':
-                  await _deleteSchedule(context, ref, scheduleInfo.scheduleId!);
-                  break;
-              }
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: 'edit',
-                child: Row(
-                  children: [
-                    const Icon(Symbols.border_color_rounded, size: 16),
-                    const Gap(defaultGapM),
-                    Text(
-                      '일정 수정',
-                      style: context.textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-              ),
-              PopupMenuItem<String>(
-                value: 'delete',
-                child: Row(
-                  children: [
-                    const Icon(Symbols.delete_rounded, size: 16),
-                    const Gap(defaultGapM),
-                    Text(
-                      '일정 삭제',
-                      style: context.textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          IconButton(
+            onPressed: () async => await _sendClubScheduleNotification(context, currentClubId!, scheduleInfo.scheduleId!),
+            icon: const Icon(Symbols.forward_to_inbox_rounded),
+          ),
+          IconButton(
+            onPressed: () => _pushItemEditPage(context, scheduleInfo),
+            icon: const Icon(Symbols.edit_rounded),
+          ),
+          IconButton(
+            onPressed: () async => await _deleteSchedule(context, ref, scheduleInfo.scheduleId!),
+            icon: const Icon(Symbols.delete_rounded),
           ),
         ],
       ),
@@ -160,6 +131,29 @@ class ClubScheduleDetailPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _sendClubScheduleNotification(BuildContext context, int clubId, int scheduleId) async {
+    final NotificationRepository notificationRepository = NotificationRepository();
+
+    try {
+      final bool? isSend = await showDialog<bool>(
+        context: context,
+        builder: (context) => CustomInteractionDialog(
+          dialogTitle: '동아리 일정 메일 전송',
+          dialogContent: '동아리 일정을 회원들에게 메일로 전송할 수 있어요.',
+          dialogButtonText: '전송',
+          dialogButtonColor: context.colorScheme.primary,
+        ),
+      );
+
+      if (isSend != true) return;
+
+      await notificationRepository.sendClubScheduleNotification(clubId, scheduleId);
+      GeneralFunctions.toastMessage('동아리 정보를 회원들에게 메일로 전송했어요');
+    } catch (e) {
+      GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
+    }
   }
 
   void _pushItemEditPage(BuildContext context, Schedule scheduleInfo) {

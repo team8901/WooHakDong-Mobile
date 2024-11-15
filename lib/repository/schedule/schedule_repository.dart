@@ -46,14 +46,20 @@ class ScheduleRepository {
     }
   }
 
-  Future<void> addSchedule(int clubId, Schedule scheduleInfo) async {
+  Future<int> addSchedule(int clubId, Schedule scheduleInfo) async {
     try {
       logger.i('일정 추가 시도');
 
-      await _dio.post(
+      final response = await _dio.post(
         '/clubs/$clubId/schedules',
         data: scheduleInfo.toJson(),
       );
+
+      if (response.statusCode == 200) {
+        return response.data['scheduleId'];
+      }
+
+      throw Exception();
     } catch (e) {
       logger.e('일정 추가 실패', error: e);
       throw Exception();

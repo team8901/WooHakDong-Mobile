@@ -46,7 +46,7 @@ class ClubItemAddPage extends ConsumerWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
-          title: const Text('물품 추가'),
+          title: const Text('물품 등록'),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -210,14 +210,14 @@ class ClubItemAddPage extends ConsumerWidget {
 
                   if (context.mounted) {
                     Navigator.pop(context);
-                    GeneralFunctions.toastMessage('물품이 추가되었어요');
+                    GeneralFunctions.toastMessage('물품이 등록되었어요');
                   }
                 } catch (e) {
                   await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
                 }
               }
             },
-            buttonText: '추가',
+            buttonText: '등록',
             buttonColor: Theme.of(context).colorScheme.primary,
             buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
             isLoading: itemState == ItemState.adding,

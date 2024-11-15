@@ -15,6 +15,7 @@ import '../themes/custom_widget/interface/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'components/club_schedule_color_picker.dart';
+import 'components/club_schedule_datetime_picker.dart';
 
 class ClubScheduleEditPage extends ConsumerStatefulWidget {
   final Schedule scheduleInfo;
@@ -105,34 +106,14 @@ class _ClubScheduleEditPageState extends ConsumerState<ClubScheduleEditPage> {
                         width: double.infinity,
                         child: InkWell(
                           onTap: () async {
-                            await showBoardDateTimePicker(
+                            final scheduleDate = await showClubScheduleDateTimePicker(
                               context: context,
-                              pickerType: DateTimePickerType.datetime,
-                              initialDate: _selectedDate!,
-                              minimumDate: DateTime(2000),
-                              maximumDate: DateTime(2099),
-                              onChanged: (scheduleDate) => setState(() => _selectedDate = scheduleDate),
-                              useSafeArea: true,
-                              enableDrag: false,
-                              showDragHandle: true,
-                              options: BoardDateTimeOptions(
-                                backgroundDecoration: BoxDecoration(
-                                  color: context.colorScheme.surfaceDim,
-                                  borderRadius: BorderRadius.circular(defaultBorderRadiusL),
-                                ),
-                                weekend: BoardPickerWeekendOptions(
-                                  saturdayColor: context.colorScheme.onSurface,
-                                  sundayColor: context.colorScheme.onSurface,
-                                ),
-                                languages: const BoardPickerLanguages(locale: 'ko_KR', today: '오늘', tomorrow: '내일'),
-                                textColor: context.colorScheme.inverseSurface,
-                                backgroundColor: context.colorScheme.surfaceDim,
-                                foregroundColor: context.colorScheme.surfaceContainer,
-                                activeColor: context.colorScheme.primary,
-                                activeTextColor: context.colorScheme.inversePrimary,
-                                inputable: false,
-                              ),
+                              initialDate: _selectedDate,
                             );
+
+                            if (scheduleDate != null) {
+                              setState(() => _selectedDate = scheduleDate);
+                            }
                           },
                           borderRadius: BorderRadius.circular(defaultBorderRadiusM),
                           highlightColor: context.colorScheme.surfaceContainer,

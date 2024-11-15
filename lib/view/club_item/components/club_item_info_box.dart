@@ -48,7 +48,7 @@ class ClubItemInfoBox extends StatelessWidget {
                     vertical: defaultPaddingXS - 8,
                   ),
                   decoration: BoxDecoration(
-                    color: context.colorScheme.error.withOpacity(0.1),
+                    color: context.colorScheme.error.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
                   ),
                   child: Row(

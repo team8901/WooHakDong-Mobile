@@ -30,6 +30,11 @@ class ClubItemHistoryListTile extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
+              if (itemHistory.itemReturnImage == null || itemHistory.itemReturnImage!.isEmpty) {
+                GeneralFunctions.toastMessage('아직 반납 사진이 없어요');
+                return;
+              }
+
               CachedNetworkImageProvider itemReturnImage = CachedNetworkImageProvider(itemHistory.itemReturnImage!);
               GeneralFunctions.pushImageView(context, itemReturnImage);
             },
@@ -83,7 +88,9 @@ class ClubItemHistoryListTile extends StatelessWidget {
                     Icon(
                       Symbols.input_rounded,
                       size: 16,
-                      color: context.colorScheme.onSurface,
+                      color: (itemHistory.itemReturnDate == null)
+                          ? context.colorScheme.primary
+                          : context.colorScheme.onSurface,
                     ),
                     const Gap(defaultGapS / 4),
                     Text(
@@ -91,7 +98,9 @@ class ClubItemHistoryListTile extends StatelessWidget {
                           ? '대여 중'
                           : GeneralFunctions.formatDateTime(itemHistory.itemReturnDate),
                       style: context.textTheme.bodySmall?.copyWith(
-                        color: context.colorScheme.onSurface,
+                        color: (itemHistory.itemReturnDate == null)
+                            ? context.colorScheme.primary
+                            : context.colorScheme.onSurface,
                       ),
                     ),
                   ],
