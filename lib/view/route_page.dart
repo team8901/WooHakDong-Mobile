@@ -23,6 +23,7 @@ import 'package:woohakdong/view_model/member/member_provider.dart';
 import 'package:woohakdong/view_model/schedule/schedule_calendar_view_provider.dart';
 import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 
+import '../model/item/item_filter.dart';
 import '../view_model/club/club_list_provider.dart';
 import '../view_model/club/components/club_account_validation_state.dart';
 import '../view_model/club_member/club_member_list_provider.dart';
@@ -111,7 +112,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
 
       ref.invalidate(s3ImageProvider);
       ref.watch(clubMemberListProvider.notifier);
-      ref.watch(itemListProvider(null).notifier);
+      ref.watch(itemListProvider(const ItemFilter(category: null, using: null, available: null)).notifier);
       ref.watch(scheduleCalendarViewProvider.notifier);
     }
 

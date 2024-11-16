@@ -23,7 +23,11 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        titleTextStyle: context.textTheme.bodySmall,
+        title: const Text('1 / 2'),
+      ),
       body: SafeArea(
         child: FutureBuilder(
           future: memberNotifier.getMemberInfo(),

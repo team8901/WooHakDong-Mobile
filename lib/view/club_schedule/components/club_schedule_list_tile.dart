@@ -12,11 +12,13 @@ import '../../themes/spacing.dart';
 class ClubScheduleListTile extends ConsumerWidget {
   final Schedule schedule;
   final Future<void> Function()? onTap;
+  final Color? highlightColor;
 
   const ClubScheduleListTile({
     super.key,
     required this.schedule,
     this.onTap,
+    this.highlightColor,
   });
 
   @override
@@ -26,7 +28,7 @@ class ClubScheduleListTile extends ConsumerWidget {
       builder: (context, onTap) {
         return InkWell(
           onTap: onTap,
-          highlightColor: context.colorScheme.surfaceContainer,
+          highlightColor: highlightColor ?? context.colorScheme.surfaceContainer,
           child: Ink(
             padding: const EdgeInsets.all(defaultPaddingM),
             child: Padding(

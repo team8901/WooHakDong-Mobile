@@ -14,6 +14,8 @@ final itemSearchProvider = FutureProvider.autoDispose.family<List<Item>, String>
     currentClubId!,
     keyword,
     null,
+    null,
+    null,
   );
 
   return itemSearchedList;

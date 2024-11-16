@@ -7,9 +7,10 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/club_member/club_member_me_provider.dart';
 
 import '../../view_model/club_member/club_member_provider.dart';
+import '../themes/custom_widget/button/custom_info_tooltip.dart';
 import 'components/club_member_detail_info.dart';
 import 'components/club_member_item_history_panel.dart';
-import 'components/club_member_role_edit_dialog.dart';
+import 'components/dialog/club_member_role_edit_dialog.dart';
 
 class ClubMemberDetailPage extends ConsumerWidget {
   const ClubMemberDetailPage({super.key});
@@ -50,9 +51,15 @@ class ClubMemberDetailPage extends ConsumerWidget {
             children: [
               ClubMemberDetailInfo(clubMember: clubMemberInfo),
               const Gap(defaultGapXL),
-              Text(
-                '대여 내역',
-                style: context.textTheme.labelLarge,
+              Row(
+                children: [
+                  Text(
+                    '대여 내역',
+                    style: context.textTheme.labelLarge,
+                  ),
+                  const Gap(defaultGapS),
+                  CustomInfoTooltip(tooltipMessage: '대여 내역을 누르면 ${clubMemberInfo.memberName}님이 대여한\n물품 정보를 확인할 수 있어요'),
+                ],
               ),
               const Gap(defaultGapM),
               ClubMemberItemHistoryPanel(

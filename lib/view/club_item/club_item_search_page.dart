@@ -95,7 +95,12 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
                   itemCount: searchedItem.length,
                   itemBuilder: (context, index) => ClubItemSearchListTile(
                     searchedItem: searchedItem[index],
-                    onTap: () async => await _pushItemDetailPage(ref, context, searchedItem[index].itemId!),
+                    onTap: () async => await _pushItemDetailPage(
+                      ref,
+                      context,
+                      searchedItem[index].itemId!,
+                      searchedItem[index].itemOverdue!,
+                    ),
                   ),
                 );
               },
@@ -120,14 +125,14 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
     });
   }
 
-  Future<void> _pushItemDetailPage(WidgetRef ref, BuildContext context, int itemId) async {
+  Future<void> _pushItemDetailPage(WidgetRef ref, BuildContext context, int itemId, bool itemOverdue) async {
     await ref.read(itemProvider.notifier).getItemInfo(itemId);
 
     if (context.mounted) {
       Navigator.push(
         context,
         CupertinoPageRoute(
-          builder: (context) => const ClubItemDetailPage(),
+          builder: (context) => ClubItemDetailPage(itemOverdue: itemOverdue),
         ),
       );
     }

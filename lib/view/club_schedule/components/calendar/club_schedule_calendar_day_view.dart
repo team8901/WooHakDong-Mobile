@@ -5,7 +5,6 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:woohakdong/view/club_schedule/components/calendar/club_schedule_table_calendar_day.dart';
-import 'package:woohakdong/view/themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/schedule/components/schedule_selected_day_provider.dart';
 
@@ -103,21 +102,12 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
                 ),
               );
             },
-            loading: () => CustomLoadingSkeleton(
-              isLoading: true,
-              child: ListView.separated(
-                separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return ClubScheduleListTile(
-                    schedule: Schedule(
-                      scheduleId: index,
-                      scheduleTitle: '일정 제목입니다',
-                      scheduleDateTime: DateTime.now(),
-                      scheduleColor: 'FF000000',
-                    ),
-                  );
-                },
+            loading: () => Center(
+              child: Text(
+                '일정 불러오는 중...',
+                style: context.textTheme.bodySmall?.copyWith(
+                  color: context.colorScheme.onSurface,
+                ),
               ),
             ),
             error: (error, stack) => Center(

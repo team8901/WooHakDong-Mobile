@@ -11,10 +11,12 @@ import '../../../themes/spacing.dart';
 
 class ClubItemHistoryListTile extends StatelessWidget {
   final ItemHistory itemHistory;
+  final Future<void> Function()? onTap;
 
   const ClubItemHistoryListTile({
     super.key,
     required this.itemHistory,
+    this.onTap,
   });
 
   @override
@@ -56,56 +58,63 @@ class ClubItemHistoryListTile extends StatelessWidget {
           ),
           const Gap(defaultGapM),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  itemHistory.memberName!,
-                  style: context.textTheme.bodyLarge,
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const Gap(defaultGapS / 2),
-                Row(
+            child: InkWell(
+              onTap: onTap,
+              highlightColor: context.colorScheme.surfaceContainer,
+              child: Ink(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      Symbols.output_rounded,
-                      size: 16,
-                      color: context.colorScheme.onSurface,
+                    Text(
+                      itemHistory.memberName!,
+                      style: context.textTheme.bodyLarge,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const Gap(defaultGapS / 2),
+                    Row(
+                      children: [
+                        Icon(
+                          Symbols.output_rounded,
+                          size: 16,
+                          color: context.colorScheme.onSurface,
+                        ),
+                        const Gap(defaultGapS / 4),
+                        Text(
+                          GeneralFunctions.formatDateTime(itemHistory.itemRentalDate),
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: context.colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
                     ),
                     const Gap(defaultGapS / 4),
-                    Text(
-                      GeneralFunctions.formatDateTime(itemHistory.itemRentalDate),
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: context.colorScheme.onSurface,
-                      ),
+                    /// TODO API에 추가되면 연체중 추가
+                    Row(
+                      children: [
+                        Icon(
+                          Symbols.input_rounded,
+                          size: 16,
+                          color: (itemHistory.itemReturnDate == null)
+                              ? context.colorScheme.primary
+                              : context.colorScheme.onSurface,
+                        ),
+                        const Gap(defaultGapS / 4),
+                        Text(
+                          (itemHistory.itemReturnDate == null)
+                              ? '대여 중'
+                              : GeneralFunctions.formatDateTime(itemHistory.itemReturnDate),
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: (itemHistory.itemReturnDate == null)
+                                ? context.colorScheme.primary
+                                : context.colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                const Gap(defaultGapS / 4),
-                Row(
-                  children: [
-                    Icon(
-                      Symbols.input_rounded,
-                      size: 16,
-                      color: (itemHistory.itemReturnDate == null)
-                          ? context.colorScheme.primary
-                          : context.colorScheme.onSurface,
-                    ),
-                    const Gap(defaultGapS / 4),
-                    Text(
-                      (itemHistory.itemReturnDate == null)
-                          ? '대여 중'
-                          : GeneralFunctions.formatDateTime(itemHistory.itemReturnDate),
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: (itemHistory.itemReturnDate == null)
-                            ? context.colorScheme.primary
-                            : context.colorScheme.onSurface,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              ),
             ),
           ),
         ],

@@ -1,6 +1,6 @@
 class ItemHistory {
   int? itemHistoryId;
-  int? memberId;
+  int? clubMemberId;
   String? memberName;
   DateTime? itemRentalDate;
   DateTime? itemDueDate;
@@ -9,7 +9,7 @@ class ItemHistory {
 
   ItemHistory({
     this.itemHistoryId,
-    this.memberId,
+    this.clubMemberId,
     this.memberName,
     this.itemRentalDate,
     this.itemDueDate,
@@ -20,7 +20,7 @@ class ItemHistory {
   factory ItemHistory.fromJson(Map<String, dynamic> json) {
     return ItemHistory(
       itemHistoryId: json['itemHistoryId'],
-      memberId: json['memberId'],
+      clubMemberId: json['clubMemberId'],
       memberName: json['memberName'],
       itemRentalDate: json['itemRentalDate'] != null ? DateTime.parse(json['itemRentalDate']) : null,
       itemDueDate: json['itemDueDate'] != null ? DateTime.parse(json['itemDueDate']) : null,

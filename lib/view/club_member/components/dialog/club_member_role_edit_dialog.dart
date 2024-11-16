@@ -5,7 +5,7 @@ import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../view_model/club_member/club_member_provider.dart';
+import '../../../../view_model/club_member/club_member_provider.dart';
 
 class ClubMemberRoleEditDialog extends ConsumerStatefulWidget {
   final int clubMemberId;

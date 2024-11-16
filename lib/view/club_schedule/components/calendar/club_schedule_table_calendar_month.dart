@@ -195,12 +195,12 @@ class ClubScheduleTableCalendarMonth extends ConsumerWidget {
                         horizontal: 2,
                       ),
                       decoration: BoxDecoration(
-                        color: Color(int.parse('0x${schedule.scheduleColor!}')).withOpacity(0.5),
+                        color: Color(int.parse('0x${schedule.scheduleColor!}')).withOpacity(0.4),
                         borderRadius: BorderRadius.circular(3),
                       ),
                       child: Text(
                         schedule.scheduleTitle!,
-                        style: context.textTheme.labelLarge?.copyWith(fontSize: 8),
+                        style: context.textTheme.labelLarge?.copyWith(fontSize: 10),
                         softWrap: false,
                         overflow: TextOverflow.fade,
                       ),

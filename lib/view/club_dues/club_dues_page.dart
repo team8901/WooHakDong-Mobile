@@ -63,8 +63,6 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
                   data: (duesList) {
                     final filteredDuesList = _filterDuesList(duesList, _duesInOutType);
 
-                    /// TODO 회비 내역 나중에 날짜 순 의엽이가 추가해줄 것
-
                     if (filteredDuesList.isEmpty) {
                       return SizedBox(
                         height: MediaQuery.of(context).size.height * 0.5,
@@ -159,7 +157,7 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
       case 'WITHDRAW':
         return '출금';
       default:
-        return '전체';
+        return '회비 사용';
     }
   }
 }

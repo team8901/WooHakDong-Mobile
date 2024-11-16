@@ -12,7 +12,7 @@ import '../../view_model/club_member/club_member_search_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import 'club_member_detail_page.dart';
-import 'components/club_member_search_list_tile.dart';
+import 'components/list_tile/club_member_search_list_tile.dart';
 
 class ClubMemberSearchPage extends ConsumerStatefulWidget {
   const ClubMemberSearchPage({super.key});

@@ -6,9 +6,9 @@ import 'package:woohakdong/model/club_member/club_member.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_tap_debouncer.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../service/general/general_functions.dart';
-import '../../themes/custom_widget/etc/custom_vertical_divider.dart';
-import '../../themes/spacing.dart';
+import '../../../../service/general/general_functions.dart';
+import '../../../themes/custom_widget/etc/custom_vertical_divider.dart';
+import '../../../themes/spacing.dart';
 
 class ClubMemberListTile extends ConsumerWidget {
   final ClubMember clubMember;
@@ -49,11 +49,14 @@ class ClubMemberListTile extends ConsumerWidget {
                                 ),
                                 decoration: BoxDecoration(
                                   color: context.colorScheme.primary.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                                  borderRadius: BorderRadius.circular(defaultBorderRadiusL / 4),
                                 ),
                                 child: Text(
                                   GeneralFunctions.formatClubRole(clubMember.clubMemberRole!),
-                                  style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.primary),
+                                  style: context.textTheme.labelLarge?.copyWith(
+                                    color: context.colorScheme.primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ),

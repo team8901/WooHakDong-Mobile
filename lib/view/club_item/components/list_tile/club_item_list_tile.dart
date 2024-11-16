@@ -113,7 +113,7 @@ class ClubItemListTile extends ConsumerWidget {
                             if (item.itemUsing!)
                               Icon(
                                 Symbols.lock_clock_rounded,
-                                color: context.colorScheme.primary,
+                                color: (item.itemOverdue!) ? context.colorScheme.error : context.colorScheme.primary,
                                 size: 12,
                               )
                             else
@@ -125,9 +125,9 @@ class ClubItemListTile extends ConsumerWidget {
                             const Gap(defaultGapS / 2),
                             if (item.itemUsing!)
                               Text(
-                                '대여 중',
+                                (item.itemOverdue!) ? '${item.memberName}님 반납 연체' : '${item.memberName}님이 대여 중',
                                 style: context.textTheme.labelLarge?.copyWith(
-                                  color: context.colorScheme.primary,
+                                  color: (item.itemOverdue!) ? context.colorScheme.error : context.colorScheme.primary,
                                 ),
                               )
                             else

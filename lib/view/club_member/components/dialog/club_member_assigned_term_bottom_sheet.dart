@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:woohakdong/view/club_member/components/club_member_assigned_term_list_tile.dart';
+import 'package:woohakdong/view/club_member/components/list_tile/club_member_assigned_term_list_tile.dart';
 
-import '../../../view_model/club_member/club_member_term_list_provider.dart';
-import '../../../view_model/club_member/components/club_selected_term_provider.dart';
-import '../../themes/spacing.dart';
-import '../../themes/theme_context.dart';
+import '../../../../view_model/club_member/club_member_term_list_provider.dart';
+import '../../../../view_model/club_member/components/club_selected_term_provider.dart';
+import '../../../themes/spacing.dart';
+import '../../../themes/theme_context.dart';
 
 class ClubMemberAssignedTermBottomSheet extends ConsumerWidget {
   const ClubMemberAssignedTermBottomSheet({

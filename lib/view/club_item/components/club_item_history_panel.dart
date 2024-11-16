@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -5,8 +6,10 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/item/item_history.dart';
+import '../../../view_model/club_member/club_member_provider.dart';
 import '../../../view_model/item/item_history_list_provider.dart';
 import '../../club_item/components/list_tile/club_item_history_list_tile.dart';
+import '../../club_member/club_member_detail_page.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../../themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import '../../themes/spacing.dart';
@@ -95,6 +98,7 @@ class _ClubItemHistoryPanelState extends ConsumerState<ClubItemHistoryPanel> {
                   itemCount: itemHistoryList.length,
                   itemBuilder: (context, index) => ClubItemHistoryListTile(
                     itemHistory: itemHistoryList[index],
+                    onTap: () => _pushMemberDetailPage(ref, context, itemHistoryList[index].clubMemberId!),
                   ),
                 );
               },
@@ -114,13 +118,16 @@ class _ClubItemHistoryPanelState extends ConsumerState<ClubItemHistoryPanel> {
                   ),
                 ),
               ),
-              error: (error, stack) => Center(
-                child: Text(
-                  '대여 내역을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: context.colorScheme.error,
+              error: (error, stack) => Padding(
+                padding: const EdgeInsets.all(defaultPaddingM),
+                child: Center(
+                  child: Text(
+                    '대여 내역을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
+                    style: context.textTheme.bodySmall?.copyWith(
+                      color: context.colorScheme.error,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
             ),
@@ -129,6 +136,18 @@ class _ClubItemHistoryPanelState extends ConsumerState<ClubItemHistoryPanel> {
         ],
       ),
     );
+  }
+
+  Future<void> _pushMemberDetailPage(WidgetRef ref, BuildContext context, int clubMemberId) async {
+    await ref.read(clubMemberProvider.notifier).getClubMemberInfo(clubMemberId);
+
+    if (context.mounted) {
+      Navigator.of(context).push(
+        CupertinoPageRoute(
+          builder: (context) => const ClubMemberDetailPage(),
+        ),
+      );
+    }
   }
 
   void _handleExpansion(bool isExpanded) {

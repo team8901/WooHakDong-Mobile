@@ -13,7 +13,7 @@ class CustomDropdownFormField extends StatelessWidget {
   final FormFieldSetter<String>? onSaved;
   final FormFieldValidator<String>? validator;
   final void Function()? onTap;
-  final double menuMaxHeight;
+  final double? menuMaxHeight;
 
   const CustomDropdownFormField({
     super.key,
@@ -24,7 +24,7 @@ class CustomDropdownFormField extends StatelessWidget {
     this.onSaved,
     this.validator,
     this.onTap,
-    this.menuMaxHeight = 208,
+    this.menuMaxHeight,
   });
 
   @override
@@ -37,8 +37,9 @@ class CustomDropdownFormField extends StatelessWidget {
       ),
       style: context.textTheme.titleSmall,
       elevation: 0,
-      menuMaxHeight: menuMaxHeight.h,
+      menuMaxHeight: menuMaxHeight?.h ?? MediaQuery.of(context).size.height * 0.5,
       dropdownColor: context.colorScheme.surfaceContainer,
+      borderRadius: BorderRadius.circular(0),
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(
           horizontal: defaultPaddingS,

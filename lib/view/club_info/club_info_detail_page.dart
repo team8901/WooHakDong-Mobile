@@ -219,7 +219,7 @@ class ClubInfoDetailPage extends ConsumerWidget {
         context: context,
         builder: (context) => CustomInteractionDialog(
           dialogTitle: '동아리 정보 메일 전송',
-          dialogContent: '현재 동아리 정보나 변경된 동아리 정보를 회원들에게 메일로 전송할 수 있어요.',
+          dialogContent: '현재 동아리 정보를 회원들에게 메일로 전송할 수 있어요.',
           dialogButtonText: '전송',
           dialogButtonColor: context.colorScheme.primary,
         ),

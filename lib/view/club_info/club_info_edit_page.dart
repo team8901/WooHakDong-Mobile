@@ -162,7 +162,7 @@ class _ClubInfoEditPageState extends ConsumerState<ClubInfoEditPage> {
                   CustomCounterTextFormField(
                     controller: _clubInfoEditController.description,
                     labelText: '동아리 설명',
-                    hintText: '500자 이내로 입력해 주세요',
+                    hintText: '300자 이내로 입력해 주세요',
                     minLines: 1,
                     maxLength: 300,
                     keyboardType: TextInputType.text,

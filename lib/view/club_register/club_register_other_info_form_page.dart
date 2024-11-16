@@ -23,7 +23,11 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        titleTextStyle: context.textTheme.bodySmall,
+        title: const Text('2 / 4'),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(defaultPaddingM),

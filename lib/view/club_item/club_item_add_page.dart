@@ -210,6 +210,7 @@ class ClubItemAddPage extends ConsumerWidget {
 
                   if (context.mounted) {
                     Navigator.pop(context);
+
                     GeneralFunctions.toastMessage('물품이 등록되었어요');
                   }
                 } catch (e) {

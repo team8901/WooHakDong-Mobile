@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:woohakdong/model/item/item_filter.dart';
 import 'package:woohakdong/repository/item/item_history_repository.dart';
 import 'package:woohakdong/repository/item/item_repository.dart';
 import 'package:woohakdong/view_model/item/item_list_provider.dart';
@@ -8,6 +9,7 @@ import '../club/club_id_provider.dart';
 import '../util/s3_image_provider.dart';
 import 'components/item_state.dart';
 import 'components/item_state_provider.dart';
+import 'item_filter_provider.dart';
 
 final itemProvider = StateNotifierProvider<ItemNotifier, Item>((ref) {
   return ItemNotifier(ref);
@@ -17,6 +19,7 @@ class ItemNotifier extends StateNotifier<Item> {
   final Ref ref;
   final ItemRepository itemRepository = ItemRepository();
   final ItemHistoryRepository itemHistoryRepository = ItemHistoryRepository();
+  final ItemFilter itemFilter = const ItemFilter(category: null, using: null, available: null);
 
   ItemNotifier(this.ref) : super(Item());
 
@@ -59,7 +62,9 @@ class ItemNotifier extends StateNotifier<Item> {
         ),
       );
 
-      ref.invalidate(itemListProvider(null));
+      final currentFilter = ref.read(itemFilterProvider);
+      ref.invalidate(itemListProvider(currentFilter));
+
       ref.read(itemStateProvider.notifier).state = ItemState.added;
     } catch (e) {
       ref.read(itemStateProvider.notifier).state = ItemState.initial;
@@ -94,8 +99,11 @@ class ItemNotifier extends StateNotifier<Item> {
         ),
       );
 
-      ref.invalidate(itemListProvider(null));
+      final currentFilter = ref.read(itemFilterProvider);
+      ref.invalidate(itemListProvider(currentFilter));
+
       await getItemInfo(updatedItemId);
+
       ref.read(itemStateProvider.notifier).state = ItemState.added;
     } catch (e) {
       ref.read(itemStateProvider.notifier).state = ItemState.initial;
@@ -112,7 +120,9 @@ class ItemNotifier extends StateNotifier<Item> {
         itemId,
       );
 
-      ref.invalidate(itemListProvider(null));
+      final currentFilter = ref.read(itemFilterProvider);
+      ref.invalidate(itemListProvider(currentFilter));
+
     } catch (e) {
       rethrow;
     }
@@ -128,7 +138,9 @@ class ItemNotifier extends StateNotifier<Item> {
         itemAvailable,
       );
 
-      ref.invalidate(itemListProvider(null));
+      final currentFilter = ref.read(itemFilterProvider);
+      ref.invalidate(itemListProvider(currentFilter));
+
       await getItemInfo(itemId);
     } catch (e) {
       rethrow;

@@ -210,8 +210,9 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
                   await _addSchedule(currentClubId!, scheduleInfo, scheduleNotifier, _isMailSend);
 
                   if (context.mounted) {
-                    GeneralFunctions.toastMessage('일정이 등록되었어요');
                     Navigator.pop(context);
+
+                    GeneralFunctions.toastMessage('일정이 등록되었어요');
                   }
                 } catch (e) {
                   await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');

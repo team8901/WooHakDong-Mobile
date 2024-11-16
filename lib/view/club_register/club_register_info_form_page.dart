@@ -64,7 +64,11 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        titleTextStyle: context.textTheme.bodySmall,
+        title: const Text('1 / 4'),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(defaultPaddingM),

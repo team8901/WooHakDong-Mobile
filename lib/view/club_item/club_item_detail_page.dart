@@ -7,6 +7,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_item/club_item_edit_page.dart';
 import 'package:woohakdong/view/club_item/components/club_item_history_panel.dart';
+import 'package:woohakdong/view/themes/custom_widget/button/custom_info_tooltip.dart';
 import 'package:woohakdong/view/themes/custom_widget/dialog/custom_interaction_dialog.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
@@ -16,7 +17,12 @@ import '../themes/spacing.dart';
 import 'components/club_item_info_box.dart';
 
 class ClubItemDetailPage extends ConsumerWidget {
-  const ClubItemDetailPage({super.key});
+  final bool itemOverdue;
+
+  const ClubItemDetailPage({
+    super.key,
+    required this.itemOverdue,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -73,13 +79,19 @@ class ClubItemDetailPage extends ConsumerWidget {
                 ),
               ),
               const Gap(defaultGapXL),
-              ClubItemInfoBox(itemInfo: itemInfo),
+              ClubItemInfoBox(itemInfo: itemInfo, itemOverdue: itemOverdue),
               const Gap(defaultGapXL),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: defaultPaddingM),
-                child: Text(
-                  '대여 내역',
-                  style: context.textTheme.labelLarge,
+                child: Row(
+                  children: [
+                    Text(
+                      '대여 내역',
+                      style: context.textTheme.labelLarge,
+                    ),
+                    const Gap(defaultGapS),
+                     CustomInfoTooltip(tooltipMessage: '대여 내역을 누르면 ${itemInfo.itemName}을 대여한\n회원 정보를 확인할 수 있어요'),
+                  ],
                 ),
               ),
               const Gap(defaultGapM),
@@ -117,6 +129,11 @@ class ClubItemDetailPage extends ConsumerWidget {
   }
 
   void _pushItemEditPage(BuildContext context, Item itemInfo) {
+    if (itemInfo.itemUsing!) {
+      GeneralFunctions.toastMessage('현재 대여 중인 물품은 수정할 수 없어요');
+      return;
+    }
+
     Navigator.push(
       context,
       CupertinoPageRoute(
@@ -125,9 +142,9 @@ class ClubItemDetailPage extends ConsumerWidget {
     );
   }
 
-  Future<void> _deleteItem(BuildContext context, WidgetRef ref, Item item) async {
+  Future<void> _deleteItem(BuildContext context, WidgetRef ref, Item itemInfo) async {
     try {
-      if (item.itemUsing!) {
+      if (itemInfo.itemUsing!) {
         GeneralFunctions.toastMessage('현재 대여 중인 물품은 삭제할 수 없어요');
         return;
       }
@@ -142,7 +159,7 @@ class ClubItemDetailPage extends ConsumerWidget {
 
       if (isDelete != true) return;
 
-      await ref.read(itemProvider.notifier).deleteItem(item.itemId!);
+      await ref.read(itemProvider.notifier).deleteItem(itemInfo.itemId!);
       GeneralFunctions.toastMessage('물품이 삭제되었어요');
 
       if (!context.mounted) return;

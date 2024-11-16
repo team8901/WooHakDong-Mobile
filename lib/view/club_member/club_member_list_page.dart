@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
-import 'package:woohakdong/view/club_member/components/club_member_assigned_term_bottom_sheet.dart';
+import 'package:woohakdong/view/club_member/components/dialog/club_member_assigned_term_bottom_sheet.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
@@ -18,7 +18,7 @@ import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../themes/custom_widget/interaction/custom_refresh_indicator.dart';
 import 'club_member_detail_page.dart';
 import 'club_member_search_page.dart';
-import 'components/club_member_list_tile.dart';
+import 'components/list_tile/club_member_list_tile.dart';
 
 class ClubMemberListPage extends ConsumerStatefulWidget {
   const ClubMemberListPage({super.key});

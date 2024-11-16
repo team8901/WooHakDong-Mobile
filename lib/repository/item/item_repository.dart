@@ -7,7 +7,13 @@ import '../../service/dio/dio_service.dart';
 class ItemRepository {
   final Dio _dio = DioService().dio;
 
-  Future<List<Item>> getItemList(int clubId, String? keyword, String? category) async {
+  Future<List<Item>> getItemList(
+    int clubId,
+    String? keyword,
+    String? category,
+    bool? using,
+    bool? available,
+  ) async {
     try {
       logger.i('물품 목록 조회 시도');
 
@@ -18,6 +24,12 @@ class ItemRepository {
       }
       if (category != null && category.isNotEmpty) {
         queryParams['category'] = category;
+      }
+      if (using != null) {
+        queryParams['using'] = using;
+      }
+      if (available != null) {
+        queryParams['available'] = available;
       }
 
       final response = await _dio.get(

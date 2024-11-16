@@ -44,6 +44,7 @@ class _ClubMemberItemHistoryPanelState extends ConsumerState<ClubMemberItemHisto
         expansionCallback: (_, __) => _handleExpansion(!_isExpanded),
         children: [
           ExpansionPanel(
+            isExpanded: _isExpanded,
             backgroundColor: Colors.transparent,
             canTapOnHeader: true,
             headerBuilder: (context, isExpanded) {
@@ -87,7 +88,7 @@ class _ClubMemberItemHistoryPanelState extends ConsumerState<ClubMemberItemHisto
                   );
                 }
 
-                /// TODO API 만들어지면 리스트 타일 수정
+                /// TODO API 만들어지면 리스트 타일 수정 => 아이템 이름, 아이템 ID
 
                 return ListView.separated(
                   shrinkWrap: true,
@@ -115,17 +116,19 @@ class _ClubMemberItemHistoryPanelState extends ConsumerState<ClubMemberItemHisto
                   ),
                 ),
               ),
-              error: (error, stack) => Center(
-                child: Text(
-                  '대여 내역을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: context.colorScheme.error,
+              error: (error, stack) => Padding(
+                padding: const EdgeInsets.all(defaultPaddingM),
+                child: Center(
+                  child: Text(
+                    '대여 내역을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
+                    style: context.textTheme.bodySmall?.copyWith(
+                      color: context.colorScheme.error,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
             ),
-            isExpanded: _isExpanded,
           ),
         ],
       ),

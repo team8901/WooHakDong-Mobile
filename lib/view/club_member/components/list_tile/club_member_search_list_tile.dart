@@ -7,9 +7,9 @@ import 'package:woohakdong/model/club_member/club_member.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_tap_debouncer.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../../service/general/general_functions.dart';
-import '../../themes/custom_widget/etc/custom_vertical_divider.dart';
-import '../../themes/spacing.dart';
+import '../../../../../service/general/general_functions.dart';
+import '../../../themes/custom_widget/etc/custom_vertical_divider.dart';
+import '../../../themes/spacing.dart';
 
 class ClubMemberSearchListTile extends ConsumerWidget {
   final ClubMember searchedClubMember;

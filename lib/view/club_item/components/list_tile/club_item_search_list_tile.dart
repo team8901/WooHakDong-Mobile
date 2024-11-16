@@ -90,7 +90,7 @@ class ClubItemSearchListTile extends ConsumerWidget {
                   ),
                   const Gap(defaultGapM),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       if (searchedItem.itemAvailable != null && !searchedItem.itemAvailable!)
                         Row(
@@ -114,7 +114,7 @@ class ClubItemSearchListTile extends ConsumerWidget {
                           if (searchedItem.itemUsing!)
                             Icon(
                               Symbols.lock_clock_rounded,
-                              color: context.colorScheme.primary,
+                              color: (searchedItem.itemOverdue!) ? context.colorScheme.error : context.colorScheme.primary,
                               size: 12,
                             )
                           else
@@ -126,9 +126,9 @@ class ClubItemSearchListTile extends ConsumerWidget {
                           const Gap(defaultGapS / 2),
                           if (searchedItem.itemUsing!)
                             Text(
-                              '대여 중',
+                              (searchedItem.itemOverdue!) ? '${searchedItem.memberName}님 반납 연체' : '${searchedItem.memberName}님이 대여 중',
                               style: context.textTheme.labelLarge?.copyWith(
-                                color: context.colorScheme.primary,
+                                color: (searchedItem.itemOverdue!) ? context.colorScheme.error : context.colorScheme.primary,
                               ),
                             )
                           else

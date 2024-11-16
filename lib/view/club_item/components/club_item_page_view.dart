@@ -5,6 +5,7 @@ import 'package:woohakdong/view/themes/custom_widget/interaction/custom_refresh_
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../service/general/general_functions.dart';
+import '../../../view_model/item/item_filter_provider.dart';
 import '../../../view_model/item/item_list_provider.dart';
 import '../../../view_model/item/item_provider.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
@@ -12,17 +13,18 @@ import '../../themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import '../club_item_detail_page.dart';
 import 'list_tile/club_item_list_tile.dart';
 
-class ClubItemPageView extends ConsumerWidget {
-  final String? filterCategory;
-
-  const ClubItemPageView({
-    super.key,
-    this.filterCategory,
-  });
+class ClubItemPageView extends ConsumerStatefulWidget {
+  const ClubItemPageView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final itemListData = ref.watch(itemListProvider(filterCategory));
+  ConsumerState<ClubItemPageView> createState() => _ClubItemPageViewState();
+}
+
+class _ClubItemPageViewState extends ConsumerState<ClubItemPageView> {
+  @override
+  Widget build(BuildContext context) {
+    final filter = ref.watch(itemFilterProvider);
+    final itemListData = ref.watch(itemListProvider(filter));
 
     return SizedBox(
       width: double.infinity,
@@ -31,9 +33,11 @@ class ClubItemPageView extends ConsumerWidget {
           if (itemList.isEmpty) {
             return Center(
               child: Text(
-                (filterCategory == null)
+                (filter.category == null && filter.using == null && filter.available == null)
                     ? '아직 등록된 물품이 없어요'
-                    : '${GeneralFunctions.formatItemCategory(filterCategory!)} 카테고리에 등록된 물품이 없어요',
+                    : (filter.using != null || filter.available != null)
+                        ? '선택한 상태에 맞는 물품이 없어요'
+                        : '${GeneralFunctions.formatItemCategory(filter.category!)} 카테고리에 등록된 물품이 없어요',
                 style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
               ),
             );
@@ -42,7 +46,7 @@ class ClubItemPageView extends ConsumerWidget {
           return CustomRefreshIndicator(
             onRefresh: () async {
               await Future.delayed(const Duration(milliseconds: 500));
-              ref.invalidate(itemListProvider(filterCategory));
+              ref.invalidate(itemListProvider(filter));
             },
             child: ListView.separated(
               physics: const AlwaysScrollableScrollPhysics(),
@@ -50,7 +54,12 @@ class ClubItemPageView extends ConsumerWidget {
               itemCount: itemList.length,
               itemBuilder: (context, index) => ClubItemListTile(
                 item: itemList[index],
-                onTap: () async => await _pushItemDetailPage(ref, context, itemList[index].itemId!),
+                onTap: () async => await _pushItemDetailPage(
+                  ref,
+                  context,
+                  itemList[index].itemId!,
+                  itemList[index].itemOverdue!,
+                ),
               ),
             ),
           );
@@ -85,14 +94,14 @@ class ClubItemPageView extends ConsumerWidget {
     );
   }
 
-  Future<void> _pushItemDetailPage(WidgetRef ref, BuildContext context, int itemId) async {
+  Future<void> _pushItemDetailPage(WidgetRef ref, BuildContext context, int itemId, bool itemOverdue) async {
     await ref.read(itemProvider.notifier).getItemInfo(itemId);
 
     if (context.mounted) {
       Navigator.push(
         context,
         CupertinoPageRoute(
-          builder: (context) => const ClubItemDetailPage(),
+          builder: (context) => ClubItemDetailPage(itemOverdue: itemOverdue),
         ),
       );
     }
