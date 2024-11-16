@@ -53,7 +53,7 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                border: Border.all(color: context.colorScheme.surfaceContainer),
+                border: Border.all(color: context.colorScheme.onInverseSurface),
                 borderRadius: BorderRadius.circular(defaultBorderRadiusM),
               ),
               child: Column(
@@ -119,7 +119,7 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                border: Border.all(color: context.colorScheme.surfaceContainer),
+                border: Border.all(color: context.colorScheme.onInverseSurface),
                 borderRadius: BorderRadius.circular(defaultBorderRadiusM),
               ),
               child: Row(
@@ -156,7 +156,7 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
                 InkWell(
                   onTap: () => _updateRole(context, widget.clubMemberId),
                   child: Text(
-                    '확인',
+                    '변경',
                     style: context.textTheme.titleSmall?.copyWith(
                       color: context.colorScheme.primary,
                     ),

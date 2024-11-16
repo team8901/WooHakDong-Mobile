@@ -68,8 +68,14 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
         ),
         Expanded(
           child: scheduleListData.when(
-            data: (scheduleList) {
-              final filteredScheduleList = scheduleList.where((schedule) {
+            data: (threeMonthSchedule) {
+              final allSchedules = [
+                ...threeMonthSchedule.previousMonth,
+                ...threeMonthSchedule.currentMonth,
+                ...threeMonthSchedule.nextMonth,
+              ];
+
+              final filteredScheduleList = allSchedules.where((schedule) {
                 return isSameDay(schedule.scheduleDateTime, _selectedDay);
               }).toList()
                 ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
@@ -133,8 +139,14 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
     final scheduleListData = ref.watch(scheduleListProvider(_focusedDay));
 
     return scheduleListData.maybeWhen(
-      data: (scheduleList) {
-        return scheduleList.where((schedule) {
+      data: (threeMonthSchedule) {
+        final allSchedules = [
+          ...threeMonthSchedule.previousMonth,
+          ...threeMonthSchedule.currentMonth,
+          ...threeMonthSchedule.nextMonth,
+        ];
+
+        return allSchedules.where((schedule) {
           return isSameDay(schedule.scheduleDateTime, day);
         }).toList();
       },
