@@ -221,13 +221,6 @@ class _ClubScheduleCalendarMonthViewState extends ConsumerState<ClubScheduleCale
                   });
                   _setSelectedDay(newDate);
                 }
-
-                print(
-                  'newDate: $newDate,\n'
-                  'currentDate: $_currentDate,\n'
-                  'selectedDay: $_selectedDay,\n'
-                  'focusedDay: $_focusedDay\n\n',
-                );
               },
               itemBuilder: (context, index) {
                 DateTime today = _getDateFromIndex(index);
