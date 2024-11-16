@@ -1,58 +1,52 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../model/schedule/schedule_three_month.dart';
+import '../../model/schedule/schedule.dart';
 import '../../repository/schedule/schedule_repository.dart';
 import '../club/club_id_provider.dart';
 
 final scheduleListProvider =
-    StateNotifierProvider.family<ScheduleListNotifier, AsyncValue<ScheduleThreeMonth>, DateTime>(
-  (ref, baseMonth) => ScheduleListNotifier(ref, baseMonth),
-);
+    StateNotifierProvider.family<ScheduleListNotifier, AsyncValue<List<Schedule>>, DateTime>((ref, scheduleMonth) {
+  return ScheduleListNotifier(ref, scheduleMonth);
+});
 
-class ScheduleListNotifier extends StateNotifier<AsyncValue<ScheduleThreeMonth>> {
+class ScheduleListNotifier extends StateNotifier<AsyncValue<List<Schedule>>> {
   final Ref ref;
-  late final DateTime baseMonth;
+  final DateTime scheduleMonth;
   final ScheduleRepository scheduleRepository = ScheduleRepository();
 
-  ScheduleListNotifier(this.ref, this.baseMonth) : super(const AsyncValue.loading()) {
-    getThreeMonthSchedule();
+  ScheduleListNotifier(this.ref, this.scheduleMonth) : super(const AsyncValue.loading()) {
+    getScheduleList();
   }
 
-  Future<void> getThreeMonthSchedule() async {
+  Future<void> getScheduleList() async {
+    final formattedMonth = DateFormat('yyyy-MM-dd').format(scheduleMonth);
+
     try {
+      final currentClubId = ref.read(clubIdProvider);
+
       state = const AsyncValue.loading();
 
-      final previousMonth = DateTime(baseMonth.year, baseMonth.month - 1);
-      final nextMonth = DateTime(baseMonth.year, baseMonth.month + 1);
-
-      final currentClubId = ref.read(clubIdProvider);
-      if (currentClubId == null) throw Exception('클럽 ID가 없습니다');
-
-      final month = await Future.wait([
-        scheduleRepository.getSchedule(
-          currentClubId,
-          DateFormat('yyyy-MM-dd').format(previousMonth),
-        ),
-        scheduleRepository.getSchedule(
-          currentClubId,
-          DateFormat('yyyy-MM-dd').format(baseMonth),
-        ),
-        scheduleRepository.getSchedule(
-          currentClubId,
-          DateFormat('yyyy-MM-dd').format(nextMonth),
-        ),
-      ]);
-
-      state = AsyncValue.data(
-        ScheduleThreeMonth(
-          previousMonth: month[0],
-          currentMonth: month[1],
-          nextMonth: month[2],
-        ),
+      final scheduleList = await scheduleRepository.getSchedule(
+        currentClubId!,
+        formattedMonth,
       );
+
+      state = AsyncValue.data(scheduleList);
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
   }
+}
+
+class ThreeMonthSchedule {
+  final List<Schedule> previousMonth;
+  final List<Schedule> currentMonth;
+  final List<Schedule> nextMonth;
+
+  ThreeMonthSchedule({
+    required this.previousMonth,
+    required this.currentMonth,
+    required this.nextMonth,
+  });
 }

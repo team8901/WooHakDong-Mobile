@@ -77,7 +77,6 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
             TabBar(
               controller: tabController,
               isScrollable: true,
-              physics: const ClampingScrollPhysics(),
               tabs: const [
                 Tab(text: '전체'),
                 Tab(text: '디지털'),
@@ -106,6 +105,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
             Expanded(
               child: TabBarView(
                 controller: tabController,
+                physics: const NeverScrollableScrollPhysics(),
                 children: List.generate(
                   categories.length,
                   (index) => const ClubItemPageView(),

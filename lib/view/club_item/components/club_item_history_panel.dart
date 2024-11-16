@@ -11,6 +11,7 @@ import '../../../view_model/item/item_history_list_provider.dart';
 import '../../club_item/components/list_tile/club_item_history_list_tile.dart';
 import '../../club_member/club_member_detail_page.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
+import '../../themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import '../../themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import '../../themes/spacing.dart';
 
@@ -102,21 +103,8 @@ class _ClubItemHistoryPanelState extends ConsumerState<ClubItemHistoryPanel> {
                   ),
                 );
               },
-              loading: () => CustomLoadingSkeleton(
-                isLoading: true,
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                  itemCount: 3,
-                  itemBuilder: (context, index) => ClubItemHistoryListTile(
-                    itemHistory: ItemHistory(
-                      memberName: '우학동',
-                      itemRentalDate: DateTime.now(),
-                      itemReturnDate: DateTime.now(),
-                    ),
-                  ),
-                ),
+              loading: () => CustomCircularProgressIndicator(
+                indicatorColor: context.colorScheme.surfaceContainer,
               ),
               error: (error, stack) => Padding(
                 padding: const EdgeInsets.all(defaultPaddingM),

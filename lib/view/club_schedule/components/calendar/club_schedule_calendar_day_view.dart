@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:woohakdong/view/club_schedule/components/calendar/club_schedule_table_calendar_day.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
@@ -12,6 +11,7 @@ import '../../../../model/schedule/schedule.dart';
 import '../../../../view_model/schedule/schedule_list_provider.dart';
 import '../../../../view_model/schedule/schedule_provider.dart';
 import '../../../themes/custom_widget/etc/custom_horizontal_divider.dart';
+import '../../../themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import '../../../themes/custom_widget/interaction/custom_refresh_indicator.dart';
 import '../../../themes/spacing.dart';
 import '../../club_schedule_add_page.dart';
@@ -58,24 +58,10 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
           thickness: 1,
           color: context.colorScheme.surfaceContainer,
         ),
-        const Gap(defaultGapXL),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: defaultPaddingM),
-          child: Text(
-            DateFormat('d일 EEEE', 'ko_KR').format(_selectedDay!),
-            style: context.textTheme.titleMedium,
-          ),
-        ),
         Expanded(
           child: scheduleListData.when(
-            data: (threeMonthSchedule) {
-              final allSchedules = [
-                ...threeMonthSchedule.previousMonth,
-                ...threeMonthSchedule.currentMonth,
-                ...threeMonthSchedule.nextMonth,
-              ];
-
-              final filteredScheduleList = allSchedules.where((schedule) {
+            data: (scheduleList) {
+              final filteredScheduleList = scheduleList.where((schedule) {
                 return isSameDay(schedule.scheduleDateTime, _selectedDay);
               }).toList()
                 ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
@@ -108,12 +94,21 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
                 ),
               );
             },
-            loading: () => Center(
-              child: Text(
-                '일정 불러오는 중...',
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: context.colorScheme.onSurface,
-                ),
+            loading: () => CustomLoadingSkeleton(
+              isLoading: true,
+              child: ListView.separated(
+                separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return ClubScheduleListTile(
+                    schedule: Schedule(
+                      scheduleId: index,
+                      scheduleTitle: '일정 제목입니다',
+                      scheduleDateTime: DateTime.now(),
+                      scheduleColor: 'FF000000',
+                    ),
+                  );
+                },
               ),
             ),
             error: (error, stack) => Center(
@@ -139,14 +134,8 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
     final scheduleListData = ref.watch(scheduleListProvider(_focusedDay));
 
     return scheduleListData.maybeWhen(
-      data: (threeMonthSchedule) {
-        final allSchedules = [
-          ...threeMonthSchedule.previousMonth,
-          ...threeMonthSchedule.currentMonth,
-          ...threeMonthSchedule.nextMonth,
-        ];
-
-        return allSchedules.where((schedule) {
+      data: (scheduleList) {
+        return scheduleList.where((schedule) {
           return isSameDay(schedule.scheduleDateTime, day);
         }).toList();
       },

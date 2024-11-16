@@ -15,7 +15,7 @@ class ClubItemUsingFilterBottomSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.32,
+      height: MediaQuery.of(context).size.height * 0.30,
       child: Consumer(
         builder: (context, ref, child) {
           final filter = ref.watch(itemFilterProvider);

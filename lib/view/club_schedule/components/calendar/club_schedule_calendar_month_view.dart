@@ -70,14 +70,8 @@ class _ClubScheduleCalendarMonthViewState extends ConsumerState<ClubScheduleCale
     final scheduleListData = ref.watch(scheduleListProvider(_focusedDay));
 
     return scheduleListData.maybeWhen(
-      data: (threeMonthSchedule) {
-        final allSchedules = [
-          ...threeMonthSchedule.previousMonth,
-          ...threeMonthSchedule.currentMonth,
-          ...threeMonthSchedule.nextMonth,
-        ];
-
-        return allSchedules.where((schedule) {
+      data: (scheduleList) {
+        return scheduleList.where((schedule) {
           return isSameDay(schedule.scheduleDateTime, day);
         }).toList();
       },
@@ -98,14 +92,8 @@ class _ClubScheduleCalendarMonthViewState extends ConsumerState<ClubScheduleCale
     final scheduleListData = ref.watch(scheduleListProvider(_focusedDay));
 
     final hasEvents = scheduleListData.maybeWhen(
-      data: (threeMonthSchedule) {
-        final allSchedules = [
-          ...threeMonthSchedule.previousMonth,
-          ...threeMonthSchedule.currentMonth,
-          ...threeMonthSchedule.nextMonth,
-        ];
-
-        return allSchedules.any((schedule) => isSameDay(schedule.scheduleDateTime, selectedDay));
+      data: (scheduleList) {
+        return scheduleList.any((schedule) => isSameDay(schedule.scheduleDateTime, selectedDay));
       },
       orElse: () => false,
     );
@@ -135,6 +123,7 @@ class _ClubScheduleCalendarMonthViewState extends ConsumerState<ClubScheduleCale
     });
 
     _setSelectedDay(selectedDay);
+
     _showScheduleDialog();
   }
 
@@ -254,14 +243,8 @@ class _ClubScheduleCalendarMonthViewState extends ConsumerState<ClubScheduleCale
                                   child: Stack(
                                     children: [
                                       scheduleListData.when(
-                                        data: (threeMonthSchedule) {
-                                          final allSchedules = [
-                                            ...threeMonthSchedule.previousMonth,
-                                            ...threeMonthSchedule.currentMonth,
-                                            ...threeMonthSchedule.nextMonth,
-                                          ];
-
-                                          final filteredScheduleList = allSchedules.where((schedule) {
+                                        data: (scheduleList) {
+                                          final filteredScheduleList = scheduleList.where((schedule) {
                                             return isSameDay(schedule.scheduleDateTime, today);
                                           }).toList()
                                             ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
@@ -290,6 +273,7 @@ class _ClubScheduleCalendarMonthViewState extends ConsumerState<ClubScheduleCale
                                                   schedule: filteredScheduleList[index],
                                                   onTap: () => _pushScheduleDetailPage(
                                                       ref, context, filteredScheduleList[index].scheduleId!),
+                                                  highlightColor: context.colorScheme.onInverseSurface,
                                                 );
                                               },
                                             ),

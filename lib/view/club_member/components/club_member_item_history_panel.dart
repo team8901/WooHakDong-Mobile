@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../model/item/item_history.dart';
 import '../../../view_model/item/item_history_list_by_member_provider.dart';
 import '../../club_item/components/list_tile/club_item_history_list_tile.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
-import '../../themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import '../../themes/spacing.dart';
 
 class ClubMemberItemHistoryPanel extends ConsumerStatefulWidget {
@@ -100,21 +99,8 @@ class _ClubMemberItemHistoryPanelState extends ConsumerState<ClubMemberItemHisto
                   ),
                 );
               },
-              loading: () => CustomLoadingSkeleton(
-                isLoading: true,
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                  itemCount: 3,
-                  itemBuilder: (context, index) => ClubItemHistoryListTile(
-                    itemHistory: ItemHistory(
-                      memberName: '우학동',
-                      itemRentalDate: DateTime.now(),
-                      itemReturnDate: DateTime.now(),
-                    ),
-                  ),
-                ),
+              loading: () => CustomCircularProgressIndicator(
+                indicatorColor: context.colorScheme.surfaceContainer,
               ),
               error: (error, stack) => Padding(
                 padding: const EdgeInsets.all(defaultPaddingM),
