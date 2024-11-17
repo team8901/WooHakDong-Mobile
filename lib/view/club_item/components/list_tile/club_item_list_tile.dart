@@ -8,7 +8,7 @@ import 'package:woohakdong/view/themes/custom_widget/etc/custom_vertical_divider
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../../model/item/item.dart';
-import '../../../../service/general/general_functions.dart';
+import '../../../../service/general/general_format.dart';
 import '../../../themes/custom_widget/interaction/custom_tap_debouncer.dart';
 import '../../../themes/spacing.dart';
 
@@ -149,7 +149,7 @@ class ClubItemListTile extends ConsumerWidget {
                         Row(
                           children: [
                             Text(
-                              GeneralFunctions.formatItemCategory(item.itemCategory!),
+                              GeneralFormat.formatItemCategory(item.itemCategory!),
                               style: context.textTheme.bodySmall?.copyWith(
                                 color: context.colorScheme.onSurface,
                               ),

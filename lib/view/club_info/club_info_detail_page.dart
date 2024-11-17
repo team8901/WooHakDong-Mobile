@@ -9,7 +9,9 @@ import 'package:woohakdong/repository/notification/notification_repository.dart'
 import 'package:woohakdong/view/themes/custom_widget/button/custom_info_tooltip.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../service/general/general_format.dart';
 import '../../service/general/general_functions.dart';
+import '../../service/general/general_image.dart';
 import '../../view_model/club/current_club_info_provider.dart';
 import '../themes/custom_widget/dialog/custom_interaction_dialog.dart';
 import '../themes/custom_widget/interface/custom_info_box.dart';
@@ -53,7 +55,7 @@ class ClubInfoDetailPage extends ConsumerWidget {
               ),
               const Gap(defaultGapM),
               GestureDetector(
-                onTap: () => GeneralFunctions.pushImageView(context, imageProvider),
+                onTap: () => GeneralImage.pushImageView(context, imageProvider),
                 child: Center(
                   child: Container(
                     width: 192.r,
@@ -125,7 +127,7 @@ class ClubInfoDetailPage extends ConsumerWidget {
                         ? Column(
                             children: [
                               CustomInfoContent(
-                                infoContent: GeneralFunctions.formatClubGeneration(currentClubInfo.clubGeneration!),
+                                infoContent: GeneralFormat.formatClubGeneration(currentClubInfo.clubGeneration!),
                                 icon: Icon(
                                   Symbols.numbers_rounded,
                                   size: 16,
@@ -137,7 +139,7 @@ class ClubInfoDetailPage extends ConsumerWidget {
                           )
                         : const SizedBox(),
                     CustomInfoContent(
-                      infoContent: GeneralFunctions.formatClubDues(currentClubInfo.clubDues!),
+                      infoContent: GeneralFormat.formatClubDues(currentClubInfo.clubDues!),
                       icon: Icon(
                         Symbols.attach_money_rounded,
                         size: 16,

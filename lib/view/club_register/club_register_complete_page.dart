@@ -3,11 +3,9 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-// ignore: implementation_imports
-import 'package:widgets_to_png/src/entity/image_converter.dart';
-import 'package:widgets_to_png/widgets_to_png.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../service/general/general_image.dart';
 import '../../service/general/general_functions.dart';
 import '../../view_model/group/group_provider.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
@@ -31,7 +29,7 @@ class ClubRegisterCompletePage extends ConsumerWidget {
           actions: [
             IconButton(
               onPressed: () async {
-                await ImageConverter.saveWidgetToGallery(
+                await GeneralImage.convertWidgetToPng(
                   key: _widgetToPngKey,
                   fileName: '우학동 QR 카드 ${DateTime.now().millisecondsSinceEpoch}.png',
                 );
@@ -73,8 +71,8 @@ class ClubRegisterCompletePage extends ConsumerWidget {
                     border: Border.all(color: context.colorScheme.surfaceContainer),
                   ),
                   padding: const EdgeInsets.all(defaultPaddingS / 2),
-                  child: WidgetToPng(
-                    keyToCapture: _widgetToPngKey,
+                  child: RepaintBoundary(
+                    key: _widgetToPngKey,
                     child: ClubRegisterQrCard(groupInfo: groupInfo),
                   ),
                 ),
