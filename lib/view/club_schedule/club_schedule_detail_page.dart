@@ -11,6 +11,7 @@ import 'package:woohakdong/view_model/club/club_id_provider.dart';
 
 import '../../model/schedule/schedule.dart';
 import '../../repository/notification/notification_repository.dart';
+import '../../service/general/general_format.dart';
 import '../../view_model/schedule/schedule_provider.dart';
 import '../themes/custom_widget/interface/custom_info_content.dart';
 import '../themes/spacing.dart';
@@ -97,7 +98,7 @@ class ClubScheduleDetailPage extends ConsumerWidget {
                   vertical: defaultPaddingXS,
                 ),
                 child: CustomInfoContent(
-                  infoContent: GeneralFunctions.formatDateTime(scheduleInfo.scheduleDateTime!),
+                  infoContent: GeneralFormat.formatDateTime(scheduleInfo.scheduleDateTime!),
                   icon: Icon(
                     Symbols.schedule_rounded,
                     size: 16,

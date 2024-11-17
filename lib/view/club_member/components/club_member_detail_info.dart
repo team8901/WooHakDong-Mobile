@@ -6,6 +6,7 @@ import 'package:woohakdong/view/themes/custom_widget/button/custom_info_tooltip.
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/club_member/club_member.dart';
+import '../../../service/general/general_format.dart';
 import '../../../service/general/general_functions.dart';
 import '../../themes/custom_widget/interface/custom_info_box.dart';
 import '../../themes/custom_widget/interface/custom_info_content.dart';
@@ -44,7 +45,7 @@ class ClubMemberDetailInfo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomInfoContent(
-                infoContent: GeneralFunctions.formatMemberGender(clubMember.memberGender!),
+                infoContent: GeneralFormat.formatMemberGender(clubMember.memberGender!),
                 icon: Icon(
                   Symbols.wc_rounded,
                   size: 16,
@@ -60,7 +61,7 @@ class ClubMemberDetailInfo extends StatelessWidget {
                 onLongPress: () async => await _makePhoneCall(clubMember.memberPhoneNumber!),
                 child: CustomInfoContent(
                   isUnderline: true,
-                  infoContent: GeneralFunctions.formatMemberPhoneNumber(clubMember.memberPhoneNumber!),
+                  infoContent: GeneralFormat.formatMemberPhoneNumber(clubMember.memberPhoneNumber!),
                   icon: Icon(
                     Symbols.call_rounded,
                     size: 16,

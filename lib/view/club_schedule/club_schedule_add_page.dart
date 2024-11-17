@@ -10,6 +10,7 @@ import 'package:woohakdong/view_model/club/club_id_provider.dart';
 import 'package:woohakdong/view_model/schedule/components/schedule_state_provider.dart';
 
 import '../../model/schedule/schedule.dart';
+import '../../service/general/general_format.dart';
 import '../../service/general/general_functions.dart';
 import '../../view_model/schedule/components/schedule_state.dart';
 import '../../view_model/schedule/schedule_provider.dart';
@@ -126,7 +127,7 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
                           borderRadius: BorderRadius.circular(defaultBorderRadiusM),
                         ),
                         child: Text(
-                          GeneralFunctions.formatDateTime(_selectedDate),
+                          GeneralFormat.formatDateTime(_selectedDate),
                           style: context.textTheme.titleSmall?.copyWith(
                             color: context.colorScheme.inverseSurface,
                           ),

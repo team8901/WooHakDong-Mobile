@@ -5,6 +5,7 @@ import 'package:woohakdong/model/item/item.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_refresh_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../../service/general/general_format.dart';
 import '../../../service/general/general_functions.dart';
 import '../../../view_model/item/item_filter_provider.dart';
 import '../../../view_model/item/item_list_provider.dart';
@@ -40,7 +41,7 @@ class _ClubItemPageViewState extends ConsumerState<ClubItemPageView> {
                     ? '아직 등록된 물품이 없어요'
                     : (filter.using != null || filter.available != null)
                         ? '선택한 상태에 맞는 물품이 없어요'
-                        : '${GeneralFunctions.formatItemCategory(filter.category!)} 카테고리에 등록된 물품이 없어요',
+                        : '${GeneralFormat.formatItemCategory(filter.category!)} 카테고리에 등록된 물품이 없어요',
                 style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
               ),
             );

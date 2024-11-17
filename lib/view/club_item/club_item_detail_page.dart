@@ -12,6 +12,7 @@ import 'package:woohakdong/view/themes/custom_widget/dialog/custom_interaction_d
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../model/item/item.dart';
+import '../../service/general/general_image.dart';
 import '../../view_model/item/item_provider.dart';
 import '../themes/spacing.dart';
 import 'components/club_item_info_box.dart';
@@ -54,7 +55,7 @@ class ClubItemDetailPage extends ConsumerWidget {
               GestureDetector(
                 onTap: () {
                   CachedNetworkImageProvider itemImage = CachedNetworkImageProvider(itemInfo.itemPhoto!);
-                  GeneralFunctions.pushImageView(context, itemImage);
+                  GeneralImage.pushImageView(context, itemImage);
                 },
                 child: AspectRatio(
                   aspectRatio: 1,

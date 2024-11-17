@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_member/components/dialog/club_member_assigned_term_bottom_sheet.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
@@ -11,6 +10,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/club_member/club_member_term_list_provider.dart';
 
 import '../../model/club_member/club_member.dart';
+import '../../service/general/general_format.dart';
 import '../../view_model/club_member/club_member_list_provider.dart';
 import '../../view_model/club_member/club_member_provider.dart';
 import '../../view_model/club_member/components/club_selected_term_provider.dart';
@@ -55,7 +55,7 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
               const Gap(defaultGapS),
               if (clubHistoryUsageDate!.isNotEmpty)
                 Text(
-                  GeneralFunctions.formatClubAssignedTerm(clubHistoryUsageDate),
+                  GeneralFormat.formatClubAssignedTerm(clubHistoryUsageDate),
                   style: context.textTheme.bodyMedium,
                 ),
               const Gap(defaultGapS / 2),

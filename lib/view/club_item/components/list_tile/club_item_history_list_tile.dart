@@ -7,6 +7,8 @@ import 'package:woohakdong/model/item/item_history.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../../../service/general/general_format.dart';
+import '../../../../service/general/general_image.dart';
 import '../../../themes/spacing.dart';
 
 class ClubItemHistoryListTile extends StatelessWidget {
@@ -36,7 +38,7 @@ class ClubItemHistoryListTile extends StatelessWidget {
                 GeneralFunctions.toastMessage('아직 반납 사진이 없어요');
               } else {
                 final itemReturnImage = CachedNetworkImageProvider(itemHistory.itemReturnImage!);
-                GeneralFunctions.pushImageView(context, itemReturnImage);
+                GeneralImage.pushImageView(context, itemReturnImage);
               }
             },
             child: Container(
@@ -80,7 +82,7 @@ class ClubItemHistoryListTile extends StatelessWidget {
                         ),
                         const Gap(defaultGapS / 2),
                         Text(
-                          GeneralFunctions.formatDateTime(itemHistory.itemRentalDate),
+                          GeneralFormat.formatDateTime(itemHistory.itemRentalDate),
                           style: context.textTheme.bodySmall?.copyWith(
                             color: context.colorScheme.onSurface,
                           ),
@@ -106,7 +108,7 @@ class ClubItemHistoryListTile extends StatelessWidget {
                         const Gap(defaultGapS / 2),
                         Text(
                           itemHistory.itemReturnDate != null
-                              ? GeneralFunctions.formatDateTime(itemHistory.itemReturnDate!)
+                              ? GeneralFormat.formatDateTime(itemHistory.itemReturnDate!)
                               : (itemHistory.itemOverdue ?? false)
                                   ? '연체됨'
                                   : '대여 중',
