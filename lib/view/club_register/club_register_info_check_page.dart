@@ -10,6 +10,7 @@ import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.d
 import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_content.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../service/general/general_format.dart';
 import '../../view_model/club/club_provider.dart';
 import '../../view_model/club/components/club_state.dart';
 import '../../view_model/club/components/club_state_provider.dart';
@@ -124,7 +125,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                             ? Column(
                                 children: [
                                   CustomInfoContent(
-                                    infoContent: GeneralFunctions.formatClubGeneration(clubInfo.clubGeneration!),
+                                    infoContent: GeneralFormat.formatClubGeneration(clubInfo.clubGeneration!),
                                     icon: Icon(
                                       Symbols.numbers_rounded,
                                       size: 16,
@@ -136,7 +137,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                               )
                             : const SizedBox(),
                         CustomInfoContent(
-                          infoContent: GeneralFunctions.formatClubDues(clubInfo.clubDues!),
+                          infoContent: GeneralFormat.formatClubDues(clubInfo.clubDues!),
                           icon: Icon(
                             Symbols.attach_money_rounded,
                             size: 16,

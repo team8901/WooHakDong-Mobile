@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/item/item.dart';
+import '../../../service/general/general_format.dart';
 import '../../themes/custom_widget/interface/custom_info_content.dart';
 import '../../themes/spacing.dart';
 
@@ -28,7 +28,7 @@ class ClubItemInfoBox extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            GeneralFunctions.formatItemCategory(itemInfo.itemCategory!),
+            GeneralFormat.formatItemCategory(itemInfo.itemCategory!),
             style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface),
           ),
           const Gap(defaultGapS),

@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/dues/dues.dart';
-import '../../../service/general/general_functions.dart';
+import '../../../service/general/general_format.dart';
 import '../../themes/spacing.dart';
 
 class ClubDuesListTile extends StatelessWidget {
@@ -22,7 +22,7 @@ class ClubDuesListTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            GeneralFunctions.formatDateTime(dues.clubAccountHistoryTranDate),
+            GeneralFormat.formatDateTime(dues.clubAccountHistoryTranDate),
             style: context.textTheme.bodySmall?.copyWith(
               color: context.colorScheme.onSurface,
             ),
@@ -38,7 +38,7 @@ class ClubDuesListTile extends StatelessWidget {
               ? Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    '-${GeneralFunctions.formatClubDues(dues.clubAccountHistoryTranAmount!)}',
+                    '-${GeneralFormat.formatClubDues(dues.clubAccountHistoryTranAmount!)}',
                     style: context.textTheme.titleSmall?.copyWith(
                       color: context.colorScheme.error,
                     ),
@@ -47,7 +47,7 @@ class ClubDuesListTile extends StatelessWidget {
               : Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    '+${GeneralFunctions.formatClubDues(dues.clubAccountHistoryTranAmount!)}',
+                    '+${GeneralFormat.formatClubDues(dues.clubAccountHistoryTranAmount!)}',
                     style: context.textTheme.titleSmall?.copyWith(
                       color: context.colorScheme.primary,
                     ),
@@ -57,7 +57,7 @@ class ClubDuesListTile extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: Text(
-              GeneralFunctions.formatClubDues(dues.clubAccountHistoryBalanceAmount!),
+              GeneralFormat.formatClubDues(dues.clubAccountHistoryBalanceAmount!),
               style: context.textTheme.bodySmall?.copyWith(
                 color: context.colorScheme.onSurface,
               ),

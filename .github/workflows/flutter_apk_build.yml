@@ -14,10 +14,31 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      V1_SERVER_BASE_URL: ${{ secrets.V1_SERVER_BASE_URL }}
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
     steps:
       - uses: actions/checkout@v3
-      
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Create .env file
+        run: |
+          echo "V1_SERVER_BASE_URL=$V1_SERVER_BASE_URL" >> .env
+          echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+
+      - name: Create Firebase Config Files
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > android/app/google-services.json
+          echo "${{ secrets.FIREBASE_OPTIONS }}" > lib/firebase_options.dart
+          mkdir -p ios/Runner
+          echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}" > ios/Runner/GoogleService-Info.plist
+
       - name: Cache Flutter dependencies
         uses: actions/cache@v3
         with:
@@ -28,7 +49,7 @@ jobs:
           key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
           restore-keys: |
             ${{ runner.os }}-flutter-
-            
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -45,4 +66,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: release-apk
-          path: build/app/outputs/apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk

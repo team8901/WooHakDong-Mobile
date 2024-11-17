@@ -4,9 +4,10 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/club/current_club_account.dart';
 import 'package:woohakdong/model/club_member/club_member_me.dart';
-import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+
+import '../../../service/general/general_format.dart';
 
 class ClubDuesAccountInfoBox extends ConsumerWidget {
   final ClubMemberMe clubMemberMe;
@@ -49,7 +50,7 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
               ),
               const Gap(defaultGapS / 2),
               Text(
-                GeneralFunctions.formatClubDues(currentClubAccount.clubAccountBalance!),
+                GeneralFormat.formatClubDues(currentClubAccount.clubAccountBalance!),
                 style: context.textTheme.headlineLarge?.copyWith(
                   fontSize: 28,
                   fontWeight: FontWeight.w800,
@@ -92,7 +93,7 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          '${GeneralFunctions.formatDateTime(currentClubAccount.clubAccountLastUpdateDate!)} 기준',
+                          '${GeneralFormat.formatDateTime(currentClubAccount.clubAccountLastUpdateDate!)} 기준',
                           style: context.textTheme.bodySmall?.copyWith(
                             color: context.colorScheme.onSurface,
                           ),

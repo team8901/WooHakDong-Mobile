@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../../../service/general/general_format.dart';
 import '../../../../service/general/general_functions.dart';
 import '../../../../view_model/club_member/club_member_list_provider.dart';
 import '../../../../view_model/club_member/components/club_selected_term_provider.dart';
@@ -31,7 +32,7 @@ class ClubMemberAssignedTermListTile extends ConsumerWidget {
 
         if (context.mounted) {
           Navigator.pop(context);
-          GeneralFunctions.toastMessage('${GeneralFunctions.formatClubAssignedTerm(clubMemberAssignedTerm.toString())} 회원 목록이에요');
+          GeneralFunctions.toastMessage('${GeneralFormat.formatClubAssignedTerm(clubMemberAssignedTerm.toString())} 회원 목록이에요');
         }
       },
       highlightColor: context.colorScheme.surfaceContainer,
@@ -61,7 +62,7 @@ class ClubMemberAssignedTermListTile extends ConsumerWidget {
             const Gap(defaultGapXL),
             Expanded(
               child: Text(
-                GeneralFunctions.formatClubAssignedTerm(clubMemberAssignedTerm.toString()),
+                GeneralFormat.formatClubAssignedTerm(clubMemberAssignedTerm.toString()),
                 style: context.textTheme.bodyLarge,
                 softWrap: true,
               ),
