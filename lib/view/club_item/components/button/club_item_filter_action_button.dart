@@ -8,14 +8,12 @@ import '../../../themes/spacing.dart';
 
 class ClubItemFilterActionButton extends StatelessWidget {
   final ItemFilter filter;
-  final VoidCallback onUsingFilterTap;
-  final VoidCallback onAvailableFilterTap;
+  final VoidCallback onFilterTap;
 
   const ClubItemFilterActionButton({
     super.key,
     required this.filter,
-    required this.onUsingFilterTap,
-    required this.onAvailableFilterTap,
+    required this.onFilterTap,
   });
 
   @override
@@ -29,7 +27,7 @@ class ClubItemFilterActionButton extends StatelessWidget {
       child: Row(
         children: [
           InkWell(
-            onTap: onUsingFilterTap,
+            onTap: onFilterTap,
             highlightColor: context.colorScheme.outline,
             borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
             child: Ink(
@@ -54,7 +52,32 @@ class ClubItemFilterActionButton extends StatelessWidget {
           ),
           const Gap(defaultGapS),
           InkWell(
-            onTap: onAvailableFilterTap,
+            onTap: onFilterTap,
+            highlightColor: context.colorScheme.outline,
+            borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
+            child: Ink(
+              height: 32.h,
+              padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
+                color: filter.overdue == null ? context.colorScheme.surfaceContainer : context.colorScheme.secondary,
+              ),
+              child: Center(
+                child: Text(
+                  _getOverdueFilterText(filter),
+                  style: filter.overdue == null
+                      ? context.textTheme.labelLarge?.copyWith(color: context.colorScheme.onSurface)
+                      : context.textTheme.labelLarge?.copyWith(
+                          color: context.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                ),
+              ),
+            ),
+          ),
+          const Gap(defaultGapS),
+          InkWell(
+            onTap: onFilterTap,
             highlightColor: context.colorScheme.outline,
             borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
             child: Ink(
@@ -87,6 +110,14 @@ class ClubItemFilterActionButton extends StatelessWidget {
       return '대여 상태';
     } else {
       return filter.using! ? '대여 중' : '보관 중';
+    }
+  }
+
+  String _getOverdueFilterText(ItemFilter filter) {
+    if (filter.overdue == null) {
+      return '연체 여부';
+    } else {
+      return filter.overdue! ? '연체' : '미연체';
     }
   }
 

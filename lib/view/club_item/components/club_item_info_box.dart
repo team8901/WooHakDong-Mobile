@@ -57,7 +57,7 @@ class ClubItemInfoBox extends StatelessWidget {
                   children: [
                     if (itemInfo.itemUsing!)
                       Icon(
-                        Symbols.lock_clock_rounded,
+                        (itemOverdue) ? Symbols.timer_rounded : Symbols.lock_clock_rounded,
                         color: (itemOverdue) ? context.colorScheme.error : context.colorScheme.inversePrimary,
                         size: 16,
                       )

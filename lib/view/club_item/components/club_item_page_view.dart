@@ -37,9 +37,9 @@ class _ClubItemPageViewState extends ConsumerState<ClubItemPageView> {
           if (itemList.isEmpty) {
             return Center(
               child: Text(
-                (filter.category == null && filter.using == null && filter.available == null)
+                (filter.category == null && filter.using == null && filter.available == null && filter.overdue == null)
                     ? '아직 등록된 물품이 없어요'
-                    : (filter.using != null || filter.available != null)
+                    : (filter.using != null || filter.available != null || filter.overdue != null)
                         ? '선택한 상태에 맞는 물품이 없어요'
                         : '${GeneralFormat.formatItemCategory(filter.category!)} 카테고리에 등록된 물품이 없어요',
                 style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),

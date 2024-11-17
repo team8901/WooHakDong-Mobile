@@ -32,6 +32,7 @@ class ItemListNotifier extends StateNotifier<AsyncValue<List<Item>>> {
         filter.category,
         filter.using,
         filter.available,
+        filter.overdue,
       );
 
       state = AsyncValue.data(itemList);

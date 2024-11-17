@@ -46,6 +46,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
           category: selectedCategory,
           using: ref.read(itemFilterProvider).using,
           available: ref.read(itemFilterProvider).available,
+          overdue: ref.read(itemFilterProvider).overdue,
         );
       }
     });
@@ -89,14 +90,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
             ),
             ClubItemFilterActionButton(
               filter: filter,
-              onUsingFilterTap: () => showModalBottomSheet(
-                useSafeArea: true,
-                context: context,
-                builder: (BuildContext context) {
-                  return const ClubItemUsingFilterBottomSheet();
-                },
-              ),
-              onAvailableFilterTap: () => showModalBottomSheet(
+              onFilterTap: () => showModalBottomSheet(
                 useSafeArea: true,
                 context: context,
                 builder: (BuildContext context) {

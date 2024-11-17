@@ -19,7 +19,7 @@ class ItemNotifier extends StateNotifier<Item> {
   final Ref ref;
   final ItemRepository itemRepository = ItemRepository();
   final ItemHistoryRepository itemHistoryRepository = ItemHistoryRepository();
-  final ItemFilter itemFilter = const ItemFilter(category: null, using: null, available: null);
+  final ItemFilter itemFilter = const ItemFilter(category: null, using: null, available: null, overdue: null);
 
   ItemNotifier(this.ref) : super(Item());
 

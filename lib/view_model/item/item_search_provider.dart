@@ -16,6 +16,7 @@ final itemSearchProvider = FutureProvider.autoDispose.family<List<Item>, String>
     null,
     null,
     null,
+    null,
   );
 
   return itemSearchedList;

@@ -112,7 +112,12 @@ class _RoutePageState extends ConsumerState<RoutePage> {
 
       ref.invalidate(s3ImageProvider);
       ref.watch(clubMemberListProvider.notifier);
-      ref.watch(itemListProvider(const ItemFilter(category: null, using: null, available: null)).notifier);
+      ref.watch(itemListProvider(const ItemFilter(
+        category: null,
+        using: null,
+        available: null,
+        overdue: null,
+      )).notifier);
       ref.watch(scheduleCalendarViewProvider.notifier);
     }
 
