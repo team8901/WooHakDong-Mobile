@@ -9,20 +9,20 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../themes/spacing.dart';
 
-class ClubItemHistoryListTile extends StatelessWidget {
-  final ItemHistory itemHistory;
+class ClubMemberItemHistoryListTile extends StatelessWidget {
+  final ItemHistory clubMemberItemHistory;
   final Future<void> Function()? onTap;
 
-  const ClubItemHistoryListTile({
+  const ClubMemberItemHistoryListTile({
     super.key,
-    required this.itemHistory,
+    required this.clubMemberItemHistory,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final imageProvider = (itemHistory.itemReturnImage?.isNotEmpty ?? false)
-        ? CachedNetworkImageProvider(itemHistory.itemReturnImage!)
+    final imageProvider = (clubMemberItemHistory.itemReturnImage?.isNotEmpty ?? false)
+        ? CachedNetworkImageProvider(clubMemberItemHistory.itemReturnImage!)
         : const AssetImage('assets/images/club/club_basic_image.jpg') as ImageProvider;
 
     return Padding(
@@ -32,10 +32,10 @@ class ClubItemHistoryListTile extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              if (itemHistory.itemReturnImage?.isEmpty ?? true) {
+              if (clubMemberItemHistory.itemReturnImage?.isEmpty ?? true) {
                 GeneralFunctions.toastMessage('아직 반납 사진이 없어요');
               } else {
-                final itemReturnImage = CachedNetworkImageProvider(itemHistory.itemReturnImage!);
+                final itemReturnImage = CachedNetworkImageProvider(clubMemberItemHistory.itemReturnImage!);
                 GeneralFunctions.pushImageView(context, itemReturnImage);
               }
             },
@@ -65,7 +65,7 @@ class ClubItemHistoryListTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      itemHistory.memberName ?? '',
+                      clubMemberItemHistory.itemName ?? '',
                       style: context.textTheme.bodyLarge,
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,
@@ -80,10 +80,8 @@ class ClubItemHistoryListTile extends StatelessWidget {
                         ),
                         const Gap(defaultGapS / 2),
                         Text(
-                          GeneralFunctions.formatDateTime(itemHistory.itemRentalDate),
-                          style: context.textTheme.bodySmall?.copyWith(
-                            color: context.colorScheme.onSurface,
-                          ),
+                          GeneralFunctions.formatDateTime(clubMemberItemHistory.itemRentalDate),
+                          style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
                         ),
                       ],
                     ),
@@ -91,29 +89,29 @@ class ClubItemHistoryListTile extends StatelessWidget {
                     Row(
                       children: [
                         Icon(
-                          itemHistory.itemReturnDate != null
+                          clubMemberItemHistory.itemReturnDate != null
                               ? Symbols.input_rounded
-                              : (itemHistory.itemOverdue ?? false)
+                              : (clubMemberItemHistory.itemOverdue ?? false)
                                   ? Symbols.priority_high_rounded
                                   : Symbols.lock_clock_rounded,
                           size: 16,
-                          color: itemHistory.itemReturnDate != null
+                          color: clubMemberItemHistory.itemReturnDate != null
                               ? context.colorScheme.onSurface
-                              : (itemHistory.itemOverdue ?? false)
+                              : (clubMemberItemHistory.itemOverdue ?? false)
                                   ? context.colorScheme.error
                                   : context.colorScheme.primary,
                         ),
                         const Gap(defaultGapS / 2),
                         Text(
-                          itemHistory.itemReturnDate != null
-                              ? GeneralFunctions.formatDateTime(itemHistory.itemReturnDate!)
-                              : (itemHistory.itemOverdue ?? false)
+                          clubMemberItemHistory.itemReturnDate != null
+                              ? GeneralFunctions.formatDateTime(clubMemberItemHistory.itemReturnDate!)
+                              : (clubMemberItemHistory.itemOverdue ?? false)
                                   ? '연체됨'
                                   : '대여 중',
                           style: context.textTheme.bodySmall?.copyWith(
-                            color: itemHistory.itemReturnDate != null
+                            color: clubMemberItemHistory.itemReturnDate != null
                                 ? context.colorScheme.onSurface
-                                : (itemHistory.itemOverdue ?? false)
+                                : (clubMemberItemHistory.itemOverdue ?? false)
                                     ? context.colorScheme.error
                                     : context.colorScheme.primary,
                           ),

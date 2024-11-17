@@ -28,6 +28,10 @@ class ClubScheduleCalendarDayView extends ConsumerStatefulWidget {
 class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarDayView> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  DateTime _baseDate = DateTime.now();
+  late PageController _pageController;
+  late int _initialPage;
+  late DateTime _currentDate;
   DateTime? _lastSelectedDate;
 
   @override
@@ -35,12 +39,13 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
     super.initState();
     _selectedDay = _focusedDay;
     _setSelectedDay(_selectedDay!);
+    _initialPage = 5000;
+    _pageController = PageController(initialPage: _initialPage);
+    _currentDate = _selectedDay!;
   }
 
   @override
   Widget build(BuildContext context) {
-    final scheduleListData = ref.watch(scheduleListProvider(_focusedDay));
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -59,67 +64,98 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
           color: context.colorScheme.surfaceContainer,
         ),
         Expanded(
-          child: scheduleListData.when(
-            data: (scheduleList) {
-              final filteredScheduleList = scheduleList.where((schedule) {
-                return isSameDay(schedule.scheduleDateTime, _selectedDay);
-              }).toList()
-                ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
+          child: PageView.builder(
+            controller: _pageController,
+            onPageChanged: (index) async {
+              DateTime newDate = _getDateFromIndex(index);
 
-              if (filteredScheduleList.isEmpty) {
-                return Center(
-                  child: Text(
-                    '등록된 일정이 없어요',
-                    style: context.textTheme.bodySmall?.copyWith(
-                      color: context.colorScheme.onSurface,
-                    ),
-                  ),
-                );
+              if (newDate.month != _currentDate.month) {
+                setState(() {
+                  _currentDate = newDate;
+                  _selectedDay = newDate;
+                  _focusedDay = newDate;
+                });
+                _setSelectedDay(newDate);
+              } else {
+                setState(() {
+                  _currentDate = newDate;
+                  _selectedDay = newDate;
+                });
+                _setSelectedDay(newDate);
               }
-
-              return CustomRefreshIndicator(
-                onRefresh: () async {
-                  await Future.delayed(const Duration(milliseconds: 500));
-                  ref.invalidate(scheduleListProvider(_focusedDay));
-                },
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                  itemCount: filteredScheduleList.length,
-                  itemBuilder: (context, index) {
-                    return ClubScheduleListTile(
-                      schedule: filteredScheduleList[index],
-                      onTap: () => _pushScheduleDetailPage(ref, context, filteredScheduleList[index].scheduleId!),
-                    );
-                  },
-                ),
-              );
             },
-            loading: () => CustomLoadingSkeleton(
-              isLoading: true,
-              child: ListView.separated(
-                separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return ClubScheduleListTile(
-                    schedule: Schedule(
-                      scheduleId: index,
-                      scheduleTitle: '일정 제목입니다',
-                      scheduleDateTime: DateTime.now(),
-                      scheduleColor: 'FF000000',
+            itemBuilder: (context, index) {
+              return Consumer(
+                builder: (context, ref, child) {
+                  final scheduleListData = ref.watch(scheduleListProvider(_focusedDay));
+
+                  return scheduleListData.when(
+                    data: (scheduleList) {
+                      final filteredScheduleList = scheduleList.where((schedule) {
+                        return isSameDay(schedule.scheduleDateTime, _selectedDay!);
+                      }).toList()
+                        ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
+
+                      if (filteredScheduleList.isEmpty) {
+                        return Center(
+                          child: Text(
+                            '등록된 일정이 없어요',
+                            style: context.textTheme.bodySmall?.copyWith(
+                              color: context.colorScheme.onSurface,
+                            ),
+                          ),
+                        );
+                      }
+
+                      return CustomRefreshIndicator(
+                        onRefresh: () async {
+                          await Future.delayed(const Duration(milliseconds: 500));
+                          ref.invalidate(scheduleListProvider(_focusedDay));
+                        },
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                          itemCount: filteredScheduleList.length,
+                          itemBuilder: (context, index) {
+                            return ClubScheduleListTile(
+                              schedule: filteredScheduleList[index],
+                              onTap: () =>
+                                  _pushScheduleDetailPage(ref, context, filteredScheduleList[index].scheduleId!),
+                              highlightColor: context.colorScheme.onInverseSurface,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    loading: () => CustomLoadingSkeleton(
+                      isLoading: true,
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return ClubScheduleListTile(
+                            schedule: Schedule(
+                              scheduleId: index,
+                              scheduleTitle: '일정 제목입니다',
+                              scheduleDateTime: DateTime.now(),
+                              scheduleColor: 'FF000000',
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    error: (error, stack) => Center(
+                      child: Text(
+                        '일정을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
+                        style: context.textTheme.bodySmall?.copyWith(
+                          color: context.colorScheme.error,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   );
                 },
-              ),
-            ),
-            error: (error, stack) => Center(
-              child: Text(
-                '일정을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: context.colorScheme.error,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
+              );
+            },
           ),
         ),
       ],
@@ -144,26 +180,46 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
   }
 
   void _onPageChanged(DateTime focusedDay) {
-    final now = DateTime.now();
-
-    if (focusedDay.year == now.year && focusedDay.month == now.month) {
-      setState(() {
-        _focusedDay = now;
-        _selectedDay = now;
-      });
-    } else {
-      final firstDayOfMonth = DateTime(focusedDay.year, focusedDay.month, 1);
-      setState(() {
-        _focusedDay = firstDayOfMonth;
-        _selectedDay = firstDayOfMonth;
-      });
-    }
+    setState(() {
+      _focusedDay = focusedDay;
+      _selectedDay = focusedDay;
+      _currentDate = focusedDay;
+      _baseDate = focusedDay;
+      _pageController.jumpToPage(_initialPage);
+      _lastSelectedDate = DateTime.now();
+    });
 
     _setSelectedDay(_selectedDay!);
-    ref.invalidate(scheduleListProvider(_focusedDay));
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    final scheduleListData = ref.watch(scheduleListProvider(_focusedDay));
+
+    final hasEvents = scheduleListData.maybeWhen(
+      data: (scheduleList) {
+        return scheduleList.any((schedule) => isSameDay(schedule.scheduleDateTime, selectedDay));
+      },
+      orElse: () => false,
+    );
+
+    if (!hasEvents) {
+      if (_selectedDay != null && isSameDay(_selectedDay, selectedDay) && _lastSelectedDate != null) {
+        _pushScheduleAddPage(context, selectedDay);
+        _lastSelectedDate = null;
+        return;
+      }
+
+      setState(() {
+        _selectedDay = selectedDay;
+        _currentDate = selectedDay;
+        _baseDate = selectedDay;
+        _pageController.jumpToPage(_initialPage);
+        _lastSelectedDate = DateTime.now();
+      });
+      _setSelectedDay(selectedDay);
+      return;
+    }
+
     if (_selectedDay != null && isSameDay(_selectedDay, selectedDay) && _lastSelectedDate != null) {
       _pushScheduleAddPage(context, selectedDay);
       _lastSelectedDate = null;
@@ -172,9 +228,11 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
 
     setState(() {
       _selectedDay = selectedDay;
+      _currentDate = selectedDay;
+      _baseDate = selectedDay;
+      _pageController.jumpToPage(_initialPage);
       _lastSelectedDate = DateTime.now();
     });
-
     _setSelectedDay(selectedDay);
   }
 
@@ -183,6 +241,8 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
       _focusedDay = DateTime.now();
       _selectedDay = _focusedDay;
     });
+
+    _setSelectedDay(_selectedDay!);
   }
 
   Future<void> _pushScheduleDetailPage(WidgetRef ref, BuildContext context, int scheduleId) async {
@@ -229,5 +289,10 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
         },
       ),
     );
+  }
+
+  DateTime _getDateFromIndex(int index) {
+    int dayDifference = index - _initialPage;
+    return _baseDate.add(Duration(days: dayDifference));
   }
 }

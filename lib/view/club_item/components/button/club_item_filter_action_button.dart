@@ -35,10 +35,8 @@ class ClubItemFilterActionButton extends StatelessWidget {
               height: 32.h,
               padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: filter.using == null ? context.colorScheme.surfaceContainer : context.colorScheme.primary,
-                ),
                 borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
+                color: filter.using == null ? context.colorScheme.surfaceContainer : context.colorScheme.secondary,
               ),
               child: Center(
                 child: Text(
@@ -62,10 +60,8 @@ class ClubItemFilterActionButton extends StatelessWidget {
               height: 32.h,
               padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: filter.available == null ? context.colorScheme.surfaceContainer : context.colorScheme.primary,
-                ),
                 borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
+                color: filter.available == null ? context.colorScheme.surfaceContainer : context.colorScheme.secondary,
               ),
               child: Center(
                 child: Text(

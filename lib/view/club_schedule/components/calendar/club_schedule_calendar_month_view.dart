@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -219,115 +218,108 @@ class _ClubScheduleCalendarMonthViewState extends ConsumerState<ClubScheduleCale
                     final scheduleListData = ref.watch(scheduleListProvider(_focusedDay));
 
                     return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: defaultPaddingXS),
-                      child: Row(
+                      padding: const EdgeInsets.all(defaultPaddingXS),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Gap(defaultGapS / 2),
-                          Icon(Symbols.chevron_left_rounded, size: 12, color: context.colorScheme.onSurface),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: defaultPaddingM,
+                              top: defaultPaddingM,
+                            ),
+                            child: Text(
+                              DateFormat('d일 EEEE', 'ko_KR').format(today),
+                              style: context.textTheme.titleLarge?.copyWith(
+                                color: (today.day == DateTime.now().day)
+                                    ? context.colorScheme.primary
+                                    : context.textTheme.titleLarge?.color,
+                              ),
+                            ),
+                          ),
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Stack(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: defaultPaddingM, left: defaultPaddingM),
-                                  child: Text(
-                                    DateFormat('d일 EEEE', 'ko_KR').format(today),
-                                    style: context.textTheme.titleLarge?.copyWith(
-                                      color: (today.day == DateTime.now().day)
-                                          ? context.colorScheme.primary
-                                          : context.textTheme.titleLarge?.color,
+                                scheduleListData.when(
+                                  data: (scheduleList) {
+                                    final filteredScheduleList = scheduleList.where((schedule) {
+                                      return isSameDay(schedule.scheduleDateTime, today);
+                                    }).toList()
+                                      ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
+
+                                    if (filteredScheduleList.isEmpty) {
+                                      return Center(
+                                        child: Text(
+                                          '등록된 일정이 없어요',
+                                          style: context.textTheme.bodySmall?.copyWith(
+                                            color: context.colorScheme.onSurface,
+                                          ),
+                                        ),
+                                      );
+                                    }
+
+                                    return CustomRefreshIndicator(
+                                      onRefresh: () async {
+                                        await Future.delayed(const Duration(milliseconds: 500));
+                                        ref.invalidate(scheduleListProvider(_focusedDay));
+                                      },
+                                      child: ListView.separated(
+                                        separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                                        itemCount: filteredScheduleList.length,
+                                        itemBuilder: (context, index) {
+                                          return ClubScheduleListTile(
+                                            schedule: filteredScheduleList[index],
+                                            onTap: () => _pushScheduleDetailPage(
+                                                ref, context, filteredScheduleList[index].scheduleId!),
+                                            highlightColor: context.colorScheme.onInverseSurface,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  loading: () => CustomLoadingSkeleton(
+                                    isLoading: true,
+                                    child: ListView.separated(
+                                      separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                                      itemCount: 5,
+                                      itemBuilder: (context, index) {
+                                        return ClubScheduleListTile(
+                                          schedule: Schedule(
+                                            scheduleId: index,
+                                            scheduleTitle: '일정 제목입니다',
+                                            scheduleDateTime: DateTime.now(),
+                                            scheduleColor: 'FF000000',
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  error: (error, stack) => Center(
+                                    child: Text(
+                                      '일정을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
+                                      style: context.textTheme.bodySmall?.copyWith(
+                                        color: context.colorScheme.error,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
                                   ),
                                 ),
-                                Expanded(
-                                  child: Stack(
-                                    children: [
-                                      scheduleListData.when(
-                                        data: (scheduleList) {
-                                          final filteredScheduleList = scheduleList.where((schedule) {
-                                            return isSameDay(schedule.scheduleDateTime, today);
-                                          }).toList()
-                                            ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
-
-                                          if (filteredScheduleList.isEmpty) {
-                                            return Center(
-                                              child: Text(
-                                                '등록된 일정이 없어요',
-                                                style: context.textTheme.bodySmall?.copyWith(
-                                                  color: context.colorScheme.onSurface,
-                                                ),
-                                              ),
-                                            );
-                                          }
-
-                                          return CustomRefreshIndicator(
-                                            onRefresh: () async {
-                                              await Future.delayed(const Duration(milliseconds: 500));
-                                              ref.invalidate(scheduleListProvider(_focusedDay));
-                                            },
-                                            child: ListView.separated(
-                                              separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                                              itemCount: filteredScheduleList.length,
-                                              itemBuilder: (context, index) {
-                                                return ClubScheduleListTile(
-                                                  schedule: filteredScheduleList[index],
-                                                  onTap: () => _pushScheduleDetailPage(
-                                                      ref, context, filteredScheduleList[index].scheduleId!),
-                                                  highlightColor: context.colorScheme.onInverseSurface,
-                                                );
-                                              },
-                                            ),
-                                          );
-                                        },
-                                        loading: () => CustomLoadingSkeleton(
-                                          isLoading: true,
-                                          child: ListView.separated(
-                                            separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                                            itemCount: 5,
-                                            itemBuilder: (context, index) {
-                                              return ClubScheduleListTile(
-                                                schedule: Schedule(
-                                                  scheduleId: index,
-                                                  scheduleTitle: '일정 제목입니다',
-                                                  scheduleDateTime: DateTime.now(),
-                                                  scheduleColor: 'FF000000',
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                        error: (error, stack) => Center(
-                                          child: Text(
-                                            '일정을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
-                                            style: context.textTheme.bodySmall?.copyWith(
-                                              color: context.colorScheme.error,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: -8,
-                                        bottom: defaultPaddingM / 2,
-                                        child: ElevatedButton(
-                                          onPressed: () => _pushScheduleAddPage(context, today),
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: context.colorScheme.primary,
-                                            foregroundColor: context.colorScheme.inversePrimary,
-                                            shape: const CircleBorder(),
-                                            elevation: 3,
-                                          ),
-                                          child: const Icon(Symbols.calendar_add_on_rounded),
-                                        ),
-                                      ),
-                                    ],
+                                Positioned(
+                                  right: 0,
+                                  bottom: defaultPaddingXS,
+                                  child: ElevatedButton(
+                                    onPressed: () => _pushScheduleAddPage(context, today),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: context.colorScheme.primary,
+                                      foregroundColor: context.colorScheme.inversePrimary,
+                                      shape: const CircleBorder(),
+                                      elevation: 3,
+                                    ),
+                                    child: const Icon(Symbols.calendar_add_on_rounded),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          Icon(Symbols.chevron_right_rounded, size: 12, color: context.colorScheme.onSurface),
-                          const Gap(defaultGapS / 2),
                         ],
                       ),
                     );

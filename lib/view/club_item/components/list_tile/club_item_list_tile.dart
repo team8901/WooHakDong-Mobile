@@ -112,7 +112,7 @@ class ClubItemListTile extends ConsumerWidget {
                             const Gap(defaultGapS),
                             if (item.itemUsing!)
                               Icon(
-                                Symbols.lock_clock_rounded,
+                                (item.itemOverdue!) ? Symbols.priority_high_rounded : Symbols.lock_open_rounded,
                                 color: (item.itemOverdue!) ? context.colorScheme.error : context.colorScheme.primary,
                                 size: 12,
                               )

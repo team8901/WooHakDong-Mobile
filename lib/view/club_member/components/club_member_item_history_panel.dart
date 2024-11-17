@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:woohakdong/view/club_member/components/list_tile/club_member_item_history_list_tile.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../view_model/item/item_history_list_by_member_provider.dart';
-import '../../club_item/components/list_tile/club_item_history_list_tile.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../../themes/spacing.dart';
 
@@ -87,15 +87,13 @@ class _ClubMemberItemHistoryPanelState extends ConsumerState<ClubMemberItemHisto
                   );
                 }
 
-                /// TODO API 만들어지면 리스트 타일 수정 => 아이템 이름, 아이템 ID
-
                 return ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   separatorBuilder: (context, index) => const CustomHorizontalDivider(),
                   itemCount: itemHistoryList.length,
-                  itemBuilder: (context, index) => ClubItemHistoryListTile(
-                    itemHistory: itemHistoryList[index],
+                  itemBuilder: (context, index) => ClubMemberItemHistoryListTile(
+                    clubMemberItemHistory: itemHistoryList[index],
                   ),
                 );
               },
