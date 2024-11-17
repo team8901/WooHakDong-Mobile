@@ -6,14 +6,15 @@ import 'package:woohakdong/view/themes/text_style.dart';
 
 /// 주요 색상
 const Color primary = Color(0xFF3D63DD);
-const Color secondaryPrimary = Color(0xFF1D2E61);
+const Color secondaryPrimary = Color(0xFF172448);
 const Color red = Color(0xFFE53935);
 const Color green = Color(0xFF43A047);
 
 /// 그레이 스케일
-const Color black = Color(0xFF111111);
-const Color darkGray = Color(0xFF303136);
-const Color gray = Color(0xFF6C6E79);
+const Color background = Color(0xFF111111);
+const Color black = Color(0xFF19191B);
+const Color darkGray = Color(0xFF393A40);
+const Color gray = Color(0xFF5F606A);
 const Color lightGray = Color(0xFFB2B3BD);
 const Color white = Color(0xFFEEEEF0);
 
@@ -21,7 +22,7 @@ final ThemeData darkTheme = ThemeData(
   /// 기본
   brightness: Brightness.dark,
   primaryColor: primary,
-  scaffoldBackgroundColor: black,
+  scaffoldBackgroundColor: background,
   applyElevationOverlayColor: false,
   splashColor: Colors.transparent,
   highlightColor: Colors.transparent,
@@ -43,6 +44,8 @@ final ThemeData darkTheme = ThemeData(
     onTertiary: white,
     surfaceDim: black,
     surfaceBright: darkGray,
+    onInverseSurface: gray,
+    surfaceContainerHighest: background,
   ),
 
   /// 텍스트 테마
@@ -73,7 +76,7 @@ final ThemeData darkTheme = ThemeData(
 
   /// 앱바 테마
   appBarTheme: AppBarTheme(
-    backgroundColor: black,
+    backgroundColor: background,
     elevation: 0,
     scrolledUnderElevation: 0,
     centerTitle: false,
@@ -89,10 +92,12 @@ final ThemeData darkTheme = ThemeData(
 
   /// 바텀 네비게이션바 테마
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: black,
+    backgroundColor: background,
     elevation: 1,
     selectedItemColor: white,
-    unselectedItemColor: white,
+    unselectedItemColor: gray,
+    showSelectedLabels: false,
+    showUnselectedLabels: false,
     selectedLabelStyle: CustomTextStyle.labelLarge.copyWith(color: white),
     unselectedLabelStyle: CustomTextStyle.labelLarge.copyWith(color: white),
     type: BottomNavigationBarType.fixed,
@@ -116,7 +121,7 @@ final ThemeData darkTheme = ThemeData(
 
   /// 스낵바 테마
   snackBarTheme: SnackBarThemeData(
-    backgroundColor: darkGray,
+    backgroundColor: black,
     contentTextStyle: CustomTextStyle.bodySmall.copyWith(color: white),
   ),
 
@@ -125,7 +130,7 @@ final ThemeData darkTheme = ThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(defaultBorderRadiusL),
     ),
-    color: darkGray,
+    color: black,
     elevation: 3,
     menuPadding: const EdgeInsets.all(defaultPaddingS / 2),
   ),
@@ -182,16 +187,6 @@ final ThemeData darkTheme = ThemeData(
     thickness: WidgetStateProperty.all(2),
     radius: const Radius.circular(4),
     thumbColor: WidgetStateProperty.all(darkGray),
-  ),
-
-  /// 리스트 타일 테마
-  listTileTheme: ListTileThemeData(
-    contentPadding: EdgeInsets.zero,
-    iconColor: white,
-    textColor: white,
-    titleTextStyle: CustomTextStyle.bodyMedium,
-    subtitleTextStyle: CustomTextStyle.labelLarge,
-    selectedTileColor: darkGray,
   ),
 
   /// 텍스트 버튼 테마

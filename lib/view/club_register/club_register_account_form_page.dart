@@ -52,7 +52,11 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
     return CustomPopScope(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: AppBar(),
+        appBar: AppBar(
+          centerTitle: true,
+          titleTextStyle: context.textTheme.bodySmall,
+          title: const Text('4 / 4'),
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(defaultPaddingM),
@@ -62,10 +66,10 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '마지막으로 계좌를 확인해야 해요',
+                    '동아리 회비 계좌를 등록하면\n동아리 등록이 완료돼요',
                     style: context.textTheme.headlineSmall,
                   ),
-                  const Gap(defaultGapXL * 2),
+                  const Gap(defaultGapXL),
                   Text(
                     '동아리 회비 계좌',
                     style: context.textTheme.labelLarge,
@@ -205,8 +209,8 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                     }
                   },
             buttonText: '완료',
-            buttonColor: Theme.of(context).colorScheme.primary,
-            buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+            buttonColor: context.colorScheme.primary,
+            buttonTextColor: context.colorScheme.inversePrimary,
             isLoading: clubAccountValidationState == ClubAccountValidationState.loading,
           ),
         ),

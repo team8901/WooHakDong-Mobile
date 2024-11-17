@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../model/item/item.dart';
+import '../../../../model/item/item.dart';
 
 class ClubItemEditController {
   final TextEditingController name;

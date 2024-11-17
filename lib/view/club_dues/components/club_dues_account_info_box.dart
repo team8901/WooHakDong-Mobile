@@ -3,31 +3,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/club/current_club_account.dart';
+import 'package:woohakdong/model/club_member/club_member_me.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
-import 'package:woohakdong/view/club_dues/components/club_dues_in_out_type_bottom_sheet.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../view_model/club/current_club_account_info_provider.dart';
-import '../../../view_model/club_member/club_member_me_provider.dart';
-import '../../../view_model/dues/dues_list_provider.dart';
-
 class ClubDuesAccountInfoBox extends ConsumerWidget {
+  final ClubMemberMe clubMemberMe;
   final CurrentClubAccount currentClubAccount;
   final String? duesInOutType;
-  final Function(String?) onTypeSelect;
+  final Function(ClubMemberMe) onRefresh;
+  final VoidCallback onTap;
 
   const ClubDuesAccountInfoBox({
     super.key,
+    required this.clubMemberMe,
     required this.currentClubAccount,
     required this.duesInOutType,
-    required this.onTypeSelect,
+    required this.onRefresh,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final clubMemberMe = ref.watch(clubMemberMeProvider);
-
     return Column(
       children: [
         Container(
@@ -67,16 +65,7 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                    useSafeArea: true,
-                    context: context,
-                    builder: (context) => ClubDuesInOutTypeBottomSheet(
-                      onTypeSelect: onTypeSelect,
-                      duesInOutType: duesInOutType!,
-                    ),
-                  );
-                },
+                onTap: onTap,
                 child: Row(
                   children: [
                     Text(
@@ -97,22 +86,7 @@ class ClubDuesAccountInfoBox extends ConsumerWidget {
               const Gap(defaultGapM),
               Flexible(
                 child: InkWell(
-                  onTap: () async {
-                    if (clubMemberMe.clubMemberRole != 'PRESIDENT' && clubMemberMe.clubMemberRole != 'SECRETARY') {
-                      await GeneralFunctions.toastMessage('회장 및 총무만 회비 내역을 업데이트할 수 있어요');
-                      return;
-                    }
-
-                    try {
-                      await ref.read(duesListProvider(null).notifier).refreshDuesList();
-                      ref.invalidate(duesListProvider(null));
-                      await ref.read(currentClubAccountInfoProvider.notifier).getCurrentClubAccountInfo();
-
-                      await GeneralFunctions.toastMessage('회비 내역을 업데이트 했어요');
-                    } catch (e) {
-                      await GeneralFunctions.toastMessage('회비 내역 업데이트에 실패했어요');
-                    }
-                  },
+                  onTap: () => onRefresh(clubMemberMe),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

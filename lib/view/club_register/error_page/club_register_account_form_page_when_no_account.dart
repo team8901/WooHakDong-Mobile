@@ -8,6 +8,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../service/general/general_functions.dart';
 import '../../../view_model/club/club_account_provider.dart';
+import '../../../view_model/club/club_list_provider.dart';
 import '../../../view_model/club/components/club_account_validation_provider.dart';
 import '../../../view_model/club/components/club_account_validation_state.dart';
 import '../../../view_model/club/current_club_info_provider.dart';
@@ -63,7 +64,10 @@ class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubR
               onPressed: () => showModalBottomSheet(
                 useSafeArea: true,
                 context: context,
-                builder: (context) => const ClubInfoBottomSheet(),
+                builder: (context) => ClubInfoBottomSheet(
+                  currentClubId: currentClubInfo.clubId!,
+                  clubList: ref.watch(clubListProvider),
+                ),
               ),
               icon: const Icon(Symbols.list_rounded),
             ),

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:currency_formatter/currency_formatter.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -196,6 +197,15 @@ class GeneralFunctions {
     if (image == null) return;
 
     final imageFile = File(image.path);
+    int imageSize = await imageFile.length();
+
+    int maxSizeInBytes = 10 * 1024 * 1024;
+
+    if (imageSize > maxSizeInBytes) {
+      GeneralFunctions.toastMessage('10MB 이하의 이미지만 업로드 가능해요');
+      return;
+    }
+
     List<File> pickedImage = [imageFile];
     await s3ImageNotifier.setImage(pickedImage);
   }
@@ -222,6 +232,18 @@ class GeneralFunctions {
         },
       ),
     );
+  }
+
+  /// 파일 관련 함수
+  static Future<void> requestStorageToExcel(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['xlsx', 'xls'],
+    );
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+    }
   }
 
   /// 시간 관련 함수

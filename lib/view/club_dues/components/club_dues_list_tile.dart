@@ -47,7 +47,7 @@ class ClubDuesListTile extends StatelessWidget {
               : Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    GeneralFunctions.formatClubDues(dues.clubAccountHistoryTranAmount!),
+                    '+${GeneralFunctions.formatClubDues(dues.clubAccountHistoryTranAmount!)}',
                     style: context.textTheme.titleSmall?.copyWith(
                       color: context.colorScheme.primary,
                     ),

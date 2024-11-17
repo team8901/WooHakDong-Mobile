@@ -1,13 +1,21 @@
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../themes/spacing.dart';
 
-class ClubItemDeleteDialog extends StatelessWidget {
-  const ClubItemDeleteDialog({
+class CustomInteractionDialog extends StatelessWidget {
+  final String dialogTitle;
+  final String dialogContent;
+  final String dialogButtonText;
+  final Color? dialogButtonColor;
+
+  const CustomInteractionDialog({
     super.key,
+    required this.dialogTitle,
+    required this.dialogContent,
+    this.dialogButtonText = '삭제',
+    this.dialogButtonColor,
   });
 
   @override
@@ -17,16 +25,16 @@ class ClubItemDeleteDialog extends StatelessWidget {
         padding: const EdgeInsets.all(defaultPaddingS * 2),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(defaultBorderRadiusL),
-          color: context.colorScheme.surfaceDim,
+          color: context.colorScheme.surfaceBright,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('물품 삭제', style: context.textTheme.titleMedium),
+            Text(dialogTitle, style: context.textTheme.titleMedium),
             const Gap(defaultGapS / 2),
             Text(
-              '물품을 삭제하면 다시 되돌릴 수 없어요. 그래도 삭제할까요?',
+              dialogContent,
               style: context.textTheme.bodyLarge,
             ),
             const Gap(defaultPaddingS * 2),
@@ -44,9 +52,9 @@ class ClubItemDeleteDialog extends StatelessWidget {
                 InkWell(
                   onTap: () => Navigator.pop(context, true),
                   child: Text(
-                    '삭제',
+                    dialogButtonText,
                     style: context.textTheme.titleSmall?.copyWith(
-                      color: context.colorScheme.error,
+                      color: dialogButtonColor ?? context.colorScheme.error,
                     ),
                   ),
                 ),

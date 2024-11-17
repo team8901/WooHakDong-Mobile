@@ -22,7 +22,7 @@ class ClubMemberRoleBox extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: (clubMember.clubMemberRole != 'MEMBER')
-            ? context.colorScheme.primary.withOpacity(0.1)
+            ? context.colorScheme.secondary
             : context.colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
       ),

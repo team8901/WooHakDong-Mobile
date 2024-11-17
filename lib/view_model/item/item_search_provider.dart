@@ -10,11 +10,13 @@ final itemSearchProvider = FutureProvider.autoDispose.family<List<Item>, String>
   final currentClubId = ref.read(clubIdProvider);
   final itemRepository = ItemRepository();
 
-  final itemList = await itemRepository.getItemList(
+  final itemSearchedList = await itemRepository.getItemList(
     currentClubId!,
     keyword,
     null,
+    null,
+    null,
   );
 
-  return itemList;
+  return itemSearchedList;
 });

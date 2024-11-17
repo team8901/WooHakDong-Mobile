@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+
+import 'club_dues_in_out_type_list_tile.dart';
 
 class ClubDuesInOutTypeBottomSheet extends StatelessWidget {
   final Function(String?) onTypeSelect;
@@ -16,114 +17,51 @@ class ClubDuesInOutTypeBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.3,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: defaultPaddingM,
-              vertical: defaultPaddingS / 2,
-            ),
-            child: Text(
-              '회비 내역 유형 선택',
-              style: context.textTheme.titleLarge,
-            ),
-          ),
-          const Gap(defaultGapS),
-          InkWell(
-            onTap: () {
-              onTypeSelect('ALL');
-              Navigator.pop(context);
-            },
-            highlightColor: context.colorScheme.surfaceContainer,
-            child: Ink(
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.4,
+        minHeight: MediaQuery.of(context).size.height * 0.2,
+      ),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: defaultPaddingM),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: defaultPaddingM,
                 vertical: defaultPaddingS / 2,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '전체',
-                    style: context.textTheme.bodyLarge,
-                  ),
-                  if (duesInOutType == 'ALL')
-                    Icon(
-                      size: 20,
-                      Symbols.check_circle_rounded,
-                      fill: 1,
-                      color: context.colorScheme.primary,
-                    ),
-                ],
+              child: Text(
+                '회비 내역 유형 선택',
+                style: context.textTheme.titleLarge,
               ),
             ),
-          ),
-          const Gap(defaultGapS),
-          InkWell(
-            onTap: () {
-              onTypeSelect('DEPOSIT');
-              Navigator.pop(context);
-            },
-            highlightColor: context.colorScheme.surfaceContainer,
-            child: Ink(
-              padding: const EdgeInsets.symmetric(
-                horizontal: defaultPaddingM,
-                vertical: defaultPaddingS / 2,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '입금',
-                    style: context.textTheme.bodyLarge,
-                  ),
-                  if (duesInOutType == 'DEPOSIT')
-                    Icon(
-                      size: 20,
-                      Symbols.check_circle_rounded,
-                      fill: 1,
-                      color: context.colorScheme.primary,
-                    ),
-                ],
-              ),
+            const Gap(defaultGapS),
+            ClubDuesInOutTypeListTile(
+              title: '전체',
+              type: 'ALL',
+              selectedType: duesInOutType,
+              onTap: (type) => onTypeSelect(type),
             ),
-          ),
-          const Gap(defaultGapS),
-          InkWell(
-            onTap: () {
-              onTypeSelect('WITHDRAW');
-              Navigator.pop(context);
-            },
-            highlightColor: context.colorScheme.surfaceContainer,
-            child: Ink(
-              padding: const EdgeInsets.symmetric(
-                horizontal: defaultPaddingM,
-                vertical: defaultPaddingS / 2,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '출금',
-                    style: context.textTheme.bodyLarge,
-                  ),
-                  if (duesInOutType == 'WITHDRAW')
-                    Icon(
-                      size: 20,
-                      Symbols.check_circle_rounded,
-                      fill: 1,
-                      color: context.colorScheme.primary,
-                    ),
-                ],
-              ),
+            const Gap(defaultGapS),
+            ClubDuesInOutTypeListTile(
+              title: '입금',
+              type: 'DEPOSIT',
+              selectedType: duesInOutType,
+              onTap: (type) => onTypeSelect(type),
             ),
-          ),
-          const Gap(defaultGapXL),
-        ],
+            const Gap(defaultGapS),
+            ClubDuesInOutTypeListTile(
+              title: '출금',
+              type: 'WITHDRAW',
+              selectedType: duesInOutType,
+              onTap: (type) => onTypeSelect(type),
+            ),
+            const Gap(defaultGapXL),
+          ],
+        ),
       ),
     );
   }

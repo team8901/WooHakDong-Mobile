@@ -29,7 +29,7 @@ class ScheduleNotifier extends StateNotifier<Schedule> {
     }
   }
 
-  Future<void> addSchedule(
+  Future<int> addSchedule(
     String scheduleTitle,
     String scheduleContent,
     DateTime scheduleDateTime,
@@ -40,7 +40,7 @@ class ScheduleNotifier extends StateNotifier<Schedule> {
 
       final currentClubId = ref.read(clubIdProvider);
 
-      await scheduleRepository.addSchedule(
+      final scheduleId = await scheduleRepository.addSchedule(
         currentClubId!,
         Schedule(
           scheduleTitle: scheduleTitle,
@@ -52,6 +52,8 @@ class ScheduleNotifier extends StateNotifier<Schedule> {
 
       ref.invalidate(scheduleListProvider);
       ref.read(scheduleStateProvider.notifier).state = ScheduleState.added;
+
+      return scheduleId;
     } catch (e) {
       ref.read(scheduleStateProvider.notifier).state = ScheduleState.initial;
       rethrow;

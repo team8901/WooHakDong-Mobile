@@ -25,7 +25,11 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
     final memberState = ref.watch(memberStateProvider);
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        titleTextStyle: context.textTheme.bodySmall,
+        title: const Text('2 / 2'),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(defaultPaddingM),

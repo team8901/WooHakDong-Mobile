@@ -23,7 +23,11 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        titleTextStyle: context.textTheme.bodySmall,
+        title: const Text('1 / 2'),
+      ),
       body: SafeArea(
         child: FutureBuilder(
           future: memberNotifier.getMemberInfo(),
@@ -53,6 +57,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                       CustomTextFormField(
                         labelText: '이름',
                         initialValue: memberInfo?.memberName,
+                        enabled: false,
                         readOnly: true,
                       ),
                       const Gap(defaultGapM),
@@ -91,6 +96,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                       CustomTextFormField(
                         labelText: '이메일 주소',
                         initialValue: memberInfo?.memberEmail,
+                        enabled: false,
                         readOnly: true,
                       ),
                       const Gap(defaultGapXL),
@@ -102,6 +108,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                       CustomTextFormField(
                         labelText: '학교',
                         initialValue: memberInfo?.memberSchool,
+                        enabled: false,
                         readOnly: true,
                       ),
                       const Gap(defaultGapM),

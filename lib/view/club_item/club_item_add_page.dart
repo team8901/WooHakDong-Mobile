@@ -8,6 +8,7 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:woohakdong/model/item/item.dart';
+import 'package:woohakdong/view/themes/custom_widget/button/custom_info_tooltip.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/item/components/item_state.dart';
 import 'package:woohakdong/view_model/item/components/item_state_provider.dart';
@@ -36,6 +37,7 @@ class ClubItemAddPage extends ConsumerWidget {
     final itemNotifier = ref.read(itemProvider.notifier);
 
     return PopScope(
+      canPop: itemState != ItemState.adding,
       onPopInvokedWithResult: (didPop, dynamic) {
         if (didPop) {
           ref.invalidate(s3ImageProvider);
@@ -44,7 +46,7 @@ class ClubItemAddPage extends ConsumerWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
-          title: const Text('물품 추가'),
+          title: const Text('물품 등록'),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -54,11 +56,17 @@ class ClubItemAddPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '물품 사진',
-                    style: context.textTheme.labelLarge?.copyWith(
-                      color: context.colorScheme.onSurface,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        '물품 사진',
+                        style: context.textTheme.labelLarge?.copyWith(
+                          color: context.colorScheme.onSurface,
+                        ),
+                      ),
+                      const Gap(defaultGapS / 2),
+                      const CustomInfoTooltip(tooltipMessage: '10MB 이하의 사진만 업로드 가능해요'),
+                    ],
                   ),
                   const Gap(defaultGapM),
                   SizedBox(
@@ -151,9 +159,11 @@ class ClubItemAddPage extends ConsumerWidget {
                     ),
                   ),
                   const Gap(defaultGapM),
-                  CustomTextFormField(
+                  CustomCounterTextFormField(
                     labelText: '위치',
-                    keyboardType: TextInputType.text,
+                    hintText: '50자 이내로 입력해 주세요',
+                    minLines: 1,
+                    maxLength: 50,
                     onSaved: (value) => itemInfo.itemLocation = value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -168,11 +178,19 @@ class ClubItemAddPage extends ConsumerWidget {
                     hintText: '일 단위로 입력해 주세요',
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(3),
+                    ],
                     onSaved: (value) => itemInfo.itemRentalMaxDay = int.parse(value!),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return '최대 대여 가능 기간를 입력해 주세요';
+                        return '최대 대여 가능 기간을 입력해 주세요';
+                      }
+                      final intValue = int.tryParse(value);
+
+                      if (intValue == null || intValue < 1 || intValue > 365) {
+                        return '1일에서 365일 사이로 입력해 주세요';
                       }
                       return null;
                     },
@@ -192,14 +210,15 @@ class ClubItemAddPage extends ConsumerWidget {
 
                   if (context.mounted) {
                     Navigator.pop(context);
-                    GeneralFunctions.toastMessage('물품이 추가되었어요');
+
+                    GeneralFunctions.toastMessage('물품이 등록되었어요');
                   }
                 } catch (e) {
                   await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
                 }
               }
             },
-            buttonText: '추가',
+            buttonText: '등록',
             buttonColor: Theme.of(context).colorScheme.primary,
             buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
             isLoading: itemState == ItemState.adding,

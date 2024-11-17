@@ -5,7 +5,7 @@ import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../view_model/club_member/club_member_provider.dart';
+import '../../../../view_model/club_member/club_member_provider.dart';
 
 class ClubMemberRoleEditDialog extends ConsumerStatefulWidget {
   final int clubMemberId;
@@ -37,7 +37,7 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
         padding: const EdgeInsets.all(defaultPaddingS * 2),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(defaultBorderRadiusL),
-          color: context.colorScheme.surfaceDim,
+          color: context.colorScheme.surfaceBright,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +53,7 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                border: Border.all(color: context.colorScheme.surfaceContainer),
+                border: Border.all(color: context.colorScheme.onInverseSurface),
                 borderRadius: BorderRadius.circular(defaultBorderRadiusM),
               ),
               child: Column(
@@ -119,7 +119,7 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                border: Border.all(color: context.colorScheme.surfaceContainer),
+                border: Border.all(color: context.colorScheme.onInverseSurface),
                 borderRadius: BorderRadius.circular(defaultBorderRadiusM),
               ),
               child: Row(
@@ -156,7 +156,7 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
                 InkWell(
                   onTap: () => _updateRole(context, widget.clubMemberId),
                   child: Text(
-                    '확인',
+                    '변경',
                     style: context.textTheme.titleSmall?.copyWith(
                       color: context.colorScheme.primary,
                     ),

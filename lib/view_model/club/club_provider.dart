@@ -19,18 +19,6 @@ class ClubNotifier extends StateNotifier<Club> {
 
   ClubNotifier(this.ref) : super(Club());
 
-  Future<List<Club>> getClubList() async {
-    final List<Club> clubList = await clubRepository.getClubList();
-
-    if (clubList.isEmpty) {
-      ref.read(clubStateProvider.notifier).state = ClubState.clubNotRegistered;
-    } else {
-      ref.read(clubStateProvider.notifier).state = ClubState.clubRegistered;
-    }
-
-    return clubList;
-  }
-
   Future<void> clubNameValidation(String clubName, String clubEnglishName) async {
     final isValid = await clubRepository.clubNameValidation(clubName, clubEnglishName);
 
@@ -41,7 +29,11 @@ class ClubNotifier extends StateNotifier<Club> {
     }
   }
 
-  void saveClubInfo(String clubName, String clubEnglishName, String clubDescription) {
+  void saveClubInfo(
+    String clubName,
+    String clubEnglishName,
+    String clubDescription,
+  ) {
     state = state.copyWith(
       clubName: clubName,
       clubEnglishName: clubEnglishName,
@@ -50,7 +42,12 @@ class ClubNotifier extends StateNotifier<Club> {
   }
 
   void saveClubOtherInfo(
-      String clubGeneration, int clubDues, String clubRoom, String clubGroupChatLink, String clubGroupChatPassword) {
+    String clubGeneration,
+    int clubDues,
+    String clubRoom,
+    String clubGroupChatLink,
+    String clubGroupChatPassword,
+  ) {
     state = state.copyWith(
       clubGeneration: clubGeneration,
       clubDues: clubDues,

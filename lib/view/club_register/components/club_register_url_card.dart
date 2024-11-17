@@ -8,12 +8,12 @@ import '../../../service/general/general_functions.dart';
 import '../../themes/spacing.dart';
 
 class ClubRegisterUrlCard extends StatelessWidget {
+  final Group? groupInfo;
+
   const ClubRegisterUrlCard({
     super.key,
     required this.groupInfo,
   });
-
-  final Group? groupInfo;
 
   @override
   Widget build(BuildContext context) {

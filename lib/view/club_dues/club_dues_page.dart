@@ -5,12 +5,14 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/club/current_club_account_info_provider.dart';
 import 'package:woohakdong/view_model/dues/dues_list_provider.dart';
 
+import '../../model/club_member/club_member_me.dart';
 import '../../model/dues/dues.dart';
 import '../../service/general/general_functions.dart';
 import '../../view_model/club_member/club_member_me_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import '../themes/custom_widget/interaction/custom_refresh_indicator.dart';
+import 'components/club_dues_in_out_type_bottom_sheet.dart';
 import 'components/club_dues_list_tile.dart';
 
 class ClubDuesPage extends ConsumerStatefulWidget {
@@ -35,39 +37,31 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
       ),
       body: SafeArea(
         child: CustomRefreshIndicator(
-          onRefresh: () async {
-            if (clubMemberMe.clubMemberRole != 'PRESIDENT' && clubMemberMe.clubMemberRole != 'SECRETARY') {
-              await GeneralFunctions.toastMessage('회장 및 총무만 회비 내역을 업데이트할 수 있어요');
-              return;
-            }
-
-            try {
-              await ref.read(duesListProvider(null).notifier).refreshDuesList();
-              ref.invalidate(duesListProvider(null));
-              await ref.read(currentClubAccountInfoProvider.notifier).getCurrentClubAccountInfo();
-
-              await GeneralFunctions.toastMessage('회비 내역을 새로 불러왔어요');
-            } catch (e) {
-              await GeneralFunctions.toastMessage('새로운 회비 내역을 불러오지 못했어요');
-            }
-          },
+          onRefresh: () async => await _refreshDuesList(clubMemberMe),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 ClubDuesAccountInfoBox(
+                  clubMemberMe: clubMemberMe,
                   currentClubAccount: clubAccountInfo,
                   duesInOutType: _duesInOutType ?? 'ALL',
-                  onTypeSelect: _selectInOutType,
+                  onRefresh: _refreshDuesList,
+                  onTap: () {
+                    showModalBottomSheet(
+                      useSafeArea: true,
+                      context: context,
+                      builder: (context) => ClubDuesInOutTypeBottomSheet(
+                        onTypeSelect: _selectInOutType,
+                        duesInOutType: _duesInOutType ?? 'ALL',
+                      ),
+                    );
+                  },
                 ),
                 duesListData.when(
                   data: (duesList) {
                     final filteredDuesList = _filterDuesList(duesList, _duesInOutType);
-
-                    filteredDuesList.sort(
-                      (a, b) => b.clubAccountHistoryTranDate!.compareTo(a.clubAccountHistoryTranDate!),
-                    );
 
                     if (filteredDuesList.isEmpty) {
                       return SizedBox(
@@ -124,6 +118,23 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _refreshDuesList(ClubMemberMe clubMemberMe) async {
+    if (clubMemberMe.clubMemberRole != 'PRESIDENT' && clubMemberMe.clubMemberRole != 'SECRETARY') {
+      await GeneralFunctions.toastMessage('회장 및 총무만 회비 내역을 업데이트할 수 있어요');
+      return;
+    }
+
+    try {
+      await ref.read(duesListProvider(null).notifier).refreshDuesList();
+      ref.invalidate(duesListProvider(null));
+      await ref.read(currentClubAccountInfoProvider.notifier).getCurrentClubAccountInfo();
+
+      await GeneralFunctions.toastMessage('회비 내역을 새로 불러왔어요');
+    } catch (e) {
+      await GeneralFunctions.toastMessage('새로운 회비 내역을 불러오지 못했어요');
+    }
   }
 
   List<Dues> _filterDuesList(List<Dues> duesList, String? duesInOutType) {
