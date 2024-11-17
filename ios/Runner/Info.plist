@@ -64,6 +64,14 @@
 	<string>Used to demonstrate image picker plugin</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Used to demonstrate image picker plugin</string>
-
+	<key>NSFileReadUsageDescription</key>
+    <string>Used to demonstrate file picker plugin</string>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>tel</string>
+      <string>mailto</string>
+      <string>https</string>
+      <string>http</string>
+    </array>
 </dict>
 </plist>

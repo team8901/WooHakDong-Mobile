@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_dues/club_dues_page.dart';
 import 'package:woohakdong/view/club_item/club_item_list_page.dart';
 import 'package:woohakdong/view/club_member/club_member_list_page.dart';
-import 'package:woohakdong/view/club_schedule/club_calendar_page.dart';
+import 'package:woohakdong/view/club_schedule/club_schedule_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_pop_scope.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/club/current_club_info_provider.dart';
@@ -30,12 +30,6 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
     const ClubSchedulePage(),
     const ClubInfoPage(),
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    FlutterNativeSplash.remove();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,60 +57,40 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
             const BottomNavigationBarItem(
               icon: Icon(
                 Symbols.group_rounded,
-                weight: 300,
-              ),
-              activeIcon: Icon(
-                Symbols.group_rounded,
                 fill: 1,
-                weight: 600,
               ),
               label: '회원',
             ),
             const BottomNavigationBarItem(
               icon: Icon(
                 Symbols.list_alt_rounded,
-                weight: 300,
-              ),
-              activeIcon: Icon(
-                Symbols.list_alt_rounded,
                 fill: 1,
-                weight: 600,
               ),
               label: '물품',
             ),
             const BottomNavigationBarItem(
               icon: Icon(
                 Symbols.savings_rounded,
-                weight: 300,
-              ),
-              activeIcon: Icon(
-                Symbols.savings_rounded,
                 fill: 1,
-                weight: 600,
               ),
               label: '회비',
             ),
             const BottomNavigationBarItem(
               icon: Icon(
-                Symbols.event_note_rounded,
-                weight: 300,
-              ),
-              activeIcon: Icon(
-                Symbols.event_note_rounded,
+                Symbols.calendar_month_rounded,
                 fill: 1,
-                weight: 600,
               ),
               label: '일정',
             ),
             BottomNavigationBarItem(
               icon: clubImage != null
                   ? Container(
-                      width: 24,
-                      height: 24,
+                      width: 24.r,
+                      height: 24.r,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: context.colorScheme.inverseSurface,
+                          color: _selectedIndex == 4 ? context.colorScheme.inverseSurface : context.colorScheme.outline,
                           width: _selectedIndex == 4 ? 2 : 1,
                         ),
                         image: DecorationImage(
@@ -126,13 +100,13 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
                       ),
                     )
                   : Container(
-                      width: 24,
-                      height: 24,
+                      width: 24.r,
+                      height: 24.r,
                       decoration: BoxDecoration(
-                        color: context.colorScheme.surfaceContainer,
+                        color: _selectedIndex == 4 ? context.colorScheme.inverseSurface : context.colorScheme.outline,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: context.colorScheme.inverseSurface,
+                          color: _selectedIndex == 4 ? context.colorScheme.inverseSurface : context.colorScheme.outline,
                           width: 1,
                         ),
                       ),

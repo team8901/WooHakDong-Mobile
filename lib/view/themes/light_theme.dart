@@ -6,22 +6,23 @@ import 'package:woohakdong/view/themes/text_style.dart';
 
 /// 주요 색상
 const Color primary = Color(0xFF1A74E8);
-const Color secondaryPrimary = Color(0xFFD7E8FF);
+const Color secondaryPrimary = Color(0xFFE6EFFC);
 const Color red = Color(0xFFE53935);
 const Color green = Color(0xFF43A047);
 
 /// 그레이 스케일
+const Color background = Color(0xFFFCFCFC);
 const Color black = Color(0xFF202020);
 const Color darkGray = Color(0xFF7E7E7E);
 const Color gray = Color(0xFFB7B7B7);
 const Color lightGray = Color(0xFFE7E7E7);
-const Color white = Color(0xFFFCFCFC);
+const Color white = Color(0xFFF5F5F5);
 
 final ThemeData lightTheme = ThemeData(
   /// 기본
   brightness: Brightness.light,
   primaryColor: primary,
-  scaffoldBackgroundColor: white,
+  scaffoldBackgroundColor: background,
   applyElevationOverlayColor: false,
   splashColor: Colors.transparent,
   highlightColor: Colors.transparent,
@@ -42,6 +43,9 @@ final ThemeData lightTheme = ThemeData(
     tertiary: green,
     onTertiary: white,
     surfaceDim: white,
+    surfaceBright: white,
+    onInverseSurface: lightGray,
+    surfaceContainerHighest: background,
   ),
 
   /// 텍스트 테마
@@ -72,7 +76,7 @@ final ThemeData lightTheme = ThemeData(
 
   /// 앱바 테마
   appBarTheme: AppBarTheme(
-    backgroundColor: white,
+    backgroundColor: background,
     elevation: 0,
     scrolledUnderElevation: 0,
     centerTitle: false,
@@ -88,10 +92,12 @@ final ThemeData lightTheme = ThemeData(
 
   /// 바텀 네비게이션바 테마
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: white,
+    backgroundColor: background,
     elevation: 1,
     selectedItemColor: black,
-    unselectedItemColor: black,
+    unselectedItemColor: gray,
+    showSelectedLabels: false,
+    showUnselectedLabels: false,
     selectedLabelStyle: CustomTextStyle.labelLarge,
     unselectedLabelStyle: CustomTextStyle.labelLarge,
     type: BottomNavigationBarType.fixed,
@@ -181,16 +187,6 @@ final ThemeData lightTheme = ThemeData(
     thickness: WidgetStateProperty.all(2),
     radius: const Radius.circular(4),
     thumbColor: WidgetStateProperty.all(lightGray),
-  ),
-
-  /// 리스트 타일 테마
-  listTileTheme: ListTileThemeData(
-    contentPadding: EdgeInsets.zero,
-    iconColor: black,
-    textColor: black,
-    titleTextStyle: CustomTextStyle.bodyMedium,
-    subtitleTextStyle: CustomTextStyle.labelLarge,
-    selectedTileColor: lightGray,
   ),
 
   /// 텍스트 버튼 테마

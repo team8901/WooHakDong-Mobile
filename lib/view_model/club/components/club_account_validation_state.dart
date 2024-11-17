@@ -3,4 +3,6 @@ enum ClubAccountValidationState {
   notChecked,
   valid,
   invalid,
+  accountRegistered,
+  accountNotRegistered,
 }

@@ -6,257 +6,129 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_item/club_item_edit_page.dart';
-import 'package:woohakdong/view/club_item/components/club_item_rental_state_box.dart';
-import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.dart';
+import 'package:woohakdong/view/club_item/components/club_item_history_panel.dart';
+import 'package:woohakdong/view/themes/custom_widget/button/custom_info_tooltip.dart';
+import 'package:woohakdong/view/themes/custom_widget/dialog/custom_interaction_dialog.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../model/item/item.dart';
 import '../../view_model/item/item_provider.dart';
-import '../themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
-import '../themes/custom_widget/interface/custom_info_content.dart';
 import '../themes/spacing.dart';
-import 'club_item_history_page.dart';
-import 'components/dialog/club_item_delete_dialog.dart';
+import 'components/club_item_info_box.dart';
 
 class ClubItemDetailPage extends ConsumerWidget {
-  final int itemId;
+  final bool itemOverdue;
 
   const ClubItemDetailPage({
     super.key,
-    required this.itemId,
+    required this.itemOverdue,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FutureBuilder(
-      future: ref.watch(itemProvider.notifier).getItemById(itemId),
-      builder: (context, itemSnapshot) {
-        if (itemSnapshot.connectionState != ConnectionState.done) {
-          return const Scaffold(body: CustomCircularProgressIndicator());
-        } else if (itemSnapshot.hasError || itemSnapshot.data == null) {
-          return const Scaffold(body: CustomCircularProgressIndicator());
-        }
+    final itemInfo = ref.watch(itemProvider);
 
-        final itemInfo = itemSnapshot.data!;
-        final CachedNetworkImageProvider itemPhoto = CachedNetworkImageProvider(itemInfo.itemPhoto!);
-
-        return Scaffold(
-          appBar: AppBar(
-            actions: [
-              PopupMenuButton<String>(
-                icon: const Icon(
-                  Symbols.more_vert_rounded,
-                  grade: 600,
-                ),
-                onSelected: (value) async {
-                  switch (value) {
-                    case 'available':
-                      await _toggleItemRentAvailable(context, ref, itemInfo.itemAvailable!);
-                      break;
-                    case 'history':
-                      _pushItemHistoryPage(context, itemId);
-                      break;
-                    case 'edit':
-                      _pushItemEditPage(context, itemInfo);
-                      break;
-                    case 'delete':
-                      await _deleteItem(context, ref);
-                      break;
-                  }
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () async => await _toggleItemRentAvailable(context, ref, itemInfo),
+            icon:
+                itemInfo.itemAvailable! ? const Icon(Symbols.block_rounded) : const Icon(Symbols.check_circle_rounded),
+          ),
+          IconButton(
+            onPressed: () => _pushItemEditPage(context, itemInfo),
+            icon: const Icon(Symbols.edit_rounded),
+          ),
+          IconButton(
+            onPressed: () async => await _deleteItem(context, ref, itemInfo),
+            icon: const Icon(Symbols.delete_rounded),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  CachedNetworkImageProvider itemImage = CachedNetworkImageProvider(itemInfo.itemPhoto!);
+                  GeneralFunctions.pushImageView(context, itemImage);
                 },
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  PopupMenuItem<String>(
-                    value: 'available',
-                    child: Row(
-                      children: [
-                        const Icon(Symbols.swap_horiz_rounded, size: 16),
-                        const Gap(defaultGapM),
-                        Text(
-                          '대여 가능 여부 변경',
-                          style: context.textTheme.bodySmall,
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CachedNetworkImage(
+                    imageUrl: itemInfo.itemPhoto!,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) {
+                      return AspectRatio(
+                        aspectRatio: 1,
+                        child: Container(
+                          width: double.infinity,
+                          color: context.colorScheme.surfaceContainer,
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
-                  PopupMenuItem<String>(
-                    value: 'history',
-                    child: Row(
-                      children: [
-                        const Icon(Symbols.history_rounded, size: 16),
-                        const Gap(defaultGapM),
-                        Text(
-                          '대여 내역',
-                          style: context.textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'edit',
-                    child: Row(
-                      children: [
-                        const Icon(Symbols.border_color_rounded, size: 16),
-                        const Gap(defaultGapM),
-                        Text(
-                          '물품 수정',
-                          style: context.textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'delete',
-                    child: Row(
-                      children: [
-                        const Icon(Symbols.delete_rounded, size: 16),
-                        const Gap(defaultGapM),
-                        Text(
-                          '물품 삭제',
-                          style: context.textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
+              const Gap(defaultGapXL),
+              ClubItemInfoBox(itemInfo: itemInfo, itemOverdue: itemOverdue),
+              const Gap(defaultGapXL),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: defaultPaddingM),
+                child: Row(
+                  children: [
+                    Text(
+                      '대여 내역',
+                      style: context.textTheme.labelLarge,
+                    ),
+                    const Gap(defaultGapS),
+                    CustomInfoTooltip(tooltipMessage: '대여 내역을 누르면 ${itemInfo.itemName}을 대여한\n회원 정보를 확인할 수 있어요'),
+                  ],
+                ),
+              ),
+              const Gap(defaultGapM),
+              ClubItemHistoryPanel(
+                itemName: itemInfo.itemName!,
+                itemId: itemInfo.itemId!,
+              ),
+              const Gap(defaultGapXL),
             ],
           ),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () => GeneralFunctions.pushImageView(context, itemPhoto),
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: CachedNetworkImage(
-                        imageUrl: itemInfo.itemPhoto!,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) {
-                          return AspectRatio(
-                            aspectRatio: 1,
-                            child: Container(
-                              width: double.infinity,
-                              color: context.colorScheme.surfaceContainer,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(defaultPaddingM),
-                    child: Column(
-                      children: [
-                        Center(
-                          child: Text(
-                            GeneralFunctions.formatItemCategory(itemInfo.itemCategory!),
-                            style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface),
-                          ),
-                        ),
-                        const Gap(defaultGapS),
-                        Center(
-                          child: Text(
-                            itemInfo.itemName!,
-                            style: context.textTheme.titleLarge,
-                          ),
-                        ),
-                        if (itemInfo.itemAvailable != null && !itemInfo.itemAvailable!)
-                          Column(
-                            children: [
-                              const Gap(defaultGapS),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: defaultPaddingS - 8,
-                                  vertical: defaultPaddingXS - 8,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: context.colorScheme.error.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Symbols.block_rounded,
-                                      size: 16,
-                                      color: context.colorScheme.error,
-                                    ),
-                                    const Gap(defaultGapS),
-                                    Text(
-                                      '대여 불가',
-                                      style: context.textTheme.titleSmall?.copyWith(
-                                        color: context.colorScheme.error,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        const Gap(defaultGapS),
-                        ClubItemRentalStateBox(isRented: itemInfo.itemUsing!),
-                        const Gap(defaultGapXL * 2),
-                        CustomInfoBox(
-                          infoTitle: '물품 설명',
-                          child: CustomInfoContent(
-                            infoContent: itemInfo.itemDescription!,
-                            icon: Icon(
-                              Symbols.info_rounded,
-                              size: 16,
-                              color: context.colorScheme.outline,
-                            ),
-                          ),
-                        ),
-                        const Gap(defaultGapXL),
-                        CustomInfoBox(
-                          infoTitle: '물품 추가 정보',
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomInfoContent(
-                                infoContent: itemInfo.itemLocation!,
-                                icon: Icon(
-                                  Symbols.pin_drop_rounded,
-                                  size: 16,
-                                  color: context.colorScheme.outline,
-                                ),
-                              ),
-                              const Gap(defaultGapM),
-                              CustomInfoContent(
-                                infoContent: '${itemInfo.itemRentalMaxDay!.toString()}일 대여 가능',
-                                icon: Icon(
-                                  Symbols.hourglass_rounded,
-                                  size: 16,
-                                  color: context.colorScheme.outline,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _pushItemHistoryPage(BuildContext context, int itemId) {
-    Navigator.push(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => ClubItemHistoryPage(itemId: itemId),
+        ),
       ),
     );
   }
 
+  Future<void> _toggleItemRentAvailable(BuildContext context, WidgetRef ref, Item itemInfo) async {
+    try {
+      final bool? isAvailable = await showDialog<bool>(
+        context: context,
+        builder: (context) => CustomInteractionDialog(
+          dialogTitle: '대여 가능 여부 변경',
+          dialogContent: itemInfo.itemAvailable! ? '다음 대여부터 대여 불가로 변경할게요.' : '대여 가능으로 변경할게요.',
+          dialogButtonText: '변경',
+          dialogButtonColor: context.colorScheme.primary,
+        ),
+      );
+
+      if (isAvailable != true) return;
+
+      await ref.read(itemProvider.notifier).toggleItemRentAvailable(itemInfo.itemId!, !itemInfo.itemAvailable!);
+      GeneralFunctions.toastMessage('대여 가능 여부가 변경되었어요');
+    } catch (e) {
+      GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
+    }
+  }
+
   void _pushItemEditPage(BuildContext context, Item itemInfo) {
+    if (itemInfo.itemUsing!) {
+      GeneralFunctions.toastMessage('현재 대여 중인 물품은 수정할 수 없어요');
+      return;
+    }
+
     Navigator.push(
       context,
       CupertinoPageRoute(
@@ -265,30 +137,29 @@ class ClubItemDetailPage extends ConsumerWidget {
     );
   }
 
-  Future<void> _deleteItem(BuildContext context, WidgetRef ref) async {
+  Future<void> _deleteItem(BuildContext context, WidgetRef ref, Item itemInfo) async {
     try {
+      if (itemInfo.itemUsing!) {
+        GeneralFunctions.toastMessage('현재 대여 중인 물품은 삭제할 수 없어요');
+        return;
+      }
+
       final bool? isDelete = await showDialog<bool>(
         context: context,
-        builder: (context) => const ClubItemDeleteDialog(),
+        builder: (context) => const CustomInteractionDialog(
+          dialogTitle: '물품 삭제',
+          dialogContent: '물품을 삭제하면 되돌릴 수 없어요.',
+        ),
       );
 
-      if (isDelete == true) {
-        await ref.read(itemProvider.notifier).deleteItem(itemId);
+      if (isDelete != true) return;
 
-        if (context.mounted) {
-          GeneralFunctions.toastMessage('물품이 삭제되었어요');
-          Navigator.pop(context);
-        }
+      await ref.read(itemProvider.notifier).deleteItem(itemInfo.itemId!);
+      GeneralFunctions.toastMessage('물품이 삭제되었어요');
+
+      if (context.mounted) {
+        Navigator.pop(context);
       }
-    } catch (e) {
-      GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
-    }
-  }
-
-  Future<void> _toggleItemRentAvailable(BuildContext context, WidgetRef ref, bool itemAvailable) async {
-    try {
-      await ref.read(itemProvider.notifier).toggleItemRentAvailable(itemId, !itemAvailable);
-      GeneralFunctions.toastMessage('대여 가능 여부가 변경되었어요');
     } catch (e) {
       GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
     }

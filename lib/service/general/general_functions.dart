@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:currency_formatter/currency_formatter.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../view/themes/custom_widget/interaction/custom_permission_denied_dialog.dart';
@@ -22,6 +25,12 @@ class GeneralFunctions {
       backgroundColor: const Color(0xFF6C6E75).withOpacity(0.8),
       textColor: const Color(0xFFFCFCFC),
     );
+  }
+
+  /// 클립보드 함수
+  static void clipboardCopy(String content, String toastMsg) async {
+    await Clipboard.setData(ClipboardData(text: content));
+    await toastMessage(toastMsg);
   }
 
   /// 회원 정보 관련 함수
@@ -71,7 +80,7 @@ class GeneralFunctions {
       case 'SECRETARY':
         return '총무';
       case 'OFFICER':
-        return '임원진';
+        return '임원';
       case 'MEMBER':
         return '회원';
       default:
@@ -188,6 +197,15 @@ class GeneralFunctions {
     if (image == null) return;
 
     final imageFile = File(image.path);
+    int imageSize = await imageFile.length();
+
+    int maxSizeInBytes = 10 * 1024 * 1024;
+
+    if (imageSize > maxSizeInBytes) {
+      GeneralFunctions.toastMessage('10MB 이하의 이미지만 업로드 가능해요');
+      return;
+    }
+
     List<File> pickedImage = [imageFile];
     await s3ImageNotifier.setImage(pickedImage);
   }
@@ -214,5 +232,28 @@ class GeneralFunctions {
         },
       ),
     );
+  }
+
+  /// 파일 관련 함수
+  static Future<void> requestStorageToExcel(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['xlsx', 'xls'],
+    );
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+    }
+  }
+
+  /// 시간 관련 함수
+  static String formatDateTime(DateTime? date) {
+    String dateString = date.toString();
+    DateTime dateTime = DateTime.parse(dateString).toLocal();
+    int currentYear = DateTime.now().year;
+    bool isCurrentYear = dateTime.year == currentYear;
+    String dateFormat = isCurrentYear ? 'M월 d일 (E) a h:mm' : 'yyyy년 M월 d일 (E) a h:mm';
+
+    return DateFormat(dateFormat, 'ko_KR').format(dateTime);
   }
 }

@@ -1,0 +1,4 @@
+enum ScheduleCalendarViewState {
+  dayView,
+  monthView,
+}

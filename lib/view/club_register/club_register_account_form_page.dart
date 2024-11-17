@@ -4,15 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/group/group_provider.dart';
 
 import '../../service/general/general_functions.dart';
 import '../../view_model/club/club_account_provider.dart';
-import '../../view_model/club/club_provider.dart';
 import '../../view_model/club/components/club_account_validation_provider.dart';
 import '../../view_model/club/components/club_account_validation_state.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
-import '../themes/custom_widget/interface/custom_dropdown_form_field.dart';
 import '../themes/custom_widget/interaction/custom_pop_scope.dart';
+import '../themes/custom_widget/interface/custom_dropdown_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'club_register_complete_page.dart';
@@ -44,7 +44,6 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
 
   @override
   Widget build(BuildContext context) {
-    final clubInfo = ref.watch(clubProvider);
     final clubAccountValidationState = ref.watch(clubAccountValidationProvider);
     final clubAccountValidationNotifier = ref.read(clubAccountValidationProvider.notifier);
     final clubAccountInfo = ref.watch(clubAccountProvider);
@@ -53,7 +52,11 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
     return CustomPopScope(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: AppBar(),
+        appBar: AppBar(
+          centerTitle: true,
+          titleTextStyle: context.textTheme.bodySmall,
+          title: const Text('4 / 4'),
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(defaultPaddingM),
@@ -63,10 +66,10 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '마지막으로 계좌를 확인해야 해요',
+                    '동아리 회비 계좌를 등록하면\n동아리 등록이 완료돼요',
                     style: context.textTheme.headlineSmall,
                   ),
-                  const Gap(defaultGapXL * 2),
+                  const Gap(defaultGapXL),
                   Text(
                     '동아리 회비 계좌',
                     style: context.textTheme.labelLarge,
@@ -94,7 +97,8 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                       {'value': 'KEB하나은행', 'displayText': 'KEB하나은행'},
                     ],
                     onSaved: (value) => clubAccountBankName = value!,
-                    onChanged: (value) => clubAccountValidationNotifier.state = ClubAccountValidationState.notChecked,
+                    onChanged: (value) =>
+                        clubAccountValidationNotifier.state = ClubAccountValidationState.accountNotRegistered,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '은행을 선택해 주세요';
@@ -107,7 +111,8 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                     controller: clubAccountNumberController,
                     labelText: '계좌번호',
                     onSaved: (value) => clubAccountInfo.clubAccountNumber = value!,
-                    onChanged: (value) => clubAccountValidationNotifier.state = ClubAccountValidationState.notChecked,
+                    onChanged: (value) =>
+                        clubAccountValidationNotifier.state = ClubAccountValidationState.accountNotRegistered,
                     hintText: '계좌번호를 - 없이 입력해 주세요',
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -189,10 +194,10 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                         formKey.currentState?.save();
 
                         if (clubAccountValidationState == ClubAccountValidationState.valid) {
-                          await clubAccountNotifier.registerClubAccount(clubInfo.clubId);
+                          await clubAccountNotifier.registerClubAccount();
 
                           if (context.mounted) {
-                            _pushCompletePage(context);
+                            _pushCompletePage(ref, context);
                           }
                         } else if (clubAccountValidationState == ClubAccountValidationState.invalid ||
                             clubAccountValidationState == ClubAccountValidationState.notChecked) {
@@ -204,8 +209,8 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                     }
                   },
             buttonText: '완료',
-            buttonColor: Theme.of(context).colorScheme.primary,
-            buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+            buttonColor: context.colorScheme.primary,
+            buttonTextColor: context.colorScheme.inversePrimary,
             isLoading: clubAccountValidationState == ClubAccountValidationState.loading,
           ),
         ),
@@ -213,13 +218,17 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
     );
   }
 
-  void _pushCompletePage(BuildContext context) {
-    Navigator.pushAndRemoveUntil(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => ClubRegisterCompletePage(),
-      ),
-      (route) => false,
-    );
+  Future<void> _pushCompletePage(WidgetRef ref, BuildContext context) async {
+    await ref.read(groupProvider.notifier).getClubRegisterPageInfo();
+
+    if (context.mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => ClubRegisterCompletePage(),
+        ),
+        (route) => false,
+      );
+    }
   }
 }

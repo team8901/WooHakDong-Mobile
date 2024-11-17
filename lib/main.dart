@@ -6,7 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -15,12 +17,16 @@ import 'package:woohakdong/view/route_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view/themes/dark_theme.dart';
 import 'package:woohakdong/view/themes/light_theme.dart';
+import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
 import 'package:woohakdong/view_model/auth/components/auth_state.dart';
 import 'package:woohakdong/view_model/auth/components/auth_state_provider.dart';
 import 'package:woohakdong/view_model/club/club_id_provider.dart';
+import 'package:woohakdong/view_model/setting/components/setting_theme_mode.dart';
+import 'package:woohakdong/view_model/setting/setting_theme_provider.dart';
 
 import 'firebase_options.dart';
+import 'my_http_overrides.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +42,7 @@ Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
 
   if (!kDebugMode) {
-    runApp(const ProviderScope(child: MyApp()));
+    runApp(Phoenix(child: const ProviderScope(child: MyApp())));
   } else {
     await SentryFlutter.init(
       (options) {
@@ -50,7 +56,7 @@ Future<void> main() async {
           return null;
         };
       },
-      appRunner: () => runApp(const ProviderScope(child: MyApp())),
+      appRunner: () => runApp(Phoenix(child: const ProviderScope(child: MyApp()))),
     );
   }
 }
@@ -71,14 +77,24 @@ class _MyAppState extends ConsumerState<MyApp> {
     _initialization = _initializeApp();
   }
 
-  Future<void> _initializeApp() async {
-    await ref.read(authProvider.notifier).checkLoginStatus();
-    ref.watch(clubIdProvider);
-  }
-
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
+    final appThemeMode = ref.watch(settingThemeProvider);
+
+    ThemeMode themeMode;
+
+    switch (appThemeMode) {
+      case SettingThemeMode.light:
+        themeMode = ThemeMode.light;
+        break;
+      case SettingThemeMode.dark:
+        themeMode = ThemeMode.dark;
+        break;
+      case SettingThemeMode.system:
+      default:
+        themeMode = ThemeMode.system;
+    }
 
     return ScreenUtilInit(
       designSize: const Size(375, 812),
@@ -88,32 +104,40 @@ class _MyAppState extends ConsumerState<MyApp> {
           debugShowCheckedModeBanner: false,
           theme: lightTheme,
           darkTheme: darkTheme,
-          themeMode: ThemeMode.system,
+          themeMode: themeMode,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('ko', 'KR'),
+            Locale('en', 'US'),
+          ],
           home: FutureBuilder(
             future: _initialization,
             builder: (context, infoSnapshot) {
               if (infoSnapshot.connectionState == ConnectionState.waiting) {
-                return const Scaffold(body: SafeArea(child: CustomCircularProgressIndicator()));
-              } else {
-                if (authState == AuthState.authenticated) {
-                  return const RoutePage();
-                } else {
-                  FlutterNativeSplash.remove();
-                  return const LoginPage();
-                }
+                return Scaffold(
+                  body: CustomCircularProgressIndicator(indicatorColor: context.colorScheme.surfaceContainer),
+                );
               }
+
+              if (authState == AuthState.authenticated) {
+                return const RoutePage();
+              }
+
+              FlutterNativeSplash.remove();
+              return const LoginPage();
             },
           ),
         );
       },
     );
   }
-}
 
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  Future<void> _initializeApp() async {
+    await ref.read(authProvider.notifier).checkLoginStatus();
+    ref.watch(clubIdProvider);
   }
 }

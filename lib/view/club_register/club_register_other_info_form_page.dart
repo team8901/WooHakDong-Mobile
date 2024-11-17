@@ -23,7 +23,11 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        titleTextStyle: context.textTheme.bodySmall,
+        title: const Text('2 / 4'),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(defaultPaddingM),
@@ -51,13 +55,14 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                 ),
                 const Gap(defaultGapM),
                 CustomTextFormField(
-                  labelText: '동아리 회비',
+                  labelText: '회비',
                   keyboardType: TextInputType.number,
                   inputFormatters: [
                     CurrencyTextInputFormatter.currency(
                       symbol: '',
                       locale: 'ko_KR',
-                    )
+                    ),
+                    LengthLimitingTextInputFormatter(8),
                   ],
                   onSaved: (value) => clubInfo.clubDues = int.parse(value!.replaceAll(',', '')),
                   validator: (value) {

@@ -7,30 +7,26 @@ import '../../../model/group/group.dart';
 import '../../themes/spacing.dart';
 
 class ClubRegisterQrCard extends StatelessWidget {
+  final Group? groupInfo;
+
   const ClubRegisterQrCard({
     super.key,
     required this.groupInfo,
   });
 
-  final Group? groupInfo;
-
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: context.colorScheme.surfaceDim,
-        borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-        border: Border.all(color: context.colorScheme.surfaceContainer),
-      ),
+      color: context.colorScheme.surfaceContainerHighest,
       padding: const EdgeInsets.symmetric(
-        vertical: defaultPaddingS * 2,
+        vertical: defaultPaddingS * 2 - (defaultPaddingS / 2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: defaultPaddingS * 2),
+            margin: const EdgeInsets.symmetric(horizontal: defaultPaddingS * 2 - (defaultPaddingS / 2)),
             child: Text(
               '${groupInfo?.groupName}',
               style: context.textTheme.headlineLarge?.copyWith(

@@ -6,11 +6,13 @@ import '../../spacing.dart';
 
 class CustomInfoBox extends StatelessWidget {
   final String infoTitle;
+  final Widget? infoTitleIcon;
   final Widget child;
 
   const CustomInfoBox({
     super.key,
     required this.infoTitle,
+    this.infoTitleIcon,
     required this.child,
   });
 
@@ -19,9 +21,15 @@ class CustomInfoBox extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          infoTitle,
-          style: context.textTheme.labelLarge,
+        Row(
+          children: [
+            Text(
+              infoTitle,
+              style: context.textTheme.labelLarge,
+            ),
+            const Gap(defaultGapS / 2),
+            if (infoTitleIcon != null) infoTitleIcon!,
+          ],
         ),
         const Gap(defaultGapM),
         Container(

@@ -1,11 +1,10 @@
 import 'package:logger/logger.dart';
 
-var logger = Logger(
+final logger = Logger(
   printer: PrettyPrinter(
     methodCount: 1,
-    errorMethodCount: 8,
-    lineLength: 80,
-    colors: true,
+    errorMethodCount: 4,
+    lineLength: 160,
     printEmojis: true,
   ),
 );

@@ -10,6 +10,8 @@ class Item {
   bool? itemUsing;
   DateTime? itemRentalDate;
   int? itemRentalTime;
+  String? memberName;
+  bool? itemOverdue;
 
   Item({
     this.itemId,
@@ -23,6 +25,8 @@ class Item {
     this.itemUsing,
     this.itemRentalDate,
     this.itemRentalTime,
+    this.memberName,
+    this.itemOverdue,
   });
 
   Item copyWith({
@@ -58,6 +62,8 @@ class Item {
       itemUsing: json['itemUsing'],
       itemRentalDate: json['itemRentalDate'] != null ? DateTime.parse(json['itemRentalDate']) : null,
       itemRentalTime: json['itemRentalTime'],
+      memberName: json['memberName'],
+      itemOverdue: json['itemOverdue'],
     );
   }
 

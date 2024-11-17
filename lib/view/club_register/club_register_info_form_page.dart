@@ -17,6 +17,7 @@ import '../../view_model/club/club_provider.dart';
 import '../../view_model/club/components/club_name_validation_provider.dart';
 import '../../view_model/util/s3_image_provider.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
+import '../themes/custom_widget/button/custom_info_tooltip.dart';
 import '../themes/custom_widget/interface/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
@@ -63,7 +64,11 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        titleTextStyle: context.textTheme.bodySmall,
+        title: const Text('1 / 4'),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(defaultPaddingM),
@@ -81,9 +86,15 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 ),
               ),
               const Gap(defaultGapXL),
-              Text(
-                '동아리 로고 및 대표 사진',
-                style: context.textTheme.labelLarge,
+              Row(
+                children: [
+                  Text(
+                    '동아리 로고 및 대표 사진',
+                    style: context.textTheme.labelLarge,
+                  ),
+                  const Gap(defaultGapS / 2),
+                  const CustomInfoTooltip(tooltipMessage: '10MB 이하의 사진만 업로드 가능해요'),
+                ],
               ),
               const Gap(defaultGapM),
               SizedBox(
@@ -129,7 +140,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                   children: [
                     CustomTextFormField(
                       controller: clubNameController,
-                      labelText: '동아리 이름',
+                      labelText: '이름',
                       keyboardType: TextInputType.name,
                       onChanged: (value) => clubNameValidationNotifier.state = ClubNameValidationState.notChecked,
                       validator: (value) {
@@ -142,7 +153,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                     const Gap(defaultGapM),
                     CustomTextFormField(
                       controller: clubEnglishNameController,
-                      labelText: '동아리 영문 이름',
+                      labelText: '영문 이름',
                       hintText: '소문자와 숫자만 입력해 주세요',
                       keyboardType: TextInputType.name,
                       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-z0-9]'))],
@@ -212,8 +223,8 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                 key: descriptionFormKey,
                 child: CustomCounterTextFormField(
                   controller: clubDescriptionController,
-                  labelText: '동아리 설명',
-                  hintText: '500자 이내로 입력해 주세요',
+                  labelText: '설명',
+                  hintText: '300자 이내로 입력해 주세요',
                   minLines: 5,
                   maxLength: 300,
                   keyboardType: TextInputType.text,

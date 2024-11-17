@@ -6,12 +6,12 @@ import '../../../model/club/club_account.dart';
 import '../../themes/spacing.dart';
 
 class ClubRegisterValidAccountBox extends StatelessWidget {
+  final ClubAccount clubAccountInfo;
+
   const ClubRegisterValidAccountBox({
     super.key,
     required this.clubAccountInfo,
   });
-
-  final ClubAccount clubAccountInfo;
 
   @override
   Widget build(BuildContext context) {

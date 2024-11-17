@@ -4,18 +4,18 @@ import 'package:woohakdong/view_model/club/club_id_provider.dart';
 
 import '../../model/club/current_club.dart';
 
-final currentClubInfoProvider = StateNotifierProvider<ClubMemberMeNotifier, CurrentClub>((ref) {
-  return ClubMemberMeNotifier(ref);
+final currentClubInfoProvider = StateNotifierProvider<CurrentClubInfoNotifier, CurrentClub>((ref) {
+  return CurrentClubInfoNotifier(ref);
 });
 
-class ClubMemberMeNotifier extends StateNotifier<CurrentClub> {
+class CurrentClubInfoNotifier extends StateNotifier<CurrentClub> {
   final Ref ref;
   final CurrentClubRepository currentClubRepository = CurrentClubRepository();
 
-  ClubMemberMeNotifier(this.ref) : super(CurrentClub());
+  CurrentClubInfoNotifier(this.ref) : super(CurrentClub());
 
   Future<void> getCurrentClubInfo() async {
-    final currentClubId = ref.watch(clubIdProvider);
+    final currentClubId = ref.read(clubIdProvider);
 
     final CurrentClub currentClub = await currentClubRepository.getCurrentClubInfo(currentClubId!);
 
@@ -31,7 +31,7 @@ class ClubMemberMeNotifier extends StateNotifier<CurrentClub> {
     String clubGroupChatLink,
     String clubGroupChatPassword,
   ) async {
-    final currentClubId = ref.watch(clubIdProvider);
+    final currentClubId = ref.read(clubIdProvider);
 
     final CurrentClub updatedCurrentClub = await currentClubRepository.updateCurrentClubInfo(
       state.copyWith(
@@ -47,5 +47,7 @@ class ClubMemberMeNotifier extends StateNotifier<CurrentClub> {
     );
 
     state = updatedCurrentClub;
+
+    await getCurrentClubInfo();
   }
 }

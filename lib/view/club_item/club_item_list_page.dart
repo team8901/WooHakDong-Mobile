@@ -5,7 +5,11 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_item/club_item_add_page.dart';
 import 'package:woohakdong/view/club_item/components/club_item_page_view.dart';
 
+import '../../model/item/item_filter.dart';
+import '../../view_model/item/item_filter_provider.dart';
 import 'club_item_search_page.dart';
+import 'components/button/club_item_filter_action_button.dart';
+import 'components/dialog/club_item_using_filter_bottom_sheet.dart';
 
 class ClubItemListPage extends ConsumerStatefulWidget {
   const ClubItemListPage({super.key});
@@ -15,14 +19,36 @@ class ClubItemListPage extends ConsumerStatefulWidget {
 }
 
 class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with SingleTickerProviderStateMixin {
-  late TabController tabController = TabController(
-    length: 7,
-    vsync: this,
-  );
+  late TabController tabController;
+  final categories = const [
+    null,
+    'DIGITAL',
+    'SPORT',
+    'BOOK',
+    'CLOTHES',
+    'STATIONERY',
+    'ETC',
+  ];
 
   @override
   void initState() {
     super.initState();
+    tabController = TabController(
+      length: categories.length,
+      vsync: this,
+    );
+
+    tabController.addListener(() {
+      if (!tabController.indexIsChanging) {
+        final selectedCategory = categories[tabController.index];
+
+        ref.read(itemFilterProvider.notifier).state = ItemFilter(
+          category: selectedCategory,
+          using: ref.read(itemFilterProvider).using,
+          available: ref.read(itemFilterProvider).available,
+        );
+      }
+    });
   }
 
   @override
@@ -33,11 +59,12 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
 
   @override
   Widget build(BuildContext context) {
+    final filter = ref.watch(itemFilterProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('물품'),
         actions: [
-          /// TODO 물품 검색 추가하기
           IconButton(
             onPressed: () => _pushItemSearchPage(context),
             icon: const Icon(Symbols.search_rounded),
@@ -50,7 +77,6 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
             TabBar(
               controller: tabController,
               isScrollable: true,
-              physics: const ClampingScrollPhysics(),
               tabs: const [
                 Tab(text: '전체'),
                 Tab(text: '디지털'),
@@ -61,18 +87,31 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
                 Tab(text: '기타'),
               ],
             ),
+            ClubItemFilterActionButton(
+              filter: filter,
+              onUsingFilterTap: () => showModalBottomSheet(
+                useSafeArea: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return const ClubItemUsingFilterBottomSheet();
+                },
+              ),
+              onAvailableFilterTap: () => showModalBottomSheet(
+                useSafeArea: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return const ClubItemUsingFilterBottomSheet();
+                },
+              ),
+            ),
             Expanded(
               child: TabBarView(
                 controller: tabController,
-                children: const [
-                  ClubItemPageView(),
-                  ClubItemPageView(filterCategory: 'DIGITAL'),
-                  ClubItemPageView(filterCategory: 'SPORT'),
-                  ClubItemPageView(filterCategory: 'BOOK'),
-                  ClubItemPageView(filterCategory: 'CLOTHES'),
-                  ClubItemPageView(filterCategory: 'STATIONERY'),
-                  ClubItemPageView(filterCategory: 'ETC'),
-                ],
+                physics: const NeverScrollableScrollPhysics(),
+                children: List.generate(
+                  categories.length,
+                  (index) => const ClubItemPageView(),
+                ),
               ),
             ),
           ],
@@ -80,8 +119,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _pushItemAddPage(context),
-        tooltip: '동아리 물품을 추가해 보세요',
-        child: const Icon(Symbols.add_rounded, weight: 600, size: 32),
+        child: const Icon(Symbols.add_2_rounded, weight: 600, size: 28),
       ),
     );
   }

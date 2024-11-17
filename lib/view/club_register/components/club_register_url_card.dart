@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
@@ -9,12 +8,12 @@ import '../../../service/general/general_functions.dart';
 import '../../themes/spacing.dart';
 
 class ClubRegisterUrlCard extends StatelessWidget {
+  final Group? groupInfo;
+
   const ClubRegisterUrlCard({
     super.key,
     required this.groupInfo,
   });
-
-  final Group? groupInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class ClubRegisterUrlCard extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                '${groupInfo?.groupJoinLink}',
+                groupInfo!.groupJoinLink!,
                 style: context.textTheme.titleSmall,
                 softWrap: true,
                 overflow: TextOverflow.visible,
@@ -43,11 +42,7 @@ class ClubRegisterUrlCard extends StatelessWidget {
             ),
             const Gap(defaultGapM),
             InkWell(
-              onTap: () async {
-                Clipboard.setData(ClipboardData(text: '${groupInfo?.groupJoinLink}'));
-
-                await GeneralFunctions.toastMessage('전용 페이지 링크를 복사했어요');
-              },
+              onTap: () => GeneralFunctions.clipboardCopy(groupInfo!.groupJoinLink!, '전용 페이지 링크를 복사했어요'),
               child: Ink(
                 child: Icon(
                   Symbols.content_copy_rounded,
