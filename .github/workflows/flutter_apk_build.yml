@@ -35,7 +35,7 @@ jobs:
       - name: Create Firebase Config Files
         run: |
           echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > android/app/google-services.json
-          echo "${{ secrets.FIREBASE_OPTIONS }}" > lib/firebase_options.dart
+          echo "${{ secrets.FIREBASE_OPTIONS_DART }}" > lib/firebase_options.dart
           mkdir -p ios/Runner
           echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}" > ios/Runner/GoogleService-Info.plist
 
