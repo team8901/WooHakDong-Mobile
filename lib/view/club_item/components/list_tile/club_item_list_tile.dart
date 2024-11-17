@@ -131,7 +131,7 @@ class ClubItemListTile extends ConsumerWidget {
                       ),
                       border: Border.all(
                         color: context.colorScheme.surfaceContainer,
-                        width: 1,
+                        width: 0.4,
                       ),
                     ),
                   ),

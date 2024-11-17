@@ -52,7 +52,7 @@ class ClubMemberItemHistoryListTile extends StatelessWidget {
                 ),
                 border: Border.all(
                   color: context.colorScheme.surfaceContainer,
-                  width: 1,
+                  width: 0.4,
                 ),
               ),
             ),

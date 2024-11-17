@@ -25,8 +25,12 @@ class ClubItemFilterSheetButton extends StatelessWidget {
         height: 32.h,
         padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
         decoration: BoxDecoration(
+          border: Border.all(
+            color: selected ? Colors.transparent : context.colorScheme.surfaceContainer,
+            width: 1,
+          ),
           borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
-          color: selected ? context.colorScheme.secondary : context.colorScheme.surfaceContainer,
+          color: selected ? context.colorScheme.secondary : Colors.transparent,
         ),
         child: Center(
           child: Text(

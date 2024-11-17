@@ -12,7 +12,7 @@ class CustomHorizontalDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Divider(
       color: context.colorScheme.surfaceContainer,
-      thickness: 0.8,
+      thickness: 0.6,
       height: 0,
       indent: defaultPaddingM,
       endIndent: defaultPaddingM,

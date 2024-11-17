@@ -50,7 +50,7 @@ class ClubMemberSearchListTile extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  const Gap(defaultGapM),
+                  const Gap(defaultGapXL),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

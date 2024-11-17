@@ -34,8 +34,12 @@ class ClubItemFilterActionButton extends StatelessWidget {
               height: 32.h,
               padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
               decoration: BoxDecoration(
+                border: Border.all(
+                  color: filter.using == null ? context.colorScheme.surfaceContainer : Colors.transparent,
+                  width: 1,
+                ),
                 borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
-                color: filter.using == null ? context.colorScheme.surfaceContainer : context.colorScheme.secondary,
+                color: filter.using == null ? Colors.transparent : context.colorScheme.secondary,
               ),
               child: Center(
                 child: Text(
@@ -59,8 +63,12 @@ class ClubItemFilterActionButton extends StatelessWidget {
               height: 32.h,
               padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
               decoration: BoxDecoration(
+                border: Border.all(
+                  color: filter.overdue == null ? context.colorScheme.surfaceContainer : Colors.transparent,
+                  width: 1,
+                ),
                 borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
-                color: filter.overdue == null ? context.colorScheme.surfaceContainer : context.colorScheme.secondary,
+                color: filter.overdue == null ? Colors.transparent : context.colorScheme.secondary,
               ),
               child: Center(
                 child: Text(
@@ -84,8 +92,12 @@ class ClubItemFilterActionButton extends StatelessWidget {
               height: 32.h,
               padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
               decoration: BoxDecoration(
+                border: Border.all(
+                  color: filter.available == null ? context.colorScheme.surfaceContainer : Colors.transparent,
+                  width: 1,
+                ),
                 borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
-                color: filter.available == null ? context.colorScheme.surfaceContainer : context.colorScheme.secondary,
+                color: filter.available == null ? Colors.transparent : context.colorScheme.secondary,
               ),
               child: Center(
                 child: Text(
