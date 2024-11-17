@@ -128,7 +128,7 @@ class SettingPage extends ConsumerWidget {
       );
 
       if (isSecede == true) {
-        GeneralFunctions.toastMessage('기능 구현 예정');
+        GeneralFunctions.toastMessage('기능 구현 중...');
       }
     } catch (e) {
       GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');

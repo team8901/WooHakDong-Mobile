@@ -20,7 +20,7 @@ import '../themes/custom_widget/button/custom_info_tooltip.dart';
 import '../themes/custom_widget/interface/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
-import 'components/club_info_edit_controller.dart';
+import 'components/etc/club_info_edit_controller.dart';
 
 class ClubInfoEditPage extends ConsumerStatefulWidget {
   const ClubInfoEditPage({super.key});

@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/view/club_info/components/club_info_action_buitton.dart';
-import 'package:woohakdong/view/club_info/components/club_info_box.dart';
+import 'package:woohakdong/view/club_info/components/box/club_info_box.dart';
+import 'package:woohakdong/view/club_info/components/box/club_info_group_manage_box.dart';
+import 'package:woohakdong/view/club_info/components/box/club_info_item_manage_box.dart';
+import 'package:woohakdong/view/club_info/components/box/club_info_manage_box.dart';
+import 'package:woohakdong/view/club_info/components/box/club_info_member_manage_box.dart';
+import 'package:woohakdong/view/club_info/components/club_info_action_button.dart';
 import 'package:woohakdong/view/setting/setting_page.dart';
 import 'package:woohakdong/view_model/club/club_list_provider.dart';
 
+import '../../service/general/general_functions.dart';
 import '../../view_model/club/current_club_info_provider.dart';
 import '../../view_model/club_member/club_member_count_provider.dart';
+import '../../view_model/club_member/club_member_me_provider.dart';
 import '../../view_model/group/group_provider.dart';
 import '../../view_model/item/item_count_provider.dart';
 import '../themes/spacing.dart';
@@ -23,6 +29,7 @@ class ClubInfoPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentClubInfo = ref.watch(currentClubInfoProvider);
+    final clubMemberMe = ref.watch(clubMemberMeProvider);
     final clubMemberCount = ref.watch(clubMemberCountProvider);
     final itemCount = ref.watch(itemCountProvider);
 
@@ -64,7 +71,6 @@ class ClubInfoPage extends ConsumerWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.symmetric(vertical: defaultPaddingM),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,8 +86,20 @@ class ClubInfoPage extends ConsumerWidget {
                 onTapPromotion: () => _pushClubPromotionPage(ref, context),
               ),
               const Gap(defaultGapXL * 2),
-
-              /// TODO 회장 역할 위임 버튼 만들기 (회장만 보이게)
+              ClubInfoGroupManageBox(onTap: () => GeneralFunctions.toastMessage('기능 구현 중...')),
+              const Gap(defaultGapXL),
+              ClubInfoMemberManageBox(
+                onClubMemberExportTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+                onClubMemberImportTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+              ),
+              const Gap(defaultGapXL),
+              ClubInfoItemManageBox(onClubItemExportTap: () => GeneralFunctions.toastMessage('기능 구현 중...')),
+              const Gap(defaultGapXL),
+              if (clubMemberMe.clubMemberRole == 'PRESIDENT')
+                ClubInfoManageBox(
+                  onTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+                  onChangePresidentTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+                ),
             ],
           ),
         ),
