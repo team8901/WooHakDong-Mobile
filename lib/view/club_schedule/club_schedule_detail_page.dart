@@ -21,18 +21,17 @@ class ClubScheduleDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentClubId = ref.watch(clubIdProvider);
     final scheduleInfo = ref.watch(scheduleProvider);
 
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () async => await _sendClubScheduleNotification(context, currentClubId!, scheduleInfo.scheduleId!),
+            onPressed: () async => await _sendScheduleEmail(ref, context, scheduleInfo.scheduleId!),
             icon: const Icon(Symbols.forward_to_inbox_rounded),
           ),
           IconButton(
-            onPressed: () => _pushItemEditPage(context, scheduleInfo),
+            onPressed: () => _pushScheduleEditPage(context, scheduleInfo),
             icon: const Icon(Symbols.edit_rounded),
           ),
           IconButton(
@@ -133,7 +132,8 @@ class ClubScheduleDetailPage extends ConsumerWidget {
     );
   }
 
-  Future<void> _sendClubScheduleNotification(BuildContext context, int clubId, int scheduleId) async {
+  Future<void> _sendScheduleEmail(WidgetRef ref, BuildContext context, int scheduleId) async {
+    final currentClubId = ref.watch(clubIdProvider);
     final NotificationRepository notificationRepository = NotificationRepository();
 
     try {
@@ -149,14 +149,14 @@ class ClubScheduleDetailPage extends ConsumerWidget {
 
       if (isSend != true) return;
 
-      await notificationRepository.sendClubScheduleNotification(clubId, scheduleId);
+      await notificationRepository.sendClubScheduleNotification(currentClubId!, scheduleId);
       GeneralFunctions.toastMessage('동아리 정보를 회원들에게 메일로 전송했어요');
     } catch (e) {
       GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
     }
   }
 
-  void _pushItemEditPage(BuildContext context, Schedule scheduleInfo) {
+  void _pushScheduleEditPage(BuildContext context, Schedule scheduleInfo) {
     Navigator.push(
       context,
       CupertinoPageRoute(

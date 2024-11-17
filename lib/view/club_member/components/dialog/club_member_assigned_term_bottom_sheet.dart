@@ -10,20 +10,20 @@ import '../../../themes/spacing.dart';
 import '../../../themes/theme_context.dart';
 
 class ClubMemberAssignedTermBottomSheet extends ConsumerWidget {
-  const ClubMemberAssignedTermBottomSheet({
-    super.key,
-  });
+  const ClubMemberAssignedTermBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedTerm = ref.watch(clubSelectedTermProvider);
     final clubMemberTermList = ref.watch(clubMemberTermListProvider);
 
-    return SizedBox(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.36,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.4,
+        minHeight: MediaQuery.of(context).size.height * 0.2,
+      ),
       child: ListView.separated(
-        padding: const EdgeInsets.only(bottom: defaultPaddingM),
+        shrinkWrap: true,
         separatorBuilder: (context, index) => const Gap(defaultGapS),
         itemCount: clubMemberTermList.length + 1,
         itemBuilder: (context, index) {

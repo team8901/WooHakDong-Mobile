@@ -28,11 +28,13 @@ class ClubInfoBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SizedBox(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.36,
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.4,
+        minHeight: MediaQuery.of(context).size.height * 0.2,
+      ),
       child: ListView.separated(
-        padding: const EdgeInsets.only(bottom: defaultPaddingM),
+        shrinkWrap: true,
         separatorBuilder: (context, index) => const Gap(defaultGapS),
         itemCount: clubList.length + 2,
         itemBuilder: (context, index) {
@@ -66,40 +68,36 @@ class ClubInfoBottomSheet extends ConsumerWidget {
               onTap: () => _changeClub(club, ref, context),
             );
           } else {
-            return Column(
-              children: [
-                InkWell(
-                  onTap: () => _pushClubRegisterCautionPage(context),
-                  highlightColor: context.colorScheme.onInverseSurface,
-                  child: Ink(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPaddingM,
-                      vertical: defaultPaddingS / 2,
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 40.r,
-                          height: 40.r,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: context.colorScheme.onInverseSurface,
-                          ),
-                          child: Center(
-                            child: Icon(Symbols.add_rounded, color: context.colorScheme.onSurface),
-                          ),
-                        ),
-                        const Gap(defaultGapXL),
-                        Text(
-                          '동아리 추가',
-                          style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface),
-                        ),
-                      ],
-                    ),
-                  ),
+            return InkWell(
+              onTap: () => _pushClubRegisterCautionPage(context),
+              highlightColor: context.colorScheme.surfaceContainer,
+              child: Ink(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: defaultPaddingM,
+                  vertical: defaultPaddingM / 2,
                 ),
-              ],
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 40.r,
+                      height: 40.r,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: context.colorScheme.surfaceContainer,
+                      ),
+                      child: Center(
+                        child: Icon(Symbols.add_rounded, color: context.colorScheme.onSurface),
+                      ),
+                    ),
+                    const Gap(defaultGapXL),
+                    Text(
+                      '동아리 등록하기',
+                      style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface),
+                    ),
+                  ],
+                ),
+              ),
             );
           }
         },

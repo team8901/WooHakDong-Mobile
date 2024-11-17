@@ -19,7 +19,7 @@ class ClubItemFilterSheetButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      highlightColor: context.colorScheme.onInverseSurface,
+      highlightColor: context.colorScheme.outline,
       borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
       child: Ink(
         height: 32.h,

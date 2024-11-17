@@ -13,107 +13,114 @@ class ClubItemUsingFilterBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SizedBox(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.30,
-      child: Consumer(
-        builder: (context, ref, child) {
-          final filter = ref.watch(itemFilterProvider);
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.4,
+        minHeight: MediaQuery.of(context).size.height * 0.2,
+      ),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: defaultPaddingM),
+        child: Consumer(
+          builder: (context, ref, child) {
+            final filter = ref.watch(itemFilterProvider);
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: defaultPaddingM,
-              vertical: defaultPaddingS / 2,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '물품 상태 선택',
-                  style: context.textTheme.titleLarge,
-                ),
-                const Gap(defaultGapXL),
-                Text(
-                  '대여 상태',
-                  style: context.textTheme.labelLarge,
-                ),
-                const Gap(defaultGapM),
-                Row(
-                  children: [
-                    ClubItemFilterSheetButton(
-                      label: '보관 중',
-                      selected: filter.using == false,
-                      onTap: () {
-                        final isCurrentlySelected = filter.using == false;
-                        (isCurrentlySelected)
-                            ? ref.read(itemFilterProvider.notifier).state = ItemFilter(
-                                category: ref.read(itemFilterProvider).category,
-                                using: null,
-                                available: ref.read(itemFilterProvider).available,
-                              )
-                            : ref.read(itemFilterProvider.notifier).state = filter.copyWith(using: false);
-                      },
-                    ),
-                    const Gap(defaultGapS),
-                    ClubItemFilterSheetButton(
-                      label: '대여 중',
-                      selected: filter.using == true,
-                      onTap: () {
-                        final isCurrentlySelected = filter.using == true;
-                        (isCurrentlySelected)
-                            ? ref.read(itemFilterProvider.notifier).state = ItemFilter(
-                                category: ref.read(itemFilterProvider).category,
-                                using: null,
-                                available: ref.read(itemFilterProvider).available,
-                              )
-                            : ref.read(itemFilterProvider.notifier).state = filter.copyWith(using: true);
-                      },
-                    ),
-                  ],
-                ),
-                const Gap(defaultGapXL),
-                Text(
-                  '대여 가능 여부',
-                  style: context.textTheme.labelLarge,
-                ),
-                const Gap(defaultGapM),
-                Row(
-                  children: [
-                    ClubItemFilterSheetButton(
-                      label: '대여 가능',
-                      selected: filter.available == true,
-                      onTap: () {
-                        final isCurrentlySelected = filter.available == true;
-                        (isCurrentlySelected)
-                            ? ref.read(itemFilterProvider.notifier).state = ItemFilter(
-                                category: ref.read(itemFilterProvider).category,
-                                using: ref.read(itemFilterProvider).using,
-                                available: null,
-                              )
-                            : ref.read(itemFilterProvider.notifier).state = filter.copyWith(available: true);
-                      },
-                    ),
-                    const Gap(defaultGapS),
-                    ClubItemFilterSheetButton(
-                      label: '대여 불가',
-                      selected: filter.available == false,
-                      onTap: () {
-                        final isCurrentlySelected = filter.available == false;
-                        (isCurrentlySelected)
-                            ? ref.read(itemFilterProvider.notifier).state = ItemFilter(
-                                category: ref.read(itemFilterProvider).category,
-                                using: ref.read(itemFilterProvider).using,
-                                available: null,
-                              )
-                            : ref.read(itemFilterProvider.notifier).state = filter.copyWith(available: false);
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: defaultPaddingM,
+                vertical: defaultPaddingS / 2,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '물품 상태 선택',
+                    style: context.textTheme.titleLarge,
+                  ),
+                  const Gap(defaultGapXL),
+                  Text(
+                    '대여 상태',
+                    style: context.textTheme.labelLarge,
+                  ),
+                  const Gap(defaultGapM),
+                  Row(
+                    children: [
+                      ClubItemFilterSheetButton(
+                        label: '보관 중',
+                        selected: filter.using == false,
+                        onTap: () {
+                          final isCurrentlySelected = filter.using == false;
+                          (isCurrentlySelected)
+                              ? ref.read(itemFilterProvider.notifier).state = ItemFilter(
+                                  category: ref.read(itemFilterProvider).category,
+                                  using: null,
+                                  available: ref.read(itemFilterProvider).available,
+                                )
+                              : ref.read(itemFilterProvider.notifier).state = filter.copyWith(using: false);
+                        },
+                      ),
+                      const Gap(defaultGapS),
+                      ClubItemFilterSheetButton(
+                        label: '대여 중',
+                        selected: filter.using == true,
+                        onTap: () {
+                          final isCurrentlySelected = filter.using == true;
+                          (isCurrentlySelected)
+                              ? ref.read(itemFilterProvider.notifier).state = ItemFilter(
+                                  category: ref.read(itemFilterProvider).category,
+                                  using: null,
+                                  available: ref.read(itemFilterProvider).available,
+                                )
+                              : ref.read(itemFilterProvider.notifier).state = filter.copyWith(using: true);
+                        },
+                      ),
+                    ],
+                  ),
+                  const Gap(defaultGapXL),
+                  Text(
+                    '대여 가능 여부',
+                    style: context.textTheme.labelLarge,
+                  ),
+                  const Gap(defaultGapM),
+                  Row(
+                    children: [
+                      ClubItemFilterSheetButton(
+                        label: '대여 가능',
+                        selected: filter.available == true,
+                        onTap: () {
+                          final isCurrentlySelected = filter.available == true;
+                          (isCurrentlySelected)
+                              ? ref.read(itemFilterProvider.notifier).state = ItemFilter(
+                                  category: ref.read(itemFilterProvider).category,
+                                  using: ref.read(itemFilterProvider).using,
+                                  available: null,
+                                )
+                              : ref.read(itemFilterProvider.notifier).state = filter.copyWith(available: true);
+                        },
+                      ),
+                      const Gap(defaultGapS),
+                      ClubItemFilterSheetButton(
+                        label: '대여 불가',
+                        selected: filter.available == false,
+                        onTap: () {
+                          final isCurrentlySelected = filter.available == false;
+                          (isCurrentlySelected)
+                              ? ref.read(itemFilterProvider.notifier).state = ItemFilter(
+                                  category: ref.read(itemFilterProvider).category,
+                                  using: ref.read(itemFilterProvider).using,
+                                  available: null,
+                                )
+                              : ref.read(itemFilterProvider.notifier).state = filter.copyWith(available: false);
+                        },
+                      ),
+                    ],
+                  ),
+                  const Gap(defaultPaddingM / 2),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

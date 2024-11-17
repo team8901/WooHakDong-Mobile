@@ -90,12 +90,14 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
             ClubItemFilterActionButton(
               filter: filter,
               onUsingFilterTap: () => showModalBottomSheet(
+                useSafeArea: true,
                 context: context,
                 builder: (BuildContext context) {
                   return const ClubItemUsingFilterBottomSheet();
                 },
               ),
               onAvailableFilterTap: () => showModalBottomSheet(
+                useSafeArea: true,
                 context: context,
                 builder: (BuildContext context) {
                   return const ClubItemUsingFilterBottomSheet();

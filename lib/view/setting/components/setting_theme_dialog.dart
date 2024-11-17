@@ -126,7 +126,7 @@ class _ThemeSelectionDialogState extends State<ThemeSelectionDialog> {
                 InkWell(
                   onTap: () => Navigator.pop(context, selectedThemeMode),
                   child: Text(
-                    '확인',
+                    '변경',
                     style: context.textTheme.titleSmall?.copyWith(
                       color: context.colorScheme.primary,
                     ),

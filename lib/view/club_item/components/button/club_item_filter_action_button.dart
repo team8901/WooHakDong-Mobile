@@ -23,13 +23,14 @@ class ClubItemFilterActionButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(
         left: defaultPaddingM,
-        top: defaultPaddingXS,
+        top: defaultPaddingM / 2,
+        bottom: defaultPaddingM / 2,
       ),
       child: Row(
         children: [
           InkWell(
             onTap: onUsingFilterTap,
-            highlightColor: context.colorScheme.surfaceContainer,
+            highlightColor: context.colorScheme.outline,
             borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
             child: Ink(
               height: 32.h,
@@ -54,7 +55,7 @@ class ClubItemFilterActionButton extends StatelessWidget {
           const Gap(defaultGapS),
           InkWell(
             onTap: onAvailableFilterTap,
-            highlightColor: context.colorScheme.surfaceContainer,
+            highlightColor: context.colorScheme.outline,
             borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
             child: Ink(
               height: 32.h,

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -28,13 +29,16 @@ class ClubInfoListTile extends ConsumerWidget {
         : const AssetImage('assets/images/club/club_basic_image.jpg') as ImageProvider;
 
     return InkWell(
-      onTap: onTap,
-      highlightColor: context.colorScheme.onInverseSurface,
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onTap();
+      },
+      highlightColor: context.colorScheme.surfaceContainer,
       child: Ink(
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: defaultPaddingM,
-            vertical: defaultPaddingS / 2,
+            vertical: defaultPaddingM / 2,
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,7 +49,7 @@ class ClubInfoListTile extends ConsumerWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: context.colorScheme.onInverseSurface,
+                    color: context.colorScheme.surfaceContainer,
                   ),
                   image: DecorationImage(
                     image: imageProvider,
@@ -61,12 +65,11 @@ class ClubInfoListTile extends ConsumerWidget {
                   softWrap: true,
                 ),
               ),
-              const Gap(defaultGapXL),
+              const Gap(defaultGapM),
               if (isCurrent)
                 Icon(
                   size: 20,
                   Symbols.check_circle_rounded,
-                  fill: 1,
                   color: context.colorScheme.primary,
                 ),
             ],

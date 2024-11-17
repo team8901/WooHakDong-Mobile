@@ -13,12 +13,18 @@ import '../../themes/spacing.dart';
 class ClubScheduleListTile extends ConsumerWidget {
   final Schedule schedule;
   final Future<void> Function()? onTap;
+  final Future<void> Function()? onEmailLongPress;
+  final VoidCallback? onEditLongPress;
+  final Future<void> Function()? onDeleteLongPress;
   final Color? highlightColor;
 
   const ClubScheduleListTile({
     super.key,
     required this.schedule,
     this.onTap,
+    this.onEmailLongPress,
+    this.onEditLongPress,
+    this.onDeleteLongPress,
     this.highlightColor,
   });
 
@@ -44,6 +50,20 @@ class ClubScheduleListTile extends ConsumerWidget {
               ),
               items: [
                 PopupMenuItem(
+                  value: 'email',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Symbols.forward_to_inbox_rounded,
+                        size: 16,
+                        color: context.colorScheme.outline,
+                      ),
+                      const Gap(defaultGapM),
+                      Text('이메일 전송', style: context.textTheme.bodyLarge),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
                   value: 'edit',
                   child: Row(
                     children: [
@@ -53,7 +73,7 @@ class ClubScheduleListTile extends ConsumerWidget {
                         color: context.colorScheme.outline,
                       ),
                       const Gap(defaultGapM),
-                      Text('편집', style: context.textTheme.bodyLarge),
+                      Text('수정', style: context.textTheme.bodyLarge),
                     ],
                   ),
                 ),
@@ -76,6 +96,18 @@ class ClubScheduleListTile extends ConsumerWidget {
                 ),
               ],
             );
+
+            switch (result) {
+              case 'email':
+                if (onEmailLongPress != null) await onEmailLongPress!();
+                break;
+              case 'edit':
+                if (onEditLongPress != null) onEditLongPress!();
+                break;
+              case 'delete':
+                if (onDeleteLongPress != null) await onDeleteLongPress!();
+                break;
+            }
           },
           highlightColor: highlightColor ?? context.colorScheme.surfaceContainer,
           child: Ink(

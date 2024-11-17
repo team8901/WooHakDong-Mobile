@@ -18,7 +18,7 @@ class ClubRegisterQrCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: context.colorScheme.surfaceDim,
+      color: context.colorScheme.surfaceContainerHighest,
       padding: const EdgeInsets.symmetric(
         vertical: defaultPaddingS * 2 - (defaultPaddingS / 2),
       ),

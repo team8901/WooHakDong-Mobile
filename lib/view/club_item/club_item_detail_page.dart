@@ -32,12 +32,7 @@ class ClubItemDetailPage extends ConsumerWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () async => await _toggleItemRentAvailable(
-              context,
-              ref,
-              itemInfo.itemId!,
-              itemInfo.itemAvailable!,
-            ),
+            onPressed: () async => await _toggleItemRentAvailable(context, ref, itemInfo),
             icon:
                 itemInfo.itemAvailable! ? const Icon(Symbols.block_rounded) : const Icon(Symbols.check_circle_rounded),
           ),
@@ -90,7 +85,7 @@ class ClubItemDetailPage extends ConsumerWidget {
                       style: context.textTheme.labelLarge,
                     ),
                     const Gap(defaultGapS),
-                     CustomInfoTooltip(tooltipMessage: '대여 내역을 누르면 ${itemInfo.itemName}을 대여한\n회원 정보를 확인할 수 있어요'),
+                    CustomInfoTooltip(tooltipMessage: '대여 내역을 누르면 ${itemInfo.itemName}을 대여한\n회원 정보를 확인할 수 있어요'),
                   ],
                 ),
               ),
@@ -107,13 +102,13 @@ class ClubItemDetailPage extends ConsumerWidget {
     );
   }
 
-  Future<void> _toggleItemRentAvailable(BuildContext context, WidgetRef ref, int itemId, bool itemAvailable) async {
+  Future<void> _toggleItemRentAvailable(BuildContext context, WidgetRef ref, Item itemInfo) async {
     try {
       final bool? isAvailable = await showDialog<bool>(
         context: context,
         builder: (context) => CustomInteractionDialog(
           dialogTitle: '대여 가능 여부 변경',
-          dialogContent: itemAvailable ? '다음 대여부터 대여 불가로 변경할게요.' : '대여 가능으로 변경할게요.',
+          dialogContent: itemInfo.itemAvailable! ? '다음 대여부터 대여 불가로 변경할게요.' : '대여 가능으로 변경할게요.',
           dialogButtonText: '변경',
           dialogButtonColor: context.colorScheme.primary,
         ),
@@ -121,7 +116,7 @@ class ClubItemDetailPage extends ConsumerWidget {
 
       if (isAvailable != true) return;
 
-      await ref.read(itemProvider.notifier).toggleItemRentAvailable(itemId, !itemAvailable);
+      await ref.read(itemProvider.notifier).toggleItemRentAvailable(itemInfo.itemId!, !itemInfo.itemAvailable!);
       GeneralFunctions.toastMessage('대여 가능 여부가 변경되었어요');
     } catch (e) {
       GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
@@ -162,8 +157,9 @@ class ClubItemDetailPage extends ConsumerWidget {
       await ref.read(itemProvider.notifier).deleteItem(itemInfo.itemId!);
       GeneralFunctions.toastMessage('물품이 삭제되었어요');
 
-      if (!context.mounted) return;
-      Navigator.pop(context);
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
     } catch (e) {
       GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
     }

@@ -31,13 +31,14 @@ class ClubMemberAssignedTermListTile extends ConsumerWidget {
 
         if (context.mounted) {
           Navigator.pop(context);
+          GeneralFunctions.toastMessage('${GeneralFunctions.formatClubAssignedTerm(clubMemberAssignedTerm.toString())} 회원 목록이에요');
         }
       },
-      highlightColor: context.colorScheme.onInverseSurface,
+      highlightColor: context.colorScheme.surfaceContainer,
       child: Ink(
         padding: const EdgeInsets.symmetric(
           horizontal: defaultPaddingM,
-          vertical: defaultPaddingS / 2,
+          vertical: defaultPaddingM / 2,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,11 +48,12 @@ class ClubMemberAssignedTermListTile extends ConsumerWidget {
               height: 40.r,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: context.colorScheme.onInverseSurface,
+                color: context.colorScheme.surfaceContainer,
               ),
               child: Center(
                 child: Icon(
                   Symbols.calendar_month_rounded,
+                  size: 20,
                   color: context.colorScheme.onSurface,
                 ),
               ),
@@ -69,7 +71,6 @@ class ClubMemberAssignedTermListTile extends ConsumerWidget {
               Icon(
                 size: 20,
                 Symbols.check_circle_rounded,
-                fill: 1,
                 color: context.colorScheme.primary,
               ),
           ],

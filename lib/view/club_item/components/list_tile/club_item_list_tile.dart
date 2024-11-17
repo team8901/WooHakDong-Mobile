@@ -15,11 +15,17 @@ import '../../../themes/spacing.dart';
 class ClubItemListTile extends ConsumerWidget {
   final Item item;
   final Future<void> Function()? onTap;
+  final Future<void> Function()? onToggleLongPress;
+  final VoidCallback? onEditLongPress;
+  final Future<void> Function()? onDeleteLongPress;
 
   const ClubItemListTile({
     super.key,
     required this.item,
     this.onTap,
+    this.onToggleLongPress,
+    this.onEditLongPress,
+    this.onDeleteLongPress,
   });
 
   @override
@@ -33,6 +39,80 @@ class ClubItemListTile extends ConsumerWidget {
       builder: (context, onTap) {
         return InkWell(
           onTap: onTap,
+          onLongPress: () async {
+            final RenderBox renderBox = context.findRenderObject() as RenderBox;
+            final position = renderBox.localToGlobal(Offset.zero);
+            final size = renderBox.size;
+
+            final result = await showMenu(
+              context: context,
+              position: RelativeRect.fromLTRB(
+                position.dx + size.width / 2,
+                position.dy + size.height / 2,
+                position.dx + size.width / 2,
+                position.dy + size.height / 2,
+              ),
+              items: [
+                PopupMenuItem(
+                  value: 'toggle',
+                  child: Row(
+                    children: [
+                      Icon(
+                        item.itemAvailable! ? Symbols.block_rounded : Symbols.check_circle_rounded,
+                        size: 16,
+                        color: context.colorScheme.outline,
+                      ),
+                      const Gap(defaultGapM),
+                      Text('대여 가능 여부 변경', style: context.textTheme.bodyLarge),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'edit',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Symbols.edit_rounded,
+                        size: 16,
+                        color: context.colorScheme.outline,
+                      ),
+                      const Gap(defaultGapM),
+                      Text('수정', style: context.textTheme.bodyLarge),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.delete,
+                        size: 16,
+                        color: context.colorScheme.outline,
+                      ),
+                      const Gap(defaultGapM),
+                      Text(
+                        '삭제',
+                        style: context.textTheme.bodyLarge,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+
+            switch (result) {
+              case 'toggle':
+                if (onToggleLongPress != null) await onToggleLongPress!();
+                break;
+              case 'edit':
+                if (onEditLongPress != null) onEditLongPress!();
+                break;
+              case 'delete':
+                if (onDeleteLongPress != null) await onDeleteLongPress!();
+                break;
+            }
+          },
           highlightColor: context.colorScheme.surfaceContainer,
           child: Ink(
             child: Padding(

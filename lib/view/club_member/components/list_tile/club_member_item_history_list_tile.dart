@@ -91,13 +91,13 @@ class ClubMemberItemHistoryListTile extends StatelessWidget {
                         Icon(
                           clubMemberItemHistory.itemReturnDate != null
                               ? Symbols.input_rounded
-                              : (clubMemberItemHistory.itemOverdue ?? false)
+                              : (clubMemberItemHistory.itemOverdue!)
                                   ? Symbols.priority_high_rounded
                                   : Symbols.lock_clock_rounded,
                           size: 16,
                           color: clubMemberItemHistory.itemReturnDate != null
                               ? context.colorScheme.onSurface
-                              : (clubMemberItemHistory.itemOverdue ?? false)
+                              : (clubMemberItemHistory.itemOverdue!)
                                   ? context.colorScheme.error
                                   : context.colorScheme.primary,
                         ),
@@ -105,13 +105,13 @@ class ClubMemberItemHistoryListTile extends StatelessWidget {
                         Text(
                           clubMemberItemHistory.itemReturnDate != null
                               ? GeneralFunctions.formatDateTime(clubMemberItemHistory.itemReturnDate!)
-                              : (clubMemberItemHistory.itemOverdue ?? false)
+                              : (clubMemberItemHistory.itemOverdue!)
                                   ? '연체됨'
                                   : '대여 중',
                           style: context.textTheme.bodySmall?.copyWith(
                             color: clubMemberItemHistory.itemReturnDate != null
                                 ? context.colorScheme.onSurface
-                                : (clubMemberItemHistory.itemOverdue ?? false)
+                                : (clubMemberItemHistory.itemOverdue!)
                                     ? context.colorScheme.error
                                     : context.colorScheme.primary,
                           ),

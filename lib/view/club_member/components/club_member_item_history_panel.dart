@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -7,6 +8,8 @@ import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../view_model/item/item_history_list_by_member_provider.dart';
+import '../../../view_model/item/item_provider.dart';
+import '../../club_item/club_item_detail_page.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../../themes/spacing.dart';
 
@@ -92,9 +95,23 @@ class _ClubMemberItemHistoryPanelState extends ConsumerState<ClubMemberItemHisto
                   physics: const NeverScrollableScrollPhysics(),
                   separatorBuilder: (context, index) => const CustomHorizontalDivider(),
                   itemCount: itemHistoryList.length,
-                  itemBuilder: (context, index) => ClubMemberItemHistoryListTile(
-                    clubMemberItemHistory: itemHistoryList[index],
-                  ),
+                  itemBuilder: (context, index) {
+                    final itemHistory = itemHistoryList[index];
+                    bool itemOverdue = itemHistory.itemOverdue!;
+
+                    if (itemHistory.itemReturnDate != null) {
+                      itemOverdue = false;
+                    }
+                    return ClubMemberItemHistoryListTile(
+                      clubMemberItemHistory: itemHistory,
+                      onTap: () => _pushItemDetailPage(
+                        ref,
+                        context,
+                        itemHistory.itemId!,
+                        itemOverdue,
+                      ),
+                    );
+                  },
                 );
               },
               loading: () => CustomCircularProgressIndicator(
@@ -117,6 +134,19 @@ class _ClubMemberItemHistoryPanelState extends ConsumerState<ClubMemberItemHisto
         ],
       ),
     );
+  }
+
+  Future<void> _pushItemDetailPage(WidgetRef ref, BuildContext context, int itemId, bool itemOverdue) async {
+    await ref.read(itemProvider.notifier).getItemInfo(itemId);
+
+    if (context.mounted) {
+      Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => ClubItemDetailPage(itemOverdue: itemOverdue),
+        ),
+      );
+    }
   }
 
   void _handleExpansion(bool isExpanded) {
