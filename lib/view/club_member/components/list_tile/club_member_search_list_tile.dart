@@ -7,7 +7,7 @@ import 'package:woohakdong/model/club_member/club_member.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_tap_debouncer.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../../../service/general/general_functions.dart';
+import '../../../../service/general/general_format.dart';
 import '../../../themes/custom_widget/etc/custom_vertical_divider.dart';
 import '../../../themes/spacing.dart';
 
@@ -71,7 +71,7 @@ class ClubMemberSearchListTile extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
                                   ),
                                   child: Text(
-                                    GeneralFunctions.formatClubRole(searchedClubMember.clubMemberRole!),
+                                    GeneralFormat.formatClubRole(searchedClubMember.clubMemberRole!),
                                     style: context.textTheme.labelLarge?.copyWith(color: context.colorScheme.primary),
                                   ),
                                 ),

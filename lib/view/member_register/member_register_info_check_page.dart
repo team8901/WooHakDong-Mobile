@@ -8,6 +8,7 @@ import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.d
 import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_content.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../service/general/general_format.dart';
 import '../../view_model/member/components/member_state.dart';
 import '../../view_model/member/components/member_state_provider.dart';
 import '../../view_model/member/member_provider.dart';
@@ -55,7 +56,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
                       ),
                       const Gap(defaultGapM),
                       CustomInfoContent(
-                        infoContent: GeneralFunctions.formatMemberGender(memberInfo.memberGender!),
+                        infoContent: GeneralFormat.formatMemberGender(memberInfo.memberGender!),
                         icon: Icon(
                           Symbols.wc_rounded,
                           size: 16,
@@ -64,7 +65,7 @@ class MemberRegisterInfoCheckPage extends ConsumerWidget {
                       ),
                       const Gap(defaultGapM),
                       CustomInfoContent(
-                        infoContent: GeneralFunctions.formatMemberPhoneNumber(memberInfo.memberPhoneNumber!),
+                        infoContent: GeneralFormat.formatMemberPhoneNumber(memberInfo.memberPhoneNumber!),
                         icon: Icon(
                           Symbols.call_rounded,
                           size: 16,

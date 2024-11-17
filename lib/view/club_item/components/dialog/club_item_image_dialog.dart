@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../../../service/general/general_image.dart';
 import '../../../../view_model/util/s3_image_provider.dart';
 
 class ClubItemImageDialog extends StatelessWidget {
@@ -38,7 +38,7 @@ class ClubItemImageDialog extends StatelessWidget {
             InkWell(
               highlightColor: context.colorScheme.surfaceContainer,
               onTap: () {
-                GeneralFunctions.requestCameraToImage(context, s3ImageNotifier);
+                GeneralImage.requestCameraToImage(context, s3ImageNotifier);
                 Navigator.pop(context);
               },
               child: Ink(
@@ -61,7 +61,7 @@ class ClubItemImageDialog extends StatelessWidget {
             InkWell(
               highlightColor: context.colorScheme.surfaceContainer,
               onTap: () {
-                GeneralFunctions.requestGalleryToImage(context, s3ImageNotifier);
+                GeneralImage.requestGalleryToImage(context, s3ImageNotifier);
                 Navigator.pop(context);
               },
               child: Ink(

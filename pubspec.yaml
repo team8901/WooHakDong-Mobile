@@ -40,9 +40,7 @@ dependencies:
   qr_flutter: ^4.1.0
   fluttertoast: ^8.2.8
   font_awesome_flutter: ^10.7.0
-  widgets_to_png: ^1.0.1
   material_symbols_icons: ^4.2789.0
-  image_gallery_saver: ^2.0.3
   cached_network_image: ^3.4.1
   sentry_flutter: ^8.9.0
   photo_view: ^0.15.0
@@ -58,6 +56,7 @@ dependencies:
   flutter_phoenix: ^1.1.1
   animated_toggle_switch: ^0.8.3
   file_picker: ^8.1.4
+  image_gallery_saver_plus: ^3.0.5
 
 dev_dependencies:
   flutter_test:

@@ -5,6 +5,7 @@ import 'package:woohakdong/view/club_schedule/components/club_schedule_edit_cont
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../model/schedule/schedule.dart';
+import '../../service/general/general_format.dart';
 import '../../service/general/general_functions.dart';
 import '../../view_model/schedule/components/schedule_state.dart';
 import '../../view_model/schedule/components/schedule_state_provider.dart';
@@ -128,7 +129,7 @@ class _ClubScheduleEditPageState extends ConsumerState<ClubScheduleEditPage> {
                               borderRadius: BorderRadius.circular(defaultBorderRadiusM),
                             ),
                             child: Text(
-                              (_selectedDate == null) ? '날짜 및 시각' : GeneralFunctions.formatDateTime(_selectedDate),
+                              (_selectedDate == null) ? '날짜 및 시각' : GeneralFormat.formatDateTime(_selectedDate),
                               style: context.textTheme.titleSmall?.copyWith(
                                 color: (_selectedDate == null)
                                     ? context.colorScheme.outline

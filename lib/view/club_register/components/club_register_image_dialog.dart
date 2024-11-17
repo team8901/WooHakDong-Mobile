@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../../service/general/general_functions.dart';
+import '../../../service/general/general_image.dart';
 import '../../../view_model/util/s3_image_provider.dart';
 
 class ClubRegisterImageDialog extends StatelessWidget {
@@ -42,7 +42,7 @@ class ClubRegisterImageDialog extends StatelessWidget {
             InkWell(
               highlightColor: context.colorScheme.surfaceContainer,
               onTap: () {
-                GeneralFunctions.requestCameraToImage(context, s3ImageNotifier);
+                GeneralImage.requestCameraToImage(context, s3ImageNotifier);
                 Navigator.pop(context);
               },
               child: Ink(
@@ -65,7 +65,7 @@ class ClubRegisterImageDialog extends StatelessWidget {
             InkWell(
               highlightColor: context.colorScheme.surfaceContainer,
               onTap: () {
-                GeneralFunctions.requestGalleryToImage(context, s3ImageNotifier);
+                GeneralImage.requestGalleryToImage(context, s3ImageNotifier);
                 Navigator.pop(context);
               },
               child: Ink(

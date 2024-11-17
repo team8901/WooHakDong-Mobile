@@ -7,6 +7,8 @@ import 'package:woohakdong/model/item/item_history.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../../../service/general/general_format.dart';
+import '../../../../service/general/general_image.dart';
 import '../../../themes/spacing.dart';
 
 class ClubMemberItemHistoryListTile extends StatelessWidget {
@@ -36,7 +38,7 @@ class ClubMemberItemHistoryListTile extends StatelessWidget {
                 GeneralFunctions.toastMessage('아직 반납 사진이 없어요');
               } else {
                 final itemReturnImage = CachedNetworkImageProvider(clubMemberItemHistory.itemReturnImage!);
-                GeneralFunctions.pushImageView(context, itemReturnImage);
+                GeneralImage.pushImageView(context, itemReturnImage);
               }
             },
             child: Container(
@@ -80,7 +82,7 @@ class ClubMemberItemHistoryListTile extends StatelessWidget {
                         ),
                         const Gap(defaultGapS / 2),
                         Text(
-                          GeneralFunctions.formatDateTime(clubMemberItemHistory.itemRentalDate),
+                          GeneralFormat.formatDateTime(clubMemberItemHistory.itemRentalDate),
                           style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
                         ),
                       ],
@@ -104,7 +106,7 @@ class ClubMemberItemHistoryListTile extends StatelessWidget {
                         const Gap(defaultGapS / 2),
                         Text(
                           clubMemberItemHistory.itemReturnDate != null
-                              ? GeneralFunctions.formatDateTime(clubMemberItemHistory.itemReturnDate!)
+                              ? GeneralFormat.formatDateTime(clubMemberItemHistory.itemReturnDate!)
                               : (clubMemberItemHistory.itemOverdue!)
                                   ? '연체됨'
                                   : '대여 중',

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/club_member/club_member.dart';
-import '../../../service/general/general_functions.dart';
+import '../../../service/general/general_format.dart';
 import '../../themes/spacing.dart';
 
 class ClubMemberRoleBox extends StatelessWidget {
@@ -27,7 +27,7 @@ class ClubMemberRoleBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
       ),
       child: Text(
-        GeneralFunctions.formatClubRole(clubMember.clubMemberRole!),
+        GeneralFormat.formatClubRole(clubMember.clubMemberRole!),
         style: context.textTheme.titleMedium?.copyWith(
           color: (clubMember.clubMemberRole != 'MEMBER')
               ? context.colorScheme.primary
