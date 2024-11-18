@@ -35,12 +35,8 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Container(
+      child: Padding(
         padding: const EdgeInsets.all(defaultPaddingS * 2),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(defaultBorderRadiusL),
-          color: context.colorScheme.surfaceBright,
-        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,

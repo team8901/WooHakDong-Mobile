@@ -72,7 +72,7 @@ class SettingPage extends ConsumerWidget {
     final selectedThemeMode = await showDialog<SettingThemeMode>(
       context: context,
       builder: (context) {
-        return ThemeSelectionDialog(
+        return SettingThemeDialog(
           initialThemeMode: ref.read(settingThemeProvider),
         );
       },

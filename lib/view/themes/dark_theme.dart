@@ -151,6 +151,10 @@ final ThemeData darkTheme = ThemeData(
     dragHandleColor: gray,
   ),
 
+  /// 다이얼로그 테마
+  dialogBackgroundColor: black,
+  dialogTheme: const DialogTheme(backgroundColor: black),
+
   /// 탭바 테마
   tabBarTheme: TabBarTheme(
     indicator: const BoxDecoration(

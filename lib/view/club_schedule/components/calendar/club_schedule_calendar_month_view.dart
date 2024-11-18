@@ -196,8 +196,7 @@ class _ClubScheduleCalendarMonthViewState extends ConsumerState<ClubScheduleCale
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          insetPadding: const EdgeInsets.symmetric(horizontal: defaultPaddingL),
-          backgroundColor: context.colorScheme.surfaceBright,
+          insetPadding: const EdgeInsets.symmetric(horizontal: defaultPaddingS * 2),
           child: SizedBox(
             height: MediaQuery.of(context).size.height * 0.6,
             child: PageView.builder(

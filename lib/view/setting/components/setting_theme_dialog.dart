@@ -5,19 +5,19 @@ import 'package:woohakdong/view_model/setting/components/setting_theme_mode.dart
 
 import '../../themes/spacing.dart';
 
-class ThemeSelectionDialog extends StatefulWidget {
+class SettingThemeDialog extends StatefulWidget {
   final SettingThemeMode initialThemeMode;
 
-  const ThemeSelectionDialog({
+  const SettingThemeDialog({
     super.key,
     required this.initialThemeMode,
   });
 
   @override
-  State<ThemeSelectionDialog> createState() => _ThemeSelectionDialogState();
+  State<SettingThemeDialog> createState() => _SettingThemeDialogState();
 }
 
-class _ThemeSelectionDialogState extends State<ThemeSelectionDialog> {
+class _SettingThemeDialogState extends State<SettingThemeDialog> {
   late SettingThemeMode selectedThemeMode;
 
   @override
@@ -29,12 +29,8 @@ class _ThemeSelectionDialogState extends State<ThemeSelectionDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Container(
+      child: Padding(
         padding: const EdgeInsets.all(defaultPaddingS * 2),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(defaultBorderRadiusL),
-          color: context.colorScheme.surfaceDim,
-        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
