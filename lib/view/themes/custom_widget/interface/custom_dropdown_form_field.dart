@@ -7,7 +7,7 @@ import '../../spacing.dart';
 
 class CustomDropdownFormField extends StatelessWidget {
   final String labelText;
-  final String? value;
+  final String? initialValue;
   final List<Map<String, String>> items;
   final ValueChanged<String?>? onChanged;
   final FormFieldSetter<String>? onSaved;
@@ -19,7 +19,7 @@ class CustomDropdownFormField extends StatelessWidget {
     super.key,
     required this.labelText,
     required this.items,
-    this.value,
+    this.initialValue,
     this.onChanged,
     this.onSaved,
     this.validator,
@@ -30,7 +30,7 @@ class CustomDropdownFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: value,
+      value: initialValue,
       icon: Icon(
         Symbols.keyboard_arrow_down_rounded,
         color: context.colorScheme.outline,

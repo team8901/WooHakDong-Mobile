@@ -49,7 +49,7 @@ class GoogleLoginButton extends ConsumerWidget {
                 ),
                 const Gap(defaultGapM),
                 (authState == AuthState.loading)
-                    ? CustomCircularProgressIndicator(
+                    ? CustomProgressIndicator(
                         indicatorColor: context.colorScheme.primary,
                       )
                     : Text(

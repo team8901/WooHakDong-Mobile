@@ -31,27 +31,27 @@ class ClubRegisterNameInfoFormPage extends ConsumerStatefulWidget {
 }
 
 class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameInfoFormPage> {
-  final GlobalKey<FormState> nameFormKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> descriptionFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _nameFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _descriptionFormKey = GlobalKey<FormState>();
 
-  late TextEditingController clubNameController;
-  late TextEditingController clubEnglishNameController;
-  late TextEditingController clubDescriptionController;
+  late TextEditingController _clubNameController;
+  late TextEditingController _clubEnglishNameController;
+  late TextEditingController _clubDescriptionController;
 
   @override
   void initState() {
     super.initState();
-    clubNameController = TextEditingController();
-    clubEnglishNameController = TextEditingController();
-    clubDescriptionController = TextEditingController();
+    _clubNameController = TextEditingController();
+    _clubEnglishNameController = TextEditingController();
+    _clubDescriptionController = TextEditingController();
   }
 
   @override
   void dispose() {
+    _clubNameController.dispose();
+    _clubEnglishNameController.dispose();
+    _clubDescriptionController.dispose();
     super.dispose();
-    clubNameController.dispose();
-    clubEnglishNameController.dispose();
-    clubDescriptionController.dispose();
   }
 
   @override
@@ -135,11 +135,11 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
               ),
               const Gap(defaultGapM),
               Form(
-                key: nameFormKey,
+                key: _nameFormKey,
                 child: Column(
                   children: [
                     CustomTextFormField(
-                      controller: clubNameController,
+                      controller: _clubNameController,
                       labelText: '이름',
                       keyboardType: TextInputType.name,
                       onChanged: (value) => clubNameValidationNotifier.state = ClubNameValidationState.notChecked,
@@ -152,7 +152,7 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                     ),
                     const Gap(defaultGapM),
                     CustomTextFormField(
-                      controller: clubEnglishNameController,
+                      controller: _clubEnglishNameController,
                       labelText: '영문 이름',
                       hintText: '소문자와 숫자만 입력해 주세요',
                       keyboardType: TextInputType.name,
@@ -201,12 +201,12 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                     ),
                     child: InkWell(
                       onTap: () {
-                        if (nameFormKey.currentState?.validate() == true) {
-                          clubNotifier.clubNameValidation(
-                            clubNameController.text,
-                            clubEnglishNameController.text,
-                          );
-                        }
+                        if (_nameFormKey.currentState?.validate() != true) return;
+
+                        clubNotifier.clubNameValidation(
+                          _clubNameController.text,
+                          _clubEnglishNameController.text,
+                        );
                       },
                       child: Center(
                         child: Text(
@@ -220,9 +220,9 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
               ),
               const Gap(defaultGapM),
               Form(
-                key: descriptionFormKey,
+                key: _descriptionFormKey,
                 child: CustomCounterTextFormField(
-                  controller: clubDescriptionController,
+                  controller: _clubDescriptionController,
                   labelText: '설명',
                   hintText: '300자 이내로 입력해 주세요',
                   minLines: 5,
@@ -244,33 +244,32 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
           onTap: () async {
-            if (nameFormKey.currentState?.validate() == true) {
-              if (clubNameValidationState == ClubNameValidationState.valid) {
-                if (descriptionFormKey.currentState?.validate() == true) {
-                  if (s3ImageState.pickedImages.isEmpty) {
-                    final byteData = await rootBundle.load('assets/images/club/club_basic_image.jpg');
+            if (_nameFormKey.currentState?.validate() != true) return;
 
-                    final tempFile = File('${(await getTemporaryDirectory()).path}/club_basic_image.jpg');
-                    await tempFile.writeAsBytes(byteData.buffer.asUint8List());
+            if (clubNameValidationState != ClubNameValidationState.valid) {
+              GeneralFunctions.toastMessage('동아리 이름을 중복 확인해 주세요');
+              return;
+            }
 
-                    List<File> pickedImage = [tempFile];
-                    await s3ImageNotifier.setImage(pickedImage);
-                  }
+            if (_descriptionFormKey.currentState?.validate() != true) return;
 
-                  clubNotifier.saveClubInfo(
-                    clubNameController.text,
-                    clubEnglishNameController.text,
-                    clubDescriptionController.text,
-                  );
+            if (s3ImageState.pickedImages.isEmpty) {
+              final byteData = await rootBundle.load('assets/images/club/club_basic_image.jpg');
+              final tempFile = File('${(await getTemporaryDirectory()).path}/club_basic_image.jpg');
+              await tempFile.writeAsBytes(byteData.buffer.asUint8List());
 
-                  if (context.mounted) {
-                    _pushOtherInfoPage(context);
-                  }
-                }
-              } else if (clubNameValidationState == ClubNameValidationState.invalid ||
-                  clubNameValidationState == ClubNameValidationState.notChecked) {
-                GeneralFunctions.toastMessage('동아리 이름을 중복 확인해 주세요');
-              }
+              List<File> pickedImage = [tempFile];
+              await s3ImageNotifier.setImage(pickedImage);
+            }
+
+            clubNotifier.saveClubInfo(
+              _clubNameController.text,
+              _clubEnglishNameController.text,
+              _clubDescriptionController.text,
+            );
+
+            if (context.mounted) {
+              _pushOtherInfoPage(context);
             }
           },
           buttonText: '다음',

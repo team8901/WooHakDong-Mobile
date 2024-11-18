@@ -33,7 +33,7 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
           future: memberNotifier.getMemberInfo(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CustomCircularProgressIndicator();
+              return const CustomProgressIndicator();
             } else {
               final memberInfo = ref.watch(memberProvider);
 

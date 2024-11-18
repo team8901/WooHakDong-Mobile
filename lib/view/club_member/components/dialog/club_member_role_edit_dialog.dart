@@ -6,6 +6,7 @@ import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../../view_model/club_member/club_member_provider.dart';
+import '../../../themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 
 class ClubMemberRoleEditDialog extends ConsumerStatefulWidget {
   final int clubMemberId;
@@ -22,12 +23,13 @@ class ClubMemberRoleEditDialog extends ConsumerStatefulWidget {
 }
 
 class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> {
-  String? selectedRole;
+  String? _selectedRole;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    selectedRole = widget.initialRole;
+    _selectedRole = widget.initialRole;
   }
 
   @override
@@ -63,10 +65,10 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
                       Radio<String>(
                         activeColor: context.colorScheme.primary,
                         value: 'VICEPRESIDENT',
-                        groupValue: selectedRole,
+                        groupValue: _selectedRole,
                         onChanged: (value) {
                           setState(() {
-                            selectedRole = value;
+                            _selectedRole = value;
                           });
                         },
                       ),
@@ -81,10 +83,10 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
                       Radio<String>(
                         activeColor: context.colorScheme.primary,
                         value: 'SECRETARY',
-                        groupValue: selectedRole,
+                        groupValue: _selectedRole,
                         onChanged: (value) {
                           setState(() {
-                            selectedRole = value;
+                            _selectedRole = value;
                           });
                         },
                       ),
@@ -99,10 +101,10 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
                       Radio<String>(
                         activeColor: context.colorScheme.primary,
                         value: 'OFFICER',
-                        groupValue: selectedRole,
+                        groupValue: _selectedRole,
                         onChanged: (value) {
                           setState(() {
-                            selectedRole = value;
+                            _selectedRole = value;
                           });
                         },
                       ),
@@ -127,10 +129,10 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
                   Radio<String>(
                     activeColor: context.colorScheme.primary,
                     value: 'MEMBER',
-                    groupValue: selectedRole,
+                    groupValue: _selectedRole,
                     onChanged: (value) {
                       setState(() {
-                        selectedRole = value;
+                        _selectedRole = value;
                       });
                     },
                   ),
@@ -142,28 +144,37 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
               ),
             ),
             const Gap(defaultPaddingS * 2),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: Text(
-                    '취소',
-                    style: context.textTheme.titleSmall,
-                  ),
+            if (_isLoading)
+              Align(
+                alignment: Alignment.centerRight,
+                child: CustomProgressIndicator(
+                  indicatorColor: context.colorScheme.primary,
+                  size: 18,
                 ),
-                const Gap(defaultPaddingS * 2),
-                InkWell(
-                  onTap: () => _updateRole(context, widget.clubMemberId),
-                  child: Text(
-                    '변경',
-                    style: context.textTheme.titleSmall?.copyWith(
-                      color: context.colorScheme.primary,
+              )
+            else
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Text(
+                      '취소',
+                      style: context.textTheme.titleSmall,
                     ),
                   ),
-                ),
-              ],
-            ),
+                  const Gap(defaultPaddingS * 2),
+                  InkWell(
+                    onTap: () => _updateRole(context, widget.clubMemberId),
+                    child: Text(
+                      '변경',
+                      style: context.textTheme.titleSmall?.copyWith(
+                        color: context.colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
           ],
         ),
       ),
@@ -172,16 +183,19 @@ class _RoleSelectionDialogState extends ConsumerState<ClubMemberRoleEditDialog> 
 
   Future<void> _updateRole(context, int clubMemberId) async {
     try {
+      setState(() => _isLoading = true);
+
       final clubNotifier = ref.read(clubMemberProvider.notifier);
 
       await clubNotifier.updateClubMemberRole(
         clubMemberId,
-        selectedRole!,
+        _selectedRole!,
       );
 
       if (context.mounted) {
-        GeneralFunctions.toastMessage('역할이 변경되었어요');
+        setState(() => _isLoading = false);
         Navigator.pop(context);
+        GeneralFunctions.toastMessage('역할이 변경되었어요');
       }
     } catch (e) {
       await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');

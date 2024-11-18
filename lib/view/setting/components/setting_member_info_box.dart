@@ -44,7 +44,7 @@ class SettingMemberInfoBox extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      memberInfo!.memberName,
+                      memberInfo.memberName,
                       style: context.textTheme.titleSmall,
                     ),
                     Text(

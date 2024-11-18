@@ -15,7 +15,6 @@ class ClubItemUsingFilterBottomSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ConstrainedBox(
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.4,
         minHeight: MediaQuery.of(context).size.height * 0.2,
       ),
       child: SingleChildScrollView(

@@ -40,7 +40,7 @@ class CustomBottomButton extends StatelessWidget {
             color: buttonColor,
           ),
           child: isLoading
-              ? const CustomCircularProgressIndicator()
+              ? const CustomProgressIndicator()
               : Center(
                   child: Text(
                     buttonText,

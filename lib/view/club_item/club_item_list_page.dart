@@ -112,7 +112,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _pushItemAddPage(context),
+        onPressed: () => _pushItemAddPage(context, categories[tabController.index]),
         child: const Icon(Symbols.add_2_rounded, weight: 600, size: 28),
       ),
     );
@@ -124,10 +124,12 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
     );
   }
 
-  void _pushItemAddPage(BuildContext context) {
+  void _pushItemAddPage(BuildContext context, String? category) {
     Navigator.of(context).push(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const ClubItemAddPage(),
+        pageBuilder: (context, animation, secondaryAnimation) => ClubItemAddPage(
+          initialCategory: category,
+        ),
         transitionDuration: const Duration(milliseconds: 350),
         reverseTransitionDuration: const Duration(milliseconds: 350),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {

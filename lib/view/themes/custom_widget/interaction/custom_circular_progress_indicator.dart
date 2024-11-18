@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-class CustomCircularProgressIndicator extends StatelessWidget {
+class CustomProgressIndicator extends StatelessWidget {
   final Color? indicatorColor;
+  final double? size;
 
-  const CustomCircularProgressIndicator({
+  const CustomProgressIndicator({
     super.key,
     this.indicatorColor,
+    this.size,
   });
 
   @override
@@ -15,7 +17,7 @@ class CustomCircularProgressIndicator extends StatelessWidget {
     return Center(
       child: LoadingAnimationWidget.staggeredDotsWave(
         color: indicatorColor ?? context.colorScheme.inversePrimary,
-        size: 24,
+        size: size ?? 24,
       ),
     );
   }

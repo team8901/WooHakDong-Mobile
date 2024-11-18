@@ -12,14 +12,45 @@ import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'club_register_info_check_page.dart';
 
-class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
+class ClubRegisterOtherInfoFormPage extends ConsumerStatefulWidget {
   const ClubRegisterOtherInfoFormPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = GlobalKey<FormState>();
+  ConsumerState<ClubRegisterOtherInfoFormPage> createState() => _ClubRegisterOtherInfoFormPageState();
+}
+
+class _ClubRegisterOtherInfoFormPageState extends ConsumerState<ClubRegisterOtherInfoFormPage> {
+  final _formKey = GlobalKey<FormState>();
+
+  late TextEditingController _generationController;
+  late TextEditingController _duesController;
+  late TextEditingController _roomController;
+  late TextEditingController _groupChatLinkController;
+  late TextEditingController _groupChatPasswordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _generationController = TextEditingController();
+    _duesController = TextEditingController();
+    _roomController = TextEditingController();
+    _groupChatLinkController = TextEditingController();
+    _groupChatPasswordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _generationController.dispose();
+    _duesController.dispose();
+    _roomController.dispose();
+    _groupChatLinkController.dispose();
+    _groupChatPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final clubNotifier = ref.read(clubProvider.notifier);
-    final clubInfo = ref.watch(clubProvider);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -32,7 +63,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(defaultPaddingM),
           child: Form(
-            key: formKey,
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -50,13 +81,14 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                   labelText: '현재 기수',
                   hintText: '비워놔도 돼요',
                   keyboardType: TextInputType.number,
+                  controller: _generationController,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  onSaved: (value) => clubInfo.clubGeneration = value,
                 ),
                 const Gap(defaultGapM),
                 CustomTextFormField(
                   labelText: '회비',
                   keyboardType: TextInputType.number,
+                  controller: _duesController,
                   inputFormatters: [
                     CurrencyTextInputFormatter.currency(
                       symbol: '',
@@ -64,7 +96,6 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                     ),
                     LengthLimitingTextInputFormatter(8),
                   ],
-                  onSaved: (value) => clubInfo.clubDues = int.parse(value!.replaceAll(',', '')),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '동아리 회비를 입력해 주세요';
@@ -76,7 +107,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                 CustomTextFormField(
                   labelText: '동아리 방',
                   hintText: '비워놔도 돼요',
-                  onSaved: (value) => clubInfo.clubRoom = value,
+                  controller: _roomController,
                 ),
                 const Gap(defaultGapXL),
                 Text(
@@ -87,7 +118,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                 CustomTextFormField(
                   labelText: '카카오톡 채팅방 링크',
                   keyboardType: TextInputType.text,
-                  onSaved: (value) => clubInfo.clubGroupChatLink = value,
+                  controller: _groupChatLinkController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '카카오톡 채팅방 링크를 입력해 주세요';
@@ -99,7 +130,7 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
                 CustomTextFormField(
                   labelText: '카카오톡 채팅방 비밀번호',
                   hintText: '비워놔도 돼요',
-                  onSaved: (value) => clubInfo.clubGroupChatPassword = value,
+                  controller: _groupChatPasswordController,
                   textInputAction: TextInputAction.done,
                 ),
               ],
@@ -110,20 +141,18 @@ class ClubRegisterOtherInfoFormPage extends ConsumerWidget {
       bottomNavigationBar: SafeArea(
         child: CustomBottomButton(
           onTap: () async {
-            if (formKey.currentState?.validate() == true) {
-              formKey.currentState?.save();
+            if (_formKey.currentState?.validate() != true) return;
 
-              clubNotifier.saveClubOtherInfo(
-                clubInfo.clubGeneration!,
-                clubInfo.clubDues!,
-                clubInfo.clubRoom!,
-                clubInfo.clubGroupChatLink!,
-                clubInfo.clubGroupChatPassword!,
-              );
+            clubNotifier.saveClubOtherInfo(
+              _generationController.text,
+              int.tryParse(_duesController.text.replaceAll(',', '')) ?? 0,
+              _roomController.text,
+              _groupChatLinkController.text,
+              _groupChatPasswordController.text,
+            );
 
-              if (context.mounted) {
-                _pushInfoCheckPage(context);
-              }
+            if (context.mounted) {
+              _pushInfoCheckPage(context);
             }
           },
           buttonText: '다음',

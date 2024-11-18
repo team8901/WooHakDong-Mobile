@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/view/club_item/components/etc/club_item_edit_controller.dart';
+import 'package:woohakdong/view/club_item/components/etc/club_item_controller.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/item/components/item_state_provider.dart';
 
@@ -37,24 +37,23 @@ class ClubItemEditPage extends ConsumerStatefulWidget {
 
 class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
   final _formKey = GlobalKey<FormState>();
-  late final ClubItemEditController _clubItemEditController;
+  late final ClubItemController _clubItemController;
 
   @override
   void initState() {
     super.initState();
-    _clubItemEditController = ClubItemEditController();
+    _clubItemController = ClubItemController();
   }
 
   @override
   void dispose() {
-    _clubItemEditController.dispose();
+    _clubItemController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _clubItemEditController.updateFromClubItemInfo(widget.itemInfo);
-
+    _clubItemController.updateFromClubItemInfo(widget.itemInfo);
     final imageProvider = CachedNetworkImageProvider(widget.itemInfo.itemPhoto!);
     final s3ImageNotifier = ref.read(s3ImageProvider.notifier);
     final s3ImageState = ref.watch(s3ImageProvider);
@@ -145,7 +144,7 @@ class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
                   ),
                   const Gap(defaultGapM),
                   CustomTextFormField(
-                    controller: _clubItemEditController.name,
+                    controller: _clubItemController.name,
                     labelText: '물품 이름',
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -156,7 +155,7 @@ class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
                   ),
                   const Gap(defaultGapM),
                   CustomDropdownFormField(
-                    value: widget.itemInfo.itemCategory,
+                    initialValue: widget.itemInfo.itemCategory,
                     labelText: '카테고리',
                     items: const [
                       {'value': 'DIGITAL', 'displayText': '디지털'},
@@ -166,7 +165,7 @@ class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
                       {'value': 'STATIONERY', 'displayText': '문구류'},
                       {'value': 'ETC', 'displayText': '기타'},
                     ],
-                    onChanged: (value) => _clubItemEditController.category.text = value!,
+                    onChanged: (value) => _clubItemController.category.text = value!,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '카테고리를 선택해 주세요';
@@ -176,7 +175,7 @@ class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
                   ),
                   const Gap(defaultGapM),
                   CustomCounterTextFormField(
-                    controller: _clubItemEditController.description,
+                    controller: _clubItemController.description,
                     labelText: '물품 설명',
                     hintText: '200자 이내로 입력해 주세요',
                     minLines: 4,
@@ -197,7 +196,7 @@ class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
                   ),
                   const Gap(defaultGapM),
                   CustomTextFormField(
-                    controller: _clubItemEditController.location,
+                    controller: _clubItemController.location,
                     labelText: '물품 위치',
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -208,7 +207,7 @@ class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
                   ),
                   const Gap(defaultGapM),
                   CustomTextFormField(
-                    controller: _clubItemEditController.rentalMaxDay,
+                    controller: _clubItemController.rentalMaxDay,
                     labelText: '최대 대여 가능 기간',
                     hintText: '숫자만 입력해 주세요',
                     keyboardType: TextInputType.number,
@@ -279,12 +278,12 @@ class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
 
     await itemNotifier.updateItem(
       itemId,
-      _clubItemEditController.name.text,
+      _clubItemController.name.text,
       itemImage,
-      _clubItemEditController.description.text,
-      _clubItemEditController.location.text,
-      _clubItemEditController.category.text,
-      int.parse(_clubItemEditController.rentalMaxDay.text),
+      _clubItemController.description.text,
+      _clubItemController.location.text,
+      _clubItemController.category.text,
+      int.parse(_clubItemController.rentalMaxDay.text),
     );
   }
 }
