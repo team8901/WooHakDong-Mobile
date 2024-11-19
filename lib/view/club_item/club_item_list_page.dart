@@ -33,9 +33,15 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
   @override
   void initState() {
     super.initState();
+
+    final filter = ref.read(itemFilterProvider);
+    final selectedCategory = filter.category;
+    final initialIndex = categories.indexOf(selectedCategory);
+
     tabController = TabController(
       length: categories.length,
       vsync: this,
+      initialIndex: initialIndex,
     );
 
     tabController.addListener(() {
