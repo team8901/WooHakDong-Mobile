@@ -32,77 +32,75 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
     final clubMemberMe = ref.watch(clubMemberMeProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('회비'),
-      ),
       body: SafeArea(
         child: CustomRefreshIndicator(
           onRefresh: () async => await _refreshDuesList(clubMemberMe),
-          child: SingleChildScrollView(
+          child: CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                ClubDuesAccountInfoBox(
+            slivers: [
+              const SliverAppBar(
+                title: Text('회비'),
+                floating: true,
+                snap: true,
+              ),
+              SliverToBoxAdapter(
+                child: ClubDuesAccountInfoBox(
                   clubMemberMe: clubMemberMe,
                   currentClubAccount: clubAccountInfo,
                   duesInOutType: _duesInOutType ?? 'ALL',
                   onRefresh: _refreshDuesList,
-                  onTap: () {
-                    showModalBottomSheet(
-                      useSafeArea: true,
-                      context: context,
-                      builder: (context) => ClubDuesInOutTypeBottomSheet(
-                        onTypeSelect: _selectInOutType,
-                        duesInOutType: _duesInOutType ?? 'ALL',
+                  onTap: () => showModalBottomSheet(
+                    useSafeArea: true,
+                    context: context,
+                    builder: (context) => ClubDuesInOutTypeBottomSheet(
+                      onTypeSelect: _selectInOutType,
+                      duesInOutType: _duesInOutType ?? 'ALL',
+                    ),
+                  ),
+                ),
+              ),
+              duesListData.when(
+                data: (duesList) {
+                  final filteredDuesList = _filterDuesList(duesList, _duesInOutType);
+
+                  if (filteredDuesList.isEmpty) {
+                    return SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Center(
+                        child: Text(
+                          '${_getFilterText(_duesInOutType)} 내역이 없어요',
+                          style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                        ),
                       ),
                     );
-                  },
-                ),
-                duesListData.when(
-                  data: (duesList) {
-                    final filteredDuesList = _filterDuesList(duesList, _duesInOutType);
+                  }
 
-                    if (filteredDuesList.isEmpty) {
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        child: Center(
-                          child: Text(
-                            '${_getFilterText(_duesInOutType)} 내역이 없어요',
-                            style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-                          ),
-                        ),
-                      );
-                    }
-
-                    return ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                      itemCount: filteredDuesList.length,
-                      itemBuilder: (context, index) => ClubDuesListTile(dues: filteredDuesList[index]),
-                    );
-                  },
-                  loading: () => CustomLoadingSkeleton(
+                  return SliverList.separated(
+                    itemCount: filteredDuesList.length,
+                    separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                    itemBuilder: (context, index) => ClubDuesListTile(dues: filteredDuesList[index]),
+                  );
+                },
+                loading: () => SliverList.separated(
+                  itemCount: 50,
+                  separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                  itemBuilder: (context, index) => CustomLoadingSkeleton(
                     isLoading: true,
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                      itemCount: 10,
-                      itemBuilder: (context, index) => ClubDuesListTile(
-                        dues: Dues(
-                          clubAccountHistoryId: index,
-                          clubAccountHistoryTranDate: DateTime.now(),
-                          clubAccountHistoryInOutType: 'DEPOSIT',
-                          clubAccountHistoryBalanceAmount: 1000000,
-                          clubAccountHistoryTranAmount: 20000,
-                          clubAccountHistoryContent: '회비 납부',
-                        ),
+                    child: ClubDuesListTile(
+                      dues: Dues(
+                        clubAccountHistoryId: index,
+                        clubAccountHistoryTranDate: DateTime.now(),
+                        clubAccountHistoryInOutType: 'DEPOSIT',
+                        clubAccountHistoryBalanceAmount: 1000000,
+                        clubAccountHistoryTranAmount: 20000,
+                        clubAccountHistoryContent: '회비 납부',
                       ),
                     ),
                   ),
-                  error: (error, stack) => Center(
+                ),
+                error: (error, stack) => SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Center(
                     child: Text(
                       '회비 사용 내역을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
                       style: context.textTheme.bodySmall?.copyWith(
@@ -112,8 +110,8 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

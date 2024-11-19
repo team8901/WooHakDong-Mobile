@@ -34,100 +34,114 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
     final clubMemberListData = ref.watch(clubMemberListProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: InkWell(
-          onTap: () async {
-            await ref.read(clubMemberTermListProvider.notifier).getClubMemberTermList();
+      body: SafeArea(
+        child: CustomRefreshIndicator(
+          onRefresh: () async => await ref.read(clubMemberListProvider.notifier).getClubMemberList(),
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                floating: true,
+                snap: true,
+                title: InkWell(
+                  onTap: () async {
+                    await ref.read(clubMemberTermListProvider.notifier).getClubMemberTermList();
 
-            if (context.mounted) {
-              showModalBottomSheet(
-                useSafeArea: true,
-                context: context,
-                builder: (context) => const ClubMemberAssignedTermBottomSheet(),
-              );
-            }
-          },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('회원'),
-              const Gap(defaultGapS),
-              if (clubHistoryUsageDate!.isNotEmpty)
-                Text(
-                  GeneralFormat.formatClubAssignedTerm(clubHistoryUsageDate),
-                  style: context.textTheme.bodyMedium,
+                    if (context.mounted) {
+                      showModalBottomSheet(
+                        useSafeArea: true,
+                        context: context,
+                        builder: (context) => const ClubMemberAssignedTermBottomSheet(),
+                      );
+                    }
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('회원'),
+                      const Gap(defaultGapS),
+                      if (clubHistoryUsageDate!.isNotEmpty)
+                        Text(
+                          GeneralFormat.formatClubAssignedTerm(clubHistoryUsageDate),
+                          style: context.textTheme.bodyMedium,
+                        ),
+                      const Gap(defaultGapS / 2),
+                      const Icon(
+                        Symbols.keyboard_arrow_down_rounded,
+                        size: 20,
+                      ),
+                    ],
+                  ),
                 ),
-              const Gap(defaultGapS / 2),
-              const Icon(
-                Symbols.keyboard_arrow_down_rounded,
-                size: 20,
+                actions: [
+                  IconButton(
+                    onPressed: () => _pushMemberSearchPage(context),
+                    icon: const Icon(Symbols.search_rounded),
+                  ),
+                ],
+              ),
+              clubMemberListData.when(
+                data: (clubMemberList) {
+                  if (clubMemberList.isEmpty) {
+                    return SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Center(
+                        child: Text(
+                          '이 학기에 등록된 회원이 없어요',
+                          style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                        ),
+                      ),
+                    );
+                  }
+
+                  clubMemberList.sort((a, b) => a.memberName!.compareTo(b.memberName!));
+
+                  return SliverList.separated(
+                    itemCount: clubMemberList.length,
+                    separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                    itemBuilder: (context, index) {
+                      return ClubMemberListTile(
+                        clubMember: clubMemberList[index],
+                        onTap: () => _pushMemberDetailPage(ref, context, clubMemberList[index].clubMemberId!),
+                      );
+                    },
+                  );
+                },
+                loading: () => SliverList.separated(
+                  itemCount: 50,
+                  separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        CustomLoadingSkeleton(
+                          isLoading: true,
+                          child: ClubMemberListTile(
+                            clubMember: ClubMember(
+                              memberName: '우학동',
+                              memberMajor: '소프트웨어학과',
+                              memberStudentNumber: '202411111',
+                              clubMemberRole: 'MEMBER',
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                error: (error, stack) => SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Center(
+                    child: Text(
+                      '회원 목록을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: context.colorScheme.error,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
               ),
             ],
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => _pushMemberSearchPage(context),
-            icon: const Icon(Symbols.search_rounded),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: clubMemberListData.when(
-          data: (clubMemberList) {
-            if (clubMemberList.isEmpty) {
-              return Center(
-                child: Text(
-                  '이 학기에 등록된 회원이 없어요',
-                  style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-                ),
-              );
-            }
-
-            clubMemberList.sort((a, b) => a.memberName!.compareTo(b.memberName!));
-
-            return CustomRefreshIndicator(
-              onRefresh: () async {
-                await Future.delayed(const Duration(milliseconds: 500));
-                await ref.read(clubMemberListProvider.notifier).getClubMemberList();
-              },
-              child: ListView.separated(
-                physics: const AlwaysScrollableScrollPhysics(),
-                separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-                itemCount: clubMemberList.length,
-                itemBuilder: (context, index) => ClubMemberListTile(
-                  clubMember: clubMemberList[index],
-                  onTap: () => _pushMemberDetailPage(ref, context, clubMemberList[index].clubMemberId!),
-                ),
-              ),
-            );
-          },
-          loading: () => CustomLoadingSkeleton(
-            isLoading: true,
-            child: ListView.separated(
-              separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return ClubMemberListTile(
-                  clubMember: ClubMember(
-                    memberName: '우학동',
-                    memberMajor: '소프트웨어학과',
-                    memberStudentNumber: '202411111',
-                    clubMemberRole: 'MEMBER',
-                  ),
-                );
-              },
-            ),
-          ),
-          error: (error, stack) => Center(
-            child: Text(
-              '회원 목록을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
-              style: context.textTheme.bodySmall?.copyWith(
-                color: context.colorScheme.error,
-              ),
-              textAlign: TextAlign.center,
-            ),
           ),
         ),
       ),

@@ -48,10 +48,7 @@ class _ClubItemPageViewState extends ConsumerState<ClubItemPageView> {
           }
 
           return CustomRefreshIndicator(
-            onRefresh: () async {
-              await Future.delayed(const Duration(milliseconds: 500));
-              ref.invalidate(itemListProvider(filter));
-            },
+            onRefresh: () async => ref.invalidate(itemListProvider(filter)),
             child: ListView.separated(
               physics: const AlwaysScrollableScrollPhysics(),
               separatorBuilder: (context, index) => const CustomHorizontalDivider(),
@@ -74,7 +71,7 @@ class _ClubItemPageViewState extends ConsumerState<ClubItemPageView> {
           child: ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(),
             separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-            itemCount: 10,
+            itemCount: 50,
             itemBuilder: (context, index) => ClubItemListTile(
               item: Item(
                 itemName: '자바의 정석',

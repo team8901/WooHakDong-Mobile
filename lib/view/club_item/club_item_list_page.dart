@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_item/club_item_add_page.dart';
 import 'package:woohakdong/view/club_item/components/club_item_page_view.dart';
@@ -69,52 +70,60 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
     final filter = ref.watch(itemFilterProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('물품'),
-        actions: [
-          IconButton(
-            onPressed: () => _pushItemSearchPage(context),
-            icon: const Icon(Symbols.search_rounded),
-          ),
-        ],
-      ),
       body: SafeArea(
-        child: Column(
-          children: [
-            TabBar(
-              controller: tabController,
-              isScrollable: true,
-              tabs: const [
-                Tab(text: '전체'),
-                Tab(text: '디지털'),
-                Tab(text: '스포츠'),
-                Tab(text: '도서'),
-                Tab(text: '의류'),
-                Tab(text: '문구류'),
-                Tab(text: '기타'),
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverAppBar(
+              title: const Text('물품'),
+              pinned: true,
+              floating: true,
+              snap: true,
+              forceElevated: innerBoxIsScrolled,
+              actions: [
+                IconButton(
+                  onPressed: () => _pushItemSearchPage(context),
+                  icon: const Icon(Symbols.search_rounded),
+                ),
               ],
-            ),
-            ClubItemFilterActionButton(
-              filter: filter,
-              onFilterTap: () => showModalBottomSheet(
-                useSafeArea: true,
-                context: context,
-                builder: (BuildContext context) {
-                  return const ClubItemUsingFilterBottomSheet();
-                },
-              ),
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: tabController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: List.generate(
-                  categories.length,
-                  (index) => const ClubItemPageView(),
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(100.h),
+                child: Column(
+                  children: [
+                    TabBar(
+                      controller: tabController,
+                      isScrollable: true,
+                      tabs: const [
+                        Tab(text: '전체'),
+                        Tab(text: '디지털'),
+                        Tab(text: '스포츠'),
+                        Tab(text: '도서'),
+                        Tab(text: '의류'),
+                        Tab(text: '문구류'),
+                        Tab(text: '기타'),
+                      ],
+                    ),
+                    ClubItemFilterActionButton(
+                      filter: filter,
+                      onFilterTap: () => showModalBottomSheet(
+                        useSafeArea: true,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const ClubItemUsingFilterBottomSheet();
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ],
+          body: TabBarView(
+            controller: tabController,
+            children: List.generate(
+              categories.length,
+              (index) => const ClubItemPageView(),
+            ),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
