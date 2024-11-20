@@ -26,20 +26,20 @@ class ClubRegisterAccountFormPage extends ConsumerStatefulWidget {
 }
 
 class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccountFormPage> {
-  final formKey = GlobalKey<FormState>();
-  String clubAccountBankName = '';
-  late TextEditingController clubAccountNumberController;
+  final _formKey = GlobalKey<FormState>();
+  String _clubAccountBankName = '';
+  late TextEditingController _clubAccountNumberController;
 
   @override
   void initState() {
     super.initState();
-    clubAccountNumberController = TextEditingController();
+    _clubAccountNumberController = TextEditingController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    clubAccountNumberController.dispose();
+    _clubAccountNumberController.dispose();
   }
 
   @override
@@ -61,7 +61,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(defaultPaddingM),
             child: Form(
-              key: formKey,
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -96,7 +96,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                       {'value': '카카오뱅크', 'displayText': '카카오뱅크'},
                       {'value': 'KEB하나은행', 'displayText': 'KEB하나은행'},
                     ],
-                    onSaved: (value) => clubAccountBankName = value!,
+                    onSaved: (value) => _clubAccountBankName = value!,
                     onChanged: (value) =>
                         clubAccountValidationNotifier.state = ClubAccountValidationState.accountNotRegistered,
                     validator: (value) {
@@ -108,9 +108,8 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                   ),
                   const Gap(defaultGapM),
                   CustomTextFormField(
-                    controller: clubAccountNumberController,
+                    controller: _clubAccountNumberController,
                     labelText: '계좌번호',
-                    onSaved: (value) => clubAccountInfo.clubAccountNumber = value!,
                     onChanged: (value) =>
                         clubAccountValidationNotifier.state = ClubAccountValidationState.accountNotRegistered,
                     hintText: '계좌번호를 - 없이 입력해 주세요',
@@ -158,14 +157,14 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                         ),
                         child: InkWell(
                           onTap: () async {
-                            if (formKey.currentState?.validate() == true) {
-                              formKey.currentState?.save();
+                            if (_formKey.currentState?.validate() != true) return;
 
-                              await clubAccountNotifier.saveClubAccountInfo(
-                                clubAccountBankName,
-                                clubAccountNumberController.text,
-                              );
-                            }
+                            _formKey.currentState?.save();
+
+                            await clubAccountNotifier.saveClubAccountInfo(
+                              _clubAccountBankName,
+                              _clubAccountNumberController.text,
+                            );
                           },
                           child: Center(
                             child: Text(
@@ -190,8 +189,8 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                 ? null
                 : () async {
                     try {
-                      if (formKey.currentState?.validate() == true) {
-                        formKey.currentState?.save();
+                      if (_formKey.currentState?.validate() == true) {
+                        _formKey.currentState?.save();
 
                         if (clubAccountValidationState == ClubAccountValidationState.valid) {
                           await clubAccountNotifier.registerClubAccount();

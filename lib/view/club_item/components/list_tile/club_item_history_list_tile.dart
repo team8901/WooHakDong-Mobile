@@ -52,7 +52,7 @@ class ClubItemHistoryListTile extends StatelessWidget {
                 ),
                 border: Border.all(
                   color: context.colorScheme.surfaceContainer,
-                  width: 1,
+                  width: 0.4,
                 ),
               ),
             ),
@@ -77,7 +77,7 @@ class ClubItemHistoryListTile extends StatelessWidget {
                       children: [
                         Icon(
                           Symbols.output_rounded,
-                          size: 16,
+                          size: 12,
                           color: context.colorScheme.onSurface,
                         ),
                         const Gap(defaultGapS / 2),
@@ -96,9 +96,9 @@ class ClubItemHistoryListTile extends StatelessWidget {
                           itemHistory.itemReturnDate != null
                               ? Symbols.input_rounded
                               : (itemHistory.itemOverdue ?? false)
-                                  ? Symbols.priority_high_rounded
+                                  ? Symbols.timer_rounded
                                   : Symbols.lock_clock_rounded,
-                          size: 16,
+                          size: 12,
                           color: itemHistory.itemReturnDate != null
                               ? context.colorScheme.onSurface
                               : (itemHistory.itemOverdue ?? false)
@@ -110,7 +110,7 @@ class ClubItemHistoryListTile extends StatelessWidget {
                           itemHistory.itemReturnDate != null
                               ? GeneralFormat.formatDateTime(itemHistory.itemReturnDate!)
                               : (itemHistory.itemOverdue ?? false)
-                                  ? '연체됨'
+                                  ? '연체'
                                   : '대여 중',
                           style: context.textTheme.bodySmall?.copyWith(
                             color: itemHistory.itemReturnDate != null

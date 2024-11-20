@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:woohakdong/view/club_schedule/components/club_schedule_edit_controller.dart';
+import 'package:woohakdong/view/club_schedule/components/club_schedule_controller.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../model/schedule/schedule.dart';
@@ -31,27 +31,27 @@ class ClubScheduleEditPage extends ConsumerStatefulWidget {
 
 class _ClubScheduleEditPageState extends ConsumerState<ClubScheduleEditPage> {
   final _formKey = GlobalKey<FormState>();
-  late final ClubScheduleEditController _clubScheduleEditController;
+  late final ClubScheduleController _clubScheduleController;
   DateTime? _selectedDate;
   Color? _pickerColor;
 
   @override
   void initState() {
     super.initState();
-    _clubScheduleEditController = ClubScheduleEditController();
+    _clubScheduleController = ClubScheduleController();
     _selectedDate = widget.scheduleInfo.scheduleDateTime;
     _pickerColor = Color(int.parse('0x${widget.scheduleInfo.scheduleColor!}'));
   }
 
   @override
   void dispose() {
-    _clubScheduleEditController.dispose();
+    _clubScheduleController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _clubScheduleEditController.updateFromClubScheduleInfo(widget.scheduleInfo);
+    _clubScheduleController.updateFromClubScheduleInfo(widget.scheduleInfo);
     final scheduleState = ref.watch(scheduleStateProvider);
     final scheduleNotifier = ref.read(scheduleProvider.notifier);
 
@@ -81,7 +81,7 @@ class _ClubScheduleEditPageState extends ConsumerState<ClubScheduleEditPage> {
                     children: [
                       Expanded(
                         child: CustomTextFormField(
-                          controller: _clubScheduleEditController.title,
+                          controller: _clubScheduleController.title,
                           labelText: '제목',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -143,7 +143,7 @@ class _ClubScheduleEditPageState extends ConsumerState<ClubScheduleEditPage> {
                   ),
                   const Gap(defaultGapM),
                   CustomCounterTextFormField(
-                    controller: _clubScheduleEditController.content,
+                    controller: _clubScheduleController.content,
                     labelText: '내용',
                     hintText: '200자 이내로 입력해 주세요',
                     minLines: 4,
@@ -199,8 +199,8 @@ class _ClubScheduleEditPageState extends ConsumerState<ClubScheduleEditPage> {
     try {
       await scheduleNotifier.updateSchedule(
         scheduleId,
-        _clubScheduleEditController.title.text,
-        _clubScheduleEditController.content.text,
+        _clubScheduleController.title.text,
+        _clubScheduleController.content.text,
         scheduleDateTime,
         scheduleColor,
       );

@@ -111,7 +111,7 @@ class ClubItemDetailPage extends ConsumerWidget {
           dialogTitle: '대여 가능 여부 변경',
           dialogContent: itemInfo.itemAvailable! ? '다음 대여부터 대여 불가로 변경할게요.' : '대여 가능으로 변경할게요.',
           dialogButtonText: '변경',
-          dialogButtonColor: context.colorScheme.primary,
+          dialogButtonColor: itemInfo.itemAvailable! ? context.colorScheme.error : context.colorScheme.primary,
         ),
       );
 

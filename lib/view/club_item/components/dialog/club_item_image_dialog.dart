@@ -18,16 +18,12 @@ class ClubItemImageDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Container(
+      child: Padding(
         padding: const EdgeInsets.only(
           top: defaultPaddingS * 2,
           left: defaultPaddingS * 2,
           right: defaultPaddingS * 2,
           bottom: defaultPaddingXS * 2,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(defaultBorderRadiusL),
-          color: context.colorScheme.surfaceBright,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

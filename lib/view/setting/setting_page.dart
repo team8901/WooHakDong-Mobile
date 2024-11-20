@@ -5,8 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:woohakdong/view/setting/components/setting_info_box.dart';
+import 'package:woohakdong/view/setting/components/setting_member_info_box.dart';
 import 'package:woohakdong/view/setting/components/setting_service_box.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:woohakdong/view_model/member/member_provider.dart';
 
 import '../../service/general/general_functions.dart';
 import '../../view_model/auth/auth_provider.dart';
@@ -23,6 +25,7 @@ class SettingPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final memberInfo = ref.watch(memberProvider);
     final settingThemeMode = ref.watch(settingThemeProvider);
 
     return Scaffold(
@@ -35,6 +38,11 @@ class SettingPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SettingMemberInfoBox(
+                memberInfo: memberInfo!,
+                onTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+              ),
+              const Gap(defaultGapXL * 2),
               SettingAppBox(
                 settingThemeMode: settingThemeMode,
                 onTap: () async => await _showSettingThemeDialog(context, ref),
@@ -64,7 +72,7 @@ class SettingPage extends ConsumerWidget {
     final selectedThemeMode = await showDialog<SettingThemeMode>(
       context: context,
       builder: (context) {
-        return ThemeSelectionDialog(
+        return SettingThemeDialog(
           initialThemeMode: ref.read(settingThemeProvider),
         );
       },

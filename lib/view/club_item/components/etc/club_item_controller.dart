@@ -2,17 +2,15 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../../model/item/item.dart';
 
-class ClubItemEditController {
+class ClubItemController {
   final TextEditingController name;
-  final TextEditingController photo;
   final TextEditingController description;
   final TextEditingController location;
   final TextEditingController category;
   final TextEditingController rentalMaxDay;
 
-  ClubItemEditController()
+  ClubItemController()
       : name = TextEditingController(),
-        photo = TextEditingController(),
         description = TextEditingController(),
         location = TextEditingController(),
         category = TextEditingController(),
@@ -20,7 +18,6 @@ class ClubItemEditController {
 
   void updateFromClubItemInfo(Item itemInfo) {
     name.text = itemInfo.itemName!;
-    photo.text = itemInfo.itemPhoto!;
     description.text = itemInfo.itemDescription!;
     location.text = itemInfo.itemLocation!;
     category.text = itemInfo.itemCategory!;
@@ -29,7 +26,6 @@ class ClubItemEditController {
 
   void dispose() {
     name.dispose();
-    photo.dispose();
     description.dispose();
     location.dispose();
     category.dispose();

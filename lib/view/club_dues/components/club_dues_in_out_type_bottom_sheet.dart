@@ -19,7 +19,6 @@ class ClubDuesInOutTypeBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.4,
         minHeight: MediaQuery.of(context).size.height * 0.2,
       ),
       child: SingleChildScrollView(

@@ -104,7 +104,7 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
                   ),
                 );
               },
-              loading: () => CustomCircularProgressIndicator(indicatorColor: context.colorScheme.surfaceContainer),
+              loading: () => CustomProgressIndicator(indicatorColor: context.colorScheme.surfaceContainer),
               error: (err, stack) => Center(
                 child: Text(
                   '검색 중 오류가 발생했어요\n다시 시도해 주세요',
@@ -120,7 +120,7 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
 
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 200), () {
+    _debounce = Timer(const Duration(milliseconds: 150), () {
       setState(() {});
     });
   }

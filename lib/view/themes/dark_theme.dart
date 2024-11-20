@@ -96,14 +96,12 @@ final ThemeData darkTheme = ThemeData(
     elevation: 1,
     selectedItemColor: white,
     unselectedItemColor: gray,
-    showSelectedLabels: false,
-    showUnselectedLabels: false,
-    selectedLabelStyle: CustomTextStyle.labelLarge.copyWith(color: white),
+    selectedLabelStyle: CustomTextStyle.labelLarge.copyWith(fontWeight: FontWeight.w600),
     unselectedLabelStyle: CustomTextStyle.labelLarge.copyWith(color: white),
     type: BottomNavigationBarType.fixed,
     enableFeedback: false,
-    selectedIconTheme: const IconThemeData(size: 24),
-    unselectedIconTheme: const IconThemeData(size: 24),
+    selectedIconTheme: const IconThemeData(fill: 1),
+    unselectedIconTheme: const IconThemeData(fill: 0),
   ),
 
   /// 서치바 태마
@@ -145,11 +143,13 @@ final ThemeData darkTheme = ThemeData(
         topRight: Radius.circular(defaultBorderRadiusL),
       ),
     ),
-    elevation: 1,
-    modalElevation: 1,
     showDragHandle: true,
     dragHandleColor: gray,
   ),
+
+  /// 다이얼로그 테마
+  dialogBackgroundColor: black,
+  dialogTheme: const DialogTheme(backgroundColor: black),
 
   /// 탭바 테마
   tabBarTheme: TabBarTheme(

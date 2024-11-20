@@ -23,17 +23,43 @@ import '../themes/custom_widget/interface/custom_dropdown_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'components/dialog/club_item_image_dialog.dart';
+import 'components/etc/club_item_controller.dart';
 
-class ClubItemAddPage extends ConsumerWidget {
-  const ClubItemAddPage({super.key});
+class ClubItemAddPage extends ConsumerStatefulWidget {
+  final String? initialCategory;
+
+  const ClubItemAddPage({
+    super.key,
+    this.initialCategory,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = GlobalKey<FormState>();
+  ConsumerState<ClubItemAddPage> createState() => _ClubItemAddPageState();
+}
+
+class _ClubItemAddPageState extends ConsumerState<ClubItemAddPage> {
+  final _formKey = GlobalKey<FormState>();
+  late final ClubItemController _clubItemController;
+  String? _selectedCategory;
+
+  @override
+  void initState() {
+    super.initState();
+    _clubItemController = ClubItemController();
+    _selectedCategory = widget.initialCategory;
+  }
+
+  @override
+  void dispose() {
+    _clubItemController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final s3ImageNotifier = ref.read(s3ImageProvider.notifier);
     final s3ImageState = ref.watch(s3ImageProvider);
     final itemState = ref.watch(itemStateProvider);
-    final itemInfo = ref.watch(itemProvider);
     final itemNotifier = ref.read(itemProvider.notifier);
 
     return PopScope(
@@ -52,7 +78,7 @@ class ClubItemAddPage extends ConsumerWidget {
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(defaultPaddingM),
             child: Form(
-              key: formKey,
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -110,7 +136,7 @@ class ClubItemAddPage extends ConsumerWidget {
                   const Gap(defaultGapM),
                   CustomTextFormField(
                     labelText: '이름',
-                    onSaved: (value) => itemInfo.itemName = value,
+                    controller: _clubItemController.name,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '물품 이름을 입력해 주세요';
@@ -120,6 +146,7 @@ class ClubItemAddPage extends ConsumerWidget {
                   ),
                   const Gap(defaultGapM),
                   CustomDropdownFormField(
+                    initialValue: _selectedCategory,
                     labelText: '카테고리',
                     items: const [
                       {'value': 'DIGITAL', 'displayText': '디지털'},
@@ -129,7 +156,7 @@ class ClubItemAddPage extends ConsumerWidget {
                       {'value': 'STATIONERY', 'displayText': '문구류'},
                       {'value': 'ETC', 'displayText': '기타'},
                     ],
-                    onChanged: (value) => itemInfo.itemCategory = value,
+                    onChanged: (value) => _selectedCategory = value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '카테고리를 선택해 주세요';
@@ -143,7 +170,7 @@ class ClubItemAddPage extends ConsumerWidget {
                     hintText: '200자 이내로 입력해 주세요',
                     minLines: 4,
                     maxLength: 200,
-                    onSaved: (value) => itemInfo.itemDescription = value,
+                    controller: _clubItemController.description,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '물품 설명을 입력해 주세요';
@@ -164,7 +191,7 @@ class ClubItemAddPage extends ConsumerWidget {
                     hintText: '50자 이내로 입력해 주세요',
                     minLines: 1,
                     maxLength: 50,
-                    onSaved: (value) => itemInfo.itemLocation = value,
+                    controller: _clubItemController.location,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '물품 위치를 입력해 주세요';
@@ -178,11 +205,11 @@ class ClubItemAddPage extends ConsumerWidget {
                     hintText: '일 단위로 입력해 주세요',
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
+                    controller: _clubItemController.rentalMaxDay,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(3),
                     ],
-                    onSaved: (value) => itemInfo.itemRentalMaxDay = int.parse(value!),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '최대 대여 가능 기간을 입력해 주세요';
@@ -203,10 +230,20 @@ class ClubItemAddPage extends ConsumerWidget {
         bottomNavigationBar: SafeArea(
           child: CustomBottomButton(
             onTap: () async {
-              if (formKey.currentState?.validate() == true) {
-                formKey.currentState?.save();
+              if (_formKey.currentState?.validate() == true) {
                 try {
-                  await _addItemToServer(s3ImageState, s3ImageNotifier, itemInfo, itemNotifier);
+                  await _addItemToServer(
+                    s3ImageState,
+                    s3ImageNotifier,
+                    Item(
+                      itemName: _clubItemController.name.text,
+                      itemDescription: _clubItemController.description.text,
+                      itemLocation: _clubItemController.location.text,
+                      itemCategory: _selectedCategory,
+                      itemRentalMaxDay: int.parse(_clubItemController.rentalMaxDay.text),
+                    ),
+                    itemNotifier,
+                  );
 
                   if (context.mounted) {
                     Navigator.pop(context);

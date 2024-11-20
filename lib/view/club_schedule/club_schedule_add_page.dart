@@ -19,6 +19,7 @@ import '../themes/custom_widget/interface/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'components/club_schedule_datetime_picker.dart';
+import 'components/club_schedule_controller.dart';
 
 class ClubScheduleAddPage extends ConsumerStatefulWidget {
   final DateTime? initialScheduleDateTime;
@@ -34,6 +35,7 @@ class ClubScheduleAddPage extends ConsumerStatefulWidget {
 
 class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
   final _formKey = GlobalKey<FormState>();
+  late final ClubScheduleController _clubScheduleController;
   DateTime? _selectedDate;
   Color _pickerColor = const Color(0xFFB8BEC0);
   bool _isMailSend = false;
@@ -41,18 +43,19 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
   @override
   void initState() {
     super.initState();
+    _clubScheduleController = ClubScheduleController();
     _selectedDate = widget.initialScheduleDateTime;
   }
 
   @override
   void dispose() {
+    _clubScheduleController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final currentClubId = ref.watch(clubIdProvider);
-    final scheduleInfo = ref.watch(scheduleProvider);
     final scheduleState = ref.watch(scheduleStateProvider);
     final scheduleNotifier = ref.read(scheduleProvider.notifier);
 
@@ -83,7 +86,7 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
                       Expanded(
                         child: CustomTextFormField(
                           labelText: '제목',
-                          onSaved: (value) => scheduleInfo.scheduleTitle = value,
+                          controller: _clubScheduleController.title,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return '일정 제목을 입력해 주세요';
@@ -142,7 +145,7 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
                     minLines: 3,
                     maxLength: 100,
                     textInputAction: TextInputAction.done,
-                    onSaved: (value) => scheduleInfo.scheduleContent = value,
+                    controller: _clubScheduleController.content,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '일정 내용을 입력해 주세요';
@@ -203,12 +206,18 @@ class _ClubScheduleAddPageState extends ConsumerState<ClubScheduleAddPage> {
           child: CustomBottomButton(
             onTap: () async {
               if (_formKey.currentState?.validate() == true) {
-                _formKey.currentState?.save();
-                scheduleInfo.scheduleDateTime = _selectedDate;
-                scheduleInfo.scheduleColor = _pickerColor.value.toRadixString(16).toUpperCase();
-
                 try {
-                  await _addSchedule(currentClubId!, scheduleInfo, scheduleNotifier, _isMailSend);
+                  await _addSchedule(
+                    currentClubId!,
+                    Schedule(
+                      scheduleTitle: _clubScheduleController.title.text,
+                      scheduleContent: _clubScheduleController.content.text,
+                      scheduleDateTime: _selectedDate,
+                      scheduleColor: _pickerColor.value.toRadixString(16).toUpperCase(),
+                    ),
+                    scheduleNotifier,
+                    _isMailSend,
+                  );
 
                   if (context.mounted) {
                     Navigator.pop(context);

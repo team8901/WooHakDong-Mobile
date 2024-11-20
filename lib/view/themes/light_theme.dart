@@ -96,14 +96,12 @@ final ThemeData lightTheme = ThemeData(
     elevation: 1,
     selectedItemColor: black,
     unselectedItemColor: gray,
-    showSelectedLabels: false,
-    showUnselectedLabels: false,
-    selectedLabelStyle: CustomTextStyle.labelLarge,
+    selectedLabelStyle: CustomTextStyle.labelLarge.copyWith(fontWeight: FontWeight.w600),
     unselectedLabelStyle: CustomTextStyle.labelLarge,
     type: BottomNavigationBarType.fixed,
     enableFeedback: false,
-    selectedIconTheme: const IconThemeData(size: 24),
-    unselectedIconTheme: const IconThemeData(size: 24),
+    selectedIconTheme: const IconThemeData(fill: 1),
+    unselectedIconTheme: const IconThemeData(fill: 0),
   ),
 
   /// 서치바 태마
@@ -145,11 +143,13 @@ final ThemeData lightTheme = ThemeData(
         topRight: Radius.circular(defaultBorderRadiusL),
       ),
     ),
-    elevation: 1,
-    modalElevation: 1,
     showDragHandle: true,
     dragHandleColor: gray,
   ),
+
+  /// 다이얼로그 테마
+  dialogBackgroundColor: white,
+  dialogTheme: const DialogTheme(backgroundColor: white),
 
   /// 탭바 테마
   tabBarTheme: TabBarTheme(
@@ -166,7 +166,6 @@ final ThemeData lightTheme = ThemeData(
     dividerColor: Colors.transparent,
     dividerHeight: 0,
     labelColor: black,
-    labelPadding: const EdgeInsets.symmetric(horizontal: defaultPaddingS),
     labelStyle: CustomTextStyle.bodyMedium,
     unselectedLabelColor: black,
     unselectedLabelStyle: CustomTextStyle.bodySmall,

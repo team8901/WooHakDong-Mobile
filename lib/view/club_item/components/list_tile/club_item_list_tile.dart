@@ -131,7 +131,7 @@ class ClubItemListTile extends ConsumerWidget {
                       ),
                       border: Border.all(
                         color: context.colorScheme.surfaceContainer,
-                        width: 1,
+                        width: 0.4,
                       ),
                     ),
                   ),
@@ -192,7 +192,7 @@ class ClubItemListTile extends ConsumerWidget {
                             const Gap(defaultGapS),
                             if (item.itemUsing!)
                               Icon(
-                                (item.itemOverdue!) ? Symbols.priority_high_rounded : Symbols.lock_open_rounded,
+                                (item.itemOverdue!) ? Symbols.timer_rounded : Symbols.lock_clock_rounded,
                                 color: (item.itemOverdue!) ? context.colorScheme.error : context.colorScheme.primary,
                                 size: 12,
                               )

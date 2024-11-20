@@ -33,7 +33,7 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String? clubImage = ref.watch(currentClubInfoProvider).clubImage;
+    final currentClubInfo = ref.watch(currentClubInfoProvider);
 
     return Scaffold(
       body: CustomPopScope(
@@ -55,35 +55,23 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
         child: BottomNavigationBar(
           items: [
             const BottomNavigationBarItem(
-              icon: Icon(
-                Symbols.group_rounded,
-                fill: 1,
-              ),
+              icon: Icon(Symbols.group_rounded),
               label: '회원',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(
-                Symbols.list_alt_rounded,
-                fill: 1,
-              ),
+              icon: Icon(Symbols.list_alt_rounded),
               label: '물품',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(
-                Symbols.savings_rounded,
-                fill: 1,
-              ),
+              icon: Icon(Symbols.savings_rounded),
               label: '회비',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(
-                Symbols.calendar_month_rounded,
-                fill: 1,
-              ),
+              icon: Icon(Symbols.calendar_month_rounded),
               label: '일정',
             ),
             BottomNavigationBarItem(
-              icon: clubImage != null
+              icon: currentClubInfo.clubImage != null
                   ? Container(
                       width: 24.r,
                       height: 24.r,
@@ -94,7 +82,7 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
                           width: _selectedIndex == 4 ? 2 : 1,
                         ),
                         image: DecorationImage(
-                          image: CachedNetworkImageProvider(clubImage),
+                          image: CachedNetworkImageProvider(currentClubInfo.clubImage!),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -111,7 +99,7 @@ class _RoutePageState extends ConsumerState<NavigatorPage> {
                         ),
                       ),
                     ),
-              label: '내 동아리',
+              label: currentClubInfo.clubName,
             ),
           ],
           currentIndex: _selectedIndex,

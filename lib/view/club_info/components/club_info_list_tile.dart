@@ -50,6 +50,7 @@ class ClubInfoListTile extends ConsumerWidget {
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: context.colorScheme.surfaceContainer,
+                    width: 0.4,
                   ),
                   image: DecorationImage(
                     image: imageProvider,

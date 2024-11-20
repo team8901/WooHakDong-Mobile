@@ -6,5 +6,6 @@ final itemFilterProvider = StateProvider<ItemFilter>((ref) {
     category: null,
     using: null,
     available: null,
+    overdue: null,
   );
 });

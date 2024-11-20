@@ -15,7 +15,6 @@ class ClubItemUsingFilterBottomSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ConstrainedBox(
       constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.4,
         minHeight: MediaQuery.of(context).size.height * 0.2,
       ),
       child: SingleChildScrollView(
@@ -55,6 +54,7 @@ class ClubItemUsingFilterBottomSheet extends ConsumerWidget {
                                   category: ref.read(itemFilterProvider).category,
                                   using: null,
                                   available: ref.read(itemFilterProvider).available,
+                                  overdue: ref.read(itemFilterProvider).overdue,
                                 )
                               : ref.read(itemFilterProvider.notifier).state = filter.copyWith(using: false);
                         },
@@ -70,8 +70,50 @@ class ClubItemUsingFilterBottomSheet extends ConsumerWidget {
                                   category: ref.read(itemFilterProvider).category,
                                   using: null,
                                   available: ref.read(itemFilterProvider).available,
+                                  overdue: ref.read(itemFilterProvider).overdue,
                                 )
                               : ref.read(itemFilterProvider.notifier).state = filter.copyWith(using: true);
+                        },
+                      ),
+                    ],
+                  ),
+                  const Gap(defaultGapXL),
+                  Text(
+                    '연체 여부',
+                    style: context.textTheme.labelLarge,
+                  ),
+                  const Gap(defaultGapM),
+                  Row(
+                    children: [
+                      ClubItemFilterSheetButton(
+                        label: '미연체',
+                        selected: filter.overdue == false,
+                        onTap: () {
+                          final isCurrentlySelected = filter.overdue == false;
+                          (isCurrentlySelected)
+                              ? ref.read(itemFilterProvider.notifier).state = ItemFilter(
+                                  category: ref.read(itemFilterProvider).category,
+                                  using: ref.read(itemFilterProvider).using,
+                                  available: ref.read(itemFilterProvider).available,
+                                  overdue: null,
+                                )
+                              : ref.read(itemFilterProvider.notifier).state = filter.copyWith(overdue: false);
+                        },
+                      ),
+                      const Gap(defaultGapS),
+                      ClubItemFilterSheetButton(
+                        label: '연체',
+                        selected: filter.overdue == true,
+                        onTap: () {
+                          final isCurrentlySelected = filter.overdue == true;
+                          (isCurrentlySelected)
+                              ? ref.read(itemFilterProvider.notifier).state = ItemFilter(
+                                  category: ref.read(itemFilterProvider).category,
+                                  using: ref.read(itemFilterProvider).using,
+                                  available: ref.read(itemFilterProvider).available,
+                                  overdue: null,
+                                )
+                              : ref.read(itemFilterProvider.notifier).state = filter.copyWith(overdue: true);
                         },
                       ),
                     ],
@@ -94,6 +136,7 @@ class ClubItemUsingFilterBottomSheet extends ConsumerWidget {
                                   category: ref.read(itemFilterProvider).category,
                                   using: ref.read(itemFilterProvider).using,
                                   available: null,
+                                  overdue: ref.read(itemFilterProvider).overdue,
                                 )
                               : ref.read(itemFilterProvider.notifier).state = filter.copyWith(available: true);
                         },
@@ -109,6 +152,7 @@ class ClubItemUsingFilterBottomSheet extends ConsumerWidget {
                                   category: ref.read(itemFilterProvider).category,
                                   using: ref.read(itemFilterProvider).using,
                                   available: null,
+                                  overdue: ref.read(itemFilterProvider).overdue,
                                 )
                               : ref.read(itemFilterProvider.notifier).state = filter.copyWith(available: false);
                         },

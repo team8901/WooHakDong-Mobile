@@ -9,10 +9,14 @@ import '../../themes/spacing.dart';
 
 class ClubRegisterUrlCard extends StatelessWidget {
   final Group? groupInfo;
+  final bool? isUnderline;
+  final Future<void> Function()? onGroupJoinLinkTap;
 
   const ClubRegisterUrlCard({
     super.key,
     required this.groupInfo,
+    this.isUnderline = false,
+    this.onGroupJoinLinkTap,
   });
 
   @override
@@ -33,11 +37,16 @@ class ClubRegisterUrlCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: Text(
-                groupInfo!.groupJoinLink!,
-                style: context.textTheme.titleSmall,
-                softWrap: true,
-                overflow: TextOverflow.visible,
+              child: GestureDetector(
+                onLongPress: onGroupJoinLinkTap,
+                child: Text(
+                  groupInfo!.groupJoinLink!,
+                  style: (isUnderline!) ? context.textTheme.titleSmall?.copyWith(
+                    decoration: TextDecoration.underline,
+                    decorationColor: context.colorScheme.outline,
+                    decorationThickness: 0.5,
+                  ) : context.textTheme.titleSmall,
+                ),
               ),
             ),
             const Gap(defaultGapM),

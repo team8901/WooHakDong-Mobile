@@ -114,7 +114,7 @@ class _ClubMemberItemHistoryPanelState extends ConsumerState<ClubMemberItemHisto
                   },
                 );
               },
-              loading: () => CustomCircularProgressIndicator(
+              loading: () => CustomProgressIndicator(
                 indicatorColor: context.colorScheme.surfaceContainer,
               ),
               error: (error, stack) => Padding(

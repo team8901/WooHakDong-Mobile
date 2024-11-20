@@ -71,6 +71,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
         Expanded(
           child: PageView.builder(
             controller: _pageController,
+            physics: const PageScrollPhysics(),
             onPageChanged: (index) async {
               DateTime newDate = _getDateFromIndex(index);
 
@@ -90,6 +91,8 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
               }
             },
             itemBuilder: (context, index) {
+              DateTime today = _getDateFromIndex(index);
+
               return Consumer(
                 builder: (context, ref, child) {
                   final scheduleListData = ref.watch(scheduleListProvider(_focusedDay));
@@ -97,7 +100,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
                   return scheduleListData.when(
                     data: (scheduleList) {
                       final filteredScheduleList = scheduleList.where((schedule) {
-                        return isSameDay(schedule.scheduleDateTime, _selectedDay!);
+                        return isSameDay(schedule.scheduleDateTime, today);
                       }).toList()
                         ..sort((a, b) => a.scheduleDateTime!.compareTo(b.scheduleDateTime!));
 
@@ -113,10 +116,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
                       }
 
                       return CustomRefreshIndicator(
-                        onRefresh: () async {
-                          await Future.delayed(const Duration(milliseconds: 500));
-                          ref.invalidate(scheduleListProvider(_focusedDay));
-                        },
+                        onRefresh: () async => ref.invalidate(scheduleListProvider(_focusedDay)),
                         child: ListView.separated(
                           separatorBuilder: (context, index) => const CustomHorizontalDivider(),
                           itemCount: filteredScheduleList.length,
@@ -254,9 +254,12 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
     setState(() {
       _focusedDay = DateTime.now();
       _selectedDay = _focusedDay;
+      _currentDate = _focusedDay;
+      _baseDate = _focusedDay;
+      _pageController.jumpToPage(_initialPage);
+      _lastSelectedDate = _focusedDay;
     });
-
-    _setSelectedDay(_selectedDay!);
+    _setSelectedDay(_focusedDay);
   }
 
   Future<void> _pushScheduleDetailPage(WidgetRef ref, BuildContext context, int scheduleId) async {

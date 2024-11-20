@@ -13,6 +13,7 @@ class ItemRepository {
     String? category,
     bool? using,
     bool? available,
+    bool? overdue,
   ) async {
     try {
       logger.i('물품 목록 조회 시도');
@@ -30,6 +31,9 @@ class ItemRepository {
       }
       if (available != null) {
         queryParams['available'] = available;
+      }
+      if (overdue != null) {
+        queryParams['overdue'] = overdue;
       }
 
       final response = await _dio.get(

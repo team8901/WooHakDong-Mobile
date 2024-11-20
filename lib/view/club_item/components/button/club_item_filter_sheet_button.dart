@@ -20,20 +20,24 @@ class ClubItemFilterSheetButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       highlightColor: context.colorScheme.outline,
-      borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
+      borderRadius: BorderRadius.circular(defaultBorderRadiusL),
       child: Ink(
         height: 32.h,
         padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
-          color: selected ? context.colorScheme.secondary : context.colorScheme.surfaceContainer,
+          border: Border.all(
+            color: selected ? Colors.transparent : context.colorScheme.surfaceContainer,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(defaultBorderRadiusL),
+          color: selected ? context.colorScheme.secondary : Colors.transparent,
         ),
         child: Center(
           child: Text(
             label,
             style: selected
                 ? context.textTheme.bodyMedium?.copyWith(color: context.colorScheme.primary)
-                : context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                : context.textTheme.bodySmall,
           ),
         ),
       ),

@@ -58,7 +58,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
       builder: (context, infoSnapshot) {
         if (infoSnapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            body: CustomCircularProgressIndicator(indicatorColor: context.colorScheme.surfaceContainer),
+            body: CustomProgressIndicator(indicatorColor: context.colorScheme.surfaceContainer),
           );
         }
 
@@ -112,7 +112,12 @@ class _RoutePageState extends ConsumerState<RoutePage> {
 
       ref.invalidate(s3ImageProvider);
       ref.watch(clubMemberListProvider.notifier);
-      ref.watch(itemListProvider(const ItemFilter(category: null, using: null, available: null)).notifier);
+      ref.watch(itemListProvider(const ItemFilter(
+        category: null,
+        using: null,
+        available: null,
+        overdue: null,
+      )).notifier);
       ref.watch(scheduleCalendarViewProvider.notifier);
     }
 
