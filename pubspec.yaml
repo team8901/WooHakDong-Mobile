@@ -57,6 +57,7 @@ dependencies:
   animated_toggle_switch: ^0.8.3
   file_picker: ^8.1.4
   image_gallery_saver_plus: ^3.0.5
+  mask_text_input_formatter: ^2.9.0
 
 dev_dependencies:
   flutter_test:
@@ -82,9 +83,9 @@ flutter:
   fonts:
     - family: Pretendard
       fonts:
-        - asset: assets/fonts/pretendard/Pretendard-Regular.otf
+        - asset: assets/fonts/pretendard/Pretendard-Regular.ttf
           weight: 400
-        - asset: assets/fonts/pretendard/Pretendard-SemiBold.otf
+        - asset: assets/fonts/pretendard/Pretendard-SemiBold.ttf
           weight: 600
 
 

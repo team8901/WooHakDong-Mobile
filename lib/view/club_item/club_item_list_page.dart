@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/view/club_item/club_item_add_page.dart';
-import 'package:woohakdong/view/club_item/components/club_item_page_view.dart';
 
 import '../../model/item/item_filter.dart';
 import '../../view_model/item/item_filter_provider.dart';
+import 'club_item_add_page.dart';
 import 'club_item_search_page.dart';
 import 'components/button/club_item_filter_action_button.dart';
+import 'components/club_item_page_view.dart';
 import 'components/dialog/club_item_using_filter_bottom_sheet.dart';
 
 class ClubItemListPage extends ConsumerStatefulWidget {
@@ -70,59 +69,54 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
     final filter = ref.watch(itemFilterProvider);
 
     return Scaffold(
-      body: SafeArea(
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverAppBar(
-              title: const Text('물품'),
-              pinned: true,
-              floating: true,
-              snap: true,
-              forceElevated: innerBoxIsScrolled,
-              actions: [
-                IconButton(
-                  onPressed: () => _pushItemSearchPage(context),
-                  icon: const Icon(Symbols.search_rounded),
-                ),
-              ],
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(100.h),
-                child: Column(
-                  children: [
-                    TabBar(
-                      controller: tabController,
-                      isScrollable: true,
-                      tabs: const [
-                        Tab(text: '전체'),
-                        Tab(text: '디지털'),
-                        Tab(text: '스포츠'),
-                        Tab(text: '도서'),
-                        Tab(text: '의류'),
-                        Tab(text: '문구류'),
-                        Tab(text: '기타'),
-                      ],
-                    ),
-                    ClubItemFilterActionButton(
-                      filter: filter,
-                      onFilterTap: () => showModalBottomSheet(
-                        useSafeArea: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const ClubItemUsingFilterBottomSheet();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+      appBar: AppBar(
+        title: const Text('물품'),
+        actions: [
+          IconButton(
+            onPressed: () => _pushItemSearchPage(context),
+            icon: const Icon(Symbols.search_rounded),
+          ),
+        ],
+        bottom: TabBar(
+          controller: tabController,
+          isScrollable: true,
+          tabs: const [
+            Tab(text: '전체'),
+            Tab(text: '디지털'),
+            Tab(text: '스포츠'),
+            Tab(text: '도서'),
+            Tab(text: '의류'),
+            Tab(text: '문구류'),
+            Tab(text: '기타'),
+          ],
+        ),
+      ),
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverAppBar(
+            floating: true,
+            snap: true,
+            toolbarHeight: 52,
+            automaticallyImplyLeading: false,
+            titleSpacing: 0,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            title: ClubItemFilterActionButton(
+              filter: filter,
+              onFilterTap: () => showModalBottomSheet(
+                useSafeArea: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return const ClubItemUsingFilterBottomSheet();
+                },
               ),
             ),
-          ],
-          body: TabBarView(
-            controller: tabController,
-            children: List.generate(
-              categories.length,
-              (index) => const ClubItemPageView(),
-            ),
+          ),
+        ],
+        body: TabBarView(
+          controller: tabController,
+          children: List.generate(
+            categories.length,
+            (index) => const ClubItemPageView(),
           ),
         ),
       ),

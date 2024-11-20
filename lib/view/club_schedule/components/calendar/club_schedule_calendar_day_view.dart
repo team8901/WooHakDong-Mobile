@@ -71,6 +71,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
         Expanded(
           child: PageView.builder(
             controller: _pageController,
+            physics: const PageScrollPhysics(),
             onPageChanged: (index) async {
               DateTime newDate = _getDateFromIndex(index);
 

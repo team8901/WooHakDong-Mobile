@@ -120,7 +120,7 @@ class _ClubItemSearchPageState extends ConsumerState<ClubItemSearchPage> {
 
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 200), () {
+    _debounce = Timer(const Duration(milliseconds: 150), () {
       setState(() {});
     });
   }

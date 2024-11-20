@@ -38,26 +38,24 @@ class GoogleLoginButton extends ConsumerWidget {
             color: context.colorScheme.surfaceContainer,
           ),
           child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/logos/google.png',
-                  width: 18,
-                  height: 18,
-                ),
-                const Gap(defaultGapM),
-                (authState == AuthState.loading)
-                    ? CustomProgressIndicator(
-                        indicatorColor: context.colorScheme.primary,
-                      )
-                    : Text(
+            child: (authState == AuthState.loading)
+                ? CustomProgressIndicator(indicatorColor: context.colorScheme.onSurface)
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/logos/google.png',
+                        width: 18,
+                        height: 18,
+                      ),
+                      const Gap(defaultGapM),
+                      Text(
                         'Google계정으로 로그인',
                         style: context.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
                       ),
-              ],
-            ),
+                    ],
+                  ),
           ),
         ),
       ),

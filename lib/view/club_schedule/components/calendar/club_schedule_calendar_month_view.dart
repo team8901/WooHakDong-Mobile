@@ -201,6 +201,7 @@ class _ClubScheduleCalendarMonthViewState extends ConsumerState<ClubScheduleCale
             height: MediaQuery.of(context).size.height * 0.6,
             child: PageView.builder(
               controller: _pageController,
+              physics: const PageScrollPhysics(),
               onPageChanged: (index) async {
                 DateTime newDate = _getDateFromIndex(index);
 

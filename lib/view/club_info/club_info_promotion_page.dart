@@ -55,7 +55,11 @@ class ClubInfoPromotionPage extends ConsumerWidget {
                 ],
               ),
               const Gap(defaultGapM),
-              ClubRegisterUrlCard(groupInfo: groupInfo, onGroupJoinLinkTap: () => _launchUri(groupInfo.groupJoinLink!)),
+              ClubRegisterUrlCard(
+                groupInfo: groupInfo,
+                isUnderline: true,
+                onGroupJoinLinkTap: () => _launchUri(groupInfo.groupJoinLink!),
+              ),
               const Gap(defaultGapM),
               Container(
                 decoration: BoxDecoration(

@@ -81,8 +81,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
     final appThemeMode = ref.watch(settingThemeProvider);
-
-    ThemeMode themeMode;
+    final ThemeMode themeMode;
 
     switch (appThemeMode) {
       case SettingThemeMode.light:

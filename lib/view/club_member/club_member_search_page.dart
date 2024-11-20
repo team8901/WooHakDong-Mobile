@@ -89,6 +89,8 @@ class _ClubMemberSearchPageState extends ConsumerState<ClubMemberSearchPage> {
                   );
                 }
 
+                searchedClubMember.sort((a, b) => a.memberName!.compareTo(b.memberName!));
+
                 return ListView.separated(
                   physics: const AlwaysScrollableScrollPhysics(),
                   separatorBuilder: (context, index) => const CustomHorizontalDivider(),
@@ -115,7 +117,7 @@ class _ClubMemberSearchPageState extends ConsumerState<ClubMemberSearchPage> {
 
   _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 200), () {
+    _debounce = Timer(const Duration(milliseconds: 150), () {
       setState(() {});
     });
   }

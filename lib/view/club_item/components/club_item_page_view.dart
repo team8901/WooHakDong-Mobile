@@ -30,67 +30,64 @@ class _ClubItemPageViewState extends ConsumerState<ClubItemPageView> {
     final filter = ref.watch(itemFilterProvider);
     final itemListData = ref.watch(itemListProvider(filter));
 
-    return SizedBox(
-      width: double.infinity,
-      child: itemListData.when(
-        data: (itemList) {
-          if (itemList.isEmpty) {
-            return Center(
-              child: Text(
-                (filter.category == null && filter.using == null && filter.available == null && filter.overdue == null)
-                    ? '아직 등록된 물품이 없어요'
-                    : (filter.using != null || filter.available != null || filter.overdue != null)
-                        ? '선택한 상태에 맞는 물품이 없어요'
-                        : '${GeneralFormat.formatItemCategory(filter.category!)} 카테고리에 등록된 물품이 없어요',
-                style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-              ),
-            );
-          }
-
-          return CustomRefreshIndicator(
-            onRefresh: () async => ref.invalidate(itemListProvider(filter)),
-            child: ListView.separated(
-              physics: const AlwaysScrollableScrollPhysics(),
-              separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-              itemCount: itemList.length,
-              itemBuilder: (context, index) {
-                final item = itemList[index];
-                return ClubItemListTile(
-                  item: itemList[index],
-                  onTap: () async => await _pushItemDetailPage(ref, context, item),
-                  onToggleLongPress: () async => await _toggleItemRentAvailable(context, ref, item),
-                  onEditLongPress: () => _pushItemEditPage(context, item),
-                  onDeleteLongPress: () async => await _deleteItem(context, ref, item),
-                );
-              },
+    return itemListData.when(
+      data: (itemList) {
+        if (itemList.isEmpty) {
+          return Center(
+            child: Text(
+              (filter.category == null && filter.using == null && filter.available == null && filter.overdue == null)
+                  ? '아직 등록된 물품이 없어요'
+                  : (filter.using != null || filter.available != null || filter.overdue != null)
+                      ? '선택한 상태에 맞는 물품이 없어요'
+                      : '${GeneralFormat.formatItemCategory(filter.category!)} 카테고리에 등록된 물품이 없어요',
+              style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
             ),
           );
-        },
-        loading: () => CustomLoadingSkeleton(
-          isLoading: true,
+        }
+
+        return CustomRefreshIndicator(
+          onRefresh: () async => ref.invalidate(itemListProvider(filter)),
           child: ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(),
             separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-            itemCount: 50,
-            itemBuilder: (context, index) => ClubItemListTile(
-              item: Item(
-                itemName: '자바의 정석',
-                itemCategory: 'DIGITAL',
-                itemLocation: '동아리 방',
-                itemUsing: false,
-                itemRentalTime: 0,
-              ),
+            itemCount: itemList.length,
+            itemBuilder: (context, index) {
+              final item = itemList[index];
+              return ClubItemListTile(
+                item: itemList[index],
+                onTap: () async => await _pushItemDetailPage(ref, context, item),
+                onToggleLongPress: () async => await _toggleItemRentAvailable(context, ref, item),
+                onEditLongPress: () => _pushItemEditPage(context, item),
+                onDeleteLongPress: () async => await _deleteItem(context, ref, item),
+              );
+            },
+          ),
+        );
+      },
+      loading: () => CustomLoadingSkeleton(
+        isLoading: true,
+        child: ListView.separated(
+          physics: const AlwaysScrollableScrollPhysics(),
+          separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+          itemCount: 50,
+          itemBuilder: (context, index) => ClubItemListTile(
+            item: Item(
+              itemName: '자바의 정석',
+              itemCategory: 'DIGITAL',
+              itemLocation: '동아리 방',
+              itemUsing: false,
+              itemRentalTime: 0,
             ),
           ),
         ),
-        error: (error, stackTrace) => Center(
-          child: Text(
-            '물품 목록을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
-            style: context.textTheme.bodySmall?.copyWith(
-              color: context.colorScheme.error,
-            ),
-            textAlign: TextAlign.center,
+      ),
+      error: (error, stackTrace) => Center(
+        child: Text(
+          '물품 목록을 불러오는 중 오류가 발생했어요\n다시 시도해 주세요',
+          style: context.textTheme.bodySmall?.copyWith(
+            color: context.colorScheme.error,
           ),
+          textAlign: TextAlign.center,
         ),
       ),
     );

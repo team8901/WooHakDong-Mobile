@@ -18,18 +18,15 @@ class ClubItemFilterActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: defaultPaddingM,
-        top: defaultPaddingM / 2,
-        bottom: defaultPaddingM / 2,
-      ),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: defaultPaddingM, vertical: defaultPaddingM / 2),
       child: Row(
         children: [
           InkWell(
             onTap: onFilterTap,
             highlightColor: context.colorScheme.outline,
-            borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
+            borderRadius: BorderRadius.circular(defaultBorderRadiusL),
             child: Ink(
               height: 32.h,
               padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
@@ -38,18 +35,28 @@ class ClubItemFilterActionButton extends StatelessWidget {
                   color: filter.using == null ? context.colorScheme.surfaceContainer : Colors.transparent,
                   width: 1,
                 ),
-                borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
+                borderRadius: BorderRadius.circular(defaultBorderRadiusL),
                 color: filter.using == null ? Colors.transparent : context.colorScheme.secondary,
               ),
               child: Center(
-                child: Text(
-                  _getUsingFilterText(filter),
-                  style: filter.using == null
-                      ? context.textTheme.labelLarge?.copyWith(color: context.colorScheme.onSurface)
-                      : context.textTheme.labelLarge?.copyWith(
-                          color: context.colorScheme.primary,
-                          fontWeight: FontWeight.w600,
-                        ),
+                child: Row(
+                  children: [
+                    Text(
+                      _getUsingFilterText(filter),
+                      style: filter.using == null
+                          ? context.textTheme.labelLarge
+                          : context.textTheme.labelLarge?.copyWith(
+                              color: context.colorScheme.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                    ),
+                    const Gap(defaultGapS / 2),
+                    if (filter.using == null)
+                      const Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        size: 12,
+                      ),
+                  ],
                 ),
               ),
             ),
@@ -58,7 +65,7 @@ class ClubItemFilterActionButton extends StatelessWidget {
           InkWell(
             onTap: onFilterTap,
             highlightColor: context.colorScheme.outline,
-            borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
+            borderRadius: BorderRadius.circular(defaultBorderRadiusL),
             child: Ink(
               height: 32.h,
               padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
@@ -67,18 +74,28 @@ class ClubItemFilterActionButton extends StatelessWidget {
                   color: filter.overdue == null ? context.colorScheme.surfaceContainer : Colors.transparent,
                   width: 1,
                 ),
-                borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
+                borderRadius: BorderRadius.circular(defaultBorderRadiusL),
                 color: filter.overdue == null ? Colors.transparent : context.colorScheme.secondary,
               ),
               child: Center(
-                child: Text(
-                  _getOverdueFilterText(filter),
-                  style: filter.overdue == null
-                      ? context.textTheme.labelLarge?.copyWith(color: context.colorScheme.onSurface)
-                      : context.textTheme.labelLarge?.copyWith(
-                          color: context.colorScheme.primary,
-                          fontWeight: FontWeight.w600,
-                        ),
+                child: Row(
+                  children: [
+                    Text(
+                      _getOverdueFilterText(filter),
+                      style: filter.overdue == null
+                          ? context.textTheme.labelLarge
+                          : context.textTheme.labelLarge?.copyWith(
+                              color: context.colorScheme.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                    ),
+                    const Gap(defaultGapS / 2),
+                    if (filter.overdue == null)
+                      const Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        size: 12,
+                      ),
+                  ],
                 ),
               ),
             ),
@@ -87,7 +104,7 @@ class ClubItemFilterActionButton extends StatelessWidget {
           InkWell(
             onTap: onFilterTap,
             highlightColor: context.colorScheme.outline,
-            borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
+            borderRadius: BorderRadius.circular(defaultBorderRadiusL),
             child: Ink(
               height: 32.h,
               padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
@@ -96,18 +113,28 @@ class ClubItemFilterActionButton extends StatelessWidget {
                   color: filter.available == null ? context.colorScheme.surfaceContainer : Colors.transparent,
                   width: 1,
                 ),
-                borderRadius: BorderRadius.circular(defaultBorderRadiusL / 2),
+                borderRadius: BorderRadius.circular(defaultBorderRadiusL),
                 color: filter.available == null ? Colors.transparent : context.colorScheme.secondary,
               ),
               child: Center(
-                child: Text(
-                  _getAvailableFilterText(filter),
-                  style: filter.available == null
-                      ? context.textTheme.labelLarge?.copyWith(color: context.colorScheme.onSurface)
-                      : context.textTheme.labelLarge?.copyWith(
-                          color: context.colorScheme.primary,
-                          fontWeight: FontWeight.w600,
-                        ),
+                child: Row(
+                  children: [
+                    Text(
+                      _getAvailableFilterText(filter),
+                      style: filter.available == null
+                          ? context.textTheme.labelLarge
+                          : context.textTheme.labelLarge?.copyWith(
+                              color: context.colorScheme.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                    ),
+                    const Gap(defaultGapS / 2),
+                    if (filter.available == null)
+                      const Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        size: 12,
+                      ),
+                  ],
                 ),
               ),
             ),

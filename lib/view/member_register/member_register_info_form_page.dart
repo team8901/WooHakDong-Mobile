@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:woohakdong/view/themes/custom_widget/button/custom_bottom_button.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
@@ -13,12 +14,30 @@ import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
 import 'member_register_info_check_page.dart';
 
-class MemberRegisterInfoFormPage extends ConsumerWidget {
+class MemberRegisterInfoFormPage extends ConsumerStatefulWidget {
   const MemberRegisterInfoFormPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = GlobalKey<FormState>();
+  ConsumerState<MemberRegisterInfoFormPage> createState() => _MemberRegisterInfoFormPageState();
+}
+
+class _MemberRegisterInfoFormPageState extends ConsumerState<MemberRegisterInfoFormPage> {
+  final formKey = GlobalKey<FormState>();
+  final phoneController = TextEditingController();
+  final maskFormatter = MaskTextInputFormatter(
+    mask: '###-####-####',
+    filter: {"#": RegExp(r'[0-9]')},
+  );
+  bool _isPhoneInitialized = false;
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final memberNotifier = ref.read(memberProvider.notifier);
 
     return Scaffold(
@@ -36,6 +55,11 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
               return const CustomProgressIndicator();
             } else {
               final memberInfo = ref.watch(memberProvider);
+
+              if (!_isPhoneInitialized && memberInfo?.memberPhoneNumber != null) {
+                phoneController.text = maskFormatter.maskText(memberInfo!.memberPhoneNumber!);
+                _isPhoneInitialized = true;
+              }
 
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(defaultPaddingM),
@@ -80,11 +104,9 @@ class MemberRegisterInfoFormPage extends ConsumerWidget {
                         labelText: '휴대폰 번호',
                         hintText: '휴대폰 번호를 - 없이 입력해 주세요',
                         keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(11),
-                        ],
-                        onSaved: (value) => memberInfo?.memberPhoneNumber = value,
+                        controller: phoneController,
+                        inputFormatters: [maskFormatter],
+                        onSaved: (value) => memberInfo?.memberPhoneNumber = maskFormatter.getUnmaskedText(),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return '휴대폰 번호를 입력해 주세요';
