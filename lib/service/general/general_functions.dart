@@ -8,7 +8,7 @@ class GeneralFunctions {
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       fontSize: 14,
-      fontAsset: 'assets/fonts/pretendard/Pretendard-SemiBold.otf',
+      fontAsset: 'assets/fonts/pretendard/Pretendard-SemiBold.ttf',
       backgroundColor: const Color(0xFF6C6E75).withOpacity(0.8),
       textColor: const Color(0xFFFCFCFC),
     );

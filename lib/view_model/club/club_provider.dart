@@ -1,13 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:woohakdong/view_model/club/components/club_name_validation_state.dart';
+import 'package:woohakdong/view_model/club/components/availability/club_availability_state.dart';
+import 'package:woohakdong/view_model/club/components/availability/club_availability_state_provider.dart';
 import 'package:woohakdong/view_model/club/components/club_state.dart';
 import 'package:woohakdong/view_model/club/components/club_state_provider.dart';
+import 'package:woohakdong/view_model/club/components/name/club_name_validation_state.dart';
 import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 
 import '../../model/club/club.dart';
 import '../../repository/club/club_repository.dart';
 import 'club_id_provider.dart';
-import 'components/club_name_validation_provider.dart';
+import 'components/name/club_name_validation_provider.dart';
 
 final clubProvider = StateNotifierProvider<ClubNotifier, Club>((ref) {
   return ClubNotifier(ref);
@@ -64,10 +66,23 @@ class ClubNotifier extends StateNotifier<Club> {
       await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
       final clubId = await clubRepository.registerClubInfo(state.copyWith(clubImage: clubImageForServer));
 
-      await ref.read(clubIdProvider.notifier).saveClubId(clubId!);
+      if (clubId != null) {
+        await ref.read(clubIdProvider.notifier).saveClubId(clubId);
+      }
     } catch (e) {
       ref.read(clubStateProvider.notifier).state = ClubState.clubNotRegistered;
       rethrow;
+    }
+  }
+
+  Future<void> checkClubAvailability() async {
+    try {
+      final currentClubId = ref.watch(clubIdProvider);
+      await clubRepository.checkClubAvailability(currentClubId!);
+
+      ref.read(clubAvailabilityStateProvider.notifier).state = ClubAvailabilityState.available;
+    } catch (e) {
+      ref.read(clubAvailabilityStateProvider.notifier).state = ClubAvailabilityState.notAvailable;
     }
   }
 }

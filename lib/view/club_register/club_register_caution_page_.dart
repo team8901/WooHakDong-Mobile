@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/club_register/club_register_info_form_page.dart';
 import 'package:woohakdong/view/club_register/components/club_register_caution.dart';
-import 'package:woohakdong/view_model/club/components/club_name_validation_provider.dart';
-import 'package:woohakdong/view_model/club/components/club_name_validation_state.dart';
+import 'package:woohakdong/view_model/club/components/name/club_name_validation_provider.dart';
+import 'package:woohakdong/view_model/club/components/name/club_name_validation_state.dart';
 import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 
 import '../themes/custom_widget/button/custom_bottom_button.dart';

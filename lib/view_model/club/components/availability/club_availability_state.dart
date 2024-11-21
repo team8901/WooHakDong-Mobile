@@ -1,0 +1,4 @@
+enum ClubAvailabilityState {
+  notAvailable,
+  available,
+}

@@ -3,8 +3,8 @@ import 'package:woohakdong/model/club/club_account.dart';
 import 'package:woohakdong/repository/club/club_account_repository.dart';
 
 import 'club_id_provider.dart';
-import 'components/club_account_validation_provider.dart';
-import 'components/club_account_validation_state.dart';
+import 'components/account/club_account_validation_provider.dart';
+import 'components/account/club_account_validation_state.dart';
 
 final clubAccountProvider = StateNotifierProvider<ClubAccountNotifier, ClubAccount>((ref) {
   return ClubAccountNotifier(ref);
