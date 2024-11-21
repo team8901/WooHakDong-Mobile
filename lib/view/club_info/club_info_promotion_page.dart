@@ -46,9 +46,11 @@ class ClubInfoPromotionPage extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                    '${groupInfo.groupName} 전용 페이지',
-                    style: context.textTheme.titleMedium,
+                  Flexible(
+                    child: Text(
+                      '${groupInfo.groupName} 전용 페이지',
+                      style: context.textTheme.titleMedium,
+                    ),
                   ),
                   const Gap(defaultGapS),
                   const CustomInfoTooltip(tooltipMessage: '전용 페이지 링크를 꾹 누르면 바로 이동할 수 있어요'),

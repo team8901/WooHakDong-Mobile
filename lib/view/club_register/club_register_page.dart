@@ -21,6 +21,7 @@ class ClubRegisterPage extends StatelessWidget {
               top: defaultPaddingM * 3,
               left: defaultPaddingM,
               right: defaultPaddingM,
+              bottom: defaultPaddingM,
             ),
             child: ClubRegisterIntroduce(),
           ),

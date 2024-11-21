@@ -50,7 +50,7 @@ class ClubItemFilterActionButton extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                             ),
                     ),
-                    const Gap(defaultGapS / 2),
+                    if (filter.available == null) const Gap(defaultGapS / 2),
                     if (filter.using == null)
                       const Icon(
                         Icons.keyboard_arrow_down_rounded,
@@ -89,7 +89,7 @@ class ClubItemFilterActionButton extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                             ),
                     ),
-                    const Gap(defaultGapS / 2),
+                    if (filter.available == null) const Gap(defaultGapS / 2),
                     if (filter.overdue == null)
                       const Icon(
                         Icons.keyboard_arrow_down_rounded,
@@ -128,7 +128,7 @@ class ClubItemFilterActionButton extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                             ),
                     ),
-                    const Gap(defaultGapS / 2),
+                    if (filter.available == null) const Gap(defaultGapS / 2),
                     if (filter.available == null)
                       const Icon(
                         Icons.keyboard_arrow_down_rounded,

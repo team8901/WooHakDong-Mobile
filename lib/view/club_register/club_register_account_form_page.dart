@@ -8,8 +8,8 @@ import 'package:woohakdong/view_model/group/group_provider.dart';
 
 import '../../service/general/general_functions.dart';
 import '../../view_model/club/club_account_provider.dart';
-import '../../view_model/club/components/club_account_validation_provider.dart';
-import '../../view_model/club/components/club_account_validation_state.dart';
+import '../../view_model/club/components/account/club_account_validation_provider.dart';
+import '../../view_model/club/components/account/club_account_validation_state.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
 import '../themes/custom_widget/interaction/custom_pop_scope.dart';
 import '../themes/custom_widget/interface/custom_dropdown_form_field.dart';
@@ -224,7 +224,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
       Navigator.pushAndRemoveUntil(
         context,
         CupertinoPageRoute(
-          builder: (context) => ClubRegisterCompletePage(),
+          builder: (context) => const ClubRegisterCompletePage(),
         ),
         (route) => false,
       );

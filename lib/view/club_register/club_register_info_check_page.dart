@@ -76,7 +76,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomInfoContent(
-                          infoContent: clubInfo.clubName!,
+                          infoContent: clubInfo.clubName ?? '',
                           icon: Icon(
                             Symbols.account_balance_rounded,
                             size: 16,
@@ -85,7 +85,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                         ),
                         const Gap(defaultGapM),
                         CustomInfoContent(
-                          infoContent: clubInfo.clubEnglishName!,
+                          infoContent: clubInfo.clubEnglishName ?? '',
                           icon: Icon(
                             Symbols.signature_rounded,
                             size: 16,
@@ -107,7 +107,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                       vertical: defaultPaddingXS,
                     ),
                     child: CustomInfoContent(
-                      infoContent: clubInfo.clubDescription!,
+                      infoContent: clubInfo.clubDescription ?? '',
                       icon: Icon(
                         Symbols.info_rounded,
                         size: 16,
@@ -125,7 +125,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                             ? Column(
                                 children: [
                                   CustomInfoContent(
-                                    infoContent: GeneralFormat.formatClubGeneration(clubInfo.clubGeneration!),
+                                    infoContent: GeneralFormat.formatClubGeneration(clubInfo.clubGeneration ?? ''),
                                     icon: Icon(
                                       Symbols.numbers_rounded,
                                       size: 16,
@@ -137,7 +137,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                               )
                             : const SizedBox(),
                         CustomInfoContent(
-                          infoContent: GeneralFormat.formatClubDues(clubInfo.clubDues!),
+                          infoContent: GeneralFormat.formatClubDues(clubInfo.clubDues ?? 0),
                           icon: Icon(
                             Symbols.attach_money_rounded,
                             size: 16,
@@ -149,7 +149,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                                 children: [
                                   const Gap(defaultGapM),
                                   CustomInfoContent(
-                                    infoContent: clubInfo.clubRoom!,
+                                    infoContent: clubInfo.clubRoom ?? '',
                                     icon: Icon(
                                       Symbols.location_on_rounded,
                                       size: 16,
@@ -169,7 +169,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomInfoContent(
-                          infoContent: clubInfo.clubGroupChatLink!,
+                          infoContent: clubInfo.clubGroupChatLink ?? '',
                           icon: Icon(
                             Symbols.forum_rounded,
                             size: 16,
@@ -181,7 +181,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
                                 children: [
                                   const Gap(defaultGapXL),
                                   CustomInfoContent(
-                                    infoContent: clubInfo.clubGroupChatPassword!,
+                                    infoContent: clubInfo.clubGroupChatPassword ?? '',
                                     icon: Icon(
                                       Symbols.key_rounded,
                                       size: 16,
@@ -205,13 +205,12 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
               try {
                 List<String> imageUrls = await s3ImageNotifier.setImageUrl('1');
                 final clubImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
-
                 String clubImageForServer = clubImageUrl.substring(0, clubImageUrl.indexOf('?'));
 
                 await clubNotifier.registerClub(clubImageForServer);
 
                 if (context.mounted) {
-                  await _pushAccountFormPage(context);
+                  _pushAccountFormPage(context);
                 }
               } catch (e) {
                 await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
@@ -227,8 +226,8 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
     );
   }
 
-  Future<void> _pushAccountFormPage(BuildContext context) async {
-    await Navigator.pushAndRemoveUntil(
+  void _pushAccountFormPage(BuildContext context) async {
+    Navigator.pushAndRemoveUntil(
       context,
       CupertinoPageRoute(
         builder: (context) => const ClubRegisterAccountFormPage(),

@@ -6,10 +6,14 @@ import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/club_register/error_page/club_register_account_form_page_when_no_account.dart';
 import 'package:woohakdong/view/member_register/member_register_page.dart';
 import 'package:woohakdong/view/navigator_page.dart';
+import 'package:woohakdong/view/settlement/settlement_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/club/club_id_provider.dart';
-import 'package:woohakdong/view_model/club/components/club_account_validation_provider.dart';
+import 'package:woohakdong/view_model/club/club_provider.dart';
+import 'package:woohakdong/view_model/club/components/account/club_account_validation_provider.dart';
+import 'package:woohakdong/view_model/club/components/availability/club_availability_state.dart';
+import 'package:woohakdong/view_model/club/components/availability/club_availability_state_provider.dart';
 import 'package:woohakdong/view_model/club/components/club_state.dart';
 import 'package:woohakdong/view_model/club/components/club_state_provider.dart';
 import 'package:woohakdong/view_model/club/current_club_account_info_provider.dart';
@@ -25,7 +29,7 @@ import 'package:woohakdong/view_model/util/s3_image_provider.dart';
 
 import '../model/item/item_filter.dart';
 import '../view_model/club/club_list_provider.dart';
-import '../view_model/club/components/club_account_validation_state.dart';
+import '../view_model/club/components/account/club_account_validation_state.dart';
 import '../view_model/club_member/club_member_list_provider.dart';
 import '../view_model/club_member/components/club_selected_term_provider.dart';
 import 'club_register/error_page/club_register_page_for_member.dart';
@@ -51,6 +55,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
     final memberState = ref.watch(memberStateProvider);
     final clubState = ref.watch(clubStateProvider);
     final clubAccountValidationState = ref.watch(clubAccountValidationProvider);
+    final clubAvailabilityState = ref.watch(clubAvailabilityStateProvider);
     final clubMemberMe = ref.watch(clubMemberMeProvider);
 
     return FutureBuilder(
@@ -75,8 +80,11 @@ class _RoutePageState extends ConsumerState<RoutePage> {
         }
 
         if (clubAccountValidationState != ClubAccountValidationState.accountRegistered) {
-          FlutterNativeSplash.remove();
           return const ClubRegisterAccountFormPageWhenNoAccount();
+        }
+
+        if (clubAvailabilityState == ClubAvailabilityState.notAvailable) {
+          return const SettlementPage();
         }
 
         return const NavigatorPage();
@@ -92,6 +100,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
 
     if (clubList.isNotEmpty) {
       final currentClubId = ref.read(clubIdProvider);
+
       if (currentClubId == null) {
         await ref.read(clubIdProvider.notifier).saveClubId(clubList[0].clubId!);
       }
@@ -101,6 +110,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
         ref.read(clubMemberMeProvider.notifier).getClubMemberMe(),
         ref.read(currentClubAccountInfoProvider.notifier).getCurrentClubAccountInfo(),
         ref.read(clubMemberTermListProvider.notifier).getClubMemberTermList(),
+        ref.read(clubProvider.notifier).checkClubAvailability(),
       ]);
 
       final clubHistoryUsageDate = ref.read(clubMemberTermListProvider);
@@ -112,12 +122,14 @@ class _RoutePageState extends ConsumerState<RoutePage> {
 
       ref.invalidate(s3ImageProvider);
       ref.watch(clubMemberListProvider.notifier);
-      ref.watch(itemListProvider(const ItemFilter(
-        category: null,
-        using: null,
-        available: null,
-        overdue: null,
-      )).notifier);
+      ref.watch(itemListProvider(
+        const ItemFilter(
+          category: null,
+          using: null,
+          available: null,
+          overdue: null,
+        ),
+      ).notifier);
       ref.watch(scheduleCalendarViewProvider.notifier);
     }
 

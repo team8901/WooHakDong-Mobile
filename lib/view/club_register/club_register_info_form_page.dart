@@ -11,10 +11,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/club_register/club_register_other_info_form_page.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
-import 'package:woohakdong/view_model/club/components/club_name_validation_state.dart';
+import 'package:woohakdong/view_model/club/components/name/club_name_validation_state.dart';
 
 import '../../view_model/club/club_provider.dart';
-import '../../view_model/club/components/club_name_validation_provider.dart';
+import '../../view_model/club/components/name/club_name_validation_provider.dart';
 import '../../view_model/util/s3_image_provider.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
 import '../themes/custom_widget/button/custom_info_tooltip.dart';
