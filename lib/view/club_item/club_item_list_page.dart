@@ -109,6 +109,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
                   return const ClubItemUsingFilterBottomSheet();
                 },
               ),
+              onResetFilterTap: _resetFilter,
             ),
           ),
         ],
@@ -156,6 +157,15 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
           );
         },
       ),
+    );
+  }
+
+  void _resetFilter() {
+    ref.read(itemFilterProvider.notifier).state = ItemFilter(
+      category: ref.read(itemFilterProvider).category,
+      using: null,
+      available: null,
+      overdue: null,
     );
   }
 }

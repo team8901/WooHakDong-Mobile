@@ -1,4 +1,6 @@
 PODS:
+  - app_links (0.0.2):
+    - Flutter
   - app_settings (5.1.1):
     - Flutter
   - AppAuth (1.7.5):
@@ -119,6 +121,10 @@ PODS:
   - GTMSessionFetcher/Core (3.5.0)
   - GTMSessionFetcher/Full (3.5.0):
     - GTMSessionFetcher/Core
+  - iamport_flutter (0.0.1):
+    - Flutter
+  - iamport_webview_flutter (0.0.1):
+    - Flutter
   - image_gallery_saver_plus (0.0.1):
     - Flutter
   - image_picker_ios (0.0.1):
@@ -151,6 +157,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - app_links (from `.symlinks/plugins/app_links/ios`)
   - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
@@ -160,6 +167,8 @@ DEPENDENCIES:
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
+  - iamport_flutter (from `.symlinks/plugins/iamport_flutter/ios`)
+  - iamport_webview_flutter (from `.symlinks/plugins/iamport_webview_flutter/ios`)
   - image_gallery_saver_plus (from `.symlinks/plugins/image_gallery_saver_plus/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -193,6 +202,8 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
+  app_links:
+    :path: ".symlinks/plugins/app_links/ios"
   app_settings:
     :path: ".symlinks/plugins/app_settings/ios"
   file_picker:
@@ -211,6 +222,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   google_sign_in_ios:
     :path: ".symlinks/plugins/google_sign_in_ios/darwin"
+  iamport_flutter:
+    :path: ".symlinks/plugins/iamport_flutter/ios"
+  iamport_webview_flutter:
+    :path: ".symlinks/plugins/iamport_webview_flutter/ios"
   image_gallery_saver_plus:
     :path: ".symlinks/plugins/image_gallery_saver_plus/ios"
   image_picker_ios:
@@ -231,6 +246,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
+  app_links: e7a6750a915a9e161c58d91bc610e8cd1d4d0ad0
   app_settings: 017320c6a680cdc94c799949d95b84cb69389ebc
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
   DKImagePickerController: 946cec48c7873164274ecc4624d19e3da4c1ef3c
@@ -254,6 +270,8 @@ SPEC CHECKSUMS:
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
   GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
+  iamport_flutter: f698983444b7c0f83e356407631cfeec77a776bf
+  iamport_webview_flutter: 70dbc31045e4cf7a0c829b76c6f8319dc94b299e
   image_gallery_saver_plus: 782ade975fe6a4600b53e7c1983e3a2979d1e9e5
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4

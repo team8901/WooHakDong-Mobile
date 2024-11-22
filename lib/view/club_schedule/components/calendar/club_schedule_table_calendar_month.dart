@@ -202,7 +202,7 @@ class ClubScheduleTableCalendarMonth extends ConsumerWidget {
                         schedule.scheduleTitle!,
                         style: context.textTheme.labelLarge?.copyWith(fontSize: 10),
                         softWrap: false,
-                        overflow: TextOverflow.fade,
+                        overflow: TextOverflow.clip,
                       ),
                     );
                   }).toList(),

@@ -29,6 +29,7 @@ class SettlementRecapPage extends ConsumerWidget {
                     style: context.textTheme.headlineSmall!.copyWith(color: context.colorScheme.primary),
                     child: AnimatedTextKit(
                       repeatForever: true,
+                      pause: const Duration(milliseconds: 500),
                       animatedTexts: [
                         FadeAnimatedText('에 몇 명이나 가입했을까?'),
                         FadeAnimatedText('에서 가장 많이 대여한 물품은?'),
