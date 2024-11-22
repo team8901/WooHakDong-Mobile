@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:woohakdong/model/group/group.dart';
 import 'package:woohakdong/view_model/club/club_id_provider.dart';
+import 'package:woohakdong/view_model/group/group_id_provider.dart';
+import 'package:woohakdong/view_model/group/group_order_provider.dart';
 
 import '../../repository/group/group_repository.dart';
 
@@ -21,6 +23,42 @@ class GroupNotifier extends StateNotifier<Group> {
       final groupInfo = await groupRepository.getClubRegisterPageInfo(currentClubId!);
 
       state = groupInfo;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> getServiceFeeGroupInfo() async {
+    try {
+      final currentClubId = ref.read(clubIdProvider);
+
+      final serviceFeeGroupInfo = await groupRepository.getServiceFeeGroupInfo(currentClubId!);
+
+      ref.read(groupIdProvider.notifier).state = serviceFeeGroupInfo.groupId!;
+      state = serviceFeeGroupInfo;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> getOrderIdServiceFeeGroup(String merchantUid) async {
+    try {
+      final groupId = ref.watch(groupIdProvider);
+
+      final orderId = await groupRepository.getGroupOrderId(groupId, merchantUid);
+
+      ref.read(groupOrderProvider.notifier).state = orderId;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> confirmPaymentServiceFeeGroup(String merchantUid, String impUid) async {
+    try {
+      final groupId = ref.watch(groupIdProvider);
+      final orderId = ref.watch(groupOrderProvider);
+
+      await groupRepository.confirmGroupOrder(groupId, merchantUid, impUid, orderId);
     } catch (e) {
       rethrow;
     }

@@ -60,6 +60,9 @@ dependencies:
   mask_text_input_formatter: ^2.9.0
   animated_text_kit: ^4.2.2
   confetti: ^0.8.0
+  iamport_flutter: ^0.10.19
+  uuid: ^4.5.1
+  flutter_svg: ^2.0.15
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +84,9 @@ flutter:
     - assets/images/item/item_clothes_basic_image.jpg
     - assets/images/item/item_stationery_basic_image.jpg
     - assets/images/item/item_etc_basic_image.jpg
+    - assets/images/logos/kakao_payment_logo.png
+    - assets/images/logos/toss_payment_logo.svg
+    - assets/images/logos/naver_payment_logo.svg
 
   fonts:
     - family: Pretendard

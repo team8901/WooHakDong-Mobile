@@ -39,7 +39,7 @@ class ClubInfoBox extends ConsumerWidget {
               ),
               border: Border.all(
                 color: context.colorScheme.surfaceContainer,
-                width: 0.4,
+                width: 0.6,
               ),
             ),
           ),

@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+	</dict>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -31,6 +36,7 @@
 			<string>Firebase</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>com.team8901.whd.woohakdong</string>
 				<string>com.googleusercontent.apps.896551790902-f93n4q3q2pupc5gmbvq6ccovlpltp25t</string>
 			</array>
 		</dict>
@@ -65,13 +71,14 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Used to demonstrate image picker plugin</string>
 	<key>NSFileReadUsageDescription</key>
-    <string>Used to demonstrate file picker plugin</string>
+	<string>Used to demonstrate file picker plugin</string>
 	<key>LSApplicationQueriesSchemes</key>
-    <array>
-      <string>tel</string>
-      <string>mailto</string>
-      <string>https</string>
-      <string>http</string>
-    </array>
+	<array>
+		<string>tel</string>
+		<string>mailto</string>
+		<string>https</string>
+		<string>http</string>
+		<string>kakaotalk</string>
+	</array>
 </dict>
 </plist>

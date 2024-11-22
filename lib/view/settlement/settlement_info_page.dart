@@ -1,64 +1,103 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gap/gap.dart';
-import 'package:woohakdong/service/general/general_format.dart';
-import 'package:woohakdong/view/themes/theme_context.dart';
+import 'package:uuid/uuid.dart';
+import 'package:woohakdong/service/general/general_functions.dart';
+import 'package:woohakdong/view/themes/spacing.dart';
+import 'package:woohakdong/view_model/group/group_provider.dart';
 
-import '../../view_model/club/current_club_info_provider.dart';
-import '../themes/custom_widget/button/custom_bottom_button.dart';
-import '../themes/spacing.dart';
+import '../payment/payment_page.dart';
+import 'components/settlement_bottom_button.dart';
+import 'components/settlement_payment_amount.dart';
+import 'components/settlement_payment_info.dart';
+import 'components/settlement_payment_method.dart';
 
-class SettlementInfoPage extends ConsumerWidget {
+class SettlementInfoPage extends ConsumerStatefulWidget {
   const SettlementInfoPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final currentClubInfo = ref.watch(currentClubInfoProvider);
+  ConsumerState<SettlementInfoPage> createState() => _SettlementInfoPageState();
+}
+
+class _SettlementInfoPageState extends ConsumerState<SettlementInfoPage> {
+  bool _isLoading = false;
+  String? _selectedPg;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedPg = 'kakaopay';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final serviceFeeGroupInfo = ref.watch(groupProvider);
 
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            top: defaultPaddingM * 3,
-            left: defaultPaddingM,
-            right: defaultPaddingM,
-            bottom: defaultPaddingM,
-          ),
+          padding: const EdgeInsets.symmetric(vertical: defaultPaddingM),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '지난 학기 ${currentClubInfo.clubName}의 이용료는',
-                style: context.textTheme.headlineLarge,
+              PaymentInfoWidget(groupName: serviceFeeGroupInfo.groupName!),
+              const Divider(
+                height: 58,
+                thickness: 8,
+                color: Color(0xFFF2F3F6),
               ),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: GeneralFormat.formatClubDues(100000),
-                      style: context.textTheme.headlineLarge?.copyWith(color: context.colorScheme.primary),
-                    ),
-                    TextSpan(text: '이에요', style: context.textTheme.headlineLarge),
-                  ],
-                ),
+              PaymentMethodWidget(
+                selectedPg: _selectedPg!,
+                onSelectedPgChanged: (String newPg) {
+                  setState(() => _selectedPg = newPg);
+                },
               ),
-              const Gap(defaultGapS / 2),
-              Text(
-                '기본 이용료 3만원에 회원 당 500원이 추가된 금액이에요',
-                style: context.textTheme.bodyLarge?.copyWith(color: context.colorScheme.onSurface),
+              const Divider(
+                height: 58,
+                thickness: 8,
+                color: Color(0xFFF2F3F6),
               ),
+              PaymentAmountWidget(groupAmount: serviceFeeGroupInfo.groupAmount!),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        child: CustomBottomButton(
-          onTap: () => {},
-          buttonText: '결제하기',
-          buttonColor: Theme.of(context).colorScheme.primary,
-          buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
-        ),
+      bottomNavigationBar: SettlementBottomButton(
+        isLoading: _isLoading,
+        amount: serviceFeeGroupInfo.groupAmount!,
+        onTap: () async {
+          if (_isLoading) return;
+
+          if (_selectedPg == 'tosspay' || _selectedPg == 'naverpay') {
+            GeneralFunctions.toastMessage('현재 지원하지 않는 결제 수단이에요');
+            return;
+          }
+
+          try {
+            setState(() => _isLoading = true);
+
+            const uuid = Uuid();
+            final merchantUid = 'payment-${uuid.v4()}'.substring(0, 40);
+
+            await ref.read(groupProvider.notifier).getOrderIdServiceFeeGroup(merchantUid);
+
+            if (context.mounted) {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => PaymentPage(merchantUid: merchantUid),
+                ),
+              );
+
+              setState(() => _isLoading = false);
+            }
+          } catch (e) {
+            setState(() => _isLoading = false);
+            GeneralFunctions.toastMessage('결제 시도 중 오류가 발생했어요\n다시 시도해 주세요');
+            rethrow;
+          }
+        },
       ),
     );
   }
