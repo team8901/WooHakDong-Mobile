@@ -48,3 +48,4 @@ firebase.json
 ios/Runner/GoogleService-Info.plist
 lib/firebase_options.dart
 debug.keystore
+debug.keystore.base64.txt
