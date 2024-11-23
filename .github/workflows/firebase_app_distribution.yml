@@ -43,6 +43,7 @@ jobs:
             --project=${{ secrets.FIREBASE_PROJECT_ID }} \
             --platforms=android,ios \
             --android-app-id=${{ secrets.ANDROID_PACKAGE_NAME }} \
+            --ios-bundle-id=${{ secrets.IOS_BUNDLE_ID }} \
             --token=${{ secrets.FIREBASE_TOKEN }}
 
       - name: 설정 파일 생성
