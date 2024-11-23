@@ -35,9 +35,6 @@ jobs:
       - name: Firebase CLI 설치
         run: npm install -g firebase-tools
 
-      - name: Firebase 로그인
-        run: firebase login:ci --token ${{ secrets.FIREBASE_TOKEN }}
-
       - name: FlutterFire CLI 설치
         run: dart pub global activate flutterfire_cli
 
