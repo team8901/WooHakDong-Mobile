@@ -41,8 +41,8 @@ jobs:
           dart pub global activate flutterfire_cli
           flutterfire configure \
             --project=${{ secrets.FIREBASE_PROJECT_ID }} \
-            --token=${{ secrets.FIREBASE_TOKEN }} \
-            --yes
+            --platforms=android,ios \
+            --token=${{ secrets.FIREBASE_TOKEN }}
 
       - name: 설정 파일 생성
         run: |
