@@ -86,7 +86,10 @@ class _SettlementInfoPageState extends ConsumerState<SettlementInfoPage> {
               Navigator.push(
                 context,
                 CupertinoPageRoute(
-                  builder: (context) => PaymentPage(merchantUid: merchantUid),
+                  builder: (context) => PaymentPage(
+                    pg: _selectedPg!,
+                    merchantUid: merchantUid,
+                  ),
                 ),
               );
 

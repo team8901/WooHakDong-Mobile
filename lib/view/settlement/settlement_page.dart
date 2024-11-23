@@ -60,12 +60,12 @@ class SettlementPage extends ConsumerWidget {
                   '우학동 사용이 종료되었어요 🫠',
                   style: context.textTheme.headlineLarge,
                 ),
-                const Gap(defaultGapXL),
+                const Gap(defaultGapXL * 2),
                 Text(
-                  '지난 학기 ${currentClubInfo.clubName}의 Recap을 확인해 보세요',
+                  '지난 학기 ${currentClubInfo.clubName}의 Recap을 확인해 보세요!',
                   style: context.textTheme.bodyLarge,
                 ),
-                const Gap(defaultGapM),
+                const Gap(defaultGapS / 2),
                 InkWell(
                   onTap: () => _pushSettlementRecapPage(context),
                   highlightColor: context.colorScheme.outline,
