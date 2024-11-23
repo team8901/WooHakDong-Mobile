@@ -38,6 +38,9 @@ jobs:
       - name: FlutterFire CLI 설치
         run: dart pub global activate flutterfire_cli
 
+      - name: Firebase CLI 로그인
+        run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+
       - name: firebase_options.dart 생성
         run: flutterfire configure --project=${{ secrets.FIREBASE_PROJECT_ID }}
 
