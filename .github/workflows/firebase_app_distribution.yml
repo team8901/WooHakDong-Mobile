@@ -118,9 +118,6 @@ jobs:
           }
           EOL
 
-      - name: 플러터 클린
-        run: flutter clean
-
       - name: 의존성 설치
         run: flutter pub get
 
