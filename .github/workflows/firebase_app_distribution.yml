@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - WHD-283_cicd-try_test_cicd_for_firebase_app_distribution
+  workflow_dispatch:
 
 jobs:
   build:
@@ -28,7 +29,7 @@ jobs:
           flutter-version: '3.24.1'
           channel: 'stable'
 
-      - name: 커스텀 디버그 키스토어 설정
+      - name: 디버그 키스토어 설정
         run: |
           mkdir -p "$HOME/.android"
           echo "${{ secrets.DEBUG_KEYSTORE_BASE64 }}" | base64 --decode > "$HOME/.android/debug.keystore"
