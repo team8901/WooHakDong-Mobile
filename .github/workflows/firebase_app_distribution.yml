@@ -31,7 +31,7 @@ jobs:
       - name: Firebase CLI 설치 및 로그인
         run: |
           npm install -g firebase-tools
-          firebase login -interactive --token ${{ secrets.FIREBASE_TOKEN }}
+          firebase login --interactive --token ${{ secrets.FIREBASE_TOKEN }}
 
       - name: FlutterFire CLI 설치 및 실행
         run: |
