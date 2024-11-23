@@ -28,10 +28,15 @@ jobs:
           flutter-version: '3.24.1'
           channel: 'stable'
 
-      - name: Firebase CLI 설치 및 로그인
+      - name: Firebase CLI 설치
+        run: npm install -g firebase-tools
+
+      - name: Firebase 인증 설정
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
         run: |
-          npm install -g firebase-tools
-          firebase login --interactive --token ${{ secrets.FIREBASE_TOKEN }}
+          echo '${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}' > $HOME/firebase-key.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase-key.json
 
       - name: FlutterFire CLI 설치 및 실행
         run: |
