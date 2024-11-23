@@ -45,7 +45,8 @@ jobs:
             --platforms=ios \
             --android-package-name=${{ secrets.ANDROID_PACKAGE_NAME }} \
             --ios-bundle-id=${{ secrets.IOS_BUNDLE_ID }} \
-            --token=${{ secrets.FIREBASE_TOKEN }}
+            --token=${{ secrets.FIREBASE_TOKEN }} \
+            --no-apply
 
       - name: 설정 파일 생성
         run: |
