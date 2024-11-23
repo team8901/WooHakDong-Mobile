@@ -42,6 +42,7 @@ jobs:
           flutterfire configure \
             --project=${{ secrets.FIREBASE_PROJECT_ID }} \
             --platforms=android,ios \
+            --android-app-id=${{ secrets.ANDROID_PACKAGE_NAME }} \
             --token=${{ secrets.FIREBASE_TOKEN }}
 
       - name: 설정 파일 생성
