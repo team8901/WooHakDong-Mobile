@@ -90,7 +90,7 @@ class ClubRepository {
 
   Future<void> checkClubAvailability(int clubId) async {
     try {
-      logger.i('우학동 서비스 이용료 납부 여부 확인 시도');
+      logger.i('우학동 서비스 기간 만료 확인 시도');
 
       final response = await _dio.get('/clubs/$clubId/availability');
 
@@ -98,7 +98,7 @@ class ClubRepository {
 
       throw Exception();
     } catch (e) {
-      logger.e('우학동 서비스 이용료 납부 여부 확인 실패', error: e);
+      logger.e('우학동 서비스 기간 만료 확인 실패', error: e);
       throw Exception();
     }
   }

@@ -48,7 +48,6 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
             }
           },
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text('회원'),

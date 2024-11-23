@@ -28,13 +28,15 @@ class PaymentMethodWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(defaultBorderRadiusM),
             highlightColor: context.colorScheme.surfaceContainer,
             child: Ink(
-              height: 52,
               width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: defaultPaddingXS),
               decoration: BoxDecoration(
                 border: Border.all(
                   color: selectedPg == 'kakaopay'
                       ? context.colorScheme.inverseSurface
                       : context.colorScheme.surfaceContainer,
+                  width: selectedPg == 'kakaopay' ? 2 : 1,
+                  strokeAlign: BorderSide.strokeAlignOutside,
                 ),
                 borderRadius: BorderRadius.circular(defaultBorderRadiusM),
               ),
@@ -45,39 +47,9 @@ class PaymentMethodWidget extends StatelessWidget {
                   children: [
                     Image.asset(
                       'assets/images/logos/kakao_payment_logo.png',
-                      height: 24,
+                      width: 52,
                     ),
                     Text('카카오페이', style: context.textTheme.bodySmall),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const Gap(defaultGapS),
-          InkWell(
-            onTap: () => onSelectedPgChanged('tosspay'),
-            borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-            highlightColor: context.colorScheme.surfaceContainer,
-            child: Ink(
-              height: 52,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: selectedPg == 'tosspay'
-                      ? context.colorScheme.inverseSurface
-                      : context.colorScheme.surfaceContainer,
-                ),
-                borderRadius: BorderRadius.circular(defaultBorderRadiusM),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: defaultPaddingS),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/logos/toss_payment_logo.svg',
-                      height: 16,
-                    ),
-                    Text('토스페이', style: context.textTheme.bodySmall),
                   ],
                 ),
               ),
@@ -89,12 +61,15 @@ class PaymentMethodWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(defaultBorderRadiusM),
             highlightColor: context.colorScheme.surfaceContainer,
             child: Ink(
-              height: 52,
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: defaultPaddingXS),
               decoration: BoxDecoration(
                 border: Border.all(
                   color: selectedPg == 'naverpay'
                       ? context.colorScheme.inverseSurface
                       : context.colorScheme.surfaceContainer,
+                  width: selectedPg == 'naverpay' ? 2 : 1,
+                  strokeAlign: BorderSide.strokeAlignOutside,
                 ),
                 borderRadius: BorderRadius.circular(defaultBorderRadiusM),
               ),
@@ -105,9 +80,42 @@ class PaymentMethodWidget extends StatelessWidget {
                   children: [
                     SvgPicture.asset(
                       'assets/images/logos/naver_payment_logo.svg',
-                      height: 22,
+                      width: 52,
                     ),
                     Text('네이버페이', style: context.textTheme.bodySmall),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const Gap(defaultGapS),
+          InkWell(
+            onTap: () => onSelectedPgChanged('tosspay'),
+            borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+            highlightColor: context.colorScheme.surfaceContainer,
+            child: Ink(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: defaultPaddingXS),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: selectedPg == 'tosspay'
+                      ? context.colorScheme.inverseSurface
+                      : context.colorScheme.surfaceContainer,
+                  width: selectedPg == 'tosspay' ? 2 : 1,
+                  strokeAlign: BorderSide.strokeAlignOutside,
+                ),
+                borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: defaultPaddingS),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/images/logos/toss_payment_logo.svg',
+                      width: 52,
+                    ),
+                    Text('토스페이', style: context.textTheme.bodySmall),
                   ],
                 ),
               ),

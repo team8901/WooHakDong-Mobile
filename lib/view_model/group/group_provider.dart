@@ -47,7 +47,7 @@ class GroupNotifier extends StateNotifier<Group> {
 
       final orderId = await groupRepository.getGroupOrderId(groupId, merchantUid);
 
-      ref.read(groupOrderProvider.notifier).state = orderId;
+      ref.read(groupOrderIdProvider.notifier).state = orderId;
     } catch (e) {
       rethrow;
     }
@@ -56,7 +56,7 @@ class GroupNotifier extends StateNotifier<Group> {
   Future<void> confirmPaymentServiceFeeGroup(String merchantUid, String impUid) async {
     try {
       final groupId = ref.watch(groupIdProvider);
-      final orderId = ref.watch(groupOrderProvider);
+      final orderId = ref.watch(groupOrderIdProvider);
 
       await groupRepository.confirmGroupOrder(groupId, merchantUid, impUid, orderId);
     } catch (e) {

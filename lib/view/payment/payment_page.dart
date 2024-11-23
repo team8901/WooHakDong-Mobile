@@ -12,10 +12,12 @@ import '../../view_model/member/member_provider.dart';
 import '../settlement/settlement_complete_page.dart';
 
 class PaymentPage extends ConsumerWidget {
+  final String pg;
   final String merchantUid;
 
   const PaymentPage({
     super.key,
+    required this.pg,
     required this.merchantUid,
   });
 
@@ -29,7 +31,7 @@ class PaymentPage extends ConsumerWidget {
       initialChild: Scaffold(body: CustomProgressIndicator(indicatorColor: context.colorScheme.surfaceContainer)),
       userCode: 'imp06661826',
       data: PaymentData(
-        pg: 'kakaopay',
+        pg: pg,
         payMethod: 'card',
         name: serviceFeeGroupInfo.groupName,
         merchantUid: merchantUid,
@@ -63,7 +65,6 @@ class PaymentPage extends ConsumerWidget {
               (route) => false,
             );
           }
-          rethrow;
         }
       },
     );

@@ -70,13 +70,15 @@ class GeneralFormat {
 
     if (date == null) return term;
 
-    final year = date.year;
+    int year = date.year;
     final month = date.month;
 
-    if (month >= 1 && month <= 6) {
+    if (month >= 3 && month <= 8) {
       return '$year년 1학기';
-    } else if (month >= 7 && month <= 12) {
+    } else if (month >= 9 && month <= 12) {
       return '$year년 2학기';
+    } else if (month >= 1 && month <= 2) {
+      return '${year - 1}년 2학기';
     }
 
     return term;
