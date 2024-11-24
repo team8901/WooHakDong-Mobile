@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     name: Firebase App Distribution
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -29,27 +29,11 @@ jobs:
           flutter-version: '3.24.1'
           channel: 'stable'
 
-      - name: AVD(Android Virtual Device) 캐시
-        uses: actions/cache@v3
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-${{ runner.os }}
-
-      - name: 에뮬레이터 생성
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          target: google_apis
-          arch: x86_64
-          profile: Nexus 6
-          script: echo "에뮬레이터 생성 완료"
-
       - name: Key Store 생성
-        run: echo "${{ secrets.KEY_JKS_BASE64 }}" | base64 --decode > android/app/key.jks
+        run: |
+          echo "${{ secrets.DEBUG_KEYSTORE_BASE64 }}" | base64 --decode > $HOME/.android/debug.keystore
+          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 --decode > "$HOME/.android/release.keystore"
+          echo "${{ secrets.KEY_JKS_BASE64 }}" | base64 --decode > android/app/key.jks
 
       - name: Key Properties 생성
         run: echo '${{ secrets.KEY_PROPERTIES }}' > android/key.properties
@@ -74,38 +58,14 @@ jobs:
           echo "FIREBASE_IOS_CLIENT_ID=${{ secrets.FIREBASE_IOS_CLIENT_ID }}" >> .env
           echo "FIREBASE_IOS_BUNDLE_ID=${{ secrets.FIREBASE_IOS_BUNDLE_ID }}" >> .env
 
-      - name: 설정 파일 확인
-        run: |
-          echo "Checking configuration files..."
-          ls -la firebase.json
-          ls -la android/app/google-services.json
-          cat .env | grep -v "KEY\|SECRET\|PASSWORD"
-
-      - name: 플러터 클린
+      - name: 플러터
         run: flutter clean
 
       - name: 의존성 설치
         run: flutter pub get
 
-      - name: 앱 실행 및 로그 확인
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          target: google_apis
-          arch: x86_64
-          profile: Nexus 6
-          script: |
-            flutter run --verbose > flutter_run.log 2>&1 || true
-            echo "===== Flutter Run Log ====="
-            cat flutter_run.log
-            echo "=========================="
-            adb logcat -d > device.log
-            echo "===== Device Log ====="
-            cat device.log
-            echo "====================="
-
       - name: APK 빌드
-        run: flutter build apk --release --target-platform=android-arm64 --verbose
+        run: flutter build apk --release --target-platform=android-arm64
 
       - name: Firebase App Distribution에 업로드
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
