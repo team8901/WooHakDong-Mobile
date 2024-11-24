@@ -29,7 +29,7 @@ class ClubRegisterPage extends StatelessWidget {
         bottomNavigationBar: SafeArea(
           child: CustomBottomButton(
             onTap: () => _pushCautionPage(context),
-            buttonText: '등록할게요',
+            buttonText: '동아리 등록하기',
             buttonColor: Theme.of(context).colorScheme.primary,
             buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
           ),

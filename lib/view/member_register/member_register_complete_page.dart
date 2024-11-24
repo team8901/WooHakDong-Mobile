@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/member_register/components/member_register_complete_introduce.dart';
 
+import '../club_register/club_register_caution_page_.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
 import '../themes/custom_widget/interaction/custom_pop_scope.dart';
 import '../themes/spacing.dart';
@@ -28,8 +28,8 @@ class MemberRegisterCompletePage extends ConsumerWidget {
         ),
         bottomNavigationBar: SafeArea(
           child: CustomBottomButton(
-            onTap: () => _pushClubRegisterPage(context),
-            buttonText: '우학동 시작하기',
+            onTap: () => _pushClubRegisterCautionPage(context),
+            buttonText: '동아리 등록하기',
             buttonColor: Theme.of(context).colorScheme.primary,
             buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
           ),
@@ -38,11 +38,10 @@ class MemberRegisterCompletePage extends ConsumerWidget {
     );
   }
 
-  void _pushClubRegisterPage(BuildContext context) {
-    Navigator.pushAndRemoveUntil(
+  void _pushClubRegisterCautionPage(BuildContext context) {
+    Navigator.push(
       context,
-      CupertinoPageRoute(builder: (context) => const ClubRegisterPage()),
-      (route) => false,
+      CupertinoPageRoute(builder: (context) => const ClubRegisterCautionPage()),
     );
   }
 }

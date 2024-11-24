@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../spacing.dart';
-import '../interaction/custom_circular_progress_indicator.dart';
+import '../interaction/custom_progress_indicator.dart';
 
 class CustomBottomButton extends StatelessWidget {
   final Function()? onTap;

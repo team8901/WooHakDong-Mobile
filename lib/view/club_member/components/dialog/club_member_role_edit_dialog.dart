@@ -6,7 +6,7 @@ import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../../view_model/club_member/club_member_provider.dart';
-import '../../../themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
+import '../../../themes/custom_widget/interaction/custom_progress_indicator.dart';
 
 class ClubMemberRoleEditDialog extends ConsumerStatefulWidget {
   final int clubMemberId;

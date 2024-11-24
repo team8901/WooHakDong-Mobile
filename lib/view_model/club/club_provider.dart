@@ -59,11 +59,15 @@ class ClubNotifier extends StateNotifier<Club> {
     );
   }
 
-  Future<void> registerClub(String clubImageForServer) async {
+  Future<void> registerClub() async {
     ref.read(clubStateProvider.notifier).state = ClubState.loading;
 
     try {
+      List<String> imageUrls = await ref.read(s3ImageProvider.notifier).setImageUrl('1');
+      final clubImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
+      String clubImageForServer = clubImageUrl.substring(0, clubImageUrl.indexOf('?'));
       await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
+
       final clubId = await clubRepository.registerClubInfo(state.copyWith(clubImage: clubImageForServer));
 
       if (clubId != null) {
