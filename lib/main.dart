@@ -38,7 +38,7 @@ Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
   await Firebase.initializeApp(
-    name: 'woohakdong',
+    name: dotenv.env['FIREBASE_PROJECT_ID'],
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
