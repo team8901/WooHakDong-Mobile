@@ -1,3 +1,6 @@
+## Firebase App Distribution에 업로드는 성공하지만, 앱 실행 후 스플래쉬 화면으로 넘어가지 않음
+## 아마 Firebase 초기화와 관련해서 문제가 있는 것 같음
+
 name: Firebase App Distribution
 
 on:
