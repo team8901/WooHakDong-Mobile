@@ -14,7 +14,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:woohakdong/view/login/login_page.dart';
 import 'package:woohakdong/view/route_page.dart';
-import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_progress_indicator.dart';
 import 'package:woohakdong/view/themes/dark_theme.dart';
 import 'package:woohakdong/view/themes/light_theme.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:woohakdong/service/general/general_format.dart';
-import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_progress_indicator.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 

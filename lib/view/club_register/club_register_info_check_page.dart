@@ -24,7 +24,6 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s3ImageState = ref.watch(s3ImageProvider);
-    final s3ImageNotifier = ref.read(s3ImageProvider.notifier);
     final clubNotifier = ref.read(clubProvider.notifier);
     final clubInfo = ref.watch(clubProvider);
     final clubState = ref.watch(clubStateProvider);
@@ -203,11 +202,7 @@ class ClubRegisterInfoCheckPage extends ConsumerWidget {
           child: CustomBottomButton(
             onTap: () async {
               try {
-                List<String> imageUrls = await s3ImageNotifier.setImageUrl('1');
-                final clubImageUrl = imageUrls.isNotEmpty ? imageUrls[0] : '';
-                String clubImageForServer = clubImageUrl.substring(0, clubImageUrl.indexOf('?'));
-
-                await clubNotifier.registerClub(clubImageForServer);
+                await clubNotifier.registerClub();
 
                 if (context.mounted) {
                   _pushAccountFormPage(context);
