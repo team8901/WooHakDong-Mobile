@@ -37,7 +37,10 @@ Future<void> main() async {
 
   await dotenv.load(fileName: ".env");
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    name: 'woohakdong',
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   HttpOverrides.global = MyHttpOverrides();
 

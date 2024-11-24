@@ -1,4 +1,4 @@
-name: Firebase App Distribution For Debug APK
+name: Firebase App Distribution
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: Firebase App Distribution For Debug APK
+    name: Firebase App Distribution
     runs-on: ubuntu-latest
 
     steps:
@@ -29,95 +29,31 @@ jobs:
           flutter-version: '3.24.1'
           channel: 'stable'
 
-      - name: 디버그 키스토어 설정
-        run: |
-          mkdir -p "$HOME/.android"
-          echo "${{ secrets.DEBUG_KEYSTORE_BASE64 }}" | base64 --decode > "$HOME/.android/debug.keystore"
+      - name: Key Store 생성
+        run: echo "${{ secrets.KEY_JKS_BASE64 }}" | base64 --decode > android/app/key.jks
+
+      - name: Key Properties 생성
+        run: echo '${{ secrets.KEY_PROPERTIES }}' > android/key.properties
 
       - name: Firebase 및 환경 설정 파일 생성
         run: |
           # Firebase 설정 파일
           echo '${{ secrets.FIREBASE_JSON }}' > firebase.json
-          echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
-          echo '${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}' > ios/Runner/GoogleService-Info.plist
+          echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json    
           
           # 환경 변수 설정
           echo "V1_SERVER_BASE_URL=${{ secrets.V1_SERVER_BASE_URL }}" > .env
           echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env
-          echo "FIREBASE_ANDROID_API_KEY=${{ secrets.FIREBASE_ANDROID_API_KEY }}" >> .env
-          echo "FIREBASE_ANDROID_APP_ID=${{ secrets.FIREBASE_ANDROID_APP_ID }}" >> .env
-          echo "FIREBASE_IOS_API_KEY=${{ secrets.FIREBASE_IOS_API_KEY }}" >> .env
-          echo "FIREBASE_IOS_APP_ID=${{ secrets.FIREBASE_IOS_APP_ID }}" >> .env
           echo "FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}" >> .env
           echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> .env
           echo "FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }}" >> .env
-          echo "FIREBASE_IOS_ANDROID_CLIENT_ID=${{ secrets.FIREBASE_IOS_ANDROID_CLIENT_ID }}" >> .env
+          echo "FIREBASE_ANDROID_APP_KEY=${{ secrets.FIREBASE_ANDROID_APP_KEY }}" >> .env
+          echo "FIREBASE_ANDROID_APP_ID=${{ secrets.FIREBASE_ANDROID_APP_ID }}" >> .env
+          echo "FIREBASE_IOS_APP_KEY=${{ secrets.FIREBASE_IOS_APP_KEY }}" >> .env
+          echo "FIREBASE_IOS_APP_ID=${{ secrets.FIREBASE_IOS_APP_ID }}" >> .env
+          echo "FIREBASE_ANDROID_CLIENT_ID=${{ secrets.FIREBASE_ANDROID_CLIENT_ID }}" >> .env
           echo "FIREBASE_IOS_CLIENT_ID=${{ secrets.FIREBASE_IOS_CLIENT_ID }}" >> .env
-          echo "IOS_BUNDLE_ID=${{ secrets.IOS_BUNDLE_ID }}" >> .env
-          
-          # firebase_options.dart 파일 생성
-          cat > lib/firebase_options.dart << 'EOL'
-          // Generated file - do not modify
-          import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
-          import 'package:flutter/foundation.dart'
-              show defaultTargetPlatform, kIsWeb, TargetPlatform;
-          import 'package:flutter_dotenv/flutter_dotenv.dart';
-          
-          class DefaultFirebaseOptions {
-            static FirebaseOptions get currentPlatform {
-              if (kIsWeb) {
-                throw UnsupportedError(
-                  'DefaultFirebaseOptions have not been configured for web - '
-                  'you can reconfigure this by running the FlutterFire CLI again.',
-                );
-              }
-              switch (defaultTargetPlatform) {
-                case TargetPlatform.android:
-                  return android;
-                case TargetPlatform.iOS:
-                  return ios;
-                case TargetPlatform.macOS:
-                  throw UnsupportedError(
-                    'DefaultFirebaseOptions have not been configured for macos - '
-                    'you can reconfigure this by running the FlutterFire CLI again.',
-                  );
-                case TargetPlatform.windows:
-                  throw UnsupportedError(
-                    'DefaultFirebaseOptions have not been configured for windows - '
-                    'you can reconfigure this by running the FlutterFire CLI again.',
-                  );
-                case TargetPlatform.linux:
-                  throw UnsupportedError(
-                    'DefaultFirebaseOptions have not been configured for linux - '
-                    'you can reconfigure this by running the FlutterFire CLI again.',
-                  );
-                default:
-                  throw UnsupportedError(
-                    'DefaultFirebaseOptions are not supported for this platform.',
-                  );
-              }
-            }
-          
-            static FirebaseOptions get android => FirebaseOptions(
-              apiKey: dotenv.env['FIREBASE_ANDROID_API_KEY'] ?? '',
-              appId: dotenv.env['FIREBASE_ANDROID_APP_ID'] ?? '',
-              messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'] ?? '',
-              projectId: dotenv.env['FIREBASE_PROJECT_ID'] ?? '',
-              storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'] ?? ''
-            );
-          
-            static FirebaseOptions get ios => FirebaseOptions(
-              apiKey: dotenv.env['FIREBASE_IOS_API_KEY'] ?? '',
-              appId: dotenv.env['FIREBASE_IOS_APP_ID'] ?? '',
-              messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'] ?? '',
-              projectId: dotenv.env['FIREBASE_PROJECT_ID'] ?? '',
-              storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'] ?? '',
-              androidClientId: dotenv.env['FIREBASE_IOS_ANDROID_CLIENT_ID'] ?? '',
-              iosClientId: dotenv.env['FIREBASE_IOS_CLIENT_ID'] ?? '',
-              iosBundleId: dotenv.env['IOS_BUNDLE_ID'] ?? ''
-            );
-          }
-          EOL
+          echo "FIREBASE_IOS_BUNDLE_ID=${{ secrets.FIREBASE_IOS_BUNDLE_ID }}" >> .env
 
       - name: 플러터
         run: flutter clean
@@ -125,8 +61,8 @@ jobs:
       - name: 의존성 설치
         run: flutter pub get
 
-      - name: 디버그 APK 빌드
-        run: flutter build apk --debug
+      - name: APK 빌드
+        run: flutter build apk --release --target-platform=android-arm64
 
       - name: Firebase App Distribution에 업로드
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
@@ -134,4 +70,4 @@ jobs:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
           groups: team8901
-          file: build/app/outputs/flutter-apk/app-debug.apk
+          file: build/app/outputs/flutter-apk/app-release.apk
