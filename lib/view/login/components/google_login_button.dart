@@ -5,7 +5,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/auth/auth_provider.dart';
 
 import '../../../view_model/auth/components/auth_state.dart';
-import '../../themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
+import '../../themes/custom_widget/interaction/custom_progress_indicator.dart';
 import '../../themes/spacing.dart';
 
 class GoogleLoginButton extends ConsumerWidget {
@@ -39,7 +39,7 @@ class GoogleLoginButton extends ConsumerWidget {
           ),
           child: Center(
             child: (authState == AuthState.loading)
-                ? CustomProgressIndicator(indicatorColor: context.colorScheme.onSurface)
+                ? CustomProgressIndicator(indicatorColor: context.colorScheme.outline)
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,

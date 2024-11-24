@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:woohakdong/view/themes/custom_widget/button/custom_bottom_button.dart';
-import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_progress_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/member/member_provider.dart';

@@ -10,7 +10,7 @@ import '../../../view_model/item/item_history_list_provider.dart';
 import '../../club_item/components/list_tile/club_item_history_list_tile.dart';
 import '../../club_member/club_member_detail_page.dart';
 import '../../themes/custom_widget/etc/custom_horizontal_divider.dart';
-import '../../themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
+import '../../themes/custom_widget/interaction/custom_progress_indicator.dart';
 import '../../themes/spacing.dart';
 
 class ClubItemHistoryPanel extends ConsumerStatefulWidget {

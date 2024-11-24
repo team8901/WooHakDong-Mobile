@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_member/components/list_tile/club_member_item_history_list_tile.dart';
-import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_progress_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../view_model/item/item_history_list_by_member_provider.dart';

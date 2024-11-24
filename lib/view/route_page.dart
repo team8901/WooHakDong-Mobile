@@ -7,7 +7,7 @@ import 'package:woohakdong/view/club_register/error_page/club_register_account_f
 import 'package:woohakdong/view/member_register/member_register_page.dart';
 import 'package:woohakdong/view/navigator_page.dart';
 import 'package:woohakdong/view/settlement/settlement_page.dart';
-import 'package:woohakdong/view/themes/custom_widget/interaction/custom_circular_progress_indicator.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_progress_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/club/club_id_provider.dart';
 import 'package:woohakdong/view_model/club/club_provider.dart';
@@ -33,6 +33,7 @@ import '../view_model/club/components/account/club_account_validation_state.dart
 import '../view_model/club_member/club_member_list_provider.dart';
 import '../view_model/club_member/components/club_selected_term_provider.dart';
 import 'club_register/error_page/club_register_page_for_member.dart';
+import 'member_register/member_register_complete_page.dart';
 
 class RoutePage extends ConsumerStatefulWidget {
   const RoutePage({super.key});
