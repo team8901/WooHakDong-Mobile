@@ -146,26 +146,28 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                           clubAccountValidationState == ClubAccountValidationState.loading)
                         const SizedBox(),
                       const Gap(defaultGapXL),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPaddingL / 3,
-                          vertical: defaultPaddingL / 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: context.colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
-                        ),
-                        child: InkWell(
-                          onTap: () async {
-                            if (_formKey.currentState?.validate() != true) return;
+                      InkWell(
+                        onTap: () async {
+                          if (_formKey.currentState?.validate() != true) return;
 
-                            _formKey.currentState?.save();
+                          _formKey.currentState?.save();
 
-                            await clubAccountNotifier.saveClubAccountInfo(
-                              _clubAccountBankName,
-                              _clubAccountNumberController.text,
-                            );
-                          },
+                          await clubAccountNotifier.saveClubAccountInfo(
+                            _clubAccountBankName,
+                            _clubAccountNumberController.text,
+                          );
+                        },
+                        highlightColor: context.colorScheme.outline,
+                        borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                        child: Ink(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: defaultPaddingL / 3,
+                            vertical: defaultPaddingL / 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: context.colorScheme.surfaceContainer,
+                            borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                          ),
                           child: Center(
                             child: Text(
                               '계좌 인증',

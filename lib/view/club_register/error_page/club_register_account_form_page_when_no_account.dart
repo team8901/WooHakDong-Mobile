@@ -31,20 +31,20 @@ class ClubRegisterAccountFormPageWhenNoAccount extends ConsumerStatefulWidget {
 }
 
 class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubRegisterAccountFormPageWhenNoAccount> {
-  final formKey = GlobalKey<FormState>();
-  String clubAccountBankName = '';
-  late TextEditingController clubAccountNumberController;
+  final _formKey = GlobalKey<FormState>();
+  String _clubAccountBankName = '';
+  late TextEditingController _clubAccountNumberController;
 
   @override
   void initState() {
     super.initState();
-    clubAccountNumberController = TextEditingController();
+    _clubAccountNumberController = TextEditingController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    clubAccountNumberController.dispose();
+    _clubAccountNumberController.dispose();
   }
 
   @override
@@ -65,7 +65,7 @@ class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubR
                 useSafeArea: true,
                 context: context,
                 builder: (context) => ClubInfoBottomSheet(
-                  currentClubId: currentClubInfo.clubId!,
+                  currentClubId: currentClubInfo.clubId ?? 1,
                   clubList: ref.watch(clubListProvider),
                 ),
               ),
@@ -77,12 +77,12 @@ class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubR
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(defaultPaddingM),
             child: Form(
-              key: formKey,
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    currentClubInfo.clubName!,
+                    currentClubInfo.clubName ?? '',
                     style: context.textTheme.headlineSmall?.copyWith(color: context.colorScheme.primary),
                   ),
                   Text(
@@ -116,7 +116,7 @@ class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubR
                       {'value': '카카오뱅크', 'displayText': '카카오뱅크'},
                       {'value': 'KEB하나은행', 'displayText': 'KEB하나은행'},
                     ],
-                    onSaved: (value) => clubAccountBankName = value!,
+                    onSaved: (value) => _clubAccountBankName = value!,
                     onChanged: (value) =>
                         clubAccountValidationNotifier.state = ClubAccountValidationState.accountNotRegistered,
                     validator: (value) {
@@ -128,9 +128,8 @@ class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubR
                   ),
                   const Gap(defaultGapM),
                   CustomTextFormField(
-                    controller: clubAccountNumberController,
+                    controller: _clubAccountNumberController,
                     labelText: '계좌번호',
-                    onSaved: (value) => clubAccountInfo.clubAccountNumber = value!,
                     onChanged: (value) =>
                         clubAccountValidationNotifier.state = ClubAccountValidationState.accountNotRegistered,
                     hintText: '계좌번호를 - 없이 입력해 주세요',
@@ -167,26 +166,28 @@ class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubR
                           clubAccountValidationState == ClubAccountValidationState.loading)
                         const SizedBox(),
                       const Gap(defaultGapXL),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: defaultPaddingL / 3,
-                          vertical: defaultPaddingL / 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: context.colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
-                        ),
-                        child: InkWell(
-                          onTap: () async {
-                            if (formKey.currentState?.validate() == true) {
-                              formKey.currentState?.save();
+                      InkWell(
+                        onTap: () async {
+                          if (_formKey.currentState?.validate() != true) return;
 
-                              await clubAccountNotifier.saveClubAccountInfo(
-                                clubAccountBankName,
-                                clubAccountNumberController.text,
-                              );
-                            }
-                          },
+                          _formKey.currentState?.save();
+
+                          await clubAccountNotifier.saveClubAccountInfo(
+                            _clubAccountBankName,
+                            _clubAccountNumberController.text,
+                          );
+                        },
+                        highlightColor: context.colorScheme.outline,
+                        borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                        child: Ink(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: defaultPaddingL / 3,
+                            vertical: defaultPaddingL / 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: context.colorScheme.surfaceContainer,
+                            borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                          ),
                           child: Center(
                             child: Text(
                               '계좌 인증',
@@ -210,8 +211,8 @@ class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubR
                 ? null
                 : () async {
                     try {
-                      if (formKey.currentState?.validate() == true) {
-                        formKey.currentState?.save();
+                      if (_formKey.currentState?.validate() == true) {
+                        _formKey.currentState?.save();
 
                         if (clubAccountValidationState == ClubAccountValidationState.valid) {
                           await clubAccountNotifier.registerClubAccount();
@@ -229,8 +230,8 @@ class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubR
                     }
                   },
             buttonText: '완료',
-            buttonColor: Theme.of(context).colorScheme.primary,
-            buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
+            buttonColor: context.colorScheme.primary,
+            buttonTextColor: context.colorScheme.inversePrimary,
             isLoading: clubAccountValidationState == ClubAccountValidationState.loading,
           ),
         ),
