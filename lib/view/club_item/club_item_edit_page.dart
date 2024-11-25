@@ -242,7 +242,7 @@ class _ClubItemEditPageState extends ConsumerState<ClubItemEditPage> {
                   Navigator.pop(context);
                 }
               } catch (e) {
-                itemStateNotifier.state = ItemState.added;
+                itemStateNotifier.state = ItemState.initial;
                 GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
               }
             },

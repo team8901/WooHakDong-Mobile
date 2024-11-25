@@ -242,10 +242,6 @@ class _ClubInfoEditPageState extends ConsumerState<ClubInfoEditPage> {
         bottomNavigationBar: SafeArea(
           child: CustomBottomButton(
             onTap: () async {
-              if (!_formKey.currentState!.validate()) return;
-
-              _formKey.currentState!.save();
-
               try {
                 clubStateNotifier.state = ClubState.loading;
 
