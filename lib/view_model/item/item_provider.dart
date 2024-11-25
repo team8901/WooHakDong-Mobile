@@ -7,8 +7,6 @@ import 'package:woohakdong/view_model/item/item_list_provider.dart';
 import '../../model/item/item.dart';
 import '../club/club_id_provider.dart';
 import '../util/s3_image_provider.dart';
-import 'components/item_state.dart';
-import 'components/item_state_provider.dart';
 import 'item_filter_provider.dart';
 
 final itemProvider = StateNotifierProvider<ItemNotifier, Item>((ref) {
@@ -44,8 +42,6 @@ class ItemNotifier extends StateNotifier<Item> {
     int itemRentalMaxDay,
   ) async {
     try {
-      ref.read(itemStateProvider.notifier).state = ItemState.adding;
-
       final currentClubId = ref.read(clubIdProvider);
 
       await ref.read(s3ImageProvider.notifier).uploadImagesToS3();
@@ -64,10 +60,7 @@ class ItemNotifier extends StateNotifier<Item> {
 
       final currentFilter = ref.read(itemFilterProvider);
       ref.invalidate(itemListProvider(currentFilter));
-
-      ref.read(itemStateProvider.notifier).state = ItemState.added;
     } catch (e) {
-      ref.read(itemStateProvider.notifier).state = ItemState.initial;
       rethrow;
     }
   }
@@ -82,8 +75,6 @@ class ItemNotifier extends StateNotifier<Item> {
     int itemRentalMaxDay,
   ) async {
     try {
-      ref.read(itemStateProvider.notifier).state = ItemState.adding;
-
       final currentClubId = ref.read(clubIdProvider);
 
       final updatedItemId = await itemRepository.updateItem(
@@ -103,10 +94,7 @@ class ItemNotifier extends StateNotifier<Item> {
       ref.invalidate(itemListProvider(currentFilter));
 
       await getItemInfo(updatedItemId);
-
-      ref.read(itemStateProvider.notifier).state = ItemState.added;
     } catch (e) {
-      ref.read(itemStateProvider.notifier).state = ItemState.initial;
       rethrow;
     }
   }
@@ -122,7 +110,6 @@ class ItemNotifier extends StateNotifier<Item> {
 
       final currentFilter = ref.read(itemFilterProvider);
       ref.invalidate(itemListProvider(currentFilter));
-
     } catch (e) {
       rethrow;
     }

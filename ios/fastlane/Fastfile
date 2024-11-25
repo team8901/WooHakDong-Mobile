@@ -1,0 +1,29 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Firebase App Distribution iOS 배포"
+  lane :deploy_ios do
+      # 코코아팟 업데이트
+      cocoapods(
+        repo_update: true,
+        use_bundle_exec: false
+      )
+
+      # 앱 빌드
+      build_ios_app(
+        scheme: "Runner",
+        workspace: "Runner.xcworkspace",
+        export_method: "ad-hoc",
+        output_directory: "./build"
+        #xcargs: "-verbose"
+      )
+
+      # Firebase 배포
+      firebase_app_distribution(
+        app: ENV["FIREBASE_IOS_APP_ID"],
+        groups: "team8901",
+        release_notes: "Firebase App Distribution 배포 테스트",
+        ipa_path: "./build/Runner.ipa",
+      )
+  end
+end
