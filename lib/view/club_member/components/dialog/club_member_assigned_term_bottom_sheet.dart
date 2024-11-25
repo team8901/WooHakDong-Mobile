@@ -36,10 +36,10 @@ class ClubMemberAssignedTermBottomSheet extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('동아리 분기 목록', style: context.textTheme.titleLarge),
+                  Text('동아리 학기 목록', style: context.textTheme.titleLarge),
                   const Gap(defaultGapS / 4),
                   Text(
-                    '각 분기별 동아리 회원을 확인할 수 있어요',
+                    '각 학기별 동아리 회원을 확인할 수 있어요',
                     style: context.textTheme.bodySmall?.copyWith(
                       color: context.colorScheme.onSurface,
                     ),

@@ -61,6 +61,7 @@ class _ClubItemAddPageState extends ConsumerState<ClubItemAddPage> {
     final s3ImageState = ref.watch(s3ImageProvider);
     final itemState = ref.watch(itemStateProvider);
     final itemNotifier = ref.read(itemProvider.notifier);
+    final itemStateNotifier = ref.watch(itemStateProvider.notifier);
 
     return PopScope(
       canPop: itemState != ItemState.adding,
@@ -230,29 +231,30 @@ class _ClubItemAddPageState extends ConsumerState<ClubItemAddPage> {
         bottomNavigationBar: SafeArea(
           child: CustomBottomButton(
             onTap: () async {
-              if (_formKey.currentState?.validate() == true) {
-                try {
-                  await _addItemToServer(
-                    s3ImageState,
-                    s3ImageNotifier,
-                    Item(
-                      itemName: _clubItemController.name.text,
-                      itemDescription: _clubItemController.description.text,
-                      itemLocation: _clubItemController.location.text,
-                      itemCategory: _selectedCategory,
-                      itemRentalMaxDay: int.parse(_clubItemController.rentalMaxDay.text),
-                    ),
-                    itemNotifier,
-                  );
+              try {
+                itemStateNotifier.state = ItemState.adding;
 
-                  if (context.mounted) {
-                    Navigator.pop(context);
+                await _addItemToServer(
+                  s3ImageState,
+                  s3ImageNotifier,
+                  Item(
+                    itemName: _clubItemController.name.text,
+                    itemDescription: _clubItemController.description.text,
+                    itemLocation: _clubItemController.location.text,
+                    itemCategory: _selectedCategory,
+                    itemRentalMaxDay: int.parse(_clubItemController.rentalMaxDay.text),
+                  ),
+                  itemNotifier,
+                );
 
-                    GeneralFunctions.toastMessage('물품이 등록되었어요');
-                  }
-                } catch (e) {
-                  await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
+                if (context.mounted) {
+                  itemStateNotifier.state = ItemState.added;
+                  GeneralFunctions.toastMessage('물품이 등록되었어요');
+                  Navigator.pop(context);
                 }
+              } catch (e) {
+                itemStateNotifier.state = ItemState.initial;
+                await GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
               }
             },
             buttonText: '등록',

@@ -33,7 +33,6 @@ import '../view_model/club/components/account/club_account_validation_state.dart
 import '../view_model/club_member/club_member_list_provider.dart';
 import '../view_model/club_member/components/club_selected_term_provider.dart';
 import 'club_register/error_page/club_register_page_for_member.dart';
-import 'member_register/member_register_complete_page.dart';
 
 class RoutePage extends ConsumerStatefulWidget {
   const RoutePage({super.key});
