@@ -6,13 +6,13 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 import '../../../themes/spacing.dart';
 
 class ClubInfoManageBox extends StatelessWidget {
-  final Future<void> Function() onTap;
-  final Future<void> Function() onChangePresidentTap;
+  final Future<void> Function() onClubDeleteTap;
+  final Future<void> Function() onDelegatePresidentTap;
 
   const ClubInfoManageBox({
     super.key,
-    required this.onTap,
-    required this.onChangePresidentTap,
+    required this.onClubDeleteTap,
+    required this.onDelegatePresidentTap,
   });
 
   @override
@@ -29,7 +29,7 @@ class ClubInfoManageBox extends StatelessWidget {
         ),
         const Gap(defaultGapM),
         InkWell(
-          onTap: onChangePresidentTap,
+          onTap: onDelegatePresidentTap,
           highlightColor: context.colorScheme.surfaceContainer,
           child: Ink(
             padding: const EdgeInsets.symmetric(
@@ -53,7 +53,7 @@ class ClubInfoManageBox extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: onTap,
+          onTap: onClubDeleteTap,
           highlightColor: context.colorScheme.surfaceContainer,
           child: Ink(
             padding: const EdgeInsets.symmetric(

@@ -47,3 +47,5 @@ firebase.json
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 android/app/serviceAccount.json
+
+ios/build

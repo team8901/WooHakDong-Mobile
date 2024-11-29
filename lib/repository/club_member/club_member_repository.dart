@@ -90,4 +90,15 @@ class ClubMemberRepository {
       throw Exception();
     }
   }
+
+  Future<void> delegateClubPresident(int clubId, int clubMemberId) async {
+    try {
+      logger.i('동아리 회장 권한 위임 시도');
+
+      await _dio.post('/clubs/$clubId/members/$clubMemberId/presidency');
+    } catch (e) {
+      logger.e('동아리 회장 권한 위임 실패', error: e);
+      throw Exception();
+    }
+  }
 }

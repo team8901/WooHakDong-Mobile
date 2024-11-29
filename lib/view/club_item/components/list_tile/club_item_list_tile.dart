@@ -86,7 +86,7 @@ class ClubItemListTile extends ConsumerWidget {
                   child: Row(
                     children: [
                       Icon(
-                        Icons.delete,
+                        Symbols.delete_rounded,
                         size: 16,
                         color: context.colorScheme.outline,
                       ),
@@ -140,10 +140,34 @@ class ClubItemListTile extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          item.itemName!,
-                          style: context.textTheme.bodyLarge,
-                          overflow: TextOverflow.ellipsis,
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                item.itemName!,
+                                style: context.textTheme.bodyLarge,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const Gap(defaultGapS / 2),
+                            if (item.itemAvailable != null && !item.itemAvailable!)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: defaultPaddingXS / 2,
+                                  vertical: defaultPaddingXS / 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: context.colorScheme.error.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                                ),
+                                child: Text(
+                                  '대여 불가',
+                                  style: context.textTheme.labelLarge?.copyWith(
+                                    color: context.colorScheme.error,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                         const Gap(defaultGapS / 4),
                         Row(
@@ -172,24 +196,6 @@ class ClubItemListTile extends ConsumerWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            if (item.itemAvailable != null && !item.itemAvailable!)
-                              Row(
-                                children: [
-                                  Icon(
-                                    Symbols.block_rounded,
-                                    color: context.colorScheme.error,
-                                    size: 12,
-                                  ),
-                                  const Gap(defaultGapS / 2),
-                                  Text(
-                                    '대여 불가',
-                                    style: context.textTheme.labelLarge?.copyWith(
-                                      color: context.colorScheme.error,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            const Gap(defaultGapS),
                             if (item.itemUsing!)
                               Icon(
                                 (item.itemOverdue!) ? Symbols.timer_rounded : Symbols.lock_clock_rounded,
