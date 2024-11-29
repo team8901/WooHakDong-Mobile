@@ -121,8 +121,8 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
   }
 
   Future<void> _refreshDuesList(ClubMemberMe clubMemberMe) async {
-    if (clubMemberMe.clubMemberRole != 'PRESIDENT' && clubMemberMe.clubMemberRole != 'SECRETARY') {
-      await GeneralFunctions.toastMessage('회장 및 총무만 회비 내역을 업데이트할 수 있어요');
+    if (clubMemberMe.clubMemberRole != 'PRESIDENT') {
+      await GeneralFunctions.toastMessage('회장만 회비 내역을 업데이트할 수 있어요');
       return;
     }
 

@@ -41,21 +41,19 @@ class ClubMemberListTile extends ConsumerWidget {
                           Text(clubMember.memberName!, style: context.textTheme.bodyLarge),
                           const Gap(defaultGapS / 2),
                           if (clubMember.clubMemberRole != 'MEMBER')
-                            Flexible(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: defaultPaddingXS / 2,
-                                  vertical: defaultPaddingXS / 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: context.colorScheme.secondary,
-                                  borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
-                                ),
-                                child: Text(
-                                  GeneralFormat.formatClubRole(clubMember.clubMemberRole!),
-                                  style: context.textTheme.labelLarge?.copyWith(
-                                    color: context.colorScheme.primary,
-                                  ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: defaultPaddingXS / 2,
+                                vertical: defaultPaddingXS / 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: context.colorScheme.secondary,
+                                borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                              ),
+                              child: Text(
+                                GeneralFormat.formatClubRole(clubMember.clubMemberRole!),
+                                style: context.textTheme.labelLarge?.copyWith(
+                                  color: context.colorScheme.primary,
                                 ),
                               ),
                             ),

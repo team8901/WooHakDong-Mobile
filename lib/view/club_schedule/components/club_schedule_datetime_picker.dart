@@ -1,17 +1,17 @@
 import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
+import 'package:woohakdong/view/themes/theme_context.dart';
 
-/// Displays a date-time picker and returns the selected [DateTime].
 Future<DateTime?> showClubScheduleDateTimePicker({
   required BuildContext context,
   DateTime? initialDate,
+  DateTimePickerType? pickerType,
 }) async {
   DateTime? selectedDate;
   await showBoardDateTimePicker(
     context: context,
-    pickerType: DateTimePickerType.datetime,
+    pickerType: pickerType ?? DateTimePickerType.datetime,
     initialDate: initialDate ?? DateTime.now(),
     minimumDate: DateTime(2000),
     maximumDate: DateTime(2099),
@@ -38,7 +38,7 @@ Future<DateTime?> showClubScheduleDateTimePicker({
       foregroundColor: context.colorScheme.surfaceContainer,
       activeColor: context.colorScheme.primary,
       activeTextColor: context.colorScheme.inversePrimary,
-      inputable: false,
+      inputable: true,
     ),
   );
   return selectedDate;

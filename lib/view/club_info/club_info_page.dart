@@ -9,7 +9,10 @@ import 'package:woohakdong/view/club_info/components/box/club_info_item_manage_b
 import 'package:woohakdong/view/club_info/components/box/club_info_manage_box.dart';
 import 'package:woohakdong/view/club_info/components/box/club_info_member_manage_box.dart';
 import 'package:woohakdong/view/club_info/components/club_info_action_button.dart';
+import 'package:woohakdong/view/delegation/delegation_page.dart';
 import 'package:woohakdong/view/setting/setting_page.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_tap_debouncer.dart';
+import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/club/club_list_provider.dart';
 
 import '../../service/general/general_functions.dart';
@@ -18,6 +21,7 @@ import '../../view_model/club_member/club_member_count_provider.dart';
 import '../../view_model/club_member/club_member_me_provider.dart';
 import '../../view_model/group/group_provider.dart';
 import '../../view_model/item/item_count_provider.dart';
+import '../themes/custom_widget/dialog/custom_interaction_dialog.dart';
 import '../themes/spacing.dart';
 import 'club_info_detail_page.dart';
 import 'club_info_promotion_page.dart';
@@ -35,7 +39,7 @@ class ClubInfoPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: InkWell(
+        title: CustomTapDebouncer(
           onTap: () async {
             await ref.read(clubListProvider.notifier).getClubList();
 
@@ -50,17 +54,22 @@ class ClubInfoPage extends ConsumerWidget {
               );
             }
           },
-          child: const Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('내 동아리'),
-              Gap(defaultGapS / 2),
-              Icon(
-                Symbols.keyboard_arrow_down_rounded,
-                size: 20,
+          builder: (context, onTap) {
+            return InkWell(
+              onTap: onTap,
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('내 동아리'),
+                  Gap(defaultGapS / 2),
+                  Icon(
+                    Symbols.keyboard_arrow_down_rounded,
+                    size: 20,
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
         actions: [
           IconButton(
@@ -86,19 +95,27 @@ class ClubInfoPage extends ConsumerWidget {
                 onTapPromotion: () => _pushClubPromotionPage(ref, context),
               ),
               const Gap(defaultGapXL * 2),
-              ClubInfoGroupManageBox(onTap: () => GeneralFunctions.toastMessage('기능 구현 중...')),
+              ClubInfoGroupManageBox(
+                onTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+              ),
               const Gap(defaultGapXL),
               ClubInfoMemberManageBox(
                 onClubMemberExportTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
                 onClubMemberImportTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
               ),
               const Gap(defaultGapXL),
-              ClubInfoItemManageBox(onClubItemExportTap: () => GeneralFunctions.toastMessage('기능 구현 중...')),
-              const Gap(defaultGapXL),
+              ClubInfoItemManageBox(
+                onClubItemExportTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+              ),
               if (clubMemberMe.clubMemberRole == 'PRESIDENT')
-                ClubInfoManageBox(
-                  onTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
-                  onChangePresidentTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+                Column(
+                  children: [
+                    const Gap(defaultGapXL),
+                    ClubInfoManageBox(
+                      onClubDeleteTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+                      onDelegatePresidentTap: () => _delegatePresident(context, clubMemberMe.memberName!),
+                    ),
+                  ],
                 ),
             ],
           ),
@@ -135,6 +152,31 @@ class ClubInfoPage extends ConsumerWidget {
           builder: (context) => ClubInfoPromotionPage(),
         ),
       );
+    }
+  }
+
+  Future<void> _delegatePresident(BuildContext context, String memberName) async {
+    try {
+      final bool? isDelegate = await showDialog<bool>(
+        context: context,
+        builder: (context) => CustomInteractionDialog(
+          dialogTitle: '회장 위임',
+          dialogContent: '회장 위임 전, 안내사항이에요.\n\n• $memberName님은 임원으로 변경돼요.\n• 새로운 회장님은 동아리 회비 계좌를 새로 등록해야 해요.',
+          dialogButtonText: '확인',
+          dialogButtonColor: context.colorScheme.primary,
+        ),
+      );
+
+      if (isDelegate == true) {
+        if (context.mounted) {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(builder: (context) => const DelegationPage()),
+          );
+        }
+      }
+    } catch (e) {
+      GeneralFunctions.toastMessage('오류가 발생했어요\n다시 시도해 주세요');
     }
   }
 }

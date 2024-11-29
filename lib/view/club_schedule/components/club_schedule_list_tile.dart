@@ -82,7 +82,7 @@ class ClubScheduleListTile extends ConsumerWidget {
                   child: Row(
                     children: [
                       Icon(
-                        Icons.delete,
+                        Symbols.delete_rounded,
                         size: 16,
                         color: context.colorScheme.outline,
                       ),
