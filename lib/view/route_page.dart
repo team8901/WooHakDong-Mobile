@@ -3,7 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:woohakdong/view/club_register/club_register_page.dart';
-import 'package:woohakdong/view/club_register/error_page/club_register_account_form_page_when_no_account.dart';
+import 'package:woohakdong/view/club_register/error_page/club_register_account_page_when_no_account.dart';
 import 'package:woohakdong/view/member_register/member_register_page.dart';
 import 'package:woohakdong/view/navigator_page.dart';
 import 'package:woohakdong/view/settlement/settlement_page.dart';
@@ -32,6 +32,7 @@ import '../view_model/club/club_list_provider.dart';
 import '../view_model/club/components/account/club_account_validation_state.dart';
 import '../view_model/club_member/club_member_list_provider.dart';
 import '../view_model/club_member/components/club_selected_term_provider.dart';
+import 'club_register/error_page/club_register_account_page_when_member_or_secretary.dart';
 import 'club_register/error_page/club_register_page_for_member.dart';
 
 class RoutePage extends ConsumerStatefulWidget {
@@ -80,7 +81,11 @@ class _RoutePageState extends ConsumerState<RoutePage> {
         }
 
         if (clubAccountValidationState != ClubAccountValidationState.accountRegistered) {
-          return const ClubRegisterAccountFormPageWhenNoAccount();
+          if (clubMemberMe.clubMemberRole != 'PRESIDENT') {
+            return const ClubRegisterAccountPageWhenMemberOrSecretary();
+          }
+
+          return const ClubRegisterAccountPageWhenNoAccount();
         }
 
         if (clubAvailabilityState == ClubAvailabilityState.notAvailable) {

@@ -61,6 +61,7 @@ class _ClubScheduleCalendarMonthViewState extends ConsumerState<ClubScheduleCale
           onPageChanged: _onPageChanged,
           eventLoader: _eventLoader,
           onTodayButtonPressed: _onTodayButtonPressed,
+          onYearMonthPressed: _onYearMonthPressed,
         ),
       ],
     );
@@ -137,6 +138,14 @@ class _ClubScheduleCalendarMonthViewState extends ConsumerState<ClubScheduleCale
       _selectedDay = _focusedDay;
     });
 
+    _setSelectedDay(_focusedDay);
+  }
+
+  void _onYearMonthPressed(DateTime selectedDay) {
+    setState(() {
+      _focusedDay = selectedDay;
+      _selectedDay = selectedDay;
+    });
     _setSelectedDay(_focusedDay);
   }
 

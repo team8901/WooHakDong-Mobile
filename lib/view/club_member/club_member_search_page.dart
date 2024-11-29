@@ -64,9 +64,7 @@ class _ClubMemberSearchPageState extends ConsumerState<ClubMemberSearchPage> {
                 )
               else
                 IconButton(
-                  onPressed: () {
-                    _searchController.clear();
-                  },
+                  onPressed: () => _searchController.clear(),
                   icon: const Icon(Symbols.close_rounded),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),

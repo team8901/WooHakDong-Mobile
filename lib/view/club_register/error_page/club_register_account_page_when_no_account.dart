@@ -22,15 +22,15 @@ import '../../themes/spacing.dart';
 import '../club_register_complete_page.dart';
 import '../components/club_register_valid_account_box.dart';
 
-class ClubRegisterAccountFormPageWhenNoAccount extends ConsumerStatefulWidget {
-  const ClubRegisterAccountFormPageWhenNoAccount({super.key});
+class ClubRegisterAccountPageWhenNoAccount extends ConsumerStatefulWidget {
+  const ClubRegisterAccountPageWhenNoAccount({super.key});
 
   @override
-  ConsumerState<ClubRegisterAccountFormPageWhenNoAccount> createState() =>
+  ConsumerState<ClubRegisterAccountPageWhenNoAccount> createState() =>
       _ClubRegisterAccountFormPageWhenNoAccountState();
 }
 
-class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubRegisterAccountFormPageWhenNoAccount> {
+class _ClubRegisterAccountFormPageWhenNoAccountState extends ConsumerState<ClubRegisterAccountPageWhenNoAccount> {
   final _formKey = GlobalKey<FormState>();
   String _clubAccountBankName = '';
   late TextEditingController _clubAccountNumberController;

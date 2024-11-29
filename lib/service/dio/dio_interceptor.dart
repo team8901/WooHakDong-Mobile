@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:woohakdong/service/general/general_functions.dart';
 
 import '../logger/logger.dart';
 
@@ -41,11 +43,16 @@ class DioInterceptor extends InterceptorsWrapper {
           final baseUrl = dotenv.env['V1_SERVER_BASE_URL'];
 
           // Dio로 시도했을 때, 오류가 계속 발생하여 http로 시도
-          final tokenResponse = await http.post(
-            Uri.parse('$baseUrl/auth/refresh'),
-            headers: {'Content-Type': 'application/json'},
-            body: jsonEncode({'refreshToken': refreshToken}),
-          );
+          final tokenResponse = await http
+              .post(
+                Uri.parse('$baseUrl/auth/refresh'),
+                headers: {'Content-Type': 'application/json'},
+                body: jsonEncode({'refreshToken': refreshToken}),
+              )
+              .timeout(
+                const Duration(seconds: 10),
+                onTimeout: () => throw TimeoutException('토큰 재발급 시도 타임 아웃'),
+              );
 
           if (tokenResponse.statusCode == 200) {
             final newTokenData = jsonDecode(tokenResponse.body);
@@ -63,19 +70,23 @@ class DioInterceptor extends InterceptorsWrapper {
             final retryRequest = await _dio.fetch(err.requestOptions);
 
             return handler.resolve(retryRequest);
-          } else if (tokenResponse.statusCode == 401) {
-            logger.w("리프레시 토큰 만료");
-            _signOutByTokenRefreshFailed();
-            return handler.reject(err);
           }
+
+          logger.w("리프레시 토큰 만료");
+          await _signOutByTokenRefreshFailed();
+          return handler.reject(err);
+        } on TimeoutException catch (e) {
+          logger.w("토큰 재발급 시도 타임 아웃", error: e);
+          await GeneralFunctions.toastMessage('네트워크 상태를 확인해 주세요');
+          return handler.reject(err);
         } catch (e) {
           logger.e("토큰 재발급 실패", error: e);
-          _signOutByTokenRefreshFailed();
+          await _signOutByTokenRefreshFailed();
           return handler.reject(err);
         }
       } else {
         logger.w('리프레시 토큰 없음');
-        _signOutByTokenRefreshFailed();
+        await _signOutByTokenRefreshFailed();
         return handler.reject(err);
       }
     } else {

@@ -61,6 +61,7 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
           onPageChanged: _onPageChanged,
           eventLoader: _eventLoader,
           onTodayButtonPressed: _onTodayButtonPressed,
+          onYearMonthPressed: _onYearMonthPressed,
         ),
         const Gap(defaultGapM),
         Divider(
@@ -260,6 +261,18 @@ class _ClubScheduleCalendarViewState extends ConsumerState<ClubScheduleCalendarD
       _lastSelectedDate = _focusedDay;
     });
     _setSelectedDay(_focusedDay);
+  }
+
+  void _onYearMonthPressed(DateTime selectedDay) {
+    setState(() {
+      _focusedDay = selectedDay;
+      _selectedDay = selectedDay;
+      _currentDate = selectedDay;
+      _baseDate = selectedDay;
+      _pageController.jumpToPage(_initialPage);
+      _lastSelectedDate = selectedDay;
+    });
+    _setSelectedDay(selectedDay);
   }
 
   Future<void> _pushScheduleDetailPage(WidgetRef ref, BuildContext context, int scheduleId) async {

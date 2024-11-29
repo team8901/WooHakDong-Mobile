@@ -1,3 +1,4 @@
+import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../../model/schedule/schedule.dart';
 import '../../../themes/spacing.dart';
+import '../club_schedule_datetime_picker.dart';
 
 class ClubScheduleTableCalendarMonth extends ConsumerWidget {
   final DateTime focusedDay;
@@ -15,6 +17,7 @@ class ClubScheduleTableCalendarMonth extends ConsumerWidget {
   final Function(DateTime) onPageChanged;
   final List<Schedule> Function(DateTime) eventLoader;
   final VoidCallback onTodayButtonPressed;
+  final Function(DateTime) onYearMonthPressed;
 
   const ClubScheduleTableCalendarMonth({
     super.key,
@@ -24,6 +27,7 @@ class ClubScheduleTableCalendarMonth extends ConsumerWidget {
     required this.onPageChanged,
     required this.eventLoader,
     required this.onTodayButtonPressed,
+    required this.onYearMonthPressed,
   });
 
   @override
@@ -76,16 +80,29 @@ class ClubScheduleTableCalendarMonth extends ConsumerWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      DateFormat('yyyy년 MM월').format(day),
-                      style: context.textTheme.titleLarge,
+                    child: GestureDetector(
+                      onTap: () async {
+                        final scheduleDate = await showClubScheduleDateTimePicker(
+                          context: context,
+                          initialDate: day,
+                          pickerType: DateTimePickerType.date,
+                        );
+
+                        if (scheduleDate != null) {
+                          onYearMonthPressed(scheduleDate);
+                        }
+                      },
+                      child: Text(
+                        DateFormat('yyyy년 MM월').format(day),
+                        style: context.textTheme.titleLarge,
+                      ),
                     ),
                   ),
                   GestureDetector(
                     onTap: onTodayButtonPressed,
                     child: Text(
                       '오늘',
-                      style: context.textTheme.bodyMedium!,
+                      style: context.textTheme.titleSmall!,
                     ),
                   ),
                 ],

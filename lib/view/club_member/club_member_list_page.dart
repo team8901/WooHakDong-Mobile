@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_member/components/dialog/club_member_assigned_term_bottom_sheet.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_loading_skeleton.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_tap_debouncer.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/club_member/club_member_term_list_provider.dart';
@@ -35,7 +36,7 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: InkWell(
+        title: CustomTapDebouncer(
           onTap: () async {
             await ref.read(clubMemberTermListProvider.notifier).getClubMemberTermList();
 
@@ -47,23 +48,28 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
               );
             }
           },
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('회원'),
-              const Gap(defaultGapS),
-              if (clubHistoryUsageDate!.isNotEmpty)
-                Text(
-                  GeneralFormat.formatClubAssignedTerm(clubHistoryUsageDate),
-                  style: context.textTheme.bodyMedium,
-                ),
-              const Gap(defaultGapS / 2),
-              const Icon(
-                Symbols.keyboard_arrow_down_rounded,
-                size: 20,
+          builder: (context, onTap) {
+            return InkWell(
+              onTap: onTap,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('회원'),
+                  const Gap(defaultGapS),
+                  if (clubHistoryUsageDate!.isNotEmpty)
+                    Text(
+                      GeneralFormat.formatClubAssignedTerm(clubHistoryUsageDate),
+                      style: context.textTheme.bodyMedium,
+                    ),
+                  const Gap(defaultGapS / 2),
+                  const Icon(
+                    Symbols.keyboard_arrow_down_rounded,
+                    size: 20,
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
         actions: [
           IconButton(
