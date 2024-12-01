@@ -165,9 +165,10 @@ class _ClubScheduleEditPageState extends ConsumerState<ClubScheduleEditPage> {
           child: CustomBottomButton(
             onTap: () async {
               try {
-                await _editSchedule(
-                  scheduleNotifier,
+                await scheduleNotifier.updateSchedule(
                   widget.scheduleInfo.scheduleId!,
+                  _clubScheduleController.title.text,
+                  _clubScheduleController.content.text,
                   _selectedDate!,
                   _pickerColor!.value.toRadixString(16).toUpperCase(),
                 );
@@ -188,24 +189,5 @@ class _ClubScheduleEditPageState extends ConsumerState<ClubScheduleEditPage> {
         ),
       ),
     );
-  }
-
-  Future<void> _editSchedule(
-    ScheduleNotifier scheduleNotifier,
-    int scheduleId,
-    DateTime scheduleDateTime,
-    String scheduleColor,
-  ) async {
-    try {
-      await scheduleNotifier.updateSchedule(
-        scheduleId,
-        _clubScheduleController.title.text,
-        _clubScheduleController.content.text,
-        scheduleDateTime,
-        scheduleColor,
-      );
-    } catch (e) {
-      rethrow;
-    }
   }
 }

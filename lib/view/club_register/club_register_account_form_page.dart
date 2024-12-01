@@ -220,7 +220,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
   }
 
   Future<void> _pushCompletePage(WidgetRef ref, BuildContext context) async {
-    await ref.read(groupProvider.notifier).getClubRegisterPageInfo();
+    await ref.read(groupProvider.notifier).getClubRegisterInfo();
 
     if (context.mounted) {
       Navigator.pushAndRemoveUntil(

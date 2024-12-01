@@ -93,10 +93,7 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
             clubMemberList.sort((a, b) => a.memberName!.compareTo(b.memberName!));
 
             return CustomRefreshIndicator(
-              onRefresh: () async {
-                await Future.delayed(const Duration(milliseconds: 500));
-                await ref.read(clubMemberListProvider.notifier).getClubMemberList();
-              },
+              onRefresh: () async => await ref.read(clubMemberListProvider.notifier).getClubMemberList(),
               child: ListView.separated(
                 physics: const AlwaysScrollableScrollPhysics(),
                 separatorBuilder: (context, index) => const CustomHorizontalDivider(),
@@ -112,7 +109,7 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
             isLoading: true,
             child: ListView.separated(
               separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-              itemCount: 10,
+              itemCount: 50,
               itemBuilder: (context, index) {
                 return ClubMemberListTile(
                   clubMember: ClubMember(

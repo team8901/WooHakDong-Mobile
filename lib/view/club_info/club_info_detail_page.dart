@@ -31,7 +31,6 @@ class ClubInfoDetailPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('동아리 정보'),
         actions: [
           IconButton(
             onPressed: () async => await _sendClubInfoNotification(context, currentClubInfo.clubId!),

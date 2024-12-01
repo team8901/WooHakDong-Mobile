@@ -10,7 +10,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/club/club_list_provider.dart';
 import '../../view_model/club/current_club_info_provider.dart';
-import '../../view_model/group/group_provider.dart';
+import '../../view_model/group/group_payment_provider.dart';
 import '../club_info/components/club_info_bottom_sheet.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
 import '../themes/spacing.dart';
@@ -115,7 +115,7 @@ class SettlementPage extends ConsumerWidget {
   }
 
   Future<void> _pushSettlementInfoPage(WidgetRef ref, BuildContext context) async {
-    await ref.read(groupProvider.notifier).getServiceFeeGroupInfo();
+    await ref.read(groupPaymentProvider.notifier).getClubServiceFeeInfo();
 
     if (context.mounted) {
       Navigator.push(

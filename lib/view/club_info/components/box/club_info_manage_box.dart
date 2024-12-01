@@ -40,7 +40,7 @@ class ClubInfoManageBox extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '회장 위임하기',
+                  '회장 위임',
                   style: context.textTheme.titleSmall,
                 ),
                 Icon(
@@ -64,7 +64,7 @@ class ClubInfoManageBox extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '동아리 삭제하기',
+                  '동아리 삭제',
                   style: context.textTheme.titleSmall?.copyWith(color: context.colorScheme.error),
                 ),
                 Icon(

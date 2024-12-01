@@ -50,7 +50,7 @@ class ClubInfoBottomSheet extends ConsumerWidget {
                   Text('동아리 목록', style: context.textTheme.titleLarge),
                   const Gap(defaultGapS / 4),
                   Text(
-                    '현재 등록되어 있는 동아리 목록이에요',
+                    '현재 가입되어 있는 동아리 목록이에요',
                     style: context.textTheme.bodySmall?.copyWith(
                       color: context.colorScheme.onSurface,
                     ),
