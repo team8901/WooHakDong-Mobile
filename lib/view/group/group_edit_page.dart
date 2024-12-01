@@ -55,6 +55,7 @@ class _GroupEditPageState extends ConsumerState<GroupEditPage> {
     return PopScope(
       canPop: groupState != GroupState.adding,
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: const Text('모임 수정'),
         ),
@@ -150,13 +151,6 @@ class _GroupEditPageState extends ConsumerState<GroupEditPage> {
                       return null;
                     },
                   ),
-                  const Gap(defaultGapXL),
-                  Text(
-                    '모임 모집 여부',
-                    style: context.textTheme.labelLarge?.copyWith(
-                      color: context.colorScheme.onSurface,
-                    ),
-                  ),
                   const Gap(defaultGapM),
                   Container(
                     width: double.infinity,
@@ -196,6 +190,8 @@ class _GroupEditPageState extends ConsumerState<GroupEditPage> {
         bottomNavigationBar: SafeArea(
           child: CustomBottomButton(
             onTap: () async {
+              if (!_formKey.currentState!.validate()) return;
+
               try {
                 await groupNotifier.updateGroup(
                   widget.groupInfo.groupId!,

@@ -70,11 +70,11 @@ class DioInterceptor extends InterceptorsWrapper {
             final retryRequest = await _dio.fetch(err.requestOptions);
 
             return handler.resolve(retryRequest);
+          } else if (tokenResponse.statusCode == 401 || tokenResponse.statusCode == 403) {
+            logger.w("리프레시 토큰 만료");
+            await _signOutByTokenRefreshFailed();
+            return handler.reject(err);
           }
-
-          logger.w("리프레시 토큰 만료");
-          await _signOutByTokenRefreshFailed();
-          return handler.reject(err);
         } on TimeoutException catch (e) {
           logger.w("토큰 재발급 시도 타임 아웃", error: e);
           await GeneralFunctions.toastMessage('네트워크 상태를 확인해 주세요');

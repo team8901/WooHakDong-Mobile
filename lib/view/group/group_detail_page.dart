@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:woohakdong/service/general/general_format.dart';
 import 'package:woohakdong/view/group/group_edit_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.dart';
@@ -26,6 +27,11 @@ class GroupDetailPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          if (groupInfo.groupIsActivated!)
+            IconButton(
+              onPressed: () => _onShareTap(groupInfo),
+              icon: const Icon(Symbols.share_rounded),
+            ),
           IconButton(
             onPressed: () => _pushGroupEditPage(context, groupInfo),
             icon: const Icon(Symbols.edit_rounded),
@@ -173,6 +179,16 @@ class GroupDetailPage extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _onShareTap(Group groupInfo) {
+    Share.share(
+      groupInfo.groupJoinLink!,
+      subject: '${groupInfo.groupName}에서 만나요! 🤗\n\n'
+          '모임비: ${GeneralFormat.formatClubDues(groupInfo.groupAmount!)}\n'
+          '최대 인원: ${groupInfo.groupMemberLimit}명\n'
+          '현재 인원: ${groupInfo.groupMemberCount}명\n\n',
     );
   }
 

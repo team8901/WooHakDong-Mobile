@@ -157,6 +157,7 @@ class _ClubRegisterAccountFormPageState extends ConsumerState<ClubRegisterAccoun
                             _clubAccountNumberController.text,
                           );
                         },
+                        splashColor: context.colorScheme.outline,
                         highlightColor: context.colorScheme.outline,
                         borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
                         child: Ink(

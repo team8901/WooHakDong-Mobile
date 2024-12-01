@@ -63,6 +63,7 @@ dependencies:
   iamport_flutter: ^0.10.19
   uuid: ^4.5.1
   flutter_svg: ^2.0.15
+  share_plus: ^10.1.2
 
 dev_dependencies:
   flutter_test:

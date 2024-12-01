@@ -92,6 +92,7 @@ class _GroupAddPageState extends ConsumerState<GroupAddPage> {
                   const Gap(defaultGapM),
                   CustomTextFormField(
                     labelText: '모임비',
+                    hintText: '없으면 0을 입력해 주세요',
                     keyboardType: TextInputType.number,
                     controller: _groupController.amount,
                     validator: (value) {

@@ -164,6 +164,8 @@ class _ClubScheduleEditPageState extends ConsumerState<ClubScheduleEditPage> {
         bottomNavigationBar: SafeArea(
           child: CustomBottomButton(
             onTap: () async {
+              if (!_formKey.currentState!.validate()) return;
+
               try {
                 await scheduleNotifier.updateSchedule(
                   widget.scheduleInfo.scheduleId!,

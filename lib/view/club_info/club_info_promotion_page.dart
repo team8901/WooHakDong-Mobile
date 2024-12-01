@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:woohakdong/view/themes/custom_widget/button/custom_info_tooltip.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/group/group_provider.dart';
 
+import '../../model/group/group.dart';
+import '../../service/general/general_format.dart';
 import '../../service/general/general_functions.dart';
 import '../../service/general/general_image.dart';
 import '../club_register/components/club_register_qr_card.dart';
@@ -24,8 +27,11 @@ class ClubInfoPromotionPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('모집 정보'),
         actions: [
+          IconButton(
+            onPressed: () => _onShareTap(groupInfo),
+            icon: const Icon(Symbols.share_rounded),
+          ),
           IconButton(
             onPressed: () async {
               await GeneralImage.convertWidgetToPng(
@@ -78,6 +84,14 @@ class ClubInfoPromotionPage extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _onShareTap(Group groupInfo) {
+    Share.share(
+      groupInfo.groupJoinLink!,
+      subject: '${groupInfo.groupName}과 함께 해요! 🤩\n\n'
+          '동아리 회비: ${GeneralFormat.formatClubDues(groupInfo.groupAmount!)}',
     );
   }
 

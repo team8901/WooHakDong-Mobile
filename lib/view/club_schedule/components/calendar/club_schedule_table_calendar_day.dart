@@ -77,6 +77,7 @@ class ClubScheduleTableCalendarDay extends ConsumerWidget {
             padding: const EdgeInsets.only(
               left: defaultPaddingS,
               right: defaultPaddingS,
+              bottom: defaultPaddingS / 2,
             ),
             child: Row(
               children: [

@@ -11,11 +11,17 @@ import '../../themes/spacing.dart';
 class GroupListTile extends StatelessWidget {
   final Group group;
   final Future<void> Function()? onTap;
+  final VoidCallback? onShareLongPress;
+  final VoidCallback? onEditLongPress;
+  final Future<void> Function()? onDeleteLongPress;
 
   const GroupListTile({
     super.key,
     required this.group,
     this.onTap,
+    this.onShareLongPress,
+    this.onEditLongPress,
+    this.onDeleteLongPress,
   });
 
   @override
@@ -25,6 +31,81 @@ class GroupListTile extends StatelessWidget {
       builder: (context, onTap) {
         return InkWell(
           onTap: onTap,
+          onLongPress: () async {
+            final RenderBox renderBox = context.findRenderObject() as RenderBox;
+            final position = renderBox.localToGlobal(Offset.zero);
+            final size = renderBox.size;
+
+            final result = await showMenu(
+              context: context,
+              position: RelativeRect.fromLTRB(
+                position.dx + size.width / 2,
+                position.dy + size.height / 2,
+                position.dx + size.width / 2,
+                position.dy + size.height / 2,
+              ),
+              items: [
+                if (group.groupIsActivated!)
+                  PopupMenuItem(
+                    value: 'share',
+                    child: Row(
+                      children: [
+                        Icon(
+                          Symbols.share_rounded,
+                          size: 16,
+                          color: context.colorScheme.outline,
+                        ),
+                        const Gap(defaultGapM),
+                        Text('공유', style: context.textTheme.bodyLarge),
+                      ],
+                    ),
+                  ),
+                PopupMenuItem(
+                  value: 'edit',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Symbols.edit_rounded,
+                        size: 16,
+                        color: context.colorScheme.outline,
+                      ),
+                      const Gap(defaultGapM),
+                      Text('수정', style: context.textTheme.bodyLarge),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Symbols.delete_rounded,
+                        size: 16,
+                        color: context.colorScheme.outline,
+                      ),
+                      const Gap(defaultGapM),
+                      Text(
+                        '삭제',
+                        style: context.textTheme.bodyLarge,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+
+            switch (result) {
+              case 'share':
+                if (onEditLongPress != null) onShareLongPress!();
+                break;
+              case 'edit':
+                if (onEditLongPress != null) onEditLongPress!();
+                break;
+              case 'delete':
+                if (onDeleteLongPress != null) await onDeleteLongPress!();
+                break;
+            }
+          },
           highlightColor: context.colorScheme.surfaceContainer,
           child: Ink(
             padding: const EdgeInsets.all(defaultPaddingM),
