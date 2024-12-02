@@ -6,6 +6,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import '../../model/item/item_filter.dart';
 import '../../view_model/item/item_filter_provider.dart';
 import 'club_item_add_page.dart';
+import 'club_item_history_page.dart';
 import 'club_item_search_page.dart';
 import 'components/button/club_item_filter_action_button.dart';
 import 'components/club_item_page_view.dart';
@@ -73,6 +74,10 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
         title: const Text('물품'),
         actions: [
           IconButton(
+            onPressed: () => _pushItemHistoryPage(context),
+            icon: const Icon(Symbols.history_rounded),
+          ),
+          IconButton(
             onPressed: () => _pushItemSearchPage(context),
             icon: const Icon(Symbols.search_rounded),
           ),
@@ -125,6 +130,12 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
         onPressed: () => _pushItemAddPage(context, categories[tabController.index]),
         child: const Icon(Symbols.add_2_rounded, weight: 600, size: 28),
       ),
+    );
+  }
+
+  void _pushItemHistoryPage(BuildContext context) {
+    Navigator.of(context).push(
+      CupertinoPageRoute(builder: (context) => const ClubItemHistoryPage()),
     );
   }
 
