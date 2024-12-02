@@ -48,7 +48,8 @@ class ClubMemberAssignedTermBottomSheet extends ConsumerWidget {
               ),
             );
           } else {
-            final term = clubMemberTermList[index - 1];
+            final reversedList = clubMemberTermList.reversed.toList();
+            final term = reversedList[index - 1];
             final termDate = DateFormat('yyyy-MM-dd').format(term.clubHistoryUsageDate!);
             final isCurrent = termDate == selectedTerm;
 
