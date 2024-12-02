@@ -14,7 +14,7 @@ class GroupPaymentRepository {
       final response = await _dio.get('/clubs/$clubId/payment-group');
 
       if (response.statusCode == 200) {
-        return Group.fromJson(response.data);
+        return Group.fromJsonForPromotion(response.data);
       }
 
       throw Exception();

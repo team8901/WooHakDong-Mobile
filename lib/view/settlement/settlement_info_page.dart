@@ -32,7 +32,7 @@ class _SettlementInfoPageState extends ConsumerState<SettlementInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final serviceFeeGroupInfo = ref.watch(groupProvider);
+    final serviceFeeGroupInfo = ref.watch(groupPaymentProvider);
 
     return Scaffold(
       appBar: AppBar(),
