@@ -133,6 +133,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
           using: null,
           available: null,
           overdue: null,
+          itemSortOption: null,
         ),
       ).notifier);
       ref.watch(scheduleCalendarViewProvider.notifier);

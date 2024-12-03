@@ -8,7 +8,7 @@ class ClubItemHistoryPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('물품 대여 내역'),
+        title: const Text('전체 물품 대여 내역'),
       ),
     );
   }

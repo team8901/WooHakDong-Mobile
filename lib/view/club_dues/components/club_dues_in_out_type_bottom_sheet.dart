@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import 'club_dues_in_out_type_list_tile.dart';
+import 'club_dues_in_out_type_bottom_sheet_button.dart';
 
 class ClubDuesInOutTypeBottomSheet extends StatelessWidget {
   final Function(String?) onTypeSelect;
@@ -38,21 +38,21 @@ class ClubDuesInOutTypeBottomSheet extends StatelessWidget {
               ),
             ),
             const Gap(defaultGapS),
-            ClubDuesInOutTypeListTile(
+            ClubDuesInOutTypeBottomSheetButton(
               title: '전체',
               type: 'ALL',
               selectedType: duesInOutType,
               onTap: (type) => onTypeSelect(type),
             ),
             const Gap(defaultGapS),
-            ClubDuesInOutTypeListTile(
+            ClubDuesInOutTypeBottomSheetButton(
               title: '입금',
               type: 'DEPOSIT',
               selectedType: duesInOutType,
               onTap: (type) => onTypeSelect(type),
             ),
             const Gap(defaultGapS),
-            ClubDuesInOutTypeListTile(
+            ClubDuesInOutTypeBottomSheetButton(
               title: '출금',
               type: 'WITHDRAW',
               selectedType: duesInOutType,

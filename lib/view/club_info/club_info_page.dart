@@ -17,10 +17,10 @@ import 'package:woohakdong/view_model/club/club_list_provider.dart';
 
 import '../../service/general/general_functions.dart';
 import '../../view_model/club/current_club_info_provider.dart';
-import '../../view_model/club_member/club_member_count_provider.dart';
+import '../../view_model/club_member/components/club_member_count_provider.dart';
 import '../../view_model/club_member/club_member_me_provider.dart';
 import '../../view_model/group/group_provider.dart';
-import '../../view_model/item/item_count_provider.dart';
+import '../../view_model/item/components/item_count_provider.dart';
 import '../themes/custom_widget/dialog/custom_interaction_dialog.dart';
 import '../themes/spacing.dart';
 import 'club_info_detail_page.dart';
@@ -102,16 +102,13 @@ class ClubInfoPage extends ConsumerWidget {
                 onClubItemExportTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
                 onClubDuesExportTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
               ),
-              if (clubMemberMe.clubMemberRole == 'PRESIDENT')
-                Column(
-                  children: [
-                    const Gap(defaultGapXL),
-                    ClubInfoManageBox(
-                      onClubDeleteTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
-                      onDelegatePresidentTap: () => _delegatePresident(context, clubMemberMe.memberName!),
-                    ),
-                  ],
+              if (clubMemberMe.clubMemberRole == 'PRESIDENT') ...[
+                const Gap(defaultGapXL),
+                ClubInfoManageBox(
+                  onClubDeleteTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+                  onDelegatePresidentTap: () => _delegatePresident(context, clubMemberMe.memberName!),
                 ),
+              ],
             ],
           ),
         ),

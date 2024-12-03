@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/view/club_info/components/club_info_list_tile.dart';
+import 'package:woohakdong/view/club_info/components/club_info_bottom_sheet_list_tile.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/club/club.dart';
@@ -62,7 +62,7 @@ class ClubInfoBottomSheet extends ConsumerWidget {
             final club = clubList[index - 1];
             final isCurrent = club.clubId == currentClubId;
 
-            return ClubInfoListTile(
+            return ClubInfoBottomSheetListTile(
               club: club,
               isCurrent: isCurrent,
               onTap: () => _changeClub(club, ref, context),

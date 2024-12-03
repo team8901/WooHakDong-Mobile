@@ -7,7 +7,7 @@ import 'package:woohakdong/view_model/item/item_list_provider.dart';
 import '../../model/item/item.dart';
 import '../club/club_id_provider.dart';
 import '../util/s3_image_provider.dart';
-import 'item_filter_provider.dart';
+import 'components/item_filter_provider.dart';
 
 final itemProvider = StateNotifierProvider<ItemNotifier, Item>((ref) {
   return ItemNotifier(ref);

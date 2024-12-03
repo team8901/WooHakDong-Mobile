@@ -3,7 +3,7 @@ import 'package:woohakdong/model/club_member/club_member.dart';
 
 import '../../repository/club_member/club_member_repository.dart';
 import '../club/club_id_provider.dart';
-import 'club_member_count_provider.dart';
+import 'components/club_member_count_provider.dart';
 import 'components/club_selected_term_provider.dart';
 
 final clubMemberListProvider = StateNotifierProvider<ClubMemberListNotifier, AsyncValue<List<ClubMember>>>((ref) {

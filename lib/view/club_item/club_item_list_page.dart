@@ -4,13 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import '../../model/item/item_filter.dart';
-import '../../view_model/item/item_filter_provider.dart';
+import '../../view_model/item/components/item_count_provider.dart';
+import '../../view_model/item/components/item_filter_provider.dart';
 import 'club_item_add_page.dart';
 import 'club_item_history_page.dart';
 import 'club_item_search_page.dart';
-import 'components/button/club_item_filter_action_button.dart';
 import 'components/club_item_page_view.dart';
-import 'components/dialog/club_item_using_filter_bottom_sheet.dart';
+import 'components/dialog/club_item_filter_bottom_sheet.dart';
+import 'components/list_tile/club_item_filter_list_tile.dart';
 
 class ClubItemListPage extends ConsumerStatefulWidget {
   const ClubItemListPage({super.key});
@@ -54,6 +55,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
           using: ref.read(itemFilterProvider).using,
           available: ref.read(itemFilterProvider).available,
           overdue: ref.read(itemFilterProvider).overdue,
+          itemSortOption: ref.read(itemFilterProvider).itemSortOption,
         );
       }
     });
@@ -68,6 +70,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
   @override
   Widget build(BuildContext context) {
     final filter = ref.watch(itemFilterProvider);
+    final itemCount = ref.watch(itemCountProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -105,13 +108,14 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
             automaticallyImplyLeading: false,
             titleSpacing: 0,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            title: ClubItemFilterActionButton(
+            title: ClubItemFilterListTile(
               filter: filter,
+              itemCount: itemCount,
               onFilterTap: () => showModalBottomSheet(
                 useSafeArea: true,
                 context: context,
                 builder: (BuildContext context) {
-                  return const ClubItemUsingFilterBottomSheet();
+                  return const ClubItemFilterBottomSheet();
                 },
               ),
               onResetFilterTap: _resetFilter,
@@ -177,6 +181,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
       using: null,
       available: null,
       overdue: null,
+      itemSortOption: ref.read(itemFilterProvider).itemSortOption,
     );
   }
 }

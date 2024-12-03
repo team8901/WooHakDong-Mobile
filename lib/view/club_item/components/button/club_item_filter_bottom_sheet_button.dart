@@ -3,12 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-class ClubItemFilterSheetButton extends StatelessWidget {
+class ClubItemFilterBottomSheetButton extends StatelessWidget {
   final String label;
   final bool selected;
   final VoidCallback onTap;
 
-  const ClubItemFilterSheetButton({
+  const ClubItemFilterBottomSheetButton({
     super.key,
     required this.label,
     required this.selected,
@@ -19,14 +19,14 @@ class ClubItemFilterSheetButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      highlightColor: context.colorScheme.surfaceContainer,
+      highlightColor: selected ? context.colorScheme.primary.withOpacity(0.1) : context.colorScheme.surfaceContainer,
       borderRadius: BorderRadius.circular(defaultBorderRadiusL),
       child: Ink(
         height: 32.h,
         padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
         decoration: BoxDecoration(
           border: Border.all(
-            color: selected ? Colors.transparent : context.colorScheme.surfaceContainer,
+            color: selected ? context.colorScheme.primary : context.colorScheme.surfaceContainer,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(defaultBorderRadiusL),
