@@ -51,4 +51,27 @@ class ItemHistoryRepository {
       throw Exception();
     }
   }
+
+  Future<List<ItemHistory>> getEntireItemHistoryList(int clubId) async {
+    try {
+      logger.i('전체 물품 대여 내역 조회 시도');
+
+      final response = await _dio.get(
+        '/clubs/$clubId/items/history',
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonData = response.data;
+
+        List<dynamic> itemEntireHistoryListData = jsonData['result'] as List<dynamic>;
+
+        return itemEntireHistoryListData.map((json) => ItemHistory.fromJson(json as Map<String, dynamic>)).toList();
+      }
+
+      throw Exception();
+    } catch (e) {
+      logger.e('전체 물품 대여 내역 조회 실패', error: e);
+      throw Exception();
+    }
+  }
 }

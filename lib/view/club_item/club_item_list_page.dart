@@ -6,6 +6,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import '../../model/item/item_filter.dart';
 import '../../view_model/item/components/item_count_provider.dart';
 import '../../view_model/item/components/item_filter_provider.dart';
+import '../../view_model/item/item_entire_history_list_provider.dart';
 import 'club_item_add_page.dart';
 import 'club_item_history_page.dart';
 import 'club_item_search_page.dart';
@@ -77,7 +78,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
         title: const Text('물품'),
         actions: [
           IconButton(
-            onPressed: () => _pushItemHistoryPage(context),
+            onPressed: () async => await _pushItemHistoryPage(context),
             icon: const Icon(Symbols.history_rounded),
           ),
           IconButton(
@@ -137,10 +138,16 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
     );
   }
 
-  void _pushItemHistoryPage(BuildContext context) {
-    Navigator.of(context).push(
-      CupertinoPageRoute(builder: (context) => const ClubItemHistoryPage()),
-    );
+  Future<void> _pushItemHistoryPage(BuildContext context) async {
+    await ref.read(itemEntireHistoryListProvider.notifier).getEntireItemHistoryList();
+
+    if (context.mounted) {
+      Navigator.of(context).push(
+        CupertinoPageRoute(
+          builder: (context) => const ClubItemHistoryPage(),
+        ),
+      );
+    }
   }
 
   void _pushItemSearchPage(BuildContext context) {
