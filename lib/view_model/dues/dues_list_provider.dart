@@ -23,7 +23,11 @@ class DuesListNotifier extends StateNotifier<AsyncValue<List<Dues>>> {
 
       state = const AsyncValue.loading();
 
-      final duesList = await duesRepository.getDuesList(currentClubId!, date);
+      final duesList = await duesRepository.getDuesList(
+        currentClubId!,
+        date,
+        null,
+      );
 
       state = AsyncValue.data(duesList);
     } catch (e, stackTrace) {

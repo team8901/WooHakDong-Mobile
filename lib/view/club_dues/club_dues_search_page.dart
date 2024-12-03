@@ -6,7 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_progress_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
-import '../../view_model/item/item_search_provider.dart';
+
+import '../../view_model/dues/dues_search_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import 'components/club_dues_list_tile.dart';
 
@@ -36,7 +37,7 @@ class _ClubDuesSearchPageState extends ConsumerState<ClubDuesSearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final duesSearchedResults =
+    final duesSearchedResults = ref.watch(duesSearchProvider(_searchController.text));
 
     return Scaffold(
       appBar: AppBar(
@@ -72,37 +73,37 @@ class _ClubDuesSearchPageState extends ConsumerState<ClubDuesSearchPage> {
           ),
         ),
       ),
-      // body: _searchController.text.isEmpty
-      //     ? const SizedBox()
-      //     : duesSearchedResults.when(
-      //         data: (searchedDues) {
-      //           if (searchedDues.isEmpty) {
-      //             return Center(
-      //               child: Text(
-      //                 '회비 내역 검색 결과가 없어요',
-      //                 style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
-      //               ),
-      //             );
-      //           }
-      //
-      //           return ListView.separated(
-      //             physics: const AlwaysScrollableScrollPhysics(),
-      //             separatorBuilder: (context, index) => const CustomHorizontalDivider(),
-      //             itemCount: searchedDues.length,
-      //             itemBuilder: (context, index) => ClubDuesListTile(dues: searchedDues[index]),
-      //           );
-      //         },
-      //         loading: () => CustomProgressIndicator(indicatorColor: context.colorScheme.surfaceContainer),
-      //         error: (err, stack) => Center(
-      //           child: Text(
-      //             '검색 중 오류가 발생했어요\n다시 시도해 주세요',
-      //             style: context.textTheme.bodySmall?.copyWith(
-      //               color: context.colorScheme.error,
-      //             ),
-      //             textAlign: TextAlign.center,
-      //           ),
-      //         ),
-      //       ),
+      body: _searchController.text.isEmpty
+          ? const SizedBox()
+          : duesSearchedResults.when(
+              data: (searchedDues) {
+                if (searchedDues.isEmpty) {
+                  return Center(
+                    child: Text(
+                      '회비 내역 검색 결과가 없어요',
+                      style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.onSurface),
+                    ),
+                  );
+                }
+
+                return ListView.separated(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  separatorBuilder: (context, index) => const CustomHorizontalDivider(),
+                  itemCount: searchedDues.length,
+                  itemBuilder: (context, index) => ClubDuesListTile(dues: searchedDues[index]),
+                );
+              },
+              loading: () => CustomProgressIndicator(indicatorColor: context.colorScheme.surfaceContainer),
+              error: (err, stack) => Center(
+                child: Text(
+                  '검색 중 오류가 발생했어요\n다시 시도해 주세요',
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: context.colorScheme.error,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
     );
   }
 
