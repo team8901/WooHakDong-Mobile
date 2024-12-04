@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_tap_debouncer.dart';
 
 import '../../model/item/item_filter.dart';
 import '../../view_model/item/components/item_count_provider.dart';
@@ -77,9 +78,14 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
       appBar: AppBar(
         title: const Text('물품'),
         actions: [
-          IconButton(
-            onPressed: () async => await _pushItemHistoryPage(context),
-            icon: const Icon(Symbols.history_rounded),
+          CustomTapDebouncer(
+            onTap: () async => await _pushItemHistoryPage(context),
+            builder: (context, onTap) {
+              return IconButton(
+                onPressed: onTap,
+                icon: const Icon(Symbols.history_rounded),
+              );
+            },
           ),
           IconButton(
             onPressed: () => _pushItemSearchPage(context),

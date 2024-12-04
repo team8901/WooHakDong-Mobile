@@ -22,7 +22,7 @@ platform :ios do
       firebase_app_distribution(
         app: ENV["FIREBASE_IOS_APP_ID"],
         groups: "team8901",
-        release_notes: "Firebase App Distribution 배포 테스트",
+        release_notes: "소프트콘을 위한 앱 버전 1.0.0+1 배포",
         ipa_path: "./build/Runner.ipa",
       )
   end

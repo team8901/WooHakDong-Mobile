@@ -16,7 +16,6 @@ import '../../view_model/dues/components/dues_refresh_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import '../themes/custom_widget/interaction/custom_refresh_indicator.dart';
-import '../themes/spacing.dart';
 import 'club_dues_search_page.dart';
 import 'components/club_dues_in_out_type_bottom_sheet.dart';
 import 'components/club_dues_list_tile.dart';
@@ -164,10 +163,10 @@ class _ClubDuesPageState extends ConsumerState<ClubDuesPage> {
     }
 
     try {
-      await Future.delayed(const Duration(milliseconds: 750));
+      await Future.delayed(const Duration(milliseconds: 500));
 
-      await ref.read(duesListProvider(null).notifier).refreshDuesList();
-      ref.invalidate(duesListProvider(null));
+      await ref.read(duesListProvider(DateFormat('yyyy-MM-dd').format(_duesDateTime)).notifier).refreshDuesList();
+      ref.invalidate(duesListProvider(DateFormat('yyyy-MM-dd').format(_duesDateTime)));
       await ref.read(currentClubAccountInfoProvider.notifier).getCurrentClubAccountInfo();
 
       await GeneralFunctions.toastMessage('회비 내역을 새로 불러왔어요');

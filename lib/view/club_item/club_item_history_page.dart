@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gap/gap.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/item/item_history.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/item/item_entire_history_list_provider.dart';
@@ -14,6 +12,7 @@ import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../themes/custom_widget/interaction/custom_loading_skeleton.dart';
 import '../themes/spacing.dart';
 import 'club_item_detail_page.dart';
+import 'components/dialog/club_item_entire_history_dialog.dart';
 import 'components/list_tile/club_item_entire_history_list_tile.dart';
 
 class ClubItemHistoryPage extends ConsumerWidget {
@@ -52,76 +51,19 @@ class ClubItemHistoryPage extends ConsumerWidget {
                 itemHistory: itemEntireHistoryList[index],
                 onTap: () => showDialog(
                   context: context,
-                  builder: (context) => Dialog(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: defaultPaddingS * 2,
-                        left: defaultPaddingS * 2,
-                        right: defaultPaddingS * 2,
-                        bottom: defaultPaddingXS * 2,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('상세 정보', style: context.textTheme.titleMedium),
-                          const Gap(defaultPaddingXS * 2),
-                          InkWell(
-                            highlightColor: context.colorScheme.surfaceContainer,
-                            onTap: () {
-                              _pushItemDetailPage(
-                                ref,
-                                context,
-                                itemEntireHistoryList[index].itemId!,
-                                itemEntireHistoryList[index].itemOverdue!,
-                              );
-                              Navigator.pop(context);
-                            },
-                            child: Ink(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: defaultPaddingS / 2),
-                                child: Row(
-                                  children: [
-                                    const Icon(Symbols.inventory_2_rounded),
-                                    const Gap(defaultGapXL),
-                                    Text(
-                                      '물품 상세 정보 보기',
-                                      style: context.textTheme.bodyLarge,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Gap(defaultGapS / 2),
-                          InkWell(
-                            highlightColor: context.colorScheme.surfaceContainer,
-                            onTap: () {
-                              _pushMemberDetailPage(
-                                ref,
-                                context,
-                                itemEntireHistoryList[index].clubMemberId!,
-                              );
-                              Navigator.pop(context);
-                            },
-                            child: Ink(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: defaultPaddingS / 2),
-                                child: Row(
-                                  children: [
-                                    const Icon(Symbols.person_rounded),
-                                    const Gap(defaultGapXL),
-                                    Text(
-                                      '회원 상세 정보 보기',
-                                      style: context.textTheme.bodyLarge,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                  builder: (context) => ClubItemEntireHistoryDialog(
+                    itemHistory: itemEntireHistoryList[index],
+                    context: context,
+                    onItemDetailTap: () async => await _pushItemDetailPage(
+                      ref,
+                      context,
+                      itemEntireHistoryList[index].itemId!,
+                      itemEntireHistoryList[index].itemOverdue!,
+                    ),
+                    onMemberDetailTap: () async => await _pushMemberDetailPage(
+                      ref,
+                      context,
+                      itemEntireHistoryList[index].clubMemberId!,
                     ),
                   ),
                 ),
