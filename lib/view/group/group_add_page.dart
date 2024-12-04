@@ -127,7 +127,7 @@ class _GroupAddPageState extends ConsumerState<GroupAddPage> {
                   ),
                   const Gap(defaultGapXL),
                   Text(
-                    '모임 추가 정보',
+                    '카카오톡 채팅방',
                     style: context.textTheme.labelLarge?.copyWith(
                       color: context.colorScheme.onSurface,
                     ),

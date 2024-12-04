@@ -117,7 +117,7 @@ class GroupDetailPage extends ConsumerWidget {
               ),
               const Gap(defaultGapXL),
               CustomInfoBox(
-                infoTitle: '모임 추가 정보',
+                infoTitle: '카카오톡 채팅방',
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
