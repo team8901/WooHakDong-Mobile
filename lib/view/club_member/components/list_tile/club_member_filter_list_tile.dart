@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/view/club_item/components/dialog/club_item_sort_bottom_sheet.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
-import 'package:woohakdong/view_model/item/components/item_sort_option.dart';
 
-import '../../../../model/item/item_filter.dart';
+import '../../../../view_model/club_member/components/club_member_sort_option.dart';
 import '../../../themes/spacing.dart';
-import '../button/club_item_filter_button.dart';
 
-class ClubItemFilterListTile extends StatelessWidget {
-  final ItemFilter filter;
-  final int itemCount;
-  final VoidCallback onFilterTap;
-  final VoidCallback onResetFilterTap;
+class ClubMemberFilterListTile extends StatelessWidget {
+  final ClubMemberSortOption clubMemberSortOption;
+  final int clubMemberCount;
+  final VoidCallback onSortTap;
 
-  const ClubItemFilterListTile({
+  const ClubMemberFilterListTile({
     super.key,
-    required this.filter,
-    required this.itemCount,
-    required this.onFilterTap,
-    required this.onResetFilterTap,
+    required this.clubMemberSortOption,
+    required this.clubMemberCount,
+    required this.onSortTap,
   });
 
   @override
@@ -39,7 +34,7 @@ class ClubItemFilterListTile extends StatelessWidget {
         children: [
           Tooltip(
             triggerMode: TooltipTriggerMode.tap,
-            message: '현재 필터링된 물품의 개수예요',
+            message: '현재 동아리 회원 수예요',
             textStyle: context.textTheme.bodyMedium?.copyWith(
               color: const Color(0xFFFCFCFC),
             ),
@@ -74,7 +69,7 @@ class ClubItemFilterListTile extends StatelessWidget {
                     const Icon(Symbols.list_alt_rounded, size: 12),
                     const Gap(defaultGapS / 2),
                     Text(
-                      itemCount.toString(),
+                      clubMemberCount.toString(),
                       style: context.textTheme.labelLarge,
                     ),
                   ],
@@ -94,13 +89,7 @@ class ClubItemFilterListTile extends StatelessWidget {
               child: Row(
                 children: [
                   InkWell(
-                    onTap: () {
-                      showModalBottomSheet(
-                        useSafeArea: true,
-                        context: context,
-                        builder: (context) => ClubItemSortBottomSheet(filter: filter),
-                      );
-                    },
+                    onTap: onSortTap,
                     highlightColor: context.colorScheme.surfaceContainer,
                     splashColor: context.colorScheme.surfaceContainer,
                     borderRadius: BorderRadius.circular(defaultBorderRadiusL),
@@ -118,7 +107,7 @@ class ClubItemFilterListTile extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              (filter.itemSortOption!).displayText,
+                              clubMemberSortOption.displayText,
                               style: context.textTheme.labelLarge,
                             ),
                             const Gap(defaultGapS / 2),
@@ -128,33 +117,6 @@ class ClubItemFilterListTile extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const Gap(defaultGapS),
-                  ClubItemFilterButton(
-                    onTap: onFilterTap,
-                    content: _getUsingFilterText(filter),
-                    isActive: filter.using != null,
-                    icon: filter.using == null ? Symbols.keyboard_arrow_down_rounded : null,
-                  ),
-                  const Gap(defaultGapS),
-                  ClubItemFilterButton(
-                    onTap: onFilterTap,
-                    content: _getOverdueFilterText(filter),
-                    isActive: filter.overdue != null,
-                    icon: filter.overdue == null ? Symbols.keyboard_arrow_down_rounded : null,
-                  ),
-                  const Gap(defaultGapS),
-                  ClubItemFilterButton(
-                    onTap: onFilterTap,
-                    content: _getAvailableFilterText(filter),
-                    isActive: filter.available != null,
-                    icon: filter.available == null ? Symbols.keyboard_arrow_down_rounded : null,
-                  ),
-                  const Gap(defaultGapS),
-                  ClubItemFilterButton(
-                    onTap: onResetFilterTap,
-                    content: '필터 초기화',
-                    icon: Symbols.restart_alt_rounded,
-                  ),
                 ],
               ),
             ),
@@ -162,29 +124,5 @@ class ClubItemFilterListTile extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _getUsingFilterText(ItemFilter filter) {
-    if (filter.using == null) {
-      return '대여 상태';
-    } else {
-      return filter.using! ? '대여 중' : '보관 중';
-    }
-  }
-
-  String _getOverdueFilterText(ItemFilter filter) {
-    if (filter.overdue == null) {
-      return '연체 여부';
-    } else {
-      return filter.overdue! ? '연체' : '미연체';
-    }
-  }
-
-  String _getAvailableFilterText(ItemFilter filter) {
-    if (filter.available == null) {
-      return '대여 가능 여부';
-    } else {
-      return filter.available! ? '대여 가능' : '대여 불가';
-    }
   }
 }

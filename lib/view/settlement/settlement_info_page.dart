@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
-import 'package:woohakdong/view_model/group/group_provider.dart';
 
 import '../../view_model/group/group_payment_provider.dart';
 import '../payment/payment_page.dart';

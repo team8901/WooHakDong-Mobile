@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/model/item/item_filter.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
-import 'package:woohakdong/view_model/item/components/item_sort_option.dart';
+import 'package:woohakdong/view_model/club_member/components/club_member_sort_option.dart';
 
 import '../../../../service/general/general_functions.dart';
+import '../../../../view_model/club_member/components/club_member_sort_option_provider.dart';
 
-class ClubItemSortBottomSheetButton extends ConsumerWidget {
-  final ItemFilter filter;
-  final ItemSortOption sortOption;
+class ClubMemberSortBottomSheetButton extends ConsumerWidget {
+  final ClubMemberSortOption clubMemberSortOption;
   final String displayText;
   final VoidCallback onTap;
 
-  const ClubItemSortBottomSheetButton({
+  const ClubMemberSortBottomSheetButton({
     super.key,
-    required this.filter,
-    required this.sortOption,
+    required this.clubMemberSortOption,
     required this.displayText,
     required this.onTap,
   });
@@ -28,7 +26,7 @@ class ClubItemSortBottomSheetButton extends ConsumerWidget {
       onTap: () {
         onTap();
         Navigator.pop(context);
-        GeneralFunctions.toastMessage('${sortOption.displayText}으로 정렬했어요');
+        GeneralFunctions.toastMessage('${clubMemberSortOption.displayText}으로 정렬했어요');
       },
       highlightColor: context.colorScheme.surfaceContainer,
       child: Ink(
@@ -43,7 +41,7 @@ class ClubItemSortBottomSheetButton extends ConsumerWidget {
               displayText,
               style: context.textTheme.bodyLarge,
             ),
-            if (filter.itemSortOption == sortOption)
+            if (ref.watch(clubMemberSortOptionProvider) == clubMemberSortOption)
               Icon(
                 size: 18,
                 Symbols.check_circle_rounded,

@@ -9,9 +9,9 @@ extension ItemSortOptionExtension on ItemSortOption {
   String get displayText {
     switch (this) {
       case ItemSortOption.oldest:
-        return '등록된 순';
+        return '등록순';
       case ItemSortOption.newest:
-        return '최신 순';
+        return '최신순';
       case ItemSortOption.nameAsc:
         return '이름 오름차순';
       case ItemSortOption.nameDesc:

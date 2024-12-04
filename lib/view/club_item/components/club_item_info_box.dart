@@ -123,7 +123,7 @@ class ClubItemInfoBox extends StatelessWidget {
             child: CustomInfoContent(
               infoContent: itemInfo.itemDescription!,
               icon: Icon(
-                Symbols.info_rounded,
+                Symbols.help_rounded,
                 size: 16,
                 color: context.colorScheme.outline,
               ),

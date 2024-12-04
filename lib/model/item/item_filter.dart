@@ -1,4 +1,4 @@
-import '../../view_model/item/components/item_sort.dart';
+import '../../view_model/item/components/item_sort_option.dart';
 
 class ItemFilter {
   final String? category;

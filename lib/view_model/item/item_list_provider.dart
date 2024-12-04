@@ -5,7 +5,7 @@ import 'package:woohakdong/model/item/item_filter.dart';
 import '../../repository/item/item_repository.dart';
 import '../club/club_id_provider.dart';
 import 'components/item_count_provider.dart';
-import 'components/item_sort.dart';
+import 'components/item_sort_option.dart';
 
 final itemListProvider =
     StateNotifierProvider.family<ItemListNotifier, AsyncValue<List<Item>>, ItemFilter>((ref, filter) {

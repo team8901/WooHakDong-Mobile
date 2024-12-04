@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
-import 'package:woohakdong/view_model/item/components/item_sort.dart';
+import 'package:woohakdong/view_model/item/components/item_sort_option.dart';
 
 import '../../../../model/item/item_filter.dart';
 import '../../../../view_model/item/components/item_filter_provider.dart';
@@ -19,8 +19,6 @@ class ClubItemSortBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-
     return ConstrainedBox(
       constraints: BoxConstraints(
         minHeight: MediaQuery.of(context).size.height * 0.2,
@@ -45,7 +43,7 @@ class ClubItemSortBottomSheet extends ConsumerWidget {
             ClubItemSortBottomSheetButton(
               filter: filter,
               sortOption: ItemSortOption.oldest,
-              displayText: '등록된 순',
+              displayText: '등록순',
               onTap: () => ref.read(itemFilterProvider.notifier).state = filter.copyWith(
                 itemSortOption: ItemSortOption.oldest,
               ),
@@ -54,7 +52,7 @@ class ClubItemSortBottomSheet extends ConsumerWidget {
             ClubItemSortBottomSheetButton(
               filter: filter,
               sortOption: ItemSortOption.newest,
-              displayText: '최신 순',
+              displayText: '최신순',
               onTap: () => ref.read(itemFilterProvider.notifier).state = filter.copyWith(
                 itemSortOption: ItemSortOption.newest,
               ),

@@ -14,11 +14,15 @@ import '../../model/club_member/club_member.dart';
 import '../../service/general/general_format.dart';
 import '../../view_model/club_member/club_member_list_provider.dart';
 import '../../view_model/club_member/club_member_provider.dart';
+import '../../view_model/club_member/components/club_member_count_provider.dart';
+import '../../view_model/club_member/components/club_member_sort_option_provider.dart';
 import '../../view_model/club_member/components/club_selected_term_provider.dart';
 import '../themes/custom_widget/etc/custom_horizontal_divider.dart';
 import '../themes/custom_widget/interaction/custom_refresh_indicator.dart';
 import 'club_member_detail_page.dart';
 import 'club_member_search_page.dart';
+import 'components/dialog/club_member_sort_bottom_sheet.dart';
+import 'components/list_tile/club_member_filter_list_tile.dart';
 import 'components/list_tile/club_member_list_tile.dart';
 
 class ClubMemberListPage extends ConsumerStatefulWidget {
@@ -33,6 +37,8 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
   Widget build(BuildContext context) {
     final clubHistoryUsageDate = ref.watch(clubSelectedTermProvider);
     final clubMemberListData = ref.watch(clubMemberListProvider);
+    final clubMemberCount = ref.watch(clubMemberCountProvider);
+    final clubMemberSortOption = ref.watch(clubMemberSortOptionProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -78,8 +84,27 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: clubMemberListData.when(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverAppBar(
+            floating: true,
+            snap: true,
+            toolbarHeight: 52,
+            automaticallyImplyLeading: false,
+            titleSpacing: 0,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            title: ClubMemberFilterListTile(
+              clubMemberSortOption: clubMemberSortOption,
+              clubMemberCount: clubMemberCount,
+              onSortTap: () => showModalBottomSheet(
+                useSafeArea: true,
+                context: context,
+                builder: (context) => const ClubMemberSortBottomSheet(),
+              ),
+            ),
+          ),
+        ],
+        body: clubMemberListData.when(
           data: (clubMemberList) {
             if (clubMemberList.isEmpty) {
               return Center(
@@ -89,8 +114,6 @@ class _ClubMemberListPageState extends ConsumerState<ClubMemberListPage> {
                 ),
               );
             }
-
-            clubMemberList.sort((a, b) => a.memberName!.compareTo(b.memberName!));
 
             return CustomRefreshIndicator(
               onRefresh: () async => await ref.read(clubMemberListProvider.notifier).getClubMemberList(),

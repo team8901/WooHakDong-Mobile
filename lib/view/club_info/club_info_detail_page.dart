@@ -110,7 +110,7 @@ class ClubInfoDetailPage extends ConsumerWidget {
                 child: CustomInfoContent(
                   infoContent: currentClubInfo.clubDescription!,
                   icon: Icon(
-                    Symbols.info_rounded,
+                    Symbols.help_rounded,
                     size: 16,
                     color: context.colorScheme.outline,
                   ),
