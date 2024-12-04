@@ -44,7 +44,7 @@ class PaymentPage extends ConsumerWidget {
       callback: (Map<String, String> result) async {
         try {
           if (result['imp_success'] == 'true' || result['success'] == 'true') {
-            await Future.delayed(const Duration(milliseconds: 500));
+            await Future.delayed(const Duration(seconds: 1));
 
             await ref.read(groupPaymentProvider.notifier).confirmGroupPaymentOrder(
                   result['merchant_uid']!,

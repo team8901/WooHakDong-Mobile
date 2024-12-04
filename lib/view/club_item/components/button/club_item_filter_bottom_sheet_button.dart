@@ -22,7 +22,7 @@ class ClubItemFilterBottomSheetButton extends StatelessWidget {
       highlightColor: selected ? context.colorScheme.primary.withOpacity(0.1) : context.colorScheme.surfaceContainer,
       borderRadius: BorderRadius.circular(defaultBorderRadiusL),
       child: Ink(
-        height: 32.h,
+        height: 32,
         padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
         decoration: BoxDecoration(
           border: Border.all(

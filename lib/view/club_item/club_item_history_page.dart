@@ -106,6 +106,8 @@ class ClubItemHistoryPage extends ConsumerWidget {
     await ref.read(itemProvider.notifier).getItemInfo(itemId);
 
     if (context.mounted) {
+      Navigator.pop(context);
+
       Navigator.push(
         context,
         CupertinoPageRoute(
@@ -119,6 +121,8 @@ class ClubItemHistoryPage extends ConsumerWidget {
     await ref.read(clubMemberProvider.notifier).getClubMemberInfo(clubMemberId);
 
     if (context.mounted) {
+      Navigator.pop(context);
+
       Navigator.of(context).push(
         CupertinoPageRoute(
           builder: (context) => const ClubMemberDetailPage(),

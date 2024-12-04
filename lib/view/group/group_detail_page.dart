@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:woohakdong/service/general/general_format.dart';
+import 'package:woohakdong/view/group/components/group_member_panel.dart';
 import 'package:woohakdong/view/group/group_edit_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_box.dart';
 import 'package:woohakdong/view/themes/custom_widget/interface/custom_info_content.dart';
@@ -104,9 +105,9 @@ class GroupDetailPage extends ConsumerWidget {
                     ),
                     const Gap(defaultGapM),
                     CustomInfoContent(
-                      infoContent: '${groupInfo.groupMemberCount!}명 참여 / ${groupInfo.groupMemberLimit!}명 모집',
+                      infoContent: '최대 인원 ${groupInfo.groupMemberLimit!}명',
                       icon: Icon(
-                        Symbols.person_rounded,
+                        Symbols.groups_rounded,
                         size: 16,
                         color: context.colorScheme.outline,
                       ),
@@ -128,15 +129,21 @@ class GroupDetailPage extends ConsumerWidget {
                         color: context.colorScheme.outline,
                       ),
                     ),
-                    const Gap(defaultGapM),
-                    CustomInfoContent(
-                      infoContent: groupInfo.groupChatPassword!,
-                      icon: Icon(
-                        Symbols.key_rounded,
-                        size: 16,
-                        color: context.colorScheme.outline,
-                      ),
-                    ),
+                    (groupInfo.groupChatPassword != '')
+                        ? Column(
+                            children: [
+                              const Gap(defaultGapXL),
+                              CustomInfoContent(
+                                infoContent: groupInfo.groupChatPassword!,
+                                icon: Icon(
+                                  Symbols.key_rounded,
+                                  size: 16,
+                                  color: context.colorScheme.outline,
+                                ),
+                              ),
+                            ],
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               ),
@@ -156,10 +163,8 @@ class GroupDetailPage extends ConsumerWidget {
                             groupInfo.groupJoinLink!,
                             '모임 결제 링크가 복사되었어요',
                           );
-
                           return;
                         }
-
                         GeneralFunctions.toastMessage('마감된 모임이에요');
                       },
                       child: CustomInfoContent(
@@ -175,6 +180,20 @@ class GroupDetailPage extends ConsumerWidget {
                   ],
                 ),
               ),
+              const Gap(defaultGapXL),
+              CustomInfoBox(
+                infoTitle: '참여 회원',
+                child: CustomInfoContent(
+                  infoContent: '${groupInfo.groupMemberCount!}명 참여',
+                  icon: Icon(
+                    Symbols.person_rounded,
+                    size: 16,
+                    color: context.colorScheme.outline,
+                  ),
+                ),
+              ),
+              const Gap(defaultGapM),
+              GroupMemberPanel(groupName: groupInfo.groupName!, groupId: groupInfo.groupId!),
             ],
           ),
         ),

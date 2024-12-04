@@ -146,14 +146,9 @@ class _GroupAddPageState extends ConsumerState<GroupAddPage> {
                   const Gap(defaultGapM),
                   CustomTextFormField(
                     labelText: '카카오톡 채팅방 비밀번호',
+                    hintText: '비워놔도 돼요',
                     textInputAction: TextInputAction.done,
                     controller: _groupController.chatPassword,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '카카오톡 채팅방 비밀번호를 입력해 주세요';
-                      }
-                      return null;
-                    },
                   ),
                 ],
               ),

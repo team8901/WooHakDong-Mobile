@@ -53,7 +53,7 @@ class ClubItemFilterListTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(defaultBorderRadiusM),
             ),
             child: Container(
-              height: 32.h,
+              height: 32,
               decoration: BoxDecoration(
                 color: context.colorScheme.surfaceContainerHighest,
                 border: Border.all(
@@ -106,7 +106,7 @@ class ClubItemFilterListTile extends StatelessWidget {
                     splashColor: context.colorScheme.surfaceContainer,
                     borderRadius: BorderRadius.circular(defaultBorderRadiusL),
                     child: Ink(
-                      height: 32.h,
+                      height: 32,
                       padding: const EdgeInsets.symmetric(horizontal: defaultPaddingXS),
                       decoration: BoxDecoration(
                         border: Border.all(
