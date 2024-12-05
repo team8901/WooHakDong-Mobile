@@ -2,14 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:woohakdong/view/themes/custom_widget/interaction/custom_tap_debouncer.dart';
 
 import '../../model/item/item_filter.dart';
-import '../../view_model/item/item_filter_provider.dart';
+import '../../view_model/item/components/item_count_provider.dart';
+import '../../view_model/item/components/item_filter_provider.dart';
+import '../../view_model/item/item_entire_history_list_provider.dart';
 import 'club_item_add_page.dart';
+import 'club_item_history_page.dart';
 import 'club_item_search_page.dart';
-import 'components/button/club_item_filter_action_button.dart';
 import 'components/club_item_page_view.dart';
-import 'components/dialog/club_item_using_filter_bottom_sheet.dart';
+import 'components/dialog/club_item_filter_bottom_sheet.dart';
+import 'components/list_tile/club_item_filter_list_tile.dart';
 
 class ClubItemListPage extends ConsumerStatefulWidget {
   const ClubItemListPage({super.key});
@@ -53,6 +57,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
           using: ref.read(itemFilterProvider).using,
           available: ref.read(itemFilterProvider).available,
           overdue: ref.read(itemFilterProvider).overdue,
+          itemSortOption: ref.read(itemFilterProvider).itemSortOption,
         );
       }
     });
@@ -67,11 +72,21 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
   @override
   Widget build(BuildContext context) {
     final filter = ref.watch(itemFilterProvider);
+    final itemCount = ref.watch(itemCountProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('물품'),
         actions: [
+          CustomTapDebouncer(
+            onTap: () async => await _pushItemHistoryPage(context),
+            builder: (context, onTap) {
+              return IconButton(
+                onPressed: onTap,
+                icon: const Icon(Symbols.history_rounded),
+              );
+            },
+          ),
           IconButton(
             onPressed: () => _pushItemSearchPage(context),
             icon: const Icon(Symbols.search_rounded),
@@ -100,13 +115,14 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
             automaticallyImplyLeading: false,
             titleSpacing: 0,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            title: ClubItemFilterActionButton(
+            title: ClubItemFilterListTile(
               filter: filter,
+              itemCount: itemCount,
               onFilterTap: () => showModalBottomSheet(
                 useSafeArea: true,
                 context: context,
                 builder: (BuildContext context) {
-                  return const ClubItemUsingFilterBottomSheet();
+                  return const ClubItemFilterBottomSheet();
                 },
               ),
               onResetFilterTap: _resetFilter,
@@ -126,6 +142,18 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
         child: const Icon(Symbols.add_2_rounded, weight: 600, size: 28),
       ),
     );
+  }
+
+  Future<void> _pushItemHistoryPage(BuildContext context) async {
+    await ref.read(itemEntireHistoryListProvider.notifier).getEntireItemHistoryList();
+
+    if (context.mounted) {
+      Navigator.of(context).push(
+        CupertinoPageRoute(
+          builder: (context) => const ClubItemHistoryPage(),
+        ),
+      );
+    }
   }
 
   void _pushItemSearchPage(BuildContext context) {
@@ -166,6 +194,7 @@ class _ClubItemListPageState extends ConsumerState<ClubItemListPage> with Single
       using: null,
       available: null,
       overdue: null,
+      itemSortOption: ref.read(itemFilterProvider).itemSortOption,
     );
   }
 }

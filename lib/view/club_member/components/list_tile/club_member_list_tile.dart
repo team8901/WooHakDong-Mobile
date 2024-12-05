@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/model/club_member/club_member.dart';
@@ -10,7 +9,7 @@ import '../../../../service/general/general_format.dart';
 import '../../../themes/custom_widget/etc/custom_vertical_divider.dart';
 import '../../../themes/spacing.dart';
 
-class ClubMemberListTile extends ConsumerWidget {
+class ClubMemberListTile extends StatelessWidget {
   final ClubMember clubMember;
   final Future<void> Function()? onTap;
 
@@ -21,7 +20,7 @@ class ClubMemberListTile extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return CustomTapDebouncer(
       onTap: onTap,
       builder: (context, onTap) {

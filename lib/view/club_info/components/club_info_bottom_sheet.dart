@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:woohakdong/view/club_info/components/club_info_list_tile.dart';
+import 'package:woohakdong/view/club_info/components/club_info_bottom_sheet_list_tile.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../model/club/club.dart';
@@ -50,7 +50,7 @@ class ClubInfoBottomSheet extends ConsumerWidget {
                   Text('동아리 목록', style: context.textTheme.titleLarge),
                   const Gap(defaultGapS / 4),
                   Text(
-                    '현재 등록되어 있는 동아리 목록이에요',
+                    '현재 가입되어 있는 동아리 목록이에요',
                     style: context.textTheme.bodySmall?.copyWith(
                       color: context.colorScheme.onSurface,
                     ),
@@ -62,7 +62,7 @@ class ClubInfoBottomSheet extends ConsumerWidget {
             final club = clubList[index - 1];
             final isCurrent = club.clubId == currentClubId;
 
-            return ClubInfoListTile(
+            return ClubInfoBottomSheetListTile(
               club: club,
               isCurrent: isCurrent,
               onTap: () => _changeClub(club, ref, context),

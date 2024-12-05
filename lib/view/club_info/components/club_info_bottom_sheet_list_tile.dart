@@ -10,12 +10,12 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../themes/spacing.dart';
 
-class ClubInfoListTile extends ConsumerWidget {
+class ClubInfoBottomSheetListTile extends ConsumerWidget {
   final Club club;
   final bool isCurrent;
   final VoidCallback onTap;
 
-  const ClubInfoListTile({
+  const ClubInfoBottomSheetListTile({
     super.key,
     required this.club,
     required this.isCurrent,

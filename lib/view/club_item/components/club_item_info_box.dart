@@ -85,39 +85,36 @@ class ClubItemInfoBox extends StatelessWidget {
                   ],
                 ),
               ),
-              if (itemInfo.itemAvailable != null && !itemInfo.itemAvailable!)
-                Row(
-                  children: [
-                    const Gap(defaultGapS),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: defaultPaddingS - 8,
-                        vertical: defaultPaddingXS - 8,
+              if (itemInfo.itemAvailable != null && !itemInfo.itemAvailable!) ...[
+                const Gap(defaultGapS),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: defaultPaddingS - 8,
+                    vertical: defaultPaddingXS - 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: context.colorScheme.error.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Symbols.block_rounded,
+                        size: 16,
+                        color: context.colorScheme.error,
                       ),
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.error.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                      const Gap(defaultGapS),
+                      Text(
+                        '대여 불가',
+                        style: context.textTheme.titleSmall?.copyWith(
+                          color: context.colorScheme.error,
+                        ),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Symbols.block_rounded,
-                            size: 16,
-                            color: context.colorScheme.error,
-                          ),
-                          const Gap(defaultGapS),
-                          Text(
-                            '대여 불가',
-                            style: context.textTheme.titleSmall?.copyWith(
-                              color: context.colorScheme.error,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+              ],
             ],
           ),
           const Gap(defaultGapXL * 2),
@@ -126,7 +123,7 @@ class ClubItemInfoBox extends StatelessWidget {
             child: CustomInfoContent(
               infoContent: itemInfo.itemDescription!,
               icon: Icon(
-                Symbols.info_rounded,
+                Symbols.help_rounded,
                 size: 16,
                 color: context.colorScheme.outline,
               ),

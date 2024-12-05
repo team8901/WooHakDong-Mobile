@@ -38,15 +38,3 @@ class ScheduleListNotifier extends StateNotifier<AsyncValue<List<Schedule>>> {
     }
   }
 }
-
-class ThreeMonthSchedule {
-  final List<Schedule> previousMonth;
-  final List<Schedule> currentMonth;
-  final List<Schedule> nextMonth;
-
-  ThreeMonthSchedule({
-    required this.previousMonth,
-    required this.currentMonth,
-    required this.nextMonth,
-  });
-}

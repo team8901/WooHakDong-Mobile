@@ -4,8 +4,11 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
+import '../../model/group/group.dart';
+import '../../service/general/general_format.dart';
 import '../../service/general/general_functions.dart';
 import '../../service/general/general_image.dart';
 import '../../view_model/group/group_provider.dart';
@@ -47,6 +50,10 @@ class _ClubRegisterCompletePageState extends ConsumerState<ClubRegisterCompleteP
       child: Scaffold(
         appBar: AppBar(
           actions: [
+            IconButton(
+              onPressed: () => _onShareTap(groupInfo),
+              icon: const Icon(Symbols.share_rounded),
+            ),
             IconButton(
               onPressed: () async {
                 await GeneralImage.convertWidgetToPng(
@@ -128,6 +135,14 @@ class _ClubRegisterCompletePageState extends ConsumerState<ClubRegisterCompleteP
           ),
         ),
       ),
+    );
+  }
+
+  void _onShareTap(Group groupInfo) {
+    Share.share(
+      groupInfo.groupJoinLink!,
+      subject: '${groupInfo.groupName}과 함께 해요! 🤩\n\n'
+          '동아리 회비: ${GeneralFormat.formatClubDues(groupInfo.groupAmount!)}',
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:woohakdong/model/club/current_club.dart';
 
-class ClubInfoEditController {
+class ClubInfoController {
   final TextEditingController description;
   final TextEditingController room;
   final TextEditingController generation;
@@ -9,7 +9,7 @@ class ClubInfoEditController {
   final TextEditingController chatPassword;
   final TextEditingController dues;
 
-  ClubInfoEditController()
+  ClubInfoController()
       : description = TextEditingController(),
         room = TextEditingController(),
         generation = TextEditingController(),

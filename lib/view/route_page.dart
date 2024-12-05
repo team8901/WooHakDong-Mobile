@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:woohakdong/view/club_register/club_register_page.dart';
 import 'package:woohakdong/view/club_register/error_page/club_register_account_page_when_no_account.dart';
-import 'package:woohakdong/view/member_register/member_register_page.dart';
+import 'package:woohakdong/view/member/member_register_page.dart';
 import 'package:woohakdong/view/navigator_page.dart';
 import 'package:woohakdong/view/settlement/settlement_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_progress_indicator.dart';
@@ -133,6 +133,7 @@ class _RoutePageState extends ConsumerState<RoutePage> {
           using: null,
           available: null,
           overdue: null,
+          itemSortOption: null,
         ),
       ).notifier);
       ref.watch(scheduleCalendarViewProvider.notifier);

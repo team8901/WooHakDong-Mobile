@@ -94,7 +94,7 @@ class _ClubRegisterOtherInfoFormPageState extends ConsumerState<ClubRegisterOthe
                       symbol: '',
                       locale: 'ko_KR',
                     ),
-                    LengthLimitingTextInputFormatter(8),
+                    LengthLimitingTextInputFormatter(10),
                   ],
                   validator: (value) {
                     if (value == null || value.isEmpty) {

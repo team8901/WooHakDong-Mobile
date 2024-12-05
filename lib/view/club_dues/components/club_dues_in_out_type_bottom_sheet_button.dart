@@ -4,13 +4,13 @@ import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-class ClubDuesInOutTypeListTile extends StatelessWidget {
+class ClubDuesInOutTypeBottomSheetButton extends StatelessWidget {
   final String title;
   final String type;
   final String selectedType;
   final Function(String) onTap;
 
-  const ClubDuesInOutTypeListTile({
+  const ClubDuesInOutTypeBottomSheetButton({
     super.key,
     required this.title,
     required this.type,
@@ -41,7 +41,7 @@ class ClubDuesInOutTypeListTile extends StatelessWidget {
             ),
             if (selectedType == type)
               Icon(
-                size: 20,
+                size: 18,
                 Symbols.check_circle_rounded,
                 color: context.colorScheme.primary,
               ),

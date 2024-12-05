@@ -10,10 +10,12 @@ import 'package:woohakdong/view/setting/components/setting_service_box.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 import 'package:woohakdong/view_model/member/member_provider.dart';
 
+import '../../model/member/member.dart';
 import '../../service/general/general_functions.dart';
 import '../../view_model/auth/auth_provider.dart';
 import '../../view_model/setting/components/setting_theme_mode.dart';
 import '../../view_model/setting/setting_theme_provider.dart';
+import '../member/member_edit_page.dart';
 import '../themes/custom_widget/dialog/custom_interaction_dialog.dart';
 import '../themes/spacing.dart';
 import 'components/setting_app_box.dart';
@@ -40,7 +42,7 @@ class SettingPage extends ConsumerWidget {
             children: [
               SettingMemberInfoBox(
                 memberInfo: memberInfo!,
-                onTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+                onTap: () => _pushMemberEditPage(context, memberInfo),
               ),
               const Gap(defaultGapXL * 2),
               SettingAppBox(
@@ -64,6 +66,15 @@ class SettingPage extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _pushMemberEditPage(BuildContext context, Member memberInfo) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => MemberEditPage(memberInfo: memberInfo),
       ),
     );
   }

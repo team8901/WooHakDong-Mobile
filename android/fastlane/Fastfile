@@ -11,7 +11,7 @@ platform :android do
       app: ENV["FIREBASE_ANDROID_APP_ID"],
       firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
       groups: "team8901",
-      release_notes: "Firebase App Distribution 배포 테스트",
+      release_notes: "소프트콘을 위한 앱 버전 1.0.0+1 배포",
       android_artifact_type: "APK",
       apk_path: ENV["RELEASE_APK_PATH"]
     )

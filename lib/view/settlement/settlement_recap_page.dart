@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gap/gap.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../view_model/club/current_club_info_provider.dart';
@@ -39,6 +40,8 @@ class SettlementRecapPage extends ConsumerWidget {
                   ),
                 ],
               ),
+              const Gap(defaultGapXL),
+              Text('기능 구현 중...', style: context.textTheme.bodyLarge),
 
               /// TODO: 통계 내용 추가하기
             ],

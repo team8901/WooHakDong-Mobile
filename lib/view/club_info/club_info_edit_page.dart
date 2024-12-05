@@ -20,7 +20,7 @@ import '../themes/custom_widget/button/custom_info_tooltip.dart';
 import '../themes/custom_widget/interface/custom_counter_text_form_field.dart';
 import '../themes/custom_widget/interface/custom_text_form_field.dart';
 import '../themes/spacing.dart';
-import 'components/etc/club_info_edit_controller.dart';
+import 'components/etc/club_info_controller.dart';
 
 class ClubInfoEditPage extends ConsumerStatefulWidget {
   const ClubInfoEditPage({super.key});
@@ -31,12 +31,12 @@ class ClubInfoEditPage extends ConsumerStatefulWidget {
 
 class _ClubInfoEditPageState extends ConsumerState<ClubInfoEditPage> {
   final _formKey = GlobalKey<FormState>();
-  late final ClubInfoEditController _clubInfoEditController;
+  late final ClubInfoController _clubInfoEditController;
 
   @override
   void initState() {
     super.initState();
-    _clubInfoEditController = ClubInfoEditController();
+    _clubInfoEditController = ClubInfoController();
   }
 
   @override
@@ -242,6 +242,8 @@ class _ClubInfoEditPageState extends ConsumerState<ClubInfoEditPage> {
         bottomNavigationBar: SafeArea(
           child: CustomBottomButton(
             onTap: () async {
+              if (!_formKey.currentState!.validate()) return;
+
               try {
                 clubStateNotifier.state = ClubState.loading;
 

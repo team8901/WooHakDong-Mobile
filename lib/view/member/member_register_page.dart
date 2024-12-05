@@ -1,18 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:woohakdong/view/member_register/components/member_register_complete_introduce.dart';
+import 'package:woohakdong/view/member/components/member_register_introduce.dart';
 
-import '../club_register/club_register_caution_page_.dart';
 import '../themes/custom_widget/button/custom_bottom_button.dart';
 import '../themes/custom_widget/interaction/custom_pop_scope.dart';
 import '../themes/spacing.dart';
+import 'member_register_info_form_page.dart';
 
-class MemberRegisterCompletePage extends ConsumerWidget {
-  const MemberRegisterCompletePage({super.key});
+class MemberRegisterPage extends StatelessWidget {
+  const MemberRegisterPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return CustomPopScope(
       child: Scaffold(
         appBar: AppBar(),
@@ -23,13 +22,13 @@ class MemberRegisterCompletePage extends ConsumerWidget {
               left: defaultPaddingM,
               right: defaultPaddingM,
             ),
-            child: MemberRegisterCompleteIntroduce(),
+            child: MemberRegisterIntroduce(),
           ),
         ),
         bottomNavigationBar: SafeArea(
           child: CustomBottomButton(
-            onTap: () => _pushClubRegisterCautionPage(context),
-            buttonText: '동아리 등록하기',
+            onTap: () => _pushInputPage(context),
+            buttonText: '우학동 가입하기',
             buttonColor: Theme.of(context).colorScheme.primary,
             buttonTextColor: Theme.of(context).colorScheme.inversePrimary,
           ),
@@ -38,10 +37,12 @@ class MemberRegisterCompletePage extends ConsumerWidget {
     );
   }
 
-  void _pushClubRegisterCautionPage(BuildContext context) {
+  void _pushInputPage(BuildContext context) {
     Navigator.push(
       context,
-      CupertinoPageRoute(builder: (context) => const ClubRegisterCautionPage()),
+      CupertinoPageRoute(
+        builder: (context) => const MemberRegisterInfoFormPage(),
+      ),
     );
   }
 }

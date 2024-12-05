@@ -31,7 +31,6 @@ class ClubInfoDetailPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('동아리 정보'),
         actions: [
           IconButton(
             onPressed: () async => await _sendClubInfoNotification(context, currentClubInfo.clubId!),
@@ -111,7 +110,7 @@ class ClubInfoDetailPage extends ConsumerWidget {
                 child: CustomInfoContent(
                   infoContent: currentClubInfo.clubDescription!,
                   icon: Icon(
-                    Symbols.info_rounded,
+                    Symbols.help_rounded,
                     size: 16,
                     color: context.colorScheme.outline,
                   ),

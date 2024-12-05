@@ -7,7 +7,7 @@ import 'package:woohakdong/view/themes/theme_context.dart';
 
 import '../../../service/general/general_format.dart';
 import '../../../service/general/general_functions.dart';
-import '../../../view_model/item/item_filter_provider.dart';
+import '../../../view_model/item/components/item_filter_provider.dart';
 import '../../../view_model/item/item_list_provider.dart';
 import '../../../view_model/item/item_provider.dart';
 import '../../themes/custom_widget/dialog/custom_interaction_dialog.dart';
