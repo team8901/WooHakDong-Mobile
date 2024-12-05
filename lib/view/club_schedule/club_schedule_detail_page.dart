@@ -120,7 +120,7 @@ class ClubScheduleDetailPage extends ConsumerWidget {
                 child: CustomInfoContent(
                   infoContent: scheduleInfo.scheduleContent!,
                   icon: Icon(
-                    Symbols.info_rounded,
+                    Symbols.help_rounded,
                     size: 16,
                     color: context.colorScheme.outline,
                   ),

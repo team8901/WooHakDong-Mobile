@@ -7,7 +7,7 @@ import 'package:woohakdong/view/settlement/settlement_fail_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_progress_indicator.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
 
-import '../../view_model/group/group_provider.dart';
+import '../../view_model/group/group_payment_provider.dart';
 import '../../view_model/member/member_provider.dart';
 import '../settlement/settlement_complete_page.dart';
 
@@ -23,7 +23,7 @@ class PaymentPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final serviceFeeGroupInfo = ref.watch(groupProvider);
+    final serviceFeeGroupInfo = ref.watch(groupPaymentProvider);
     final memberInfo = ref.watch(memberProvider);
 
     return IamportPayment(
@@ -44,9 +44,9 @@ class PaymentPage extends ConsumerWidget {
       callback: (Map<String, String> result) async {
         try {
           if (result['imp_success'] == 'true' || result['success'] == 'true') {
-            await Future.delayed(const Duration(milliseconds: 500));
+            await Future.delayed(const Duration(seconds: 1));
 
-            await ref.read(groupProvider.notifier).confirmPaymentServiceFeeGroup(
+            await ref.read(groupPaymentProvider.notifier).confirmGroupPaymentOrder(
                   result['merchant_uid']!,
                   result['imp_uid']!,
                 );

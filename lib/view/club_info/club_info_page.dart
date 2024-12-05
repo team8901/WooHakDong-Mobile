@@ -5,11 +5,11 @@ import 'package:gap/gap.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:woohakdong/view/club_info/components/box/club_info_box.dart';
 import 'package:woohakdong/view/club_info/components/box/club_info_group_manage_box.dart';
-import 'package:woohakdong/view/club_info/components/box/club_info_item_manage_box.dart';
 import 'package:woohakdong/view/club_info/components/box/club_info_manage_box.dart';
 import 'package:woohakdong/view/club_info/components/box/club_info_member_manage_box.dart';
 import 'package:woohakdong/view/club_info/components/club_info_action_button.dart';
 import 'package:woohakdong/view/delegation/delegation_page.dart';
+import 'package:woohakdong/view/group/group_list_page.dart';
 import 'package:woohakdong/view/setting/setting_page.dart';
 import 'package:woohakdong/view/themes/custom_widget/interaction/custom_tap_debouncer.dart';
 import 'package:woohakdong/view/themes/theme_context.dart';
@@ -17,10 +17,10 @@ import 'package:woohakdong/view_model/club/club_list_provider.dart';
 
 import '../../service/general/general_functions.dart';
 import '../../view_model/club/current_club_info_provider.dart';
-import '../../view_model/club_member/club_member_count_provider.dart';
+import '../../view_model/club_member/components/club_member_count_provider.dart';
 import '../../view_model/club_member/club_member_me_provider.dart';
 import '../../view_model/group/group_provider.dart';
-import '../../view_model/item/item_count_provider.dart';
+import '../../view_model/item/components/item_count_provider.dart';
 import '../themes/custom_widget/dialog/custom_interaction_dialog.dart';
 import '../themes/spacing.dart';
 import 'club_info_detail_page.dart';
@@ -95,28 +95,20 @@ class ClubInfoPage extends ConsumerWidget {
                 onTapPromotion: () => _pushClubPromotionPage(ref, context),
               ),
               const Gap(defaultGapXL * 2),
-              ClubInfoGroupManageBox(
-                onTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
-              ),
+              ClubInfoGroupManageBox(onTap: () => _pushGroupPage(context)),
               const Gap(defaultGapXL),
-              ClubInfoMemberManageBox(
+              ClubInfoFileManageBox(
                 onClubMemberExportTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
-                onClubMemberImportTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
-              ),
-              const Gap(defaultGapXL),
-              ClubInfoItemManageBox(
                 onClubItemExportTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+                onClubDuesExportTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
               ),
-              if (clubMemberMe.clubMemberRole == 'PRESIDENT')
-                Column(
-                  children: [
-                    const Gap(defaultGapXL),
-                    ClubInfoManageBox(
-                      onClubDeleteTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
-                      onDelegatePresidentTap: () => _delegatePresident(context, clubMemberMe.memberName!),
-                    ),
-                  ],
+              if (clubMemberMe.clubMemberRole == 'PRESIDENT') ...[
+                const Gap(defaultGapXL),
+                ClubInfoManageBox(
+                  onClubDeleteTap: () => GeneralFunctions.toastMessage('기능 구현 중...'),
+                  onDelegatePresidentTap: () => _delegatePresident(context, clubMemberMe.memberName!),
                 ),
+              ],
             ],
           ),
         ),
@@ -143,7 +135,7 @@ class ClubInfoPage extends ConsumerWidget {
   }
 
   Future<void> _pushClubPromotionPage(WidgetRef ref, BuildContext context) async {
-    await ref.read(groupProvider.notifier).getClubRegisterPageInfo();
+    await ref.read(groupProvider.notifier).getClubRegisterInfo();
 
     if (context.mounted) {
       Navigator.push(
@@ -153,6 +145,15 @@ class ClubInfoPage extends ConsumerWidget {
         ),
       );
     }
+  }
+
+  void _pushGroupPage(BuildContext context) {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => const GroupListPage(),
+      ),
+    );
   }
 
   Future<void> _delegatePresident(BuildContext context, String memberName) async {

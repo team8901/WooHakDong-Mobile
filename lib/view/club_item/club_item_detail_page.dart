@@ -63,12 +63,9 @@ class ClubItemDetailPage extends ConsumerWidget {
                     imageUrl: itemInfo.itemPhoto!,
                     fit: BoxFit.cover,
                     placeholder: (context, url) {
-                      return AspectRatio(
-                        aspectRatio: 1,
-                        child: Container(
-                          width: double.infinity,
-                          color: context.colorScheme.surfaceContainer,
-                        ),
+                      return Container(
+                        width: double.infinity,
+                        color: context.colorScheme.surfaceContainer,
                       );
                     },
                   ),

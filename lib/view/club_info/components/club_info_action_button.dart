@@ -26,6 +26,7 @@ class ClubInfoActionButton extends ConsumerWidget {
           Expanded(
             child: InkWell(
               onTap: onTapDetail,
+              splashColor: context.colorScheme.surfaceContainer,
               borderRadius: BorderRadius.circular(defaultBorderRadiusM),
               highlightColor: context.colorScheme.surfaceContainer,
               child: Ink(
@@ -54,6 +55,7 @@ class ClubInfoActionButton extends ConsumerWidget {
                 child: InkWell(
                   onTap: onTap,
                   borderRadius: BorderRadius.circular(defaultBorderRadiusM),
+                  splashColor: context.colorScheme.surfaceContainer,
                   highlightColor: context.colorScheme.surfaceContainer,
                   child: Ink(
                     decoration: BoxDecoration(

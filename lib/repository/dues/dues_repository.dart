@@ -6,13 +6,22 @@ import 'package:woohakdong/service/logger/logger.dart';
 class DuesRepository {
   final Dio _dio = DioService().dio;
 
-  Future<List<Dues>> getDuesList(int clubId, String? date) async {
+  Future<List<Dues>> getDuesList(int clubId, String? date, String? keyword) async {
     try {
       logger.i('회비 내역 조회 시도');
 
+      final Map<String, dynamic> queryParams = {};
+
+      if (date != null && date.isNotEmpty) {
+        queryParams['date'] = date;
+      }
+      if (keyword != null && keyword.isNotEmpty) {
+        queryParams['keyword'] = keyword;
+      }
+
       final response = await _dio.get(
         '/clubs/$clubId/dues',
-        queryParameters: date != null ? {'date': date} : {},
+        queryParameters: queryParams,
       );
 
       if (response.statusCode == 200) {

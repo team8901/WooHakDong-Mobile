@@ -190,24 +190,27 @@ class _ClubRegisterNameInfoFormPageState extends ConsumerState<ClubRegisterNameI
                   else if (clubNameValidationState == ClubNameValidationState.notChecked)
                     const SizedBox(),
                   const Gap(defaultGapXL),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPaddingL / 3,
-                      vertical: defaultPaddingL / 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: context.colorScheme.surfaceContainer,
-                      borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        if (_nameFormKey.currentState?.validate() != true) return;
+                  InkWell(
+                    onTap: () {
+                      if (_nameFormKey.currentState?.validate() != true) return;
 
-                        clubNotifier.clubNameValidation(
-                          _clubNameController.text,
-                          _clubEnglishNameController.text,
-                        );
-                      },
+                      clubNotifier.clubNameValidation(
+                        _clubNameController.text,
+                        _clubEnglishNameController.text,
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                    splashColor: context.colorScheme.outline,
+                    highlightColor: context.colorScheme.outline,
+                    child: Ink(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPaddingL / 3,
+                        vertical: defaultPaddingL / 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.surfaceContainer,
+                        borderRadius: BorderRadius.circular(defaultBorderRadiusM / 2),
+                      ),
                       child: Center(
                         child: Text(
                           '중복 확인',

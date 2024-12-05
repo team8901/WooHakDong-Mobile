@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import 'package:woohakdong/service/general/general_functions.dart';
 import 'package:woohakdong/view/themes/spacing.dart';
-import 'package:woohakdong/view_model/group/group_provider.dart';
 
+import '../../view_model/group/group_payment_provider.dart';
 import '../payment/payment_page.dart';
 import 'components/settlement_bottom_button.dart';
 import 'components/settlement_payment_amount.dart';
@@ -31,7 +31,7 @@ class _SettlementInfoPageState extends ConsumerState<SettlementInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final serviceFeeGroupInfo = ref.watch(groupProvider);
+    final serviceFeeGroupInfo = ref.watch(groupPaymentProvider);
 
     return Scaffold(
       appBar: AppBar(),
@@ -80,7 +80,7 @@ class _SettlementInfoPageState extends ConsumerState<SettlementInfoPage> {
             const uuid = Uuid();
             final merchantUid = 'payment-${uuid.v4()}'.substring(0, 40);
 
-            await ref.read(groupProvider.notifier).getOrderIdServiceFeeGroup(merchantUid);
+            await ref.read(groupPaymentProvider.notifier).getGroupPaymentOrderId(merchantUid);
 
             if (context.mounted) {
               Navigator.push(

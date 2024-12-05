@@ -66,7 +66,7 @@ class _ClubItemHistoryPanelState extends ConsumerState<ClubItemHistoryPanel> {
                     const Gap(defaultGapM),
                     Expanded(
                       child: Text(
-                        '${widget.itemName} 대여 내역 보기',
+                        '${widget.itemName} 대여 회원 내역 보기',
                         style: context.textTheme.titleSmall,
                       ),
                     ),
@@ -81,7 +81,7 @@ class _ClubItemHistoryPanelState extends ConsumerState<ClubItemHistoryPanel> {
                     padding: const EdgeInsets.all(defaultPaddingM),
                     child: Center(
                       child: Text(
-                        '아직 대여 내역이 없어요',
+                        '아직 대여한 회원이 없어요',
                         style: context.textTheme.bodySmall?.copyWith(
                           color: context.colorScheme.onSurface,
                         ),
