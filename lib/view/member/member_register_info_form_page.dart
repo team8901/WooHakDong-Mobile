@@ -108,8 +108,11 @@ class _MemberRegisterInfoFormPageState extends ConsumerState<MemberRegisterInfoF
                         inputFormatters: [maskFormatter],
                         onSaved: (value) => memberInfo?.memberPhoneNumber = maskFormatter.getUnmaskedText(),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          String unmaskedValue = maskFormatter.getUnmaskedText();
+                          if (unmaskedValue.isEmpty) {
                             return '휴대폰 번호를 입력해 주세요';
+                          } else if (unmaskedValue.length != 11 || !RegExp(r'^\d{11}$').hasMatch(unmaskedValue)) {
+                            return '올바른 휴대폰 번호를 입력해 주세요';
                           }
                           return null;
                         },

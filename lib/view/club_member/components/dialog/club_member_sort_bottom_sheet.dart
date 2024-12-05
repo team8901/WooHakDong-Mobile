@@ -29,7 +29,7 @@ class ClubMemberSortBottomSheet extends ConsumerWidget {
                 vertical: defaultPaddingS / 2,
               ),
               child: Text(
-                '물품 정렬',
+                '회원 정렬',
                 style: context.textTheme.titleLarge,
               ),
             ),

@@ -99,6 +99,8 @@ class _MemberEditPageState extends ConsumerState<MemberEditPage> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '휴대폰 번호를 입력해 주세요';
+                    } else if (value.length != 11 || !RegExp(r'^\d{11}$').hasMatch(value)) {
+                      return '올바른 휴대폰 번호를 입력해 주세요';
                     }
                     return null;
                   },
