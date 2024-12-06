@@ -1,6 +1,6 @@
 ## 📌 우학동: 동아리 관리 자동화 SaaS
 
-![GitHub READM md 메인 이미지 2](https://github.com/user-attachments/assets/125c6c5c-512f-47a9-ab14-f08e229ac016)
+![GitHub READM md 메인 이미지](https://github.com/user-attachments/assets/4c88971e-cbcd-40f8-93a9-880f2452dc0b)
 
 </br>
 
@@ -84,7 +84,7 @@
 
 <div align="center">모바일 앱 UI</div>
 
-![1 - 앱](https://github.com/user-attachments/assets/b6611800-becc-4d9d-ba40-9428d00cfb34)
+![1 - 앱](https://github.com/user-attachments/assets/951098dd-9631-4784-bce6-b9612d004968)
 
 <div align="center">모바일 웹 앱 UI</div>
 
@@ -113,7 +113,7 @@
 
 <div align="center">모바일 앱 UI</div>
 
-![2 - 앱](https://github.com/user-attachments/assets/acfdd9d1-3e92-4dec-b37e-eee5a9c145de)
+![2 - 앱](https://github.com/user-attachments/assets/ac09d68f-cbe0-4a08-95bc-dcb3bc202ea2)
 
 <div align="center">모바일 웹 앱 UI</div>
 
@@ -140,7 +140,7 @@
 
 <div align="center">모바일 앱 UI</div>
 
-![3 - 앱](https://github.com/user-attachments/assets/fd08c924-2311-4d54-bf35-4ed48f6ee490)
+![3 - 앱](https://github.com/user-attachments/assets/a352af31-699f-46d6-a5fa-4a75a8b11973)
 
 <div align="center">모바일 웹 앱 UI</div>
 
@@ -150,70 +150,173 @@
 
 </br>
 
-## 📝 설계 및 구현
+## 💥 모바일 상세 UI
 
 <details>
-<summary><b>시스템 개요</b></summary>
+<summary><b>동아리 등록</b></summary>
 
 </br>
-  
-![시스템 개요](https://github.com/user-attachments/assets/10ed0cc9-c687-4597-bc39-8b0d691df2bf)
+
+| <img src="https://github.com/user-attachments/assets/e953e17b-0edd-4f00-9a4c-80949381dc13" width="375"> | <img src="https://github.com/user-attachments/assets/88ee53d4-a614-4390-8de1-b9ef54b79c25" width="375"> | <img src="https://github.com/user-attachments/assets/75af850d-fb7e-4667-92af-111c6ee6478f" width="375"> | <img src="https://github.com/user-attachments/assets/2f7eafbc-bf0d-48a3-a10c-7a80cdda28c7" width="375"> |
+| --- | --- | --- | --- |
+| 등록 전 안내사항 | 기본 정보 입력 | 추가 정보 입력 | 입력 정보 확인 |
+
+| <img src="https://github.com/user-attachments/assets/01c97a71-9106-4fe3-96d3-be93dbf5e622" width="375"> | <img src="https://github.com/user-attachments/assets/5a709f9b-1946-420a-8e5a-7d11f848ab3d" width="375"> | <img src="https://github.com/user-attachments/assets/3063a6ea-afe6-4ede-bbce-548eb63277c9" width="375"> |
+| --- | --- | --- |
+| 계좌 입력 | 등록 완료 | 전용 페이지 공유 |
 
 </br>
 
 </details>
 
 <details>
-<summary><b>시스템 아키텍쳐</b></summary>
+<summary><b>회원 관리</b></summary>
 
 </br>
 
-![시스템 아키텍쳐](https://github.com/user-attachments/assets/8aea0c2f-73e3-451d-b47e-f7d3e30e33a2)
+| <img src="https://github.com/user-attachments/assets/8f1b2932-c790-44a7-a5bc-dc041281feb2" width="375"> | <img src="https://github.com/user-attachments/assets/1a66b9fb-bc38-49ea-a5d8-8ba6399b63b3" width="375"> | <img src="https://github.com/user-attachments/assets/0e6a3c43-e404-4e99-9164-07d246481d96" width="375"> |
+| --- | --- | --- |
+| 목록 | 정렬 옵션 | 학기 선택 바텀시트 |
+
+| <img src="https://github.com/user-attachments/assets/28838977-f0d7-49c1-9763-93aabf7575b6" width="375"> | <img src="https://github.com/user-attachments/assets/1c275bf5-f7fc-4bf1-b788-ad38d82043c3" width="375"> | <img src="https://github.com/user-attachments/assets/f324f517-4d90-4b68-9e83-d1d50dbfa246" width="375"> |
+| --- | --- | --- |
+| 상세 정보 | 역할 변경 | 검색 |
+
+</br>
+
+</details>
+
+<details>
+<summary><b>물품 관리</b></summary>
+
+</br>
+
+| <img src="https://github.com/user-attachments/assets/5010631c-6c56-4055-b537-c210f9ce2da4" width="375"> | <img src="https://github.com/user-attachments/assets/53dcb485-09db-4a3b-b1de-15dad191ab11" width="375"> | <img src="https://github.com/user-attachments/assets/c880e95d-b3de-4efc-bf31-bffc6e1a788b" width="375"> |
+| --- | --- | --- |
+| 목록 | 정렬 옵션 | 필터 옵션 |
+
+| <img src="https://github.com/user-attachments/assets/a5932dcf-60db-4da0-bde6-d45b6d4368fb" width="375"> | <img src="https://github.com/user-attachments/assets/80df10f7-6335-4acc-9f01-1d01174bd9d1" width="375"> | <img src="https://github.com/user-attachments/assets/83ae7c62-81a7-4245-bc12-5026f2aba2f9" width="375"> |
+| --- | --- | --- |
+| 필터링된 목록 | 생성 | 상세 정보 |
+
+| <img src="https://github.com/user-attachments/assets/90bb82af-8fc4-4033-a790-80e8947372f4" width="375"> | <img src="https://github.com/user-attachments/assets/bb3a82e2-d398-44d9-a284-6cfe26f8571a" width="375"> | <img src="https://github.com/user-attachments/assets/e9100b1a-4cc0-4046-8d24-f1a49f35203c" width="375"> |
+| --- | --- | --- |
+| 대여 내역 | 전체 물품 대여 내역 | 검색 |
+
+</br>
+
+</details>
+
+<details>
+<summary><b>회비 관리</b></summary>
+
+</br>
+
+| <img src="https://github.com/user-attachments/assets/bcf05d10-958d-4aab-95ce-4780bb3dbfe1" width="375"> | <img src="https://github.com/user-attachments/assets/e5c1c555-f52e-42a9-9dba-f7dff7ae3c4e" width="375"> | <img src="https://github.com/user-attachments/assets/0c2465f3-1fee-4a89-929c-252f1e0de927" width="375"> | <img src="https://github.com/user-attachments/assets/f7284d75-91e5-427e-a575-f585b9be4869" width="375"> |
+| --- | --- | --- | --- |
+| 목록 | 날짜 필터 | 내역 필터 | 검색 |
+
+</br>
+
+</details>
+
+<details>
+<summary><b>일정 관리</b></summary>
+
+</br>
+
+| <img src="https://github.com/user-attachments/assets/8d5a8788-3567-4120-acb5-9c12313f0485" width="375"> | <img src="https://github.com/user-attachments/assets/c1898478-3356-4b80-b519-2a0e590073c1" width="375"> | <img src="https://github.com/user-attachments/assets/e18acfbd-1cc2-485f-b0b3-2928b92632f8" width="375"> |
+| --- | --- | --- |
+| 캘린더 Month 뷰 | 캘린더 Day 뷰 | 목록(Month 뷰) |
+
+| <img src="https://github.com/user-attachments/assets/104133b8-8848-48ce-913f-f4e75b73c874" width="375"> | <img src="https://github.com/user-attachments/assets/ed620d2d-04ee-4187-bee5-ceb9b136d919" width="375"> | <img src="https://github.com/user-attachments/assets/bd886daf-4814-4999-bb63-14dea5645c6a" width="375"> |
+| --- | --- | --- |
+| 생성 | 상세 정보 | 회원들에게 이메일 전송 |
+
+</br>
+
+</details>
+
+<details>
+<summary><b>내 동아리</b></summary>
+
+</br>
+
+| <img src="https://github.com/user-attachments/assets/7c0e6218-c644-43bb-97ae-56ad8615e3e5" width="375"> | <img src="https://github.com/user-attachments/assets/cc206e15-4814-46d6-8075-1a172817b778" width="375"> | <img src="https://github.com/user-attachments/assets/4e4cd118-44ea-4c57-b6fa-0e1ff68814b4" width="375"> | <img src="https://github.com/user-attachments/assets/b11b849c-4e80-4fcf-9971-298c1b330920" width="375"> |
+| --- | --- | --- | --- |
+| 내 동아리 | 상세 정보 | 회원들에게 이메일 전송 | 전용 페이지 정보 |
+
+| <img src="https://github.com/user-attachments/assets/de334731-630c-4ef4-9ffb-6a81680aa5a7" width="375"> | <img src="https://github.com/user-attachments/assets/8332ef44-84e3-46ba-bb8e-84b1b5902c21" width="375"> | <img src="https://github.com/user-attachments/assets/37157b17-6f23-48b4-b81a-2f9e8ae3bccf" width="375"> |
+| --- | --- | --- |
+| 가입된 동아리 목록 | 회장 위임 | 위임할 회원 선택 |
+
+</br>
+
+</details>
+
+<details>
+<summary><b>모임 관리</b></summary>
+
+</br>
+
+| <img src="https://github.com/user-attachments/assets/4f498098-0021-4b62-b72e-3ccfc7878bc8" width="375"> | <img src="https://github.com/user-attachments/assets/2b5a30a7-a96f-403c-a2ad-0f9019ce7ca6" width="375"> | <img src="https://github.com/user-attachments/assets/47a8dbcc-1040-4f0b-80bc-b446c1aa520f" width="375"> | <img src="https://github.com/user-attachments/assets/4f1009b5-00ce-4197-ab62-3803e2bca9a6" width="375"> |
+| --- | --- | --- | --- |
+| 목록 | 상세 정보 | 공유 | 생성 |
+
+</br>
+
+</details>
+
+<details>
+<summary><b>설정</b></summary>
+
+</br>
+
+| <img src="https://github.com/user-attachments/assets/826a5d83-f85d-4207-aaef-ab1facf6cdd3" width="375"> | <img src="https://github.com/user-attachments/assets/da562861-7869-493f-94a8-af4d0c757ab7" width="375"> |
+| --- | --- |
+| 설정 | 테마 변경 |
+
+</br>
 
 </details>
 
 </br>
 
-## 🧐 팀 소개
+## 📝 사용 기술
+
+| 구분          | 내용                                                   |
+|---------------------|-------------------------------------------------------------|
+| 상태 관리       | Riverpod                                                    |
+| 이미지 업로드  | S3 Presigned URL                                            |
+| HTTP 통신       | Dio, Dio Interceptor                                        |
+| 로그인          | Firebase, JWT                                               |
+| 패턴            | MVVM                                                        |
+| 결제            | PortOne 테스트 결제                                         |
+| 배포            | Fastlane 및 Firebase App Distribution으로 QA용 배포         |
+
+
+</br>
+
+## 🧐 소개
 
 | 이름 | 학과 | 이메일 | 역할 |
 | --- | --- | --- | --- |
-| 박상준 (팀장) | 소프트웨어학과 | sangjun1389@ajou.ac.kr | Back-end |
 | 강동우 | 소프트웨어학과 | alsdn1360@ajou.ac.kr | Front-end (임원진 App, UI/UX 설계) |
-| 봉지수 | 소프트웨어학과 | subtleen21@ajou.ac.kr | Front-end (임원진 통계 Web, 회원 Web App) |
-| 정의엽 | 소프트웨어학과 | uiyeop@ajou.ac.kr | Back-end |
 
 </br>
 
-## ✅ 협업 방식
+## ✅ 규칙
 
 <details>
 <summary><b>코드 컨벤션</b></summary>
 
 </br>
-  
-**Flutter: Dart**
 
 | 구분 | 규칙 |
 |------|------|
 | Name | • 클래스 이름은 Pascal Case를 사용<br>• 변수 및 함수 이름은 Lower Camel Case를 사용<br>• 상수 이름은 대문자와 언더스코어(_)를 사용 |
 | Format | • 라인의 길이는 120자로 제한<br>• 위젯 사용 시 마지막에 콤마(,)를 사용해 자동 코드 정렬에서 줄 바뀜 적용<br>• 들여쓰기는 2칸 사용 |
 | 주석 | • 문서에는 /// 사용<br>• 간단한 주석에는 // 사용 |
-
-**React: JavaScript**
-
-| 구분 | 규칙 |
-|------|------|
-| Name | • 변수 선언 시 const를 기본으로 사용, 필요한 경우에만 let 사용<br>• 객체 및 배열에는 리터럴 표기법 사용<br>• 함수는 함수 표현식을 주로 사용 |
-| Format | • 들여쓰기는 2칸 사용<br>• 여러 줄에 걸치는 객체는 쉼표 뒤에 줄 바뀜 적용 |
-| 주석 | • 코드의 의도를 설명하는 주석 추가 |
-
-**Spring: Java**
-
-| 구분 | 규칙 |
-|------|------|
-| 기본 | • Google JAVA Code Convention 준수 |
-| 특이사항 | • record 클래스의 경우 유효성 처리 및 가독성 증가를 위해 각 인자마다 한 줄씩 띄어쓰기 진행 |
 
 </br>
 
@@ -295,14 +398,30 @@ WHD-12_fix-fix_overflow_in_login_page
 
 </details>
 
+</br>
+
+## 🎉 수상
+
+![KakaoTalk_Photo_2024-12-05-20-14-21](https://github.com/user-attachments/assets/32f36567-9213-4ee2-a457-880c2d58bd10)
+
 <details>
-<summary><b>코드 리뷰</b></summary>
+<summary><b>2024-2 AJOU SOFTCON 최우수상(1위)</b></summary>
 
 </br>
 
-| 구분 | 규칙 |
-|------|------|
-| Front-End | 프론트엔드는 각 개발 환경이 상이하여 정확한 코드 리뷰가 어려울 수 있으나, 코드 리뷰는 여전히 필요하다. 모바일과 웹 PR에서는 서로를 리뷰어로 지정하여 코드 리뷰를 진행한다. 리뷰어는 폴더 명, 파일명, 변수 명 등이 적절하게 사용되었는지 판단하고, 간단한 로직이나 UI 코드에 대해 궁금한 점을 코멘트로 남기며 상호 간의 코드를 학습한다. 모든 코드를 검토한 이후, 리뷰어가 Merge를 승인하면 PR을 작성한 사람이 Merge를 진행한다. |
-| Back-End | 백엔드에서는 코드 컨벤션이 잘 준수되었는지, 코드에 오류가 없는지를 면밀히 검토한 후, 필요시 코멘트를 남긴다. 리뷰어가 Merge를 승인하거나 보완 요청을 하면, PR을 작성한 사람이 해당 코멘트를 확인하고 이에 따라 수정한 후 Merge를 진행한다. |
+![KakaoTalk_Photo_2024-12-05-19-46-25](https://github.com/user-attachments/assets/04dc828f-ddef-447e-a6f6-aaadfdec25b1)
+
+</br>
+
+</details>
+
+<details>
+<summary><b>2024-2 BM 발명 아이디어 경진대회 최우수상(2위)</b></summary>
+
+</br>
+  
+<img width="639" alt="SCR-20241205-rfcf" src="https://github.com/user-attachments/assets/ec22e2c6-d865-4863-885c-1146dba104d8">
+
+</br>
 
 </details>
